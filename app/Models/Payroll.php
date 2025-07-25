@@ -1,0 +1,99 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Request;
+
+class Payroll extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'employee_id',
+        'base_salary',
+        'bonuses',
+        'deductions',
+        'taxes',
+        'net_pay',
+        'pay_date'
+    ];
+
+    public function employee()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    static public function getRecord($company_id)
+    {
+                // Get the company_id from the session or request
+        $company_id = session('company_id');  // You can adjust this to get from request if needed.
+        $branch_id = session('branch_id');
+
+        $return = self::select('payrolls.*', 'users.name')
+            ->join('users', 'users.id', '=', 'payrolls.employee_id')
+            ->where('users.company_id', $company_id)  // Filter by company_id
+            ->orderBy('payrolls.id', 'desc');
+
+
+    if ($branch_id) {
+        $return->where('payrolls.branch_id', $branch_id);
+    } else {
+        $return->where('payrolls.company_id', $company_id);
+    }
+
+        // Search by name
+        if (!empty(Request::get('name'))) {
+            $return = $return->where('users.name', 'like', '%' . Request::get('name') . '%');
+        }
+
+        // Search by month
+        if (!empty(Request::get('month'))) {
+            $return = $return->whereMonth('payrolls.created_at', Request::get('month'));
+        }
+
+        // Search by year
+        if (!empty(Request::get('year'))) {
+            $return = $return->whereYear('payrolls.created_at', Request::get('year'));
+        }
+
+        // Search by Payroll Type
+        if (!empty(Request::get('payroll_type'))) {
+            $return = $return->where('payrolls.payroll_type', Request::get('payroll_type'));
+        }
+
+        $return = $return->paginate(15);
+
+        return $return;
+    }
+
+
+     // NEW METHOD: Fixed payslip search with proper pay_date filtering
+    static public function getPayslipRecord($company_id)
+    {
+        $return = self::select('payrolls.*', 'users.name', 'users.email', 'users.phone_number', 'users.hire_date')
+            ->join('users', 'users.id', '=', 'payrolls.employee_id')
+            ->where('users.company_id', $company_id)  // Filter by company_id
+            ->orderBy('payrolls.pay_date', 'desc')
+            ->orderBy('payrolls.id', 'desc');
+
+
+
+        // FIXED: Search by month using pay_date instead of created_at
+        if (!empty(Request::get('months'))) {
+            $return = $return->whereMonth('payrolls.start_date', Request::get('months'));
+        }
+
+        $return = $return->paginate(15);
+
+        return $return;
+    }
+
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+
+}

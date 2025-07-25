@@ -1,0 +1,90 @@
+.payslip-container {
+    border: 2px solid #dee2e6;
+    padding: 20px;
+    background: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    page-break-after: always;
+}
+
+.payslip-header {
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.company-name {
+    color: #007bff;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.company-address {
+    color: #6c757d;
+    margin: 0;
+}
+
+
+.employee-info {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.section-title {
+    background: #e9ecef;
+    padding: 8px 15px;
+    margin: 0 0 10px 0;
+    border-left: 4px solid #007bff;
+    font-weight: bold;
+}
+
+.earnings-section, .deductions-section, .attendance-section {
+    margin-bottom: 20px;
+}
+
+.net-pay-section .alert {
+    border: 2px solid #28a745;
+    background: #d4edda;
+}
+
+.payslip-footer {
+    border-top: 1px solid #dee2e6;
+    padding-top: 15px;
+    margin-top: 20px;
+}
+
+@media print {
+    .card-header, .breadcrumb, .content-header, .btn, .form-group, form {
+        display: none !important;
+    }
+
+    .payslip-container {
+        box-shadow: none;
+        border: 1px solid #000;
+        margin-bottom: 30px;
+    }
+
+    .col-md-8 {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+}
+
+.table th, .table td {
+    padding: 8px;
+    font-size: 14px;
+}
+
+.small {
+    font-size: 12px;
+    color: #6c757d;
+}
+
+.search-instructions {
+    background: #f8f9fa;
+    border: 1px dashed #dee2e6;
+    padding: 40px;
+    text-align: center;
+    border-radius: 8px;
+}

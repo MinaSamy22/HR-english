@@ -1,0 +1,15 @@
+/* account.css */
+.label-thin {
+    font-weight: 400; /* Lighter font */
+    font-size: 14px;  /* Smaller font size */
+    padding-bottom: 5px; /* Reduced padding */
+    display: block; /* Ensure label is above input */
+}
+
+.form-group label {
+    margin-bottom: 5px; /* Reduce space between label and input */
+}
+
+.form-control {
+    font-size: 14px; /* Smaller font size for the input */
+}
