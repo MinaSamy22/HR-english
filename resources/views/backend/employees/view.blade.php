@@ -123,6 +123,37 @@
                                         </div>
                                     </div>
 
+
+<div class="form-group row">
+    <label class="col-sm-2 col-form-lable">Salary <span style="color: red;"></span></label>
+    <div class="col-sm-10">
+        {{ $getRecord->salary }}
+    </div>
+</div>
+
+@if($getRecord->attachment)
+<div class="form-group row">
+    <label class="col-sm-2 col-form-lable">Attachment</label>
+    <div class="col-sm-10">
+        <a href="{{ route('view.attachment', $getRecord->attachment) }}" target="_blank" class="btn btn-primary">
+            <i class="fas fa-file-pdf"></i> View PDF
+        </a>
+        <a href="{{ route('view.attachment', $getRecord->attachment) }}" download class="btn btn-success ml-2">
+            <i class="fas fa-download"></i> Download
+        </a>
+    </div>
+</div>
+@endif
+
+<div class="form-group row">
+    <label class="col-sm-2 col-form-lable">Mobile Mac Address <span style="color: red;"></span></label>
+    <div class="col-sm-10">
+        {{ $getRecord->macaddress }}
+    </div>
+</div>
+
+
+
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-lable"> Work Start Time </label>
                                         <div class="col-sm-10">

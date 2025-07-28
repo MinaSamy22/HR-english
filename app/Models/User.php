@@ -15,7 +15,7 @@ class User extends Authenticatable
     protected $fillable = [
     'name', 'email', 'phone_number', 'hire_date', 'birth_date',
     'job_id', 'salary_type', 'salary', 'work_start_time', 'work_end_time',
-    'company_id', 'manager_id', 'department_id', 'is_role', 'password' ,'branch_id'
+    'company_id', 'manager_id', 'department_id', 'is_role', 'password' ,'branch_id','macaddress'
 ];
 
     protected $hidden = [

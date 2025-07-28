@@ -192,6 +192,15 @@
                     </ul>
                 </li>
 
+                <!-- News -->
+                <li class="nav-item">
+                    <a href="{{ url('admin/news') }}"
+                        class="nav-link @if (Request::segment(2) == 'news') active @endif">
+                        <i class="nav-icon fa fa-bullhorn"></i>
+                        <p>Company News</p>
+                    </a>
+                </li>
+
 
 
                 <li class="nav-header">Attendance & Payroll</li>
@@ -301,14 +310,13 @@
                     <ul class="nav nav-treeview">
 
                         @if (session('branch_id') === null)
-
-                        <li class="nav-item">
-                            <a href="{{ url('admin/attendance-rule') }}"
-                                class="nav-link @if (Request::segment(2) == 'attendance-rule') active @endif">
-                                <i class="fa fa-cogs nav-icon"></i>
-                                <p>Company Policy</p>
-                            </a>
-                        </li>
+                            <li class="nav-item">
+                                <a href="{{ url('admin/attendance-rule') }}"
+                                    class="nav-link @if (Request::segment(2) == 'attendance-rule') active @endif">
+                                    <i class="fa fa-cogs nav-icon"></i>
+                                    <p>Company Policy</p>
+                                </a>
+                            </li>
                         @endif
                         <li class="nav-item">
                             <a href="{{ url('admin/payroll') }}"
@@ -340,27 +348,26 @@
                 <li class="nav-header">Settings</li>
 
                 <!-- Branches -->
-@if (session('branch_id') === null)
-    <li class="nav-item">
-        <a href="{{ url('admin/branches') }}"
-            class="nav-link @if (Request::segment(2) == 'branches') active @endif">
-            <i class="nav-icon fas fa-code-branch text-white"></i>
-            <p>Branches</p>
-        </a>
-    </li>
-@endif
+                @if (session('branch_id') === null)
+                    <li class="nav-item">
+                        <a href="{{ url('admin/branches') }}"
+                            class="nav-link @if (Request::segment(2) == 'branches') active @endif">
+                            <i class="nav-icon fas fa-code-branch text-white"></i>
+                            <p>Branches</p>
+                        </a>
+                    </li>
+                @endif
 
 
                 <!-- Company information -->
                 @if (session('branch_id') === null)
-
-                <li class="nav-item">
-                    <a href="{{ url('admin/company-info') }}"
-                        class="nav-link @if (Request::segment(2) == 'company-info') active @endif">
-                        <i class="nav-icon fas fa-info-circle "></i>
-                        <p>Company information</p>
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a href="{{ url('admin/company-info') }}"
+                            class="nav-link @if (Request::segment(2) == 'company-info') active @endif">
+                            <i class="nav-icon fas fa-info-circle "></i>
+                            <p>Company information</p>
+                        </a>
+                    </li>
                 @endif
 
 

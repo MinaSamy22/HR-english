@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\File;
+
 class EmployeeeController extends Controller
 {
 public function index(Request $request){
@@ -55,6 +57,11 @@ public function add_post(Request $request)
         'is_biometric'          => 'required|in:0,1', // yes biometric-> 1 , No free-> 0
         'work_start_time'       => 'required|date_format:H:i',
         'work_end_time'         => 'required|date_format:H:i',
+        'attachment'            => 'nullable|file|mimes:pdf|max:2048', // max 2MB
+        'macaddress'            => 'nullable|string|max:255',
+
+
+
     ]);
 
     // Create a new user
@@ -67,6 +74,8 @@ public function add_post(Request $request)
     $user->job_id               = trim($request->job_id);
     $user->salary_type          = trim($request->salary_type);
     $user->salary               = trim($request->salary);
+    $user->macaddress           = trim($request->macaddress);
+
     $user->work_start_time      = trim($request->work_start_time);
     $user->work_end_time        = trim($request->work_end_time);
     $user->manager_id           = trim($request->manager_id);
@@ -89,11 +98,25 @@ public function add_post(Request $request)
         $user->branch_id = session('branch_id');
     }
 
+if ($request->hasFile('attachment')) {
+    $file = $request->file('attachment');
+    $filename = time() . '_' . $file->getClientOriginalName();
+$destinationPath = public_path('../../HR-Uploads/shared_attachments/');
+
+    // احفظ الملف في المجلد
+    $file->move($destinationPath, $filename);
+
+    // خزّن اسم الملف فقط في قاعدة البيانات
+    $user->attachment = $filename;
+}
+
+
     // Save the user to the database
     $user->save();
 
     return redirect('admin/employees')->with('success', 'Employee successfully registered.');
 }
+
 
 
 public function view($id){
@@ -123,42 +146,79 @@ public function edit($id)
 }
 
 
-public function edit_update ($id, Request $request){
+
+public function edit_update($id, Request $request){
 
     $user = request()->validate([
         'email' => 'required|unique:users,email,'.$id,
         'is_biometric' => 'required|in:0,1', // Biometric validation
-
-     ]);
+        'attachment' => 'nullable|file|mimes:pdf|max:2048', // Add attachment validation
+    ]);
 
     $user = User::find($id);
 
-    $user->name                 = trim ($request->name);
-    $user->email                = trim ($request->email);
-    $user->phone_number         = trim ($request->phone_number);
-    $user->birth_date           = trim ($request->birth_date);
-    $user->job_id               = trim ($request->job_id);
-    $user->salary_type          = trim ($request->salary_type);
-    $user->salary               = trim ($request->salary);
-    $user->work_start_time      = trim ($request->work_start_time);
-    $user->work_end_time        = trim ($request->work_end_time);
+    // Handle file upload and replacement
+    if ($request->hasFile('attachment')) {
+        // Delete old attachment if exists
+        if ($user->attachment) {
+            $oldFilePath = public_path('../../HR-Uploads/shared_attachments/' . $user->attachment);
+            if (File::exists($oldFilePath)) {
+                File::delete($oldFilePath);
+            }
+        }
+
+        // Upload new file
+        $file = $request->file('attachment');
+        $filename = time() . '_' . $file->getClientOriginalName();
+        $destinationPath = public_path('../../HR-Uploads/shared_attachments');
+
+        $file->move($destinationPath, $filename);
+        $user->attachment = $filename;
+    }
+
+    $user->name                 = trim($request->name);
+    $user->email                = trim($request->email);
+    $user->phone_number         = trim($request->phone_number);
+    $user->birth_date           = trim($request->birth_date);
+    $user->job_id               = trim($request->job_id);
+    $user->salary_type          = trim($request->salary_type);
+    $user->salary               = trim($request->salary);
+    $user->macaddress           = trim($request->macaddress);
+
+    $user->work_start_time      = trim($request->work_start_time);
+    $user->work_end_time        = trim($request->work_end_time);
     $user->is_biometric         = $request->is_biometric;
- // $user->commission_pct       = trim ($request->commission_pct);
-    $user->manager_id           = trim ($request->manager_id);
-    $user->department_id        = trim ($request->department_id);
- // $user->is_role              = 0; //0 - Employees
+    $user->manager_id           = trim($request->manager_id);
+    $user->department_id        = trim($request->department_id);
+
     $user->save();
 
-    return redirect('admin/employees')->with('success', 'Employees successfully update.');
-
+    return redirect('admin/employees')->with('success', 'Employee successfully updated.');
 }
 
 
 public function delete($id){
     $recordDelete = User::find($id);
-    $recordDelete->delete();
-    return redirect()->back()->with('error', 'Record successfully deleted');
 
+    // Check if user exists
+    if (!$recordDelete) {
+        return redirect()->back()->with('error', 'User not found');
+    }
+
+    // Delete the attachment file if it exists
+    if ($recordDelete->attachment) {
+        $filePath = public_path('../../HR-Uploads/shared_attachments/' . $recordDelete->attachment);
+
+        // Check if file exists and delete it
+        if (file_exists($filePath)) {
+            unlink($filePath);
+        }
+    }
+
+    // Delete the user record
+    $recordDelete->delete();
+
+    return redirect()->back()->with('success', 'Record and attachment successfully deleted');
 }
 
 public function info(Request $request){

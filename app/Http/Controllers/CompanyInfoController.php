@@ -59,39 +59,41 @@ class CompanyInfoController extends Controller
         $company->tax_card                  = $request->tax_card ? trim($request->tax_card) : null;
 
         // Handle logo upload with SVG support
-        if ($request->hasFile('company_logo')) {
-            // Delete old logo if exists
-            if ($company->logo && file_exists(public_path('uploads/company_logos/' . $company->logo))) {
-                unlink(public_path('uploads/company_logos/' . $company->logo));
-            }
-
-            // Create directory if it doesn't exist
-            if (!file_exists(public_path('uploads/company_logos'))) {
-                mkdir(public_path('uploads/company_logos'), 0755, true);
-            }
-
-           // Upload new logo - FIXED: Use consistent naming based on company ID
-            $file = $request->file('company_logo');
-            $extension = $file->getClientOriginalExtension();
-            $filename = 'company_' . $company->id . '_logo.' . $extension;
-
-
-            // Additional validation for SVG files
-            if ($file->getClientOriginalExtension() === 'svg') {
-                // Validate SVG content for security
-                $svgContent = file_get_contents($file->getRealPath());
-                if ($this->validateSvgContent($svgContent)) {
-                    $file->move(public_path('uploads/company_logos'), $filename);
-                    $company->logo = $filename;
-                } else {
-                    return redirect()->back()->with('error', 'Invalid SVG file. Please upload a valid SVG.');
-                }
-            } else {
-                // For non-SVG files, proceed normally
-                $file->move(public_path('uploads/company_logos'), $filename);
-                $company->logo = $filename;
-            }
+if ($request->hasFile('company_logo')) {
+    // Delete old logo if exists
+    if ($company->logo) {
+        $oldLogoPath = public_path('../../HR-Uploads/company_logos/' . $company->logo);
+        if (file_exists($oldLogoPath)) {
+            unlink($oldLogoPath);
         }
+    }
+
+    // Create directory if it doesn't exist
+    $destinationPath = public_path('../../HR-Uploads/company_logos/');
+    if (!file_exists($destinationPath)) {
+        mkdir($destinationPath, 0755, true);
+    }
+
+    // Upload new logo - consistent with your PDF naming pattern
+    $file = $request->file('company_logo');
+    $filename = time() . '_' . $file->getClientOriginalName();
+
+    // Additional validation for SVG files
+    if ($file->getClientOriginalExtension() === 'svg') {
+        // Validate SVG content for security
+        $svgContent = file_get_contents($file->getRealPath());
+        if ($this->validateSvgContent($svgContent)) {
+            $file->move($destinationPath, $filename);
+            $company->logo = $filename;
+        } else {
+            return redirect()->back()->with('error', 'Invalid SVG file. Please upload a valid SVG.');
+        }
+    } else {
+        // For non-SVG files (images), proceed normally
+        $file->move($destinationPath, $filename);
+        $company->logo = $filename;
+    }
+}
 
         $company->save();
 

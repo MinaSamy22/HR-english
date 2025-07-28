@@ -15,12 +15,12 @@
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="company-logo-section d-flex align-items-center" style="margin-left: 15px">
                         @if (Auth::user()->company && Auth::user()->company->logo)
-                            <div class="company-logo-wrapper d-flex align-items-center mr-0">
-                                <img src="{{ Auth::user()->company->logo_url }}"
-                                    alt="{{ Auth::user()->company->name }} Logo" class="company-logo mr-3"
-                                    style="max-height: 60px; max-width: 120px; object-fit: contain; border-radius: 8px; box-shadow: 0 2px 50px rgba(0,0,0,0.1);">
-                            </div>
-                        @endif
+    <div class="company-logo-wrapper d-flex align-items-center mr-0">
+        <img src="{{ Auth::user()->company->logo_url }}"
+            alt="{{ Auth::user()->company->name }} Logo" class="company-logo mr-3"
+            style="max-height: 60px; max-width: 120px; object-fit: contain; border-radius: 8px; box-shadow: 0 2px 50px rgba(0,0,0,0.1);">
+    </div>
+@endif
                         <h6 class="mb-0 text-black bg-white px-2 py-6 rounded d-none d-md-block">{{ $branchName }} Branch</h6>
                         <small class="mb-0 text-black bg-white px-2 py-1 rounded d-block d-md-none">{{ $branchName }} Branch</small>
                     </div>
@@ -228,6 +228,138 @@
                         </div>
                     </div>
                 </div><!-- /.row -->
+
+
+<!-- Company News Section -->
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="card shadow-sm"
+                            style="border-radius: 10px; border: none; border-left: 4px solid #28a745;">
+                            <div class="card-header d-flex justify-content-between align-items-center"
+                                style="background: white; color: #333; border: none; border-bottom: 1px solid #e9ecef;">
+                                <h3 class="card-title" style="font-weight: 600; font-size: 1.1rem; color: #28a745;">
+                                    <i class="fas fa-newspaper mr-2"></i>Latest Company News
+                                </h3>
+
+                            </div>
+                            <div class="card-body" style="background: white; padding: 1.5rem; max-height: 500px; overflow-y: auto;">
+                                @if(isset($recentNews) && $recentNews->count() > 0)
+                                    <div class="row">
+                                        @foreach($recentNews as $newsItem)
+                                            <div class="col-lg-6 col-md-12 mb-4">
+                                                <div class="news-item border rounded p-3 h-100"
+                                                     style="border-left: 3px solid #28a745 !important; transition: all 0.3s ease; background: #f8f9fa;">
+                                                    <div class="row">
+                                                        @if($newsItem->hasImage())
+                                                            <div class="col-4">
+                                                                <div class="news-image-container" style="height: 80px; width: 100%; overflow: hidden; border-radius: 0.375rem; background: #f8f9fa; display: flex; align-items: center; justify-content: center;">
+                                                                    <img src="{{ $newsItem->imageUrl }}"
+                                                                         alt="{{ $newsItem->title }}"
+                                                                         class="img-fluid"
+                                                                         style="max-height: 100%; max-width: 100%; object-fit: contain;">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-8">
+                                                        @else
+                                                            <div class="col-12">
+                                                        @endif
+                                                            <h6 class="news-title mb-2" style="color: #333; font-weight: 600; line-height: 1.4;">
+                                                                <a href="{{ route('news.show', $newsItem) }}"
+                                                                   class="text-decoration-none"
+                                                                   style="color: inherit;">
+                                                                    {{ Str::limit($newsItem->title, 50) }}
+                                                                </a>
+                                                            </h6>
+                                                            <p class="news-excerpt mb-2 text-muted small">
+                                                                {{ Str::limit($newsItem->description, 80) }}
+                                                            </p>
+                                                            <div class="news-meta d-flex justify-content-between align-items-center">
+                                                                <small class="text-muted">
+                                                                    <i class="fas fa-calendar-alt mr-1"></i>
+                                                                    {{ $newsItem->formattedDate }}
+                                                                </small>
+                                                                <a href="{{ route('news.show', $newsItem) }}"
+                                                                   class="btn btn-success btn-sm view-btn"
+                                                                   style="font-size: 0.75rem; padding: 0.25rem 0.5rem;">
+                                                                    <i class="fas fa-eye mr-1"></i>View
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <div class="text-center py-4">
+                                        <div class="mb-3">
+                                            <i class="fas fa-newspaper fa-3x text-muted"></i>
+                                        </div>
+                                        <h5 class="text-muted">No Recent News</h5>
+                                        <p class="text-muted mb-3">There are no recent news items to display.</p>
+                                        <a href="{{ route('news.create') }}" class="btn btn-success">
+                                            <i class="fas fa-plus mr-2"></i>Add First News
+                                        </a>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.row -->
+
+            </div><!-- /.container-fluid -->
+        </section><!-- /.content -->
+    </div><!-- /.content-wrapper -->
+
+    <!-- CSS for News Items Hover Effect -->
+    <style>
+        .news-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+            background: white !important;
+        }
+
+        .news-title a:hover {
+            color: #28a745 !important;
+        }
+
+        .quick-btn:hover {
+            transform: translateX(3px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-color: #007bff !important;
+        }
+
+        .view-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 2px 8px rgba(0,123,255,0.3);
+        }
+
+        /* Custom scrollbar for news section */
+        .card-body::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .card-body::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .card-body::-webkit-scrollbar-thumb {
+            background: #28a745;
+            border-radius: 3px;
+        }
+
+        .card-body::-webkit-scrollbar-thumb:hover {
+            background: #1e7e34;
+        }
+
+        .news-image-container:hover {
+            transform: scale(1.02);
+            transition: transform 0.2s ease;
+        }
+    </style>
+
+
 
             </div><!-- /.container-fluid -->
         </section><!-- /.content -->

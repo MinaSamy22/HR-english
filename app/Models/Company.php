@@ -36,51 +36,55 @@ class Company extends Model
         return $query->orderBy('id', 'desc')->paginate(10);
     }
 
-    // Updated method to handle SVG logos
-    public function getLogoUrlAttribute()
-    {
-        if ($this->logo && file_exists(public_path('uploads/company_logos/' . $this->logo))) {
-            return asset('uploads/company_logos/' . $this->logo);
+    // Updated method to handle logos from shared folder
+public function getLogoUrlAttribute()
+{
+    if ($this->logo) {
+        // Check if file exists in the shared folder
+        $filePath = public_path('../../HR-Uploads/company_logos/' . $this->logo);
+        if (file_exists($filePath)) {
+            return route('view.logo', $this->logo);
         }
-        return asset('dist/img/default-logo.png'); // Default logo if none exists
     }
+    return asset('dist/img/default-logo.png'); // Default logo if none exists
+}
 
-    public function getLogoPathAttribute()
-    {
-        return public_path('uploads/company_logos/' . $this->logo);
+public function getLogoPathAttribute()
+{
+    return public_path('../../HR-Uploads/company_logos/' . $this->logo);
+}
+
+// New method to check if logo is SVG
+public function getLogoIsSvgAttribute()
+{
+    if ($this->logo) {
+        $extension = pathinfo($this->logo, PATHINFO_EXTENSION);
+        return strtolower($extension) === 'svg';
     }
+    return false;
+}
 
-    // New method to check if logo is SVG
-    public function getLogoIsSvgAttribute()
-    {
-        if ($this->logo) {
-            $extension = pathinfo($this->logo, PATHINFO_EXTENSION);
-            return strtolower($extension) === 'svg';
+// New method to get logo MIME type
+public function getLogoMimeTypeAttribute()
+{
+    if ($this->logo) {
+        $extension = strtolower(pathinfo($this->logo, PATHINFO_EXTENSION));
+        switch ($extension) {
+            case 'svg':
+                return 'image/svg+xml';
+            case 'png':
+                return 'image/png';
+            case 'jpg':
+            case 'jpeg':
+                return 'image/jpeg';
+            case 'gif':
+                return 'image/gif';
+            default:
+                return 'image/png';
         }
-        return false;
     }
-
-    // New method to get logo MIME type
-    public function getLogoMimeTypeAttribute()
-    {
-        if ($this->logo) {
-            $extension = strtolower(pathinfo($this->logo, PATHINFO_EXTENSION));
-            switch ($extension) {
-                case 'svg':
-                    return 'image/svg+xml';
-                case 'png':
-                    return 'image/png';
-                case 'jpg':
-                case 'jpeg':
-                    return 'image/jpeg';
-                case 'gif':
-                    return 'image/gif';
-                default:
-                    return 'image/png';
-            }
-        }
-        return 'image/png';
-    }
+    return 'image/png';
+}
 
     public function users()
     {
