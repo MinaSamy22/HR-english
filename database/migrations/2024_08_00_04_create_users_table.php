@@ -17,8 +17,8 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();;
             $table->string('phone_number')->nullable();
-            $table->date('birth_date')->nullable();
             $table->date('hire_date')->nullable();
+            $table->date('birth_date')->nullable();
 
 
             $table->foreignId('job_id')->nullable()->constrained()->onDelete('set null');
@@ -28,9 +28,11 @@ return new class extends Migration
 
             $table->time('work_start_time')->nullable();
             $table->time('work_end_time')->nullable();
-
+            $table->string('macaddress')->nullable();
+            $table->boolean('is_biometric')->nullable();
             $table->foreignId('manager_id')->nullable()->constrained()->onDelete('set null');
             $table->foreignId('department_id')->nullable()->constrained()->onDelete('set null');
+            $table->string('attachment')->nullable();
 
             $table->foreignId('company_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('branch_id')->nullable()->constrained()->onDelete('set null');
