@@ -12,7 +12,6 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
                         <li class="breadcrumb-item"><a href="{{ route('news.index') }}">News</a></li>
                         <li class="breadcrumb-item active">Edit</li>
                     </ol>
@@ -118,12 +117,10 @@
                             </div>
 
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary float-right">
                                     <i class="fas fa-save"></i> Update News
                                 </button>
-                                <a href="{{ route('news.index') }}" class="btn btn-secondary">
-                                    <i class="fas fa-times"></i> Cancel
-                                </a>
+
                             </div>
                         </form>
                     </div>

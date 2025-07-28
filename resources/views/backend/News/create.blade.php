@@ -12,7 +12,6 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
                         <li class="breadcrumb-item"><a href="{{ route('news.index') }}">News</a></li>
                         <li class="breadcrumb-item active">Add</li>
                     </ol>
@@ -103,6 +102,14 @@
                                         <span class="invalid-feedback d-block">{{ $message }}</span>
                                     @enderror
 
+                                    <!-- Selected File Name Display -->
+                                    <div class="mt-2" id="selectedFileName" style="display: none;">
+                                        <small class="text-info">
+                                            <i class="fas fa-file-image mr-1"></i>
+                                            Selected: <span id="fileNameText"></span>
+                                        </small>
+                                    </div>
+
                                     <!-- Image Preview -->
                                     <div class="mt-2" id="imagePreview" style="display: none;">
                                         <img id="preview" src="" alt="Image Preview" class="img-thumbnail" style="max-width: 200px; max-height: 200px;">
@@ -111,12 +118,9 @@
                             </div>
 
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary float-right" >
                                     <i class="fas fa-save"></i> Save News
                                 </button>
-                                <a href="{{ route('news.index') }}" class="btn btn-secondary">
-                                    <i class="fas fa-times"></i> Cancel
-                                </a>
                             </div>
                         </form>
                     </div>
@@ -128,36 +132,70 @@
 
 @push('scripts')
 <script>
-    // File input label update and image preview
-    $('.custom-file-input').on('change', function() {
-        let fileName = $(this).val().split('\\').pop();
-        $(this).next('.custom-file-label').addClass("selected").html(fileName);
+    $(document).ready(function() {
+        // File input change handler
+        $('#image').on('change', function() {
+            const file = this.files[0];
 
-        // Image preview
-        const file = this.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                $('#preview').attr('src', e.target.result);
-                $('#imagePreview').show();
+            if (file) {
+                // Update the custom file label
+                const fileName = file.name;
+                $(this).next('.custom-file-label').addClass("selected").html(fileName);
+
+                // Show selected file name
+                $('#fileNameText').text(fileName);
+                $('#selectedFileName').show();
+
+                // Image preview
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#preview').attr('src', e.target.result);
+                    $('#imagePreview').show();
+                }
+                reader.readAsDataURL(file);
+            } else {
+                // Reset everything if no file selected
+                $(this).next('.custom-file-label').removeClass("selected").html('Choose file');
+                $('#selectedFileName').hide();
+                $('#imagePreview').hide();
             }
-            reader.readAsDataURL(file);
-        } else {
-            $('#imagePreview').hide();
-        }
-    });
+        });
 
-    // Ensure label is updated on all browsers
-    document.querySelectorAll('.custom-file-input').forEach(input => {
-        input.addEventListener('change', function (e) {
-            let fileName = e.target.files[0]?.name || 'Choose file';
-            let label = this.nextElementSibling;
-            if (label && label.classList.contains('custom-file-label')) {
-                label.textContent = fileName;
+        // Additional fallback for browsers that don't support jQuery properly
+        document.getElementById('image').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const label = this.nextElementSibling;
+
+            if (file && label) {
+                label.textContent = file.name;
+                label.classList.add('selected');
+            } else if (label) {
+                label.textContent = 'Choose file';
+                label.classList.remove('selected');
             }
         });
     });
 </script>
+
+@push('styles')
+<style>
+    .custom-file-label.selected {
+        color: #495057;
+        font-weight: 500;
+    }
+
+    .custom-file-label::after {
+        content: "Browse";
+    }
+
+    #selectedFileName {
+        padding: 0.5rem;
+        background-color: #e3f2fd;
+        border-left: 3px solid #2196f3;
+        border-radius: 0.25rem;
+    }
+</style>
+@endpush
 
 @endpush
 @endsection

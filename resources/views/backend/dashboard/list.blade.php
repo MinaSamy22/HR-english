@@ -230,9 +230,7 @@
                 </div><!-- /.row -->
 
 
-
-
-                <!-- Company News Section -->
+<!-- Company News Section -->
                 <div class="row mt-4">
                     <div class="col-12">
                         <div class="card shadow-sm"
@@ -244,7 +242,7 @@
                                 </h3>
 
                             </div>
-                            <div class="card-body" style="background: white; padding: 1.5rem;">
+                            <div class="card-body" style="background: white; padding: 1.5rem; max-height: 500px; overflow-y: auto;">
                                 @if(isset($recentNews) && $recentNews->count() > 0)
                                     <div class="row">
                                         @foreach($recentNews as $newsItem)
@@ -254,10 +252,12 @@
                                                     <div class="row">
                                                         @if($newsItem->hasImage())
                                                             <div class="col-4">
-                                                                <img src="{{ $newsItem->imageUrl }}"
-                                                                     alt="{{ $newsItem->title }}"
-                                                                     class="img-fluid rounded"
-                                                                     style="height: 80px; width: 100%; object-fit: cover;">
+                                                                <div class="news-image-container" style="height: 80px; width: 100%; overflow: hidden; border-radius: 0.375rem; background: #f8f9fa; display: flex; align-items: center; justify-content: center;">
+                                                                    <img src="{{ $newsItem->imageUrl }}"
+                                                                         alt="{{ $newsItem->title }}"
+                                                                         class="img-fluid"
+                                                                         style="max-height: 100%; max-width: 100%; object-fit: contain;">
+                                                                </div>
                                                             </div>
                                                             <div class="col-8">
                                                         @else
@@ -278,9 +278,11 @@
                                                                     <i class="fas fa-calendar-alt mr-1"></i>
                                                                     {{ $newsItem->formattedDate }}
                                                                 </small>
-                                                                @if($newsItem->isRecent())
-                                                                    <span class="badge badge-success badge-sm">New</span>
-                                                                @endif
+                                                                <a href="{{ route('news.show', $newsItem) }}"
+                                                                   class="btn btn-success btn-sm view-btn"
+                                                                   style="font-size: 0.75rem; padding: 0.25rem 0.5rem;">
+                                                                    <i class="fas fa-eye mr-1"></i>View
+                                                                </a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -325,6 +327,35 @@
             transform: translateX(3px);
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             border-color: #007bff !important;
+        }
+
+        .view-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 2px 8px rgba(0,123,255,0.3);
+        }
+
+        /* Custom scrollbar for news section */
+        .card-body::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .card-body::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .card-body::-webkit-scrollbar-thumb {
+            background: #28a745;
+            border-radius: 3px;
+        }
+
+        .card-body::-webkit-scrollbar-thumb:hover {
+            background: #1e7e34;
+        }
+
+        .news-image-container:hover {
+            transform: scale(1.02);
+            transition: transform 0.2s ease;
         }
     </style>
 

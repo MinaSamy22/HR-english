@@ -12,7 +12,6 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
                         <li class="breadcrumb-item"><a href="{{ route('news.index') }}">News</a></li>
                         <li class="breadcrumb-item active">View</li>
                     </ol>
@@ -32,9 +31,7 @@
                                 <a href="{{ route('news.edit', $news) }}" class="btn btn-warning btn-sm">
                                     <i class="fas fa-edit"></i> Edit
                                 </a>
-                                <a href="{{ route('news.index') }}" class="btn btn-secondary btn-sm">
-                                    <i class="fas fa-arrow-left"></i> Back to List
-                                </a>
+
                             </div>
                         </div>
 
