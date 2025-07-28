@@ -40,7 +40,7 @@ the secound spam that not closed any thing you write in the place of close whill
 value = old for not rebeating the input  --}}
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-lable"> First Name <span style="color: red;">
+                                        <label class="col-sm-2 col-form-lable">  Name <span style="color: red;">
                                                 *</span></label>
                                         <div class="col-sm-10">
                                             <input type="text" value="{{ $getRecord->name }}" name="name"
@@ -127,6 +127,32 @@ value = old for not rebeating the input  --}}
                                             <input type="number" value="{{ $getRecord->salary }}" name="salary"
                                                 class="form-control" required placeholder="Enter Salary">
                                             <span style="color:red"> {{ $errors->first('salary') }}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Add file input field -->
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Attachment</label>
+        <div class="col-sm-10">
+            <input type="file" name="attachment" class="form-control" accept=".pdf">
+            @if($getRecord->attachment)
+                <small class="form-text text-muted">
+                    Current file: {{ $getRecord->attachment }}
+                    <a href="{{ route('view.attachment', $getRecord->attachment) }}" target="_blank">View</a>
+                </small>
+            @endif
+        </div>
+    </div>
+
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-lable"> Mobile Mac Address <span style="color: red;">
+                                                *</span></label>
+                                        <div class="col-sm-10">
+                                            <input type="text" value="{{ $getRecord->macaddress }}" name="macaddress"
+                                                class="form-control" required placeholder="Enter Mac Address">
+                                            <span style="color:red"> {{ $errors->first('macaddress') }}
                                             </span>
                                         </div>
                                     </div>

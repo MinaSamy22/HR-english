@@ -19,6 +19,7 @@ use App\Http\Controllers\JobController;
 use App\Http\Controllers\JobHistoryController;
 use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\MyAccountController;
+use App\Http\Controllers\NewsController;
 use App\Http\Controllers\OverTimeController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\TaxController;
@@ -76,7 +77,15 @@ route::get('admin/employee_info', [EmployeeeController::class, 'info'])->name('e
 route::get('admin/employees_export', [EmployeeeController::class, 'employees_export'])->name('employees_export');
 Route::get('admin/employees/import', [EmployeeeController::class, 'showImportForm'])->name('employees.import.form');
 Route::post('admin/import-employees', [EmployeeeController::class, 'importEmployees'])->name('admin.employees.import');
+Route::get('/view-attachment/{filename}', function($filename) {
+    $path = public_path('../../HR-Uploads/shared_attachments/' . $filename);
 
+    if (!file_exists($path)) {
+        abort(404);
+    }
+
+    return response()->file($path);
+})->name('view.attachment');
 // employees and department linked by job_title in employee by id after link it convert to string
 // all edits of job title happend in employee
 // edit in code of (update and add) and in code of (view)to convert id to name
@@ -242,6 +251,19 @@ Route::get('admin/branches/delete/{id}', [BranchController::class, 'delete'])->n
 Route::get('/admin/branches/transfer', [BranchController::class, 'showTransferForm'])->name('branches.transfer.form');
 Route::post('/admin/branches/transfer', [BranchController::class, 'assignEmployee'])->name('branches.transfer');
 
+//Company News  admin/news
+Route::get('admin/news', [NewsController::class, 'index'])->name('news.index');
+
+    Route::get('admin/news/create', [NewsController::class, 'create'])->name('news.create');
+    Route::post('admin/news', [NewsController::class, 'store'])->name('news.store');
+    Route::get('admin/news/{news}', [NewsController::class, 'show'])->name('news.show');
+    Route::get('admin/news/{news}/edit', [NewsController::class, 'edit'])->name('news.edit');
+    Route::put('admin/news/{news}', [NewsController::class, 'update'])->name('news.update');
+    Route::delete('admin/news/{news}', [NewsController::class, 'destroy'])->name('news.destroy');
+Route::get('view/news/image/{filename}', [NewsController::class, 'viewImage'])->name('view.news.image');
+Route::get('admin/news/filter', [NewsController::class, 'filterNews'])->name('news.filter');
+Route::post('admin/news/{news}/toggle-status', [NewsController::class, 'toggleStatus'])->name('news.toggle-status');
+Route::post('admin/news/bulk-delete', [NewsController::class, 'bulkDelete'])->name('news.bulk-delete');
 
 //my account   admin/my_account
 route::get('admin/my_account', [MyAccountController::class, 'my_account'])->name('my_account'); //34an roue bdl url
@@ -251,7 +273,15 @@ route::post('admin/my_account/update', [MyAccountController::class, 'edit_update
 //Company information  admin/my_account
 route::get('admin/company-info', [CompanyInfoController::class, 'index'])->name('company-info'); //34an roue bdl url
 route::post('admin/company-info/update', [CompanyInfoController::class, 'edit_update'])->name('edit_update');
+Route::get('/view-logo/{filename}', function($filename) {
+    $path = public_path('../../HR-Uploads/company_logos/' . $filename);
 
+    if (!file_exists($path)) {
+        abort(404);
+    }
+
+    return response()->file($path);
+})->name('view.logo');
 
 });
 

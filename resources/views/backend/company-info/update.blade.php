@@ -140,7 +140,7 @@
                                                         <div class="logo-preview-container mb-3">
                                                             @if($getRecord->company->logo)
                                                                 <div class="current-logo-wrapper">
-                                                                    <img src="{{ asset('uploads/company_logos/' . $getRecord->company->logo) }}"
+                                                                    <img src="{{ Auth::user()->company->logo_url }}"
                                                                          alt="Company Logo"
                                                                          class="company-logo-preview img-fluid rounded shadow-sm"
                                                                          style="max-width: 200px; max-height: 150px; border: 3px solid #17a2b8;">

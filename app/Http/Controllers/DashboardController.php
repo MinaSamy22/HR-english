@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Attendance;
 use App\Models\Branch;
 use App\Models\Department;
-use App\Models\Manager;
+use App\Models\News;
 use App\Models\User;
 use App\Models\Vacation;
 use Illuminate\Http\Request;
@@ -71,6 +71,13 @@ public function dashboard(Request $request)
         $absences[] = (clone $attQ)->where('attendance_type',3)->count();
         $presentMonthly[] = (clone $attQ)->where('attendance_type',1)->count()/4;
     }
+
+      // Fetch latest 4 news items for the authenticated user's company
+        $data['recentNews'] = News::where('company_id', auth()->user()->company_id)
+                                ->orderBy('news_date', 'desc')
+                                ->orderBy('created_at', 'desc')
+                                ->limit(4)
+                                ->get();
 
     $data['vacations']=$vacations;
     $data['absences']=$absences;

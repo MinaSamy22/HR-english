@@ -192,6 +192,15 @@
                     </ul>
                 </li>
 
+                <!-- News -->
+                <li class="nav-item">
+                    <a href="{{ url('admin/news') }}"
+                        class="nav-link @if (Request::segment(2) == 'news') active @endif">
+<i class="nav-icon fa fa-bullhorn"></i>
+                        <p>Company News</p>
+                    </a>
+                </li>
+
 
 
                 <li class="nav-header">Attendance & Payroll</li>

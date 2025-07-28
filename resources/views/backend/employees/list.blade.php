@@ -95,6 +95,7 @@
                                                 <th>ID</th>
                                                 <th>Name</th>
                                                 <th>Email</th>
+                                                <th>Mobile Mac Address</th>
                                                 <th>Role</th>
                                                 <th>Action</th>
                                             </tr>
@@ -105,6 +106,7 @@
                                                     <td>{{ $value->id }}</td>
                                                     <td>{{ $value->name }}</td>
                                                     <td>{{ $value->email }}</td>
+                                                    <td>{{ $value->macaddress }}</td>
                                                     <td>{{ !empty($value->is_role) ? 'HR' : 'Employee' }}</td>
                                                     <td>
                                                         <a href="{{ url('admin/employees/view/' . $value->id) }}"

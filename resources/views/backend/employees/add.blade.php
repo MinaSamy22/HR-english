@@ -50,6 +50,25 @@ value = old for not rebeating the input  --}}
                                         </div>
                                     </div>
 
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-lable"> Phone Number <span style="color: red;">
+                                            </span></label>
+                                        <div class="col-sm-10">
+                                            <input type="number" value="{{ old('phone_number') }}" name="phone_number"
+                                                class="form-control" placeholder="Enter Phone Number">
+                                            <span style="color:red"> {{ $errors->first('phone_number') }}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-lable"> Mobile Mac Address </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" value="{{ old('macaddress') }}" name="macaddress"
+                                                class="form-control" placeholder="Enter Mac Address (Optional)">
+                                        </div>
+                                    </div>
+
 
 
                                     <div class="form-group row">
@@ -64,17 +83,6 @@ value = old for not rebeating the input  --}}
                                     </div>
 
 
-
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-lable"> Phone Number <span style="color: red;">
-                                            </span></label>
-                                        <div class="col-sm-10">
-                                            <input type="number" value="{{ old('phone_number') }}" name="phone_number"
-                                                class="form-control" placeholder="Enter Phone Number">
-                                            <span style="color:red"> {{ $errors->first('phone_number') }}
-                                            </span>
-                                        </div>
-                                    </div>
 
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-lable"> Birth Date<span style="color: red;">
@@ -139,6 +147,25 @@ value = old for not rebeating the input  --}}
                                             </span>
                                         </div>
                                     </div>
+
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-lable" for="attachment">Attachment (PDF) :</label>
+                                        <div class="col-sm-10">
+                                            <input type="file" name="attachment" class="form-control"
+                                                accept="application/pdf">
+                                        </div>
+                                    </div>
+
+
+
+
+
+
+
+
+
+
 
 
 
