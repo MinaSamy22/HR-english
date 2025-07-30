@@ -35,7 +35,6 @@ return new class extends Migration
             $table->string('attachment')->nullable();
 
             $table->foreignId('company_id')->nullable()->constrained()->onDelete('cascade');
-            $table->foreignId('branch_id')->nullable()->constrained()->onDelete('set null');
 
 
             $table->rememberToken();
@@ -49,6 +48,8 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::disableForeignKeyConstraints();  // Disable foreign key checks
         Schema::dropIfExists('users');  // Drop users table if it exists
+        Schema::enableForeignKeyConstraints();  // Re-enable foreign key checks
     }
 };
