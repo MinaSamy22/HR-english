@@ -62,7 +62,7 @@ class PayrollController extends Controller
         $payrollType  = $request->input('payroll_type'); // NEW: Get selected payroll type
         $companyId = auth()->user()->company_id;
 
-        $employees = User::whereIn('id',$employeeIds)->get();
+        $employees = User::with('company.attendanceSetting','attendances','vacations','times')->whereIn('id',$employeeIds)->get();
         foreach ($employees as $employee) {
 
             $salary = $employee->salary;

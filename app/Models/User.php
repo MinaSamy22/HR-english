@@ -138,5 +138,26 @@ public function branch()
     return $this->belongsTo(Branch::class);
 }
 
+public function attendances()
+{
+    return $this->hasMany(Attendance::class, 'employee_id');
+}
+
+public function vacations()
+{
+    return $this->hasMany(Vacation::class, 'employee_id');
+}
+public function deductions()
+{
+    return $this->hasMany(Deduction::class, 'employee_id');
+}
+public function taxes()
+{
+    return $this->hasMany(Tax::class, 'employee_id');
+}
+public function insurances(){
+    return $this->hasMany(Insurance::class, 'employee_id');
+}
+
 
 }
