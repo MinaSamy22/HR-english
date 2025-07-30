@@ -41,9 +41,14 @@ return [
             'provider' => 'users',
         ],
 
-    'admin' => [               //add this in guards for making for make admin
-        'driver' => 'session',
-        'provider' => 'admins',
+        'employee' => [
+            'driver' => 'session',
+            'provider' => 'employees',
+        ],
+
+        'admin' => [               //add this in guards for making for make admin
+            'driver' => 'session',
+            'provider' => 'admins',
         ],
     ],
 
@@ -66,21 +71,22 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        'users' => [   // for hr
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
 
+        'employees' => [  // Added employees provider
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
+        ],
 
         'admins' => [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+
     ],
 
     /*

@@ -13,6 +13,9 @@ use App\Http\Controllers\CompanyInfoController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeductionController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\EmployeesInterface\EmployeeAccountController;
+use App\Http\Controllers\EmployeesInterface\EmployeeCalendarController;
+use App\Http\Controllers\EmployeesInterface\EmployeeHomeController;
 use App\Http\Controllers\EmployeeeController;
 use App\Http\Controllers\InsuranceController;
 use App\Http\Controllers\JobController;
@@ -25,6 +28,7 @@ use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\TaxController;
 use App\Http\Controllers\TodoController;
 use App\Http\Controllers\VacationController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -298,6 +302,13 @@ Route::group(['middleware' => 'SuperAdmin'], function () {
     Route::delete('admin/admins/{admin}', [AdminController::class, 'destroy'])->name('admin.admins.destroy');
 
 });
+
+
+    Route::get('employee/home', [EmployeeHomeController::class, 'index'])->name('employee.home');
+    Route::get('employee/logout', [EmployeeHomeController::class, 'logout'])->name('employee.logout');
+    Route::get('employee/calendar', [EmployeeCalendarController::class, 'index'])->name('employee.calendar');
+
+
 
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');

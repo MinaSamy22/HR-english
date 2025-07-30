@@ -253,7 +253,7 @@ value = old for not rebeating the input  --}}
                                         </div>
                                     </div>
 
-                                    <div class="form-group row" id="passwordField" style="display: none;">
+                                    <div class="form-group row" id="passwordField">
                                         <label class="col-sm-2 col-form-lable">Password <span
                                                 style="color: red;">*</span></label>
                                         <div class="col-sm-5 d-flex align-items-center">
@@ -263,6 +263,7 @@ value = old for not rebeating the input  --}}
                                                 style="cursor: pointer; margin-left: 10px;"></i>
                                         </div>
                                     </div>
+
 
 
 
@@ -284,5 +285,5 @@ value = old for not rebeating the input  --}}
             </div>
         </section>
     </div>
-    <script src="{{ url('dist/js/employee.js') }}"></script>
+<script src="{{ url('dist/js/employee.js?v=2') }}"></script>
 @endsection

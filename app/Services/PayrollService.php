@@ -11,9 +11,8 @@ use Illuminate\Support\Facades\DB;
 
 class PayrollService
 {
-public function calculateAttendanceDeductions($employeeId, $salary, $startDate, $endDate, $companyId, $payrollType = 'monthly')
+public function calculateAttendanceDeductions($employee, $salary, $startDate, $endDate, $companyId, $payrollType = 'monthly')
 {
-    $employee = User::with('company.attendanceSetting')->find($employeeId);
     if (!$employee || !$employee->company || !$employee->company->attendanceSetting) {
         return [0, 0, 0];
     }
@@ -30,7 +29,7 @@ public function calculateAttendanceDeductions($employeeId, $salary, $startDate, 
         $dailyWage = round($salary / 30, 2); // Default monthly logic
     }
 
-    $attendanceRecords = Attendance::where('employee_id', $employeeId)
+    $attendanceRecords = $employee->attendances()
         ->whereBetween('attendance_date', [$startDate, $endDate])
         ->get()
         ->keyBy('attendance_date');
@@ -40,7 +39,7 @@ public function calculateAttendanceDeductions($employeeId, $salary, $startDate, 
         ->filter()
         ->toArray();
 
-    $vacations = Vacation::where('employee_id', $employeeId)
+    $vacations = $employee->vacations()
         ->whereDate('start_date', '<=', $endDate)
         ->whereDate('end_date', '>=', $startDate)
         ->get();
@@ -113,10 +112,8 @@ public function calculateAttendanceDeductions($employeeId, $salary, $startDate, 
 
 
 
-    public function calculateVacationDeductions($employeeId, $startDate, $endDate)
+    public function calculateVacationDeductions($employee, $startDate, $endDate)
 {
-    // Load the employee with their company's attendance settings
-    $employee = User::with('company.attendanceSetting')->find($employeeId);
 
     if (!$employee || !$employee->company || !$employee->company->attendanceSetting) {
         return [0, 0]; // default if data is missing
@@ -126,7 +123,7 @@ public function calculateAttendanceDeductions($employeeId, $salary, $startDate, 
     $deductionRate = $employee->company->attendanceSetting->vacation_deduction_rate ?? 200;
 
     // Calculate used vacation days up to end date
-    $totalUsed = Vacation::where('employee_id', $employeeId)
+    $totalUsed = $employee->vacations()
         ->whereDate('end_date', '<=', $endDate)
         ->sum('total');
 
@@ -137,18 +134,16 @@ public function calculateAttendanceDeductions($employeeId, $salary, $startDate, 
 }
 
 
-       public function calculateDeductions($employeeId, $startDate, $endDate)
+       public function calculateDeductions($employee, $startDate, $endDate)
     {
-    return Deduction::where('employee_id', $employeeId)
+    return $employee->deductions()
         ->whereBetween('created_at', [$startDate, $endDate])
         ->sum('money_deduction');
     }
 
 
-    public function calculateBonus($employeeId, $startDate, $endDate)
+    public function calculateBonus($employee, $startDate, $endDate)
 {
-    // Get the employee along with their company's attendance setting
-    $employee = User::with('company.attendanceSetting')->find($employeeId);
 
     if (!$employee || !$employee->company || !$employee->company->attendanceSetting) {
         return 0; // handle missing data safely
@@ -157,8 +152,7 @@ public function calculateAttendanceDeductions($employeeId, $salary, $startDate, 
 
 
     // Calculate total bonus hours from the 'times' table
-    $bonusHours = DB::table('times')
-        ->where('employee_id', $employeeId)
+    $bonusHours = $employee->times()
         ->whereBetween('created_at', [$startDate, $endDate])
         ->sum('hours');
 
@@ -166,26 +160,21 @@ public function calculateAttendanceDeductions($employeeId, $salary, $startDate, 
 }
 
 
-    public function calculateTaxes($employeeId, $companyId, $salary)
+    public function calculateTaxes($employee, $companyId, $salary)
     {
         if (!Tax::where('company_id', $companyId)->where('apply_to_payroll', true)->exists()) return 0;
 
-        return Tax::where('company_id', $companyId)
-            ->where(function ($query) use ($employeeId) {
-                $query->where('employee_id', $employeeId)->orWhereNull('employee_id');
-            })
+        return $employee->taxes()->where('company_id', $companyId)
+            ->orWhereNull('employee_id')
             ->get()
             ->sum(fn($tax) => $salary * $tax->percent / 100);
     }
 
-    public function calculateInsurance($employeeId, $companyId, $salary)
+    public function calculateInsurance($employee, $companyId, $salary)
     {
         if (!Insurance::where('company_id', $companyId)->where('apply_to_payroll', true)->exists()) return 0;
 
-        return Insurance::where('company_id', $companyId)
-            ->where(function ($query) use ($employeeId) {
-                $query->where('employee_id', $employeeId)->orWhereNull('employee_id');
-            })
+        return $employee->insurances()->where('company_id', $companyId)->orWhereNull('employee_id')
             ->get()
             ->sum(fn($insurance) => $salary * $insurance->percent / 100);
     }

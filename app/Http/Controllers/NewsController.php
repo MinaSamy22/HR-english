@@ -9,10 +9,14 @@ use Illuminate\Support\Facades\File;
 class NewsController extends Controller
 {
     public function index()
-    {
-        $news = News::getRecord();
-        return view('backend.News.list', compact('news'));
-    }
+{
+    $companyId = auth()->user()->company_id;
+    $news = News::where('company_id', $companyId)
+                ->orderBy('news_date', 'desc')
+                ->paginate(10);
+
+    return view('backend.News.list', compact('news'));
+}
 
     public function create()
     {

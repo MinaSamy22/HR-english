@@ -1,15 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const roleSelect = document.getElementById("roleSelect");
-    const passwordFieldWrapper = document.getElementById("passwordField");
-
-    // Show/hide password input based on role
-    roleSelect.addEventListener("change", function () {
-        if (this.value === "1") {
-            passwordFieldWrapper.style.display = "flex";
-        } else {
-            passwordFieldWrapper.style.display = "none";
-        }
-    });
 
     // Toggle password visibility
     const passwordInput = document.getElementById("password");

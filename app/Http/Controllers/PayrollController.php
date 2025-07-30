@@ -62,25 +62,24 @@ class PayrollController extends Controller
         $payrollType  = $request->input('payroll_type'); // NEW: Get selected payroll type
         $companyId = auth()->user()->company_id;
 
-        foreach ($employeeIds as $employeeId) {
-            $employee = User::find($employeeId);
-            if (!$employee) continue;
+        $employees = User::with('company.attendanceSetting','attendances','vacations','times')->whereIn('id',$employeeIds)->get();
+        foreach ($employees as $employee) {
 
             $salary = $employee->salary;
 
             // Calculate components and retreve from service file
-            [$attendanceDeductions, $dailyWage, $daysAbsent]   = $this->payrollService->calculateAttendanceDeductions($employeeId, $salary, $startDate, $endDate, $companyId, $payrollType);
-            $leaveDeductions                                   = $this->payrollService->calculateDeductions($employeeId, $startDate, $endDate);
-            [$restVacancy, $vacationDeductions]                = $this->payrollService->calculateVacationDeductions($employeeId, $startDate, $endDate);
-            $bonus                                             = $this->payrollService->calculateBonus($employeeId, $startDate, $endDate);
-            $taxAmount                                         = $this->payrollService->calculateTaxes($employeeId, $companyId, $salary);
-            $insuranceAmount                                   = $this->payrollService->calculateInsurance($employeeId, $companyId, $salary);
+            [$attendanceDeductions, $dailyWage, $daysAbsent]   = $this->payrollService->calculateAttendanceDeductions($employee, $salary, $startDate, $endDate, $companyId, $payrollType);
+            $leaveDeductions                                   = $this->payrollService->calculateDeductions($employee, $startDate, $endDate);
+            [$restVacancy, $vacationDeductions]                = $this->payrollService->calculateVacationDeductions($employee, $startDate, $endDate);
+            $bonus                                             = $this->payrollService->calculateBonus($employee, $startDate, $endDate);
+            $taxAmount                                         = $this->payrollService->calculateTaxes($employee, $companyId, $salary);
+            $insuranceAmount                                   = $this->payrollService->calculateInsurance($employee, $companyId, $salary);
             $totalDeductions                                   = $leaveDeductions + $vacationDeductions;
             $totalTaxes                                        = $taxAmount + $insuranceAmount;
 
             // Final payroll record
             $payroll                            = new Payroll();
-            $payroll->employee_id               = $employeeId;
+            $payroll->employee_id               = $employee->id;
             $payroll->start_date                = $startDate;
             $payroll->end_date                  = $endDate;
             $payroll->basic_salary              = $salary;
