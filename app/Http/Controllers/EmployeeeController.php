@@ -85,12 +85,12 @@ public function add_post(Request $request)
     $user->company_id           = session('company_id'); // Ensure the user is linked to the correct company
 
     // If the role is HR, hash and save the password
-    if ($request->is_role == 1) {
-        $request->validate([
-            'password' => 'required|min:6', // Password validation
-        ]);
-        $user->password = bcrypt($request->password); // Hash the password
-    }
+   $request->validate([
+    'password' => 'required|min:6',
+]);
+
+$user->password = bcrypt($request->password);
+
 
         // Handle company/branch assignment
     $user->company_id = session('company_id');

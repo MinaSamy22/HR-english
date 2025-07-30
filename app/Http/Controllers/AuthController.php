@@ -76,35 +76,58 @@ public function login_post(Request $request)
         'password' => 'required'
     ]);
 
-    // Admin attempt
+    // Debug: Log the credentials (remove password for security)
+    \Log::info('Login attempt for email: ' . $credentials['email']);
+
+    // Admin attempt FIRST
     if (Auth::guard('admin')->attempt($credentials)) {
         $request->session()->regenerate();
+        \Log::info('Admin login successful');
         return redirect()->route('admin.landing');
     }
 
-    // HR attempt
+    // HR attempt BEFORE Employee (since they're in the same table)
     if (Auth::guard('web')->attempt($credentials)) {
         $request->session()->regenerate();
         $user = Auth::guard('web')->user();
 
-        if ($user->is_role == '1') {
+        \Log::info('Web guard login successful for user ID: ' . $user->id);
+        \Log::info('User is_role value: ' . $user->is_role);
+
+        if ($user->is_role == '1' || $user->is_role == 1) {
             session([
                 'company_id' => $user->company_id,
-                'branch_id' => $user->branch_id // ✅ Save branch_id for filtering
+                'branch_id' => $user->branch_id
             ]);
-            $request->session()->save();
+            \Log::info('HR user redirected to dashboard');
             return redirect()->route('dashboard');
         }
 
+        // If not HR, check if they're an employee (is_role == 0)
+        if ($user->is_role == '0' || $user->is_role == 0) {
+            // Switch to employee guard for consistency
+            Auth::guard('web')->logout();
+            Auth::guard('employee')->login($user);
+
+            session([
+                'company_id' => $user->company_id,
+                'branch_id' => $user->branch_id,
+                'employee_id' => $user->id
+            ]);
+
+            \Log::info('Employee user redirected to employee dashboard');
+            return redirect()->route('employee.home');
+        }
+
         Auth::guard('web')->logout();
-        return back()->with('error', 'Only HR users can log in.');
+        return back()->with('error', 'Invalid user role.');
     }
 
+    \Log::warning('Login failed for email: ' . $credentials['email']);
     return back()->withErrors([
         'email' => 'Invalid credentials.',
     ])->onlyInput('email');
 }
-
 
     // Show the admin registration form
     public function adminRegister()
