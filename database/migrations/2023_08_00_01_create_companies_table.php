@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('country')->nullable();
             $table->string('address')->nullable();
             $table->integer('phone_number')->nullable();
-            $table->string('commercial_registration	')->nullable();
+            $table->string('commercial_registration')->nullable();
             $table->string('tax_card')->nullable();
             $table->timestamps();
         });
@@ -30,6 +30,8 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('companies');
+        Schema::enableForeignKeyConstraints();
     }
 };

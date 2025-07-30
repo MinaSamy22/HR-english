@@ -34,6 +34,8 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::enableForeignKeyConstraints();
         Schema::dropIfExists('attendance_rules');
+        Schema::disableForeignKeyConstraints();
     }
 };

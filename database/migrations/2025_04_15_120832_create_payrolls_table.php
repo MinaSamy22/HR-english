@@ -32,6 +32,8 @@ class CreatePayrollsTable extends Migration
 
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('payrolls');
+        Schema::enableForeignKeyConstraints();
     }
 }

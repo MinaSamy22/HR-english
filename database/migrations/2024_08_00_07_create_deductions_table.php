@@ -22,6 +22,8 @@ class CreateDeductionsTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('leaves');
+        Schema::disableForeignKeyConstraints();
+        Schema::dropIfExists('deductions');
+        Schema::enableForeignKeyConstraints(); 
     }
 }
