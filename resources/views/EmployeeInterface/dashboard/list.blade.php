@@ -140,58 +140,59 @@
                             </div>
                             <div class="card-body"
                                 style="background: white; padding: 1.5rem; max-height: 500px; overflow-y: auto;">
-                                @if (isset($recentNews) && $recentNews->count() > 0)
-                                    <div class="row">
-                                        @foreach ($recentNews as $newsItem)
-                                            <div class="col-lg-12 mb-4">
-                                                <div class="news-item border rounded p-3 h-100"
-                                                    style="border-left: 3px solid #28a745 !important; background: #f8f9fa;">
-                                                    <div class="row">
-                                                        @if ($newsItem->hasImage())
-                                                            <div class="col-4">
-                                                                <div class="news-image-container"
-                                                                    style="height: 80px; overflow: hidden; border-radius: 0.375rem; background: #f8f9fa; display: flex; align-items: center; justify-content: center;">
-                                                                    <img src="{{ $newsItem->imageUrl }}"
-                                                                        alt="{{ $newsItem->title }}" class="img-fluid"
-                                                                        style="max-height: 100%; max-width: 100%; object-fit: contain;">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-8">
-                                                            @else
-                                                                <div class="col-12">
-                                                        @endif
-                                                        <h6 class="news-title mb-2" style="color: #333; font-weight: 600;">
-                                                            <a href="{{ route('news.show', $newsItem) }}"
-                                                                class="text-decoration-none" style="color: inherit;">
-                                                                {{ Str::limit($newsItem->title, 50) }}
-                                                            </a>
-                                                        </h6>
-                                                        <p class="news-excerpt mb-2 text-muted small">
-                                                            {{ Str::limit($newsItem->description, 80) }}
-                                                        </p>
-                                                        <div
-                                                            class="news-meta d-flex justify-content-between align-items-center">
-                                                            <small class="text-muted">
-                                                                <i class="fas fa-calendar-alt mr-1"></i>
-                                                                {{ $newsItem->formattedDate }}
-                                                            </small>
-                                                            <a href="{{ route('news.show', $newsItem) }}"
-                                                                class="btn btn-success btn-sm view-btn">
-                                                                <i class="fas fa-eye mr-1"></i>View
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                    </div>
-                                @endforeach
+                               @if(isset($recentNews) && $recentNews->count() > 0)
+    @foreach($recentNews as $newsItem)
+        <div class="mb-4">
+            <div class="news-item border rounded p-3 h-100"
+                style="border-left: 3px solid #28a745 !important; background: #f8f9fa;">
+                <div class="row">
+                    @if($newsItem->hasImage())
+                        <div class="col-4">
+                            <div class="news-image-container"
+                                style="height: 80px; overflow: hidden; border-radius: 0.375rem; background: #f8f9fa; display: flex; align-items: center; justify-content: center;">
+                                <img src="{{ $newsItem->imageUrl }}"
+                                     alt="{{ $newsItem->title }}"
+                                     class="img-fluid"
+                                     style="max-height: 100%; max-width: 100%; object-fit: contain;">
                             </div>
-                        @else
-                            <div class="text-center py-4">
-                                <div class="mb-3">
-                                    <i class="fas fa-newspaper fa-3x text-muted"></i>
-                                </div>
-                                <h5 class="text-muted">No Recent News</h5>
+                        </div>
+                        <div class="col-8">
+                    @else
+                        <div class="col-12">
+                    @endif
+                        <h6 class="news-title mb-2" style="color: #333; font-weight: 600; line-height: 1.4;">
+                            <a href="{{ route('news.show', $newsItem) }}"
+                               class="text-decoration-none"
+                               style="color: inherit;">
+                                {{ Str::limit($newsItem->title, 50) }}
+                            </a>
+                        </h6>
+                        <p class="news-excerpt mb-2 text-muted small">
+                            {{ Str::limit($newsItem->description, 80) }}
+                        </p>
+                        <div class="news-meta d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                <i class="fas fa-calendar-alt mr-1"></i>
+                                {{ $newsItem->formattedDate }}
+                            </small>
+                            <a href="{{ route('news.show', $newsItem) }}"
+                               class="btn btn-success btn-sm view-btn"
+                               style="font-size: 0.75rem; padding: 0.25rem 0.5rem;">
+                                <i class="fas fa-eye mr-1"></i>View
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
+@else
+
+                                    <div class="text-center py-4">
+                                        <div class="mb-3">
+                                            <i class="fas fa-newspaper fa-3x text-muted"></i>
+                                        </div>
+                                        <h5 class="text-muted">No Recent News</h5>
                                 <p class="text-muted mb-3">There are no recent news items to display.</p>
 
                             </div>
