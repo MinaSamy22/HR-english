@@ -143,21 +143,21 @@ public function calculateAttendanceDeductions($employee, $salary, $startDate, $e
 
 
     public function calculateBonus($employee, $startDate, $endDate)
-{
+    {
 
-    if (!$employee || !$employee->company || !$employee->company->attendanceSetting) {
-        return 0; // handle missing data safely
+        if (!$employee || !$employee->company || !$employee->company->attendanceSetting) {
+            return 0; // handle missing data safely
+        }
+        $bonusPerHour = $employee->company->attendanceSetting->bonus_per_hour ?? 0;
+
+
+        // Calculate total bonus hours from the 'times' table
+        $bonusHours = $employee->times()
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->sum('hours');
+
+        return $bonusHours * $bonusPerHour;
     }
-    $bonusPerHour = $employee->company->attendanceSetting->bonus_per_hour ?? 0;
-
-
-    // Calculate total bonus hours from the 'times' table
-    $bonusHours = $employee->times()
-        ->whereBetween('created_at', [$startDate, $endDate])
-        ->sum('hours');
-
-    return $bonusHours * $bonusPerHour;
-}
 
 
     public function calculateTaxes($employee, $companyId, $salary)

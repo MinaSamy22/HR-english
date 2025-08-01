@@ -46,6 +46,11 @@ return [
             'provider' => 'employees',
         ],
 
+        'api' => [
+            'driver' => 'jwt',
+            'provider' => 'employees',
+        ],
+
         'admin' => [               //add this in guards for making for make admin
             'driver' => 'session',
             'provider' => 'admins',
