@@ -109,14 +109,46 @@
 
                 <!-- Dashboard -->
                 <li class="nav-item">
-                    <a href="{{ url('employee/home') }}"
-                        class="nav-link @if (Request::segment(2) == 'home' || Request::segment(2) == 'calendar') active @endif">
-                        <i class="nav-icon fa fa-home"></i>
-                        <p>Home</p>
+    <a href="{{ url('employee/home') }}"
+        class="nav-link @if (in_array(Request::segment(2), ['home', 'calendar', 'news'])) active @endif">
+        <i class="nav-icon fa fa-home"></i>
+        <p>Home</p>
+    </a>
+</li>
+
+<li class="nav-header">Main Information</li>
+
+
+ <li class="nav-item">
+                    <a href="{{ url('employee/payroll') }}"
+                        class="nav-link @if (Request::segment(2) == 'payroll') active @endif">
+                        <i class="nav-icon fa fa-coins"></i>
+                        <p>My Payroll</p>
                     </a>
                 </li>
 
+                 <li class="nav-item">
+                    <a href="{{ url('employee/attendance') }}"
+                        class="nav-link @if (Request::segment(2) == 'attendance') active @endif">
+                        <i class="nav-icon fa fa-calendar-check"></i>
+                        <p>My Attendance</p>
+                    </a>
+                </li>
+
+
+
+
 <li class="nav-header">My Requests</li>
+
+
+<li class="nav-item">
+    <a href="{{ url('employee/late') }}"
+        class="nav-link @if (Request::segment(2) == 'late') active @endif">
+        <i class="nav-icon fa fa-clock"></i>
+        <p>Attendance Request</p>
+    </a>
+</li>
+
 
 <li class="nav-item">
     <a href="{{ url('employee/vacation') }}"
@@ -126,13 +158,7 @@
     </a>
 </li>
 
-<li class="nav-item">
-    <a href="{{ url('employee/late') }}"
-        class="nav-link @if (Request::segment(2) == 'late') active @endif">
-        <i class="nav-icon fa fa-clock"></i>
-        <p>Late Request</p>
-    </a>
-</li>
+
 
 <li class="nav-item">
     <a href="{{ url('employee/extra') }}"
@@ -154,24 +180,7 @@
 
 
 
-                <li class="nav-header">Main Information</li>
 
-                 <li class="nav-item">
-                    <a href="{{ url('employee/attendance') }}"
-                        class="nav-link @if (Request::segment(2) == 'attendance') active @endif">
-                        <i class="nav-icon fa fa-calendar-check"></i>
-                        <p>My Attendance</p>
-                    </a>
-                </li>
-
-
-                <li class="nav-item">
-                    <a href="{{ url('employee/payroll') }}"
-                        class="nav-link @if (Request::segment(2) == 'payroll') active @endif">
-                        <i class="nav-icon fa fa-coins"></i>
-                        <p>My Payroll</p>
-                    </a>
-                </li>
 
 
 
