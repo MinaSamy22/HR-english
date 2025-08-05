@@ -2,16 +2,22 @@
 
 namespace App\Models;
 
+<<<<<<< HEAD
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+=======
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+>>>>>>> b0e53ac7dab6ba0b3fbf87ba864e71b0d24aa1b4
 
 class VacationRequest extends Model
 {
     use HasFactory;
 
     protected $fillable = [
+<<<<<<< HEAD
         'user_id',
         'vacation_type',
         'start_date',
@@ -92,4 +98,24 @@ class VacationRequest extends Model
     {
         return $query->where('is_urgent', true);
     }
+=======
+        'employee_id',
+        'start_date',
+        'end_date',
+        'total',
+        'reason',
+        'status',
+        'vacation_type',
+        'company_id',
+        'approved_by',
+        'approved_at'
+    ];
+    
+    public function employee()
+    {
+        return $this->belongsTo(User::class, 'employee_id');
+    }
+
+
+>>>>>>> b0e53ac7dab6ba0b3fbf87ba864e71b0d24aa1b4
 }
