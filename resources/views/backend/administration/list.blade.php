@@ -1,20 +1,17 @@
 @extends('backend.layouts.app')
 @section('content')
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper" style="background-image: url('{{ asset('/dist/img/generall.png') }}'); background-size: cover; background-position: center;">
+    <div class="content-wrapper" style="background-image: url('{{ url('/dist/img/generall.png') }}'); background-size: cover; background-position: center;">
         <!-- Content Header (Page header) -->
         <div class="content-header">
             <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1>Administration</h1>
-                    </div><!-- /.col -->
-                    <div class="col-sm-6" style="text-align: right;">
-                        <a href="{{ url('admin/administration/add') }}" class="btn btn-primary rounded-pill">
-                            <i class="fas fa-user-plus"></i> Add Administration
-                        </a>
-                    </div><!-- /.col -->
-                </div><!-- /.row -->
+                <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap">
+                    <h1 class="mb-0">Administration</h1>
+                    
+                    <a href="{{ url('admin/administration/add') }}" class="btn btn-primary rounded-pill">
+                        <i class="fas fa-user-plus"></i> Add Administration
+                    </a>
+                </div>
             </div><!-- /.container-fluid -->
         </div>
         <!-- /.content-header -->
