@@ -35,4 +35,9 @@ return [
     'branches' => 'الفروع',
     'company_info' => 'معلومات الشركة',
     'my_account' => 'حسابي',
+
+    'TOTAL EMPLOYEES' =>'اجمالي الموظفين',
+    'Active workforce' => 'قوة العمل النشطة
+'
+
 ];

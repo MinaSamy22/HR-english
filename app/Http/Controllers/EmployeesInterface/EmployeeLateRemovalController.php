@@ -84,51 +84,46 @@ public function index()
 public function store(Request $request)
 {
     try {
-        // Debug: Log incoming request data
-        Log::info('Late Removal Request - Incoming data:', $request->all());
-Log::info('Late Removal Request - Employee ID', ['employee_id' => Auth::guard('employee')->id()]);
+        $user = Auth::guard('employee')->user();
 
         // Validate the request
-        $validated = $request->validate([
+        $request->validate([
             'attendance_id' => 'required|exists:attendances,id',
-            'reason' => 'nullable|string|max:255',
+            'reason' => 'required|string|min:10|max:500',
         ]);
 
-        Log::info('Late Removal Request - Validation passed:', $validated);
+        // Check if attendance belongs to the authenticated employee
+        $attendance = DB::table('attendances')
+            ->where('id', $request->attendance_id)
+            ->where('employee_id', $user->id)
+            ->first();
 
-        // Check if already requested
-        $alreadyRequested = LateRemovalRequest::where('employee_id', Auth::guard('employee')->id())
-            ->where('attendance_id', $request->attendance_id)
-            ->exists();
-
-        if ($alreadyRequested) {
-            Log::warning('Late Removal Request - Already requested for attendance_id:', $request->attendance_id);
-            return back()->with('error', 'You have already requested removal for this record.');
+        if (!$attendance) {
+            return redirect()->back()->with('error', 'Invalid attendance record.');
         }
 
-        // Create the request
-        $lateRemovalRequest = LateRemovalRequest::create([
+        // Check if request already exists for this attendance
+        $existingRequest = LateRemovalRequest::where('attendance_id', $request->attendance_id)
+            ->where('employee_id', $user->id)
+            ->first();
+
+        if ($existingRequest) {
+            return redirect()->back()->with('error', 'Request already submitted for this attendance record.');
+        }
+
+        // Create new request
+        LateRemovalRequest::create([
             'attendance_id' => $request->attendance_id,
-            'employee_id' => Auth::guard('employee')->id(),
-            'reason' => $request->reason,
+            'employee_id' => $user->id,
+            'reason' => trim($request->reason),
             'status' => 'pending',
         ]);
 
-        Log::info('Late Removal Request - Successfully created:', $lateRemovalRequest->toArray());
+        return redirect()->back()->with('success', 'Late/Half Day removal request submitted successfully!');
 
-        return redirect()->back()->with('success', 'Your request has been sent to HR.');
-
-    } catch (\Illuminate\Validation\ValidationException $e) {
-        Log::error('Late Removal Request - Validation error:', $e->errors());
-        return back()->withErrors($e->errors())->withInput();
     } catch (\Exception $e) {
-        Log::error('Late Removal Request - General error:', [
-            'message' => $e->getMessage(),
-            'file' => $e->getFile(),
-            'line' => $e->getLine(),
-            'trace' => $e->getTraceAsString()
-        ]);
-        return back()->with('error', 'Failed to submit request. Please try again or contact support.');
+        Log::error('Late removal request error: ' . $e->getMessage());
+        return redirect()->back()->with('error', 'An error occurred while submitting your request. Please try again.');
     }
 }
 

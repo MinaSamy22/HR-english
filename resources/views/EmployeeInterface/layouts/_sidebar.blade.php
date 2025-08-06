@@ -13,7 +13,7 @@
 <!-- Navbar -->
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->
-    <ul class="navbar-nav">
+    <ul class="navbar-nav mr-auto">
         <li class="nav-item">
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
@@ -22,8 +22,8 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
 
-        <li class="nav-item d-flex align-items-center">
-            <a href="https://hrar.prosofteg.com/admin/dashboard" class="nav-link px-2" role="button"
+         <li class="nav-item d-flex align-items-center">
+            <a href="{{ url('lang/' . (app()->getLocale() == 'ar' ? 'en' : 'ar')) }}" class="nav-link px-2" role="button"
                 title="Switch to Arabic">
                 <span class="d-inline-flex align-items-center">
                     <span class="fw-bold d-none d-sm-inline">EN</span> <!-- Hidden on xs -->

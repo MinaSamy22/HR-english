@@ -7,7 +7,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Late & Half Day Requests</h1>
+                        <h1 class="m-0">Attendance Requests</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -49,61 +49,6 @@
                     </div>
                 @endif
 
-                <!-- Attendance Summary Cards -->
-                <div class="row">
-                    <!-- Present Days Card -->
-                    <div class="col-lg-3 col-6">
-                        <div class="small-box bg-success">
-                            <div class="inner">
-                                <h3>{{ $presentDays }}</h3>
-                                <p>Present Days</p>
-                            </div>
-                            <div class="icon">
-                                <i class="fas fa-check-circle"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Late Days Card -->
-                    <div class="col-lg-3 col-6">
-                        <div class="small-box bg-warning">
-                            <div class="inner">
-                                <h3>{{ $lateDays }}</h3>
-                                <p>Late Days</p>
-                            </div>
-                            <div class="icon">
-                                <i class="fas fa-clock"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Half Days Card -->
-                    <div class="col-lg-3 col-6">
-                        <div class="small-box bg-info">
-                            <div class="inner">
-                                <h3>{{ $halfDays }}</h3>
-                                <p>Half Days</p>
-                            </div>
-                            <div class="icon">
-                                <i class="fas fa-hourglass-half"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Absent Days Card -->
-                    <div class="col-lg-3 col-6">
-                        <div class="small-box bg-danger">
-                            <div class="inner">
-                                <h3>{{ $absentDays }}</h3>
-                                <p>Absent Days</p>
-                            </div>
-                            <div class="icon">
-                                <i class="fas fa-times-circle"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Main Content Row -->
                 <div class="row">
                     <!-- Late & Half Day Records -->
@@ -125,7 +70,7 @@
                                                     <th>Date</th>
                                                     <th>Type</th>
                                                     <th>Status</th>
-                                                    <th>Action</th>
+                                                    <th>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -187,20 +132,14 @@
                                                         </td>
                                                         <td>
                                                             @if(!isset($requests[$record->id]))
-                                                                <button type="button" class="btn btn-sm btn-primary"
-                                                                    data-toggle="modal"
-                                                                    data-target="#requestModal"
-                                                                    data-record-id="{{ $record->id }}"
-                                                                    data-date="{{ \Carbon\Carbon::parse($record->attendance_date)->format('d M Y') }}"
-                                                                    data-type="{{ $record->attendance_type == 2 ? 'Late' : 'Half Day' }}">
+                                                                <button type="button" class="btn btn-primary btn-sm"
+                                                                        onclick="openRequestModal({{ $record->id }}, '{{ \Carbon\Carbon::parse($record->attendance_date)->format('d M Y') }}', '{{ $record->attendance_type == 2 ? 'Late' : 'Half Day' }}')">
                                                                     <i class="fas fa-paper-plane mr-1"></i>Request
                                                                 </button>
-                                                            @elseif(isset($requests[$record->id]) && ($requests[$record->id]->status ?? 'pending') == 'pending')
-                                                                <button type="button" class="btn btn-sm btn-warning" disabled>
-                                                                    <i class="fas fa-hourglass-half mr-1"></i>Pending
-                                                                </button>
                                                             @else
-                                                                <span class="text-muted">-</span>
+                                                                <span class="text-muted">
+                                                                    <i class="fas fa-check mr-1"></i>Requested
+                                                                </span>
                                                             @endif
                                                         </td>
                                                     </tr>
@@ -224,7 +163,7 @@
                         <div class="card card-info">
                             <div class="card-header">
                                 <h3 class="card-title">
-                                    <i class="fas fa-info-circle mr-2"></i>Request Information
+                                    <i class="fas fa-info-circle mr-2"></i>Attendance Information
                                 </h3>
                             </div>
                             <div class="card-body">
@@ -245,16 +184,28 @@
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <span>
-                                            <i class="fas fa-list mr-2 text-warning"></i>Records to Review
+                                            <i class="fas fa-list mr-2 text-warning"></i>Late days
                                         </span>
-                                        <span class="badge badge-warning badge-pill">{{ $totalRecords }}</span>
+                                        <span class="badge badge-warning badge-pill">{{ $lateDays }}</span>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <span>
-                                            <i class="fas fa-paper-plane mr-2 text-primary"></i>Requests Submitted
+                                            <i class="fas fa-paper-plane mr-2 text-primary"></i>Half days
                                         </span>
-                                        <span class="badge badge-primary badge-pill">{{ $requestedRecords }}</span>
+                                        <span class="badge badge-primary badge-pill">{{ $halfDays }}</span>
                                     </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span>
+                                            <i class="fas fa-paper-plane mr-2 text-primary"></i>Absent days
+                                        </span>
+                                        <span class="badge badge-primary badge-pill">{{ $absentDays }}</span>
+                                    </li>
+
+                                      <div class="card-header">
+                                     <h3 class="card-title">
+                                    <i class="fas fa-info-circle mr-2"></i>Request Information
+                                </h3>
+                                      </div>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <span>
                                             <i class="fas fa-hourglass-half mr-2 text-warning"></i>Pending
@@ -289,39 +240,6 @@
                                     • Provide clear justification for approval<br>
                                     • Contact HR for urgent requests
                                 </p>
-                            </div>
-                        </div>
-
-                        <!-- Quick Stats Card -->
-                        <div class="card card-success">
-                            <div class="card-header">
-                                <h3 class="card-title">
-                                    <i class="fas fa-chart-pie mr-2"></i>Monthly Overview
-                                </h3>
-                            </div>
-                            <div class="card-body">
-                                @php
-                                    $totalDays = $presentDays + $lateDays + $halfDays + $absentDays;
-                                    $attendanceRate = $totalDays > 0 ? round(($presentDays / $totalDays) * 100, 1) : 0;
-                                @endphp
-
-                                <div class="text-center">
-                                    <h2 class="text-success">{{ $attendanceRate }}%</h2>
-                                    <p class="text-muted">Attendance Rate</p>
-                                </div>
-
-                                <div class="progress mb-3">
-                                    <div class="progress-bar bg-success" role="progressbar"
-                                         style="width: {{ $attendanceRate }}%"
-                                         aria-valuenow="{{ $attendanceRate }}"
-                                         aria-valuemin="0"
-                                         aria-valuemax="100">
-                                    </div>
-                                </div>
-
-                                <small class="text-muted">
-                                    Based on {{ $totalDays }} total working days this month
-                                </small>
                             </div>
                         </div>
                     </div>
@@ -380,70 +298,27 @@
         </div>
     </div>
 
-    @push('scripts')
-        <script>
-            $(document).ready(function() {
-                // Handle request modal
-                $('#requestModal').on('show.bs.modal', function (event) {
-                    var button = $(event.relatedTarget);
-                    var recordId = button.data('record-id');
-                    var date = button.data('date');
-                    var type = button.data('type');
+    <script>
+        function openRequestModal(attendanceId, date, type) {
+            document.getElementById('modal_attendance_id').value = attendanceId;
+            document.getElementById('modal_date').textContent = date;
+            document.getElementById('modal_type').innerHTML = '<span class="badge badge-' +
+                (type === 'Late' ? 'warning' : 'info') + '">' +
+                '<i class="fas fa-' + (type === 'Late' ? 'clock' : 'hourglass-half') + ' mr-1"></i>' +
+                type + '</span>';
+            document.getElementById('reason').value = '';
+            $('#requestModal').modal('show');
+        }
 
-                    // Debug: Check if data is being passed correctly
-                    console.log('Modal Data - Record ID:', recordId);
-                    console.log('Modal Data - Date:', date);
-                    console.log('Modal Data - Type:', type);
-
-                    var modal = $(this);
-                    modal.find('#modal_attendance_id').val(recordId);
-                    modal.find('#modal_date').text(date);
-                    modal.find('#modal_type').html('<span class="badge badge-' +
-                        (type === 'Late' ? 'warning' : 'info') + '">' + type + '</span>');
-                    modal.find('#reason').val('');
-                });
-
-                // Form validation and submission
-                $('#requestForm').submit(function(e) {
-                    var attendanceId = $('#modal_attendance_id').val();
-                    var reason = $('#reason').val().trim();
-
-                    // Debug: Check form data before submission
-                    console.log('Form Data - Attendance ID:', attendanceId);
-                    console.log('Form Data - Reason:', reason);
-
-                    // Client-side validation
-                    if (!attendanceId) {
-                        alert('Error: Attendance ID is missing. Please try again.');
-                        e.preventDefault();
-                        return false;
-                    }
-
-                    if (reason.length < 10) {
-                        alert('Please provide a detailed reason (at least 10 characters).');
-                        $('#reason').focus();
-                        e.preventDefault();
-                        return false;
-                    }
-
-                    // Show loading state
-                    var submitBtn = $(this).find('button[type="submit"]');
-                    var originalText = submitBtn.html();
-                    submitBtn.html('<i class="fas fa-spinner fa-spin mr-1"></i>Submitting...').prop('disabled', true);
-
-                    // Re-enable button after 3 seconds (in case of issues)
-                    setTimeout(function() {
-                        submitBtn.html(originalText).prop('disabled', false);
-                    }, 3000);
-                });
-
-                // Reset modal when closed
-                $('#requestModal').on('hidden.bs.modal', function () {
-                    $('#requestForm')[0].reset();
-                    $('#modal_attendance_id').val('');
-                });
-            });
-        </script>
-    @endpush
+        // Form validation
+        document.getElementById('requestForm').addEventListener('submit', function(e) {
+            const reason = document.getElementById('reason').value.trim();
+            if (reason.length < 10) {
+                e.preventDefault();
+                alert('Please provide a reason with at least 10 characters.');
+                return false;
+            }
+        });
+    </script>
 
 @endsection

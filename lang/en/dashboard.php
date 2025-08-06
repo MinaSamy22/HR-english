@@ -35,4 +35,30 @@ return [
     'branches' => 'Branches',
     'company_info' => 'Company information',
     'my_account' => 'My Account',
+
+
+  'TOTAL EMPLOYEES'=> 'Total Employees',
+  'Active workforce'=> 'Active workforce',
+  'Present Today'=> 'Present Today',
+  'On time arrival'=> 'On time arrival',
+  'Late Arrivals'=> 'Late Arrivals',
+  'Delayed check-in'=> 'Delayed check-in',
+  'Absent Today'=> 'Absent Today',
+  'Not present'=> 'Not present',
+  'Monthly Performance Analytics'=> 'Monthly Performance Analytics',
+  'Quick Access'=> 'Quick Access',
+  'Main Actions'=> 'Main Actions',
+  'Add Attendance Manually'=> 'Add Attendance Manually',
+  'Add Payroll'=> 'Add Payroll',
+  'Reports'=> 'Reports',
+  'Payslip Report'=> 'Payslip Report',
+  'Attendance Report'=> 'Attendance Report',
+  'Latest Company News'=> 'Latest Company News',
+  'No Recent News'=> 'No Recent News',
+  'There are no recent news items to display.'=> 'There are no recent news items to display.',
+  'Add First News'=> 'Add First News',
+  'branch Branch'=> 'branch Branch',
+  'View'=> 'View'
+
+
 ];

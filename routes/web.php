@@ -355,7 +355,7 @@ Route::delete('extra/{id}', [ExtraTimeRequestController::class, 'destroy'])->nam
 //late request
  Route::get('employee/late', [EmployeeLateRemovalController::class, 'index'])->name('employee.late.index');
 Route::post('/employee/late/request', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.request');
-Route::get('employee/late-removal', [EmployeeLateRemovalController::class, 'index'])->name('late-removal.index');
+Route::post('/employee/late-removal-request', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.request');
     Route::post('employee/late-removal/store', [EmployeeLateRemovalController::class, 'store'])->name('late-removal.store');
 
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
