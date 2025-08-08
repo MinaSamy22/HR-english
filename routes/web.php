@@ -31,6 +31,7 @@ use App\Http\Controllers\MyAccountController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\OverTimeController;
 use App\Http\Controllers\PayrollController;
+use App\Http\Controllers\RequestController;
 use App\Http\Controllers\TaxController;
 use App\Http\Controllers\TodoController;
 use App\Http\Controllers\VacationController;
@@ -159,7 +160,13 @@ Route::group(['middleware' => 'admin'], function () {
 
     route::get('admin/department_info', [DepartmentController::class, 'info'])->name('department_info');
 
+    //Employee Requests   admin/Requests
+// Replace your existing routes with these:
 
+Route::get('admin/Requests', [RequestController::class, 'index'])->name('Requests');
+Route::get('admin/Requests/processed', [RequestController::class, 'processed'])->name('Requests.processed');
+Route::post('admin/Requests/accept/{type}/{id}', [RequestController::class, 'accept'])->name('Requests.accept');
+Route::post('admin/Requests/reject/{type}/{id}', [RequestController::class, 'reject'])->name('Requests.reject');
     //Attendance section
     Route::get('admin/attendance', [AttendanceController::class, 'AttendanceEmployee'])->name('attendance.index');
     Route::post('admin/attendance/save', [AttendanceController::class, 'AttendanceEmployeeSubmit'])->name('attendance.submit');
@@ -315,17 +322,19 @@ Route::group(['middleware' => 'SuperAdmin'], function () {
 
 
 //(Employee interface)
+Route::middleware('employee')->group(function () {
 
 //dashboard   employee/home
 Route::get('employee/home', [EmployeeHomeController::class, 'index'])->name('employee.home');
 Route::get('employee/logout', [EmployeeHomeController::class, 'logout'])->name('employee.logout');
+// Route to serve news images
+Route::get('/view-news-image/{filename}', [EmployeeHomeController::class, 'viewNewsImage'])->name('view.news.image')->where('filename', '[^/]+');
+Route::get('employee/news/{news}', [EmployeeHomeController::class, 'show'])->name('Employeenews.show');
 Route::get('employee/calendar', [EmployeeCalendarController::class, 'index'])->name('employee.calendar');
+
 //my account   employee/my_account
 Route::get('/employee/my_account', [EmployeeMyAccountController::class, 'my_account'])->name('employee.my_account');
 Route::post('/employee/my_account/update', [EmployeeMyAccountController::class, 'edit_update'])->name('employee.my_account.update');
-// Route to serve news images from the HR-Uploads directory
-Route::get('/view-news-image/{filename}', [EmployeeHomeController::class, 'viewNewsImage'])->name('view.news.image')->where('filename', '[^/]+');
-Route::get('employee/news/{news}', [EmployeeHomeController::class, 'show'])->name('Employeenews.show');
 
 //payroll
 Route::get('employee/payroll', [EmployeePayrollController::class, 'index'])->name('employee.payroll');
@@ -333,6 +342,7 @@ Route::post('employee/payroll/download-pdf', [EmployeePayrollController::class, 
 
 //attendance
 Route::get('employee/attendance', [EmployeeAttendanceController::class, 'index'])->name('employee.attendance');
+
 // Vacation Routes
 Route::get('employee/vacation', [EmployeeVacationController::class, 'index'])->name('vacation.index');
 Route::post('employee/vacation', [EmployeeVacationController::class, 'store'])->name('employee.vacation.store');
@@ -353,10 +363,14 @@ Route::post('employee/extra', [ExtraTimeRequestController::class, 'store'])->nam
 Route::delete('extra/{id}', [ExtraTimeRequestController::class, 'destroy'])->name('employee.extra.destroy');
 
 //late request
- Route::get('employee/late', [EmployeeLateRemovalController::class, 'index'])->name('employee.late.index');
+Route::get('employee/late', [EmployeeLateRemovalController::class, 'index'])->name('employee.late.index');
 Route::post('/employee/late/request', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.request');
 Route::post('/employee/late-removal-request', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.request');
-    Route::post('employee/late-removal/store', [EmployeeLateRemovalController::class, 'store'])->name('late-removal.store');
+Route::post('employee/late-removal/store', [EmployeeLateRemovalController::class, 'store'])->name('late-removal.store');
+
+
+});
+
 
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');

@@ -72,7 +72,7 @@
     <a class="brand-link">
         <img src="{{ url('/dist/img/hr_logo-.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
             style="opacity: .8">
-        <span class="brand-text font-weight-light">Employee Pannel</span>
+        <span class="brand-text font-weight-light">{{ __('E_dashboard.employee_panel') }}</span>
     </a>
 
     <!-- Sidebar -->
@@ -83,8 +83,6 @@
                 <img src="{{ url('/dist/img/admin.jpg') }}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-
-
                 @if (Auth::guard('admin')->check())
                     <a class="d-block">{{ Auth::guard('admin')->user()->name }} </a>
                 @elseif(Auth::guard('web')->check())
@@ -94,116 +92,90 @@
                 @elseif(Auth::check())
                     <a class="d-block">{{ Auth::user()->name }} </a>
                 @else
-                    <a class="d-block">Guest User</a>
+                    <a class="d-block">{{ __('E_dashboard.guest_user') }}</a>
                 @endif
             </div>
         </div>
-
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                 data-accordion="false">
 
-
-
                 <!-- Dashboard -->
                 <li class="nav-item">
-    <a href="{{ url('employee/home') }}"
-        class="nav-link @if (in_array(Request::segment(2), ['home', 'calendar', 'news'])) active @endif">
-        <i class="nav-icon fa fa-home"></i>
-        <p>Home</p>
-    </a>
-</li>
+                    <a href="{{ url('employee/home') }}"
+                        class="nav-link @if (in_array(Request::segment(2), ['home', 'calendar', 'news'])) active @endif">
+                        <i class="nav-icon fa fa-home"></i>
+                        <p>{{ __('E_dashboard.home') }}</p>
+                    </a>
+                </li>
 
-<li class="nav-header">Main Information</li>
+                <li class="nav-header">{{ __('E_dashboard.main_information') }}</li>
 
-
- <li class="nav-item">
+                <li class="nav-item">
                     <a href="{{ url('employee/payroll') }}"
                         class="nav-link @if (Request::segment(2) == 'payroll') active @endif">
                         <i class="nav-icon fa fa-coins"></i>
-                        <p>My Payroll</p>
+                        <p>{{ __('E_dashboard.my_payroll') }}</p>
                     </a>
                 </li>
 
-                 <li class="nav-item">
+                <li class="nav-item">
                     <a href="{{ url('employee/attendance') }}"
                         class="nav-link @if (Request::segment(2) == 'attendance') active @endif">
                         <i class="nav-icon fa fa-calendar-check"></i>
-                        <p>My Attendance</p>
+                        <p>{{ __('E_dashboard.my_attendance') }}</p>
                     </a>
                 </li>
 
+                <li class="nav-header">{{ __('E_dashboard.my_requests') }}</li>
 
+                <li class="nav-item">
+                    <a href="{{ url('employee/late') }}"
+                        class="nav-link @if (Request::segment(2) == 'late') active @endif">
+                        <i class="nav-icon fa fa-clock"></i>
+                        <p>{{ __('E_dashboard.attendance_request') }}</p>
+                    </a>
+                </li>
 
-
-<li class="nav-header">My Requests</li>
-
-
-<li class="nav-item">
-    <a href="{{ url('employee/late') }}"
-        class="nav-link @if (Request::segment(2) == 'late') active @endif">
-        <i class="nav-icon fa fa-clock"></i>
-        <p>Attendance Request</p>
-    </a>
-</li>
-
-
-<li class="nav-item">
-    <a href="{{ url('employee/vacation') }}"
-        class="nav-link @if (Request::segment(2) == 'vacation') active @endif">
+                <li class="nav-item">
+                    <a href="{{ url('employee/vacation') }}"
+                        class="nav-link @if (Request::segment(2) == 'vacation') active @endif">
                         <i class="nav-icon fa fa-umbrella-beach"></i>
-        <p>Vacation Request</p>
-    </a>
-</li>
+                        <p>{{ __('E_dashboard.vacation_request') }}</p>
+                    </a>
+                </li>
 
-
-
-<li class="nav-item">
-    <a href="{{ url('employee/extra') }}"
-        class="nav-link @if (Request::segment(2) == 'extra') active @endif">
+                <li class="nav-item">
+                    <a href="{{ url('employee/extra') }}"
+                        class="nav-link @if (Request::segment(2) == 'extra') active @endif">
                         <i class="nav-icon fa fa-dollar-sign"></i>
-        <p>Extra Time Request</p>
-    </a>
-</li>
+                        <p>{{ __('E_dashboard.extra_time_request') }}</p>
+                    </a>
+                </li>
 
-<li class="nav-item">
-    <a href="{{ url('employee/resignation') }}"
-        class="nav-link @if (Request::segment(2) == 'resignation') active @endif">
-        <i class="nav-icon fa fa-file-signature"></i>
-        <p>Resignation Request</p>
-    </a>
-</li>
+                <li class="nav-item">
+                    <a href="{{ url('employee/resignation') }}"
+                        class="nav-link @if (Request::segment(2) == 'resignation') active @endif">
+                        <i class="nav-icon fa fa-file-signature"></i>
+                        <p>{{ __('E_dashboard.resignation_request') }}</p>
+                    </a>
+                </li>
 
-
-
-
-
-
-
-
-
-                <li class="nav-header">Settings</li>
-
-
-
-
-
+                <li class="nav-header">{{ __('E_dashboard.settings') }}</li>
 
                 <!-- My Account -->
                 <li class="nav-item">
                     <a href="{{ url('employee/my_account') }}"
                         class="nav-link @if (Request::segment(2) == 'my_account') active @endif">
                         <i class="nav-icon fa fa-cog"></i>
-                        <p>My Account</p>
+                        <p>{{ __('E_dashboard.my_account') }}</p>
                     </a>
                 </li>
             </ul>
         </nav>
-        <!-- /.sidebar-menu -->
     </div>
-    <!-- /.sidebar -->
 </aside>
 
 

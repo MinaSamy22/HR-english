@@ -37,7 +37,7 @@ return [
     'my_account' => 'حسابي',
 
     'TOTAL EMPLOYEES' =>'اجمالي الموظفين',
-    'Active workforce' => 'قوة العمل النشطة
-'
+    'Active workforce' => 'قوة العمل النشطة',
+    'requests' => 'طلبات الموظفين'
 
 ];

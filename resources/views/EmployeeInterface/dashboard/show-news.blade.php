@@ -8,12 +8,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">View News</h1>
+                    <h1 class="m-0">{{ __('E_dashboard.View News') }}</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">News</a></li>
-                        <li class="breadcrumb-item active">View</li>
+                        <li class="breadcrumb-item"><a href="#">{{ __('E_dashboard.News') }}</a></li>
+                        <li class="breadcrumb-item active">{{ __('E_dashboard.View') }}</li>
                     </ol>
                 </div>
             </div>
@@ -42,7 +42,7 @@
                                     </p>
 
                                     <div class="mt-3">
-                                        <h5>Description:</h5>
+                                        <h5>{{ __('E_dashboard.Description:') }}</h5>
                                         <p>{{ $news->description }}</p>
                                     </div>
 
@@ -69,7 +69,7 @@
                                     @else
                                         <div class="text-center p-4 bg-light rounded">
                                             <i class="fas fa-image fa-3x text-muted"></i>
-                                            <p class="text-muted mt-2">No image available</p>
+                                            <p class="text-muted mt-2">{{ __('E_dashboard.No image available') }}</p>
                                         </div>
                                     @endif
                                 </div>

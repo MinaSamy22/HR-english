@@ -18,8 +18,8 @@ class ExtraTimeRequest extends Model
         'status',
     ];
 
-    public function employee()
-    {
-        return $this->belongsTo(User::class);
-    }
+public function user()
+{
+    return $this->belongsTo(User::class, 'employee_id');
+}
 }

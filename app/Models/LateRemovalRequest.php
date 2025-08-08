@@ -29,8 +29,8 @@ class LateRemovalRequest extends Model
     }
 
     // Relationship with employee (if you have Employee model)
-    public function employee()
-    {
-        return $this->belongsTo(Employee::class);
-    }
+public function user()
+{
+    return $this->belongsTo(User::class, 'employee_id');
+}
 }

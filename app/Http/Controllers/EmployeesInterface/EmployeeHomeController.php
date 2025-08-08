@@ -86,6 +86,75 @@ class EmployeeHomeController extends Controller
         // Calculate remaining vacation balance
         $vacationBalance = $totalVacationAllowed - $vacationsTaken;
 
+        // Get recent activities from request tables - INLINE LOGIC
+        $activities = collect();
+        $limit = 5;
+
+        // Define table configurations
+        $tables = [
+            'extra_time_requests' => [
+                'type' => 'Extra Time',
+                'badge_class' => 'badge-primary',
+                'icon' => 'fas fa-clock',
+                'employee_column' => 'employee_id'
+            ],
+            'vacation_requests' => [
+                'type' => 'Vacation',
+                'badge_class' => 'badge-success',
+                'icon' => 'fas fa-umbrella-beach',
+                'employee_column' => 'user_id'
+            ],
+            'resignations' => [
+                'type' => 'Resignation',
+                'badge_class' => 'badge-danger',
+                'icon' => 'fas fa-sign-out-alt',
+                'employee_column' => 'employee_id'
+            ],
+            'late_removal_requests' => [
+                'type' => 'Late Removal',
+                'badge_class' => 'badge-warning',
+                'icon' => 'fas fa-user-clock',
+                'employee_column' => 'employee_id'
+            ]
+        ];
+
+        // Query each table and collect activities
+        foreach ($tables as $table => $config) {
+            try {
+                // Check if table exists
+                if (!DB::getSchemaBuilder()->hasTable($table)) {
+                    \Log::warning("Table {$table} does not exist");
+                    continue;
+                }
+
+                $results = DB::table($table)
+                    ->select([
+                        'id',
+                        'status',
+                        'reason',
+                        'created_at',
+                        'updated_at',
+                        DB::raw("'{$table}' as table_name"),
+                        DB::raw("'{$config['type']}' as activity_type"),
+                        DB::raw("'{$config['badge_class']}' as badge_class"),
+                        DB::raw("'{$config['icon']}' as icon")
+                    ])
+                    ->where($config['employee_column'], $user->id)
+                    ->whereNotNull('status')
+                    ->orderBy('updated_at', 'desc')
+                    ->limit($limit)
+                    ->get();
+
+                $activities = $activities->merge($results);
+
+            } catch (\Exception $e) {
+                \Log::error("Error querying {$table}: " . $e->getMessage());
+            }
+        }
+
+        // Sort all activities by updated_at DESC and limit results
+        $recentActivities = $activities->sortByDesc('updated_at')->take($limit)->values();
+
         return view('EmployeeInterface.dashboard.list', compact(
             'user',
             'recentNews',
@@ -93,7 +162,8 @@ class EmployeeHomeController extends Controller
             'lateDays',
             'absentDays',
             'halfDays',
-            'vacationBalance'
+            'vacationBalance',
+            'recentActivities'
         ));
     }
 
@@ -196,14 +266,10 @@ class EmployeeHomeController extends Controller
         return view('EmployeeInterface.news.show', compact('news', 'user'));
     }
 
-
-
-        public function show(News $news)
+    public function show(News $news)
     {
         return view('EmployeeInterface.dashboard.show-news', compact('news'));
     }
-
-
 
     public function logout($request)
     {

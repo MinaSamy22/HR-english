@@ -9,12 +9,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">My Account Edit</h1>
+                        <h1 class="m-0"> {{ __('E_myaccount.My Account Edit') }} </h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Setting</a></li>
-                            <li class="breadcrumb-item active">My Account</li>
+                            <li class="breadcrumb-item"><a href="#"> {{ __('E_myaccount.Setting') }}</a></li>
+                            <li class="breadcrumb-item active">{{ __('E_myaccount.My Account') }}</li>
                         </ol>
                     </div>
                 </div>
@@ -32,7 +32,7 @@
 
                         <div class="card card-info">
                             <div class="card-header">
-                                <h3 class="card-title">My Account</h3>
+                                <h3 class="card-title">{{ __('E_myaccount.My Account') }} </h3>
                             </div>
 
                             <!-- Form Start -->
@@ -42,7 +42,7 @@
                                 <div class="card-body">
                                     <!-- Name -->
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label label-thin">Name <span style="color: red;">*</span></label>
+                                        <label class="col-sm-2 col-form-label label-thin">{{ __('E_myaccount.Name') }} <span style="color: red;">*</span></label>
                                         <div class="col-sm-4">
                                             <input type="text" value="{{ $getRecord->name }}" name="name"
                                                    class="form-control" required placeholder="Enter name">
@@ -52,7 +52,7 @@
 
                                     <!-- Email -->
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label label-thin">Email <span style="color: red;">*</span></label>
+                                        <label class="col-sm-2 col-form-label label-thin">{{ __('E_myaccount.Email') }} <span style="color: red;">*</span></label>
                                         <div class="col-sm-4">
                                             <input type="email" value="{{ $getRecord->email }}" name="email"
                                                    class="form-control" required placeholder="Enter email">
@@ -62,7 +62,7 @@
 
                                     <!-- Phone Number -->
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label label-thin">Phone Number</label>
+                                        <label class="col-sm-2 col-form-label label-thin">{{ __('E_myaccount.Phone Number') }}</label>
                                         <div class="col-sm-4">
                                             <input type="text" value="{{ $getRecord->phone_number }}" name="phone_number"
                                                    class="form-control" placeholder="Enter phone number">
@@ -72,7 +72,7 @@
 
                                     <!-- Current Password -->
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label label-thin">Current Password</label>
+                                        <label class="col-sm-2 col-form-label label-thin">{{ __('E_myaccount.Current Password') }}</label>
                                         <div class="col-sm-4">
                                             <input type="password" name="current_password" class="form-control"
                                                    placeholder="Enter current password (required if changing password)">
@@ -82,18 +82,18 @@
 
                                     <!-- New Password -->
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label label-thin">New Password</label>
+                                        <label class="col-sm-2 col-form-label label-thin">{{ __('E_myaccount.New Password') }}</label>
                                         <div class="col-sm-4">
                                             <input type="password" name="password" class="form-control"
-                                                   placeholder="Enter new password">
-                                            <small class="form-text text-muted">(Leave blank if you don't want to change password)</small>
+                                                   placeholder="{{ __('E_myaccount.Enter new password') }}">
+                                            <small class="form-text text-muted">{{ __('E_myaccount.(Leave blank if you dont want to change password)') }}</small>
                                         </div>
                                     </div>
                                 </div>
 
                                 <!-- Form Footer -->
                                 <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary float-right">Update</button>
+                                    <button type="submit" class="btn btn-primary float-right">{{ __('E_myaccount.Update') }}</button>
                                 </div>
                             </form>
                             <!-- /.Form End -->

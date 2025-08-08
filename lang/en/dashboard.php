@@ -58,7 +58,8 @@ return [
   'There are no recent news items to display.'=> 'There are no recent news items to display.',
   'Add First News'=> 'Add First News',
   'branch Branch'=> 'branch Branch',
-  'View'=> 'View'
+  'View'=> 'View',
+  'requests' => 'Employee Requests'
 
 
 ];
