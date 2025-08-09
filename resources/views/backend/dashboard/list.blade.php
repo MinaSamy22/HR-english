@@ -50,10 +50,10 @@
                                 <div class="card-content">
                                     <div class="stat-info">
                                         <div class="stat-number">{{ $getEmployeeCount ?? '0' }}</div>
-                                        <div class="stat-label">Total Employees</div>
+                                        <div class="stat-label">{{__('dashboard.TOTAL EMPLOYEES')}}</div>
                                         <div class="stat-trend">
                                             <i class="fas fa-arrow-up"></i>
-                                            <span>Active workforce</span>
+                                            <span>{{__('dashboard.Active workforce')}}</span>
                                         </div>
                                     </div>
                                     <div class="stat-icon">
