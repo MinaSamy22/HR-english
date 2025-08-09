@@ -7,12 +7,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Attendance Requests</h1>
+                        <h1 class="m-0">{{ __('E_late.attendance_requests') }}</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{ route('employee.home') }}">Home</a></li>
-                            <li class="breadcrumb-item active">Late & Half Day Requests</li>
+                            <li class="breadcrumb-item"><a href="{{ route('employee.home') }}">{{ __('E_late.home') }}</a></li>
+                            <li class="breadcrumb-item active">{{ __('E_late.late_half_day_requests') }}</li>
                         </ol>
                     </div>
                 </div>
@@ -56,7 +56,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">
-                                    <i class="fas fa-history mr-2"></i>Late & Half Day Records
+                                    <i class="fas fa-history mr-2"></i>{{ __('E_late.late_half_day_records') }}
                                     <small class="text-muted ml-2">({{ \Carbon\Carbon::now()->format('F Y') }})</small>
                                 </h3>
                             </div>
@@ -67,10 +67,10 @@
                                             <thead class="thead">
                                                 <tr>
                                                     <th>#</th>
-                                                    <th>Date</th>
-                                                    <th>Type</th>
-                                                    <th>Status</th>
-                                                    <th>Actions</th>
+                                                    <th>{{ __('E_late.date') }}</th>
+                                                    <th>{{ __('E_late.type') }}</th>
+                                                    <th>{{ __('E_late.status') }}</th>
+                                                    <th>{{ __('E_late.actions') }}</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -85,15 +85,15 @@
                                                         <td>
                                                             @if($record->attendance_type == 2)
                                                                 <span class="badge badge-warning">
-                                                                    <i class="fas fa-clock mr-1"></i>Late
+                                                                    <i class="fas fa-clock mr-1"></i>{{ __('E_late.late') }}
                                                                 </span>
                                                             @elseif($record->attendance_type == 4)
                                                                 <span class="badge badge-info">
-                                                                    <i class="fas fa-hourglass-half mr-1"></i>Half Day
+                                                                    <i class="fas fa-hourglass-half mr-1"></i>{{ __('E_late.half_day') }}
                                                                 </span>
                                                             @else
                                                                 <span class="badge badge-secondary">
-                                                                    <i class="fas fa-question mr-1"></i>Unknown
+                                                                    <i class="fas fa-question mr-1"></i>{{ __('E_late.unknown') }}
                                                                 </span>
                                                             @endif
                                                         </td>
@@ -122,23 +122,23 @@
                                                                     }
                                                                 @endphp
                                                                 <span class="badge {{ $statusClass }}">
-                                                                    <i class="fas {{ $statusIcon }} mr-1"></i>{{ ucfirst($request->status ?? 'pending') }}
+                                                                    <i class="fas {{ $statusIcon }} mr-1"></i>{{ __('E_late.' . ($request->status ?? 'pending')) }}
                                                                 </span>
                                                             @else
                                                                 <span class="badge badge-light">
-                                                                    <i class="fas fa-exclamation-triangle mr-1"></i>Not Requested
+                                                                    <i class="fas fa-exclamation-triangle mr-1"></i>{{ __('E_late.not_requested') }}
                                                                 </span>
                                                             @endif
                                                         </td>
                                                         <td>
                                                             @if(!isset($requests[$record->id]))
                                                                 <button type="button" class="btn btn-primary btn-sm"
-                                                                        onclick="openRequestModal({{ $record->id }}, '{{ \Carbon\Carbon::parse($record->attendance_date)->format('d M Y') }}', '{{ $record->attendance_type == 2 ? 'Late' : 'Half Day' }}')">
-                                                                    <i class="fas fa-paper-plane mr-1"></i>Request
+                                                                        onclick="openRequestModal({{ $record->id }}, '{{ \Carbon\Carbon::parse($record->attendance_date)->format('d M Y') }}', '{{ $record->attendance_type == 2 ? __('E_late.late') : __('E_late.half_day') }}')">
+                                                                    <i class="fas fa-paper-plane mr-1"></i>{{ __('E_late.request') }}
                                                                 </button>
                                                             @else
                                                                 <span class="text-muted">
-                                                                    <i class="fas fa-check mr-1"></i>Requested
+                                                                    <i class="fas fa-check mr-1"></i>{{ __('E_late.requested') }}
                                                                 </span>
                                                             @endif
                                                         </td>
@@ -150,8 +150,8 @@
                                 @else
                                     <div class="text-center py-5">
                                         <i class="fas fa-check-circle fa-3x text-success mb-3"></i>
-                                        <h4 class="text-muted">Perfect Attendance!</h4>
-                                        <p class="text-muted">No late or half-day records found for this month</p>
+                                        <h4 class="text-muted">{{ __('E_late.perfect_attendance') }}</h4>
+                                        <p class="text-muted">{{ __('E_late.no_late_half_day_records') }}</p>
                                     </div>
                                 @endif
                             </div>
@@ -163,7 +163,7 @@
                         <div class="card card-info">
                             <div class="card-header">
                                 <h3 class="card-title">
-                                    <i class="fas fa-info-circle mr-2"></i>Attendance Information
+                                    <i class="fas fa-info-circle mr-2"></i>{{ __('E_late.attendance_information') }}
                                 </h3>
                             </div>
                             <div class="card-body">
@@ -178,49 +178,49 @@
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <span>
-                                            <i class="fas fa-calendar-alt mr-2 text-info"></i>Current Month
+                                            <i class="fas fa-calendar-alt mr-2 text-info"></i>{{ __('E_late.current_month') }}
                                         </span>
                                         <span class="badge badge-info badge-pill">{{ \Carbon\Carbon::now()->format('M Y') }}</span>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <span>
-                                            <i class="fas fa-list mr-2 text-warning"></i>Late days
+                                            <i class="fas fa-list mr-2 text-warning"></i>{{ __('E_late.late_days') }}
                                         </span>
                                         <span class="badge badge-warning badge-pill">{{ $lateDays }}</span>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <span>
-                                            <i class="fas fa-paper-plane mr-2 text-primary"></i>Half days
+                                            <i class="fas fa-paper-plane mr-2 text-primary"></i>{{ __('E_late.half_days') }}
                                         </span>
                                         <span class="badge badge-primary badge-pill">{{ $halfDays }}</span>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <span>
-                                            <i class="fas fa-paper-plane mr-2 text-primary"></i>Absent days
+                                            <i class="fas fa-paper-plane mr-2 text-primary"></i>{{ __('E_late.absent_days') }}
                                         </span>
                                         <span class="badge badge-primary badge-pill">{{ $absentDays }}</span>
                                     </li>
 
                                       <div class="card-header">
                                      <h3 class="card-title">
-                                    <i class="fas fa-info-circle mr-2"></i>Request Information
+                                    <i class="fas fa-info-circle mr-2"></i>{{ __('E_late.request_information') }}
                                 </h3>
                                       </div>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <span>
-                                            <i class="fas fa-hourglass-half mr-2 text-warning"></i>Pending
+                                            <i class="fas fa-hourglass-half mr-2 text-warning"></i>{{ __('E_late.pending') }}
                                         </span>
                                         <span class="badge badge-warning badge-pill">{{ $pendingRequests }}</span>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <span>
-                                            <i class="fas fa-check-circle mr-2 text-success"></i>Approved
+                                            <i class="fas fa-check-circle mr-2 text-success"></i>{{ __('E_late.approved') }}
                                         </span>
                                         <span class="badge badge-success badge-pill">{{ $approvedRequests }}</span>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <span>
-                                            <i class="fas fa-times-circle mr-2 text-danger"></i>Rejected
+                                            <i class="fas fa-times-circle mr-2 text-danger"></i>{{ __('E_late.rejected') }}
                                         </span>
                                         <span class="badge badge-danger badge-pill">{{ $rejectedRequests }}</span>
                                     </li>
@@ -228,17 +228,17 @@
 
                                 <hr>
 
-                                <h6><i class="fas fa-clock mr-2"></i>Processing Time</h6>
+                                <h6><i class="fas fa-clock mr-2"></i>{{ __('E_late.processing_time') }}</h6>
                                 <p class="text-sm text-muted">
-                                    • Normal requests: 2-3 business days<br>
-                                    • Urgent requests: Same day<br>
+                                    • {{ __('E_late.normal_requests') }}<br>
+                                    • {{ __('E_late.urgent_requests') }}<br>
                                 </p>
 
-                                <h6><i class="fas fa-exclamation-triangle mr-2"></i>Important Notes</h6>
+                                <h6><i class="fas fa-exclamation-triangle mr-2"></i>{{ __('E_late.important_notes') }}</h6>
                                 <p class="text-sm text-muted">
-                                    • Submit requests as soon as possible<br>
-                                    • Provide clear justification for approval<br>
-                                    • Contact HR for urgent requests
+                                    • {{ __('E_late.submit_asap') }}<br>
+                                    • {{ __('E_late.provide_justification') }}<br>
+                                    • {{ __('E_late.contact_hr') }}
                                 </p>
                             </div>
                         </div>
@@ -255,9 +255,9 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="requestModalLabel">
-                        <i class="fas fa-paper-plane mr-2"></i>Submit Late/Half Day Request
+                        <i class="fas fa-paper-plane mr-2"></i>{{ __('E_late.submit_late_half_day_request') }}
                     </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('E_late.close') }}">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -267,30 +267,30 @@
                         <input type="hidden" name="attendance_id" id="modal_attendance_id">
 
                         <div class="form-group">
-                            <label><i class="fas fa-calendar-alt mr-1"></i>Date</label>
+                            <label><i class="fas fa-calendar-alt mr-1"></i>{{ __('E_late.date_label') }}</label>
                             <p class="form-control-plaintext font-weight-bold" id="modal_date"></p>
                         </div>
 
                         <div class="form-group">
-                            <label><i class="fas fa-tag mr-1"></i>Type</label>
+                            <label><i class="fas fa-tag mr-1"></i>{{ __('E_late.type_label') }}</label>
                             <p class="form-control-plaintext" id="modal_type"></p>
                         </div>
 
                         <div class="form-group">
                             <label for="reason">
-                                <i class="fas fa-comment mr-1"></i>Reason <span class="text-danger">*</span>
+                                <i class="fas fa-comment mr-1"></i>{{ __('E_late.reason') }} <span class="text-danger">*</span>
                             </label>
                             <textarea name="reason" id="reason" rows="4" class="form-control"
-                                placeholder="Please provide a detailed explanation for the attendance issue..." required></textarea>
-                            <small class="text-muted">Minimum 10 characters required</small>
+                                placeholder="{{ __('E_late.reason_placeholder') }}" required></textarea>
+                            <small class="text-muted">{{ __('E_late.minimum_characters') }}</small>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                            <i class="fas fa-times mr-1"></i>Cancel
+                            <i class="fas fa-times mr-1"></i>{{ __('E_late.cancel') }}
                         </button>
                         <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-paper-plane mr-1"></i>Submit Request
+                            <i class="fas fa-paper-plane mr-1"></i>{{ __('E_late.submit_request') }}
                         </button>
                     </div>
                 </form>
@@ -302,10 +302,24 @@
         function openRequestModal(attendanceId, date, type) {
             document.getElementById('modal_attendance_id').value = attendanceId;
             document.getElementById('modal_date').textContent = date;
-            document.getElementById('modal_type').innerHTML = '<span class="badge badge-' +
-                (type === 'Late' ? 'warning' : 'info') + '">' +
-                '<i class="fas fa-' + (type === 'Late' ? 'clock' : 'hourglass-half') + ' mr-1"></i>' +
-                type + '</span>';
+
+            // Determine type display based on current locale
+            let typeDisplay = '';
+            let badgeClass = '';
+            let iconClass = '';
+
+            if (type === '{{ __('E_late.late') }}' || type === 'Late') {
+                typeDisplay = '{{ __('E_late.late') }}';
+                badgeClass = 'warning';
+                iconClass = 'clock';
+            } else {
+                typeDisplay = '{{ __('E_late.half_day') }}';
+                badgeClass = 'info';
+                iconClass = 'hourglass-half';
+            }
+
+            document.getElementById('modal_type').innerHTML = '<span class="badge badge-' + badgeClass + '">' +
+                '<i class="fas fa-' + iconClass + ' mr-1"></i>' + typeDisplay + '</span>';
             document.getElementById('reason').value = '';
             $('#requestModal').modal('show');
         }
@@ -315,7 +329,7 @@
             const reason = document.getElementById('reason').value.trim();
             if (reason.length < 10) {
                 e.preventDefault();
-                alert('Please provide a reason with at least 10 characters.');
+                alert('{{ __('E_late.reason_min_length') }}');
                 return false;
             }
         });
