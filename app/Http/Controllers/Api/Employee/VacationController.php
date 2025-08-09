@@ -88,7 +88,7 @@ class VacationController extends Controller
         $data =[
             'start_date' => $startDate,
             'end_date' => $endDate,
-            'total_days' => $totalDays,
+            'total' => $totalDays,
             'reason'=>$request->reason,
             'vacation_type'=>$request->vacation_type,
             'status'=>VacationType::PENDING->value,
