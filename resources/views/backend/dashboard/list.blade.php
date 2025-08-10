@@ -21,12 +21,12 @@
             style="max-height: 60px; max-width: 120px; object-fit: contain; border-radius: 8px; box-shadow: 0 2px 50px rgba(0,0,0,0.1);">
     </div>
 @endif
-                        <h6 class="mb-0 text-black bg-white px-2 py-6 rounded d-none d-md-block">{{ $branchName }} Branch</h6>
-                        <small class="mb-0 text-black bg-white px-2 py-1 rounded d-block d-md-none">{{ $branchName }} Branch</small>
+                        <h6 class="mb-0 text-black bg-white px-2 py-6 rounded d-none d-md-block">{{ $branchName }} {{ __('h_dashboard.branch') }}</h6>
+                        <small class="mb-0 text-black bg-white px-2 py-1 rounded d-block d-md-none">{{ $branchName }} {{ __('h_dashboard.branch') }}</small>
                     </div>
                     <div class="me-3">
-                        <h5 class="text-muted d-none d-md-block">Welcome, {{ Auth::user()->name }} 👋</h5>
-                        <small class="text-muted d-block d-md-none">Welcome, {{ Auth::user()->name }} 👋</small>
+                        <h5 class="text-muted d-none d-md-block">{{ __('h_dashboard.welcome') }}, {{ Auth::user()->name }} 👋</h5>
+                        <small class="text-muted d-block d-md-none">{{ __('h_dashboard.welcome') }}, {{ Auth::user()->name }} 👋</small>
                     </div>
                 </div>
             </div><!-- /.col -->
@@ -50,10 +50,10 @@
                                 <div class="card-content">
                                     <div class="stat-info">
                                         <div class="stat-number">{{ $getEmployeeCount ?? '0' }}</div>
-                                        <div class="stat-label">{{__('dashboard.TOTAL EMPLOYEES')}}</div>
+                                        <div class="stat-label">{{ __('h_dashboard.total_employees') }}</div>
                                         <div class="stat-trend">
                                             <i class="fas fa-arrow-up"></i>
-                                            <span>{{__('dashboard.Active workforce')}}</span>
+                                            <span>{{ __('h_dashboard.active_workforce') }}</span>
                                         </div>
                                     </div>
                                     <div class="stat-icon">
@@ -73,10 +73,10 @@
                                 <div class="card-content">
                                     <div class="stat-info">
                                         <div class="stat-number">{{ $presentCount }}</div>
-                                        <div class="stat-label">Present Today</div>
+                                        <div class="stat-label">{{ __('h_dashboard.present_today') }}</div>
                                         <div class="stat-trend">
                                             <i class="fas fa-check-circle"></i>
-                                            <span>On time arrival</span>
+                                            <span>{{ __('h_dashboard.on_time_arrival') }}</span>
                                         </div>
                                     </div>
                                     <div class="stat-icon">
@@ -96,10 +96,10 @@
                                 <div class="card-content">
                                     <div class="stat-info">
                                         <div class="stat-number">{{ $lateCount + $halfdayCount }}</div>
-                                        <div class="stat-label">Late Arrivals</div>
+                                        <div class="stat-label">{{ __('h_dashboard.late_arrivals') }}</div>
                                         <div class="stat-trend">
                                             <i class="fas fa-clock"></i>
-                                            <span>Delayed check-in</span>
+                                            <span>{{ __('h_dashboard.delayed_checkin') }}</span>
                                         </div>
                                     </div>
                                     <div class="stat-icon">
@@ -119,10 +119,10 @@
                                 <div class="card-content">
                                     <div class="stat-info">
                                         <div class="stat-number">{{ $absentCount }}</div>
-                                        <div class="stat-label">Absent Today</div>
+                                        <div class="stat-label">{{ __('h_dashboard.absent_today') }}</div>
                                         <div class="stat-trend">
                                             <i class="fas fa-exclamation-triangle"></i>
-                                            <span>Not present</span>
+                                            <span>{{ __('h_dashboard.not_present') }}</span>
                                         </div>
                                     </div>
                                     <div class="stat-icon">
@@ -147,7 +147,7 @@
                             <div class="card-header"
                                 style="background: white; color: #333; border: none; border-bottom: 1px solid #e9ecef;">
                                 <h3 class="card-title" style="font-weight: 600; font-size: 1.1rem; color: #007bff;">
-                                    <i class="fas fa-chart-bar mr-2"></i>Monthly Performance Analytics
+                                    <i class="fas fa-chart-bar mr-2"></i>{{ __('h_dashboard.monthly_performance_analytics') }}
                                 </h3>
                             </div>
                             <div class="card-body" style="background: white; padding: 1rem;">
@@ -165,7 +165,7 @@
                             <div class="card-header"
                                 style="background: white; color: #333; border: none; border-bottom: 1px solid #e9ecef;">
                                 <h3 class="card-title" style="font-weight: 600; font-size: 1.1rem; color: #007bff;">
-                                    <i class="fas fa-bolt mr-2"></i>Quick Access
+                                    <i class="fas fa-bolt mr-2"></i>{{ __('h_dashboard.quick_access') }}
                                 </h3>
                             </div>
                             <div class="card-body" style="background: white; padding: 1.5rem;">
@@ -173,7 +173,7 @@
                                 <div class="main-actions-section">
                                     <h5 class="mb-3"
                                         style="color: #6c757d; font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px;">
-                                        <i class="fas fa-tasks mr-2"></i>Main Actions
+                                        <i class="fas fa-tasks mr-2"></i>{{ __('h_dashboard.main_actions') }}
                                     </h5>
                                     <!-- Add Attendance Manually -->
                                     <div class="quick-access-item mb-3">
@@ -181,7 +181,7 @@
                                             class="btn btn-light btn-block text-left quick-btn"
                                             style="border-radius: 8px; padding: 12px 16px; border: 1px solid #e9ecef; transition: all 0.3s ease;">
                                             <i class="fas fa-user-check mr-3" style="color: #007bff;"></i>
-                                            <span style="font-weight: 500; color: #333;">Add Attendance Manually</span>
+                                            <span style="font-weight: 500; color: #333;">{{ __('h_dashboard.add_attendance_manually') }}</span>
                                         </a>
                                     </div>
 
@@ -192,7 +192,7 @@
                                             class="btn btn-light btn-block text-left quick-btn"
                                             style="border-radius: 8px; padding: 12px 16px; border: 1px solid #e9ecef; transition: all 0.3s ease;">
                                             <i class="nav-icon fa fa-coins mr-3" style="color: #007bff;"></i>
-                                            <span style="font-weight: 500; color: #333;">Add Payroll</span>
+                                            <span style="font-weight: 500; color: #333;">{{ __('h_dashboard.add_payroll') }}</span>
                                         </a>
                                     </div>
 
@@ -201,7 +201,7 @@
                                 <div class="reports-section">
                                     <h5 class="mb-3"
                                         style="color: #6c757d; font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px;">
-                                        <i class="fas fa-file-alt mr-2"></i>Reports
+                                        <i class="fas fa-file-alt mr-2"></i>{{ __('h_dashboard.reports') }}
                                     </h5>
 
                                     <!-- Payslip Report -->
@@ -210,7 +210,7 @@
                                             class="btn btn-light btn-block text-left quick-btn"
                                             style="border-radius: 8px; padding: 10px 16px; border: 1px solid #e9ecef; transition: all 0.3s ease;">
                                             <i class="fas fa-receipt mr-3" style="color: #007bff;"></i>
-                                            <span style="font-weight: 500; color: #333;">Payslip Report</span>
+                                            <span style="font-weight: 500; color: #333;">{{ __('h_dashboard.payslip_report') }}</span>
                                         </a>
                                     </div>
 
@@ -220,7 +220,7 @@
                                             class="btn btn-light btn-block text-left quick-btn"
                                             style="border-radius: 8px; padding: 10px 16px; border: 1px solid #e9ecef; transition: all 0.3s ease;">
                                             <i class="fas fa-calendar-check mr-3" style="color: #007bff;"></i>
-                                            <span style="font-weight: 500; color: #333;">Attendance Report</span>
+                                            <span style="font-weight: 500; color: #333;">{{ __('h_dashboard.attendance_report') }}</span>
                                         </a>
                                     </div>
                                 </div>
@@ -238,7 +238,7 @@
                             <div class="card-header d-flex justify-content-between align-items-center"
                                 style="background: white; color: #333; border: none; border-bottom: 1px solid #e9ecef;">
                                 <h3 class="card-title" style="font-weight: 600; font-size: 1.1rem; color: #28a745;">
-                                    <i class="fas fa-newspaper mr-2"></i>Latest Company News
+                                    <i class="fas fa-newspaper mr-2"></i>{{ __('h_dashboard.latest_company_news') }}
                                 </h3>
 
                             </div>
@@ -281,7 +281,7 @@
                                                                 <a href="{{ route('news.show', $newsItem) }}"
                                                                    class="btn btn-success btn-sm view-btn"
                                                                    style="font-size: 0.75rem; padding: 0.25rem 0.5rem;">
-                                                                    <i class="fas fa-eye mr-1"></i>View
+                                                                    <i class="fas fa-eye mr-1"></i>{{ __('h_dashboard.view') }}
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -295,10 +295,10 @@
                                         <div class="mb-3">
                                             <i class="fas fa-newspaper fa-3x text-muted"></i>
                                         </div>
-                                        <h5 class="text-muted">No Recent News</h5>
-                                        <p class="text-muted mb-3">There are no recent news items to display.</p>
+                                        <h5 class="text-muted">{{ __('h_dashboard.no_recent_news') }}</h5>
+                                        <p class="text-muted mb-3">{{ __('h_dashboard.no_recent_news_desc') }}</p>
                                         <a href="{{ route('news.create') }}" class="btn btn-success">
-                                            <i class="fas fa-plus mr-2"></i>Add First News
+                                            <i class="fas fa-plus mr-2"></i>{{ __('h_dashboard.add_first_news') }}
                                         </a>
                                     </div>
                                 @endif
