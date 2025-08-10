@@ -10,15 +10,21 @@ class Attendance extends Model
     use HasFactory;
 
     protected $table = 'attendances';
-protected $fillable = [
-    'attendance_date',
-    'employee_id',
-    'check_in',
-    'check_out',
-    'attendance_type',
-    'created_by',
-    'company_id',
-];
+    protected $fillable = [
+        'attendance_date',
+        'employee_id',
+        'attendance_type',
+        'created_by',
+        'company_id',
+        'check_in',
+        'check_out',
+    ];
+
+    protected $casts = [
+        'attendance_date' => 'date',
+        'check_in' => 'datetime',
+        'check_out' => 'datetime',
+    ];
 
 
     public function user()

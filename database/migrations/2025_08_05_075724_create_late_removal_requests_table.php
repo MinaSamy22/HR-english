@@ -15,6 +15,7 @@ return new class extends Migration
     $table->id();
     $table->unsignedBigInteger('attendance_id'); // Link to attendance record
     $table->unsignedBigInteger('employee_id'); // The one who sent the request
+    $table->date('day');
     $table->string('reason')->nullable();
     $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
     $table->timestamps();

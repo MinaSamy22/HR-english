@@ -13,7 +13,10 @@ class Vacation extends Model
         'employee_id',
         'start_date',
         'end_date',
+        'total',
         'vacation_type',
+        'company_id',
+        'branch_id',
     ];
 
     public function user()

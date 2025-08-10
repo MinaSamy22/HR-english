@@ -18,9 +18,10 @@ class Time extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'employee_id',
+        'hours',
+        'company_id',
+        'branch_id',
     ];
 
     /**
