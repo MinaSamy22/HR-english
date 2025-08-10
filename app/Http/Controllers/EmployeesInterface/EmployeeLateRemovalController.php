@@ -92,7 +92,7 @@ public function store(Request $request)
             'reason' => 'required|string|min:10|max:500',
         ]);
 
-        // Check if attendance belongs to the authenticated employee
+        // Check if attendance belongs to the authenticated employee and get the attendance record
         $attendance = DB::table('attendances')
             ->where('id', $request->attendance_id)
             ->where('employee_id', $user->id)
@@ -111,10 +111,11 @@ public function store(Request $request)
             return redirect()->back()->with('error', 'Request already submitted for this attendance record.');
         }
 
-        // Create new request
+        // Create new request with the attendance date automatically saved in 'day' column
         LateRemovalRequest::create([
             'attendance_id' => $request->attendance_id,
             'employee_id' => $user->id,
+            'day' => $attendance->attendance_date, // Automatically save the attendance date
             'reason' => trim($request->reason),
             'status' => 'pending',
         ]);

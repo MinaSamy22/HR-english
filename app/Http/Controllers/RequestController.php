@@ -297,24 +297,16 @@ class RequestController extends Controller
      */
     private function updateAttendanceForLateRemoval(LateRemovalRequest $lateRemovalRequest)
     {
-        // Try different possible field names for employee ID
-        $employeeId = $lateRemovalRequest->user_id ??
-                     $lateRemovalRequest->employee_id ??
-                     $lateRemovalRequest->emp_id ??
-                     null;
-
-        // Try different possible field names for the date
-        $attendanceDate = $lateRemovalRequest->date ??
-                         $lateRemovalRequest->attendance_date ??
-                         $lateRemovalRequest->request_date ??
-                         $lateRemovalRequest->late_date ??
-                         null;
+        // Get employee ID and date from the late removal request
+        $employeeId = $lateRemovalRequest->employee_id;
+        $attendanceDate = $lateRemovalRequest->day; // Using the 'day' column you added
 
         // Debug logging
         \Log::info('LateRemovalRequest data:', [
-            'all_data' => $lateRemovalRequest->toArray(),
+            'request_id' => $lateRemovalRequest->id,
             'employee_id' => $employeeId,
             'attendance_date' => $attendanceDate,
+            'attendance_id' => $lateRemovalRequest->attendance_id,
         ]);
 
         if (!$employeeId) {
@@ -327,10 +319,19 @@ class RequestController extends Controller
             return;
         }
 
-        // Find the attendance record for this employee and date
-        $attendance = Attendance::where('employee_id', $employeeId)
-            ->whereDate('attendance_date', Carbon::parse($attendanceDate)->toDateString())
-            ->first();
+        // Find the attendance record using the attendance_id from the request (more reliable)
+        $attendance = null;
+
+        if ($lateRemovalRequest->attendance_id) {
+            $attendance = Attendance::find($lateRemovalRequest->attendance_id);
+        }
+
+        // If not found by ID, try to find by employee_id and date
+        if (!$attendance) {
+            $attendance = Attendance::where('employee_id', $employeeId)
+                ->whereDate('attendance_date', Carbon::parse($attendanceDate)->toDateString())
+                ->first();
+        }
 
         if ($attendance) {
             // Update attendance_type to 1 (present)
@@ -339,20 +340,10 @@ class RequestController extends Controller
 
             \Log::info('Successfully updated attendance for employee: ' . $employeeId . ' on date: ' . $attendanceDate);
         } else {
-            // If no attendance record exists, create one with attendance_type = 1
-            $companyId = $lateRemovalRequest->company_id ??
-                        $lateRemovalRequest->user->company_id ??
-                        null;
+            \Log::error('No attendance record found for employee: ' . $employeeId . ' on date: ' . $attendanceDate);
 
-            Attendance::create([
-                'employee_id' => $employeeId,
-                'attendance_date' => Carbon::parse($attendanceDate)->toDateString(),
-                'attendance_type' => '1',
-                'company_id' => $companyId,
-                'created_by' => auth()->id(),
-            ]);
-
-            \Log::info('Created new attendance record for employee: ' . $employeeId . ' on date: ' . $attendanceDate);
+            // Optionally, you could create a new attendance record here
+            // But it's better to log the error since the attendance should already exist
         }
     }
 }
