@@ -13,12 +13,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1><i class="fas fa-clock mr-2"></i>Company Settings</h1>
+                        <h1><i class="fas fa-clock mr-2"></i>{{ __('dashboard.company_settings') }}</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Settings</a></li>
-                            <li class="breadcrumb-item active">Company Settings</li>
+                            <li class="breadcrumb-item"><a href="#">{{ __('dashboard.settings') }}</a></li>
+                            <li class="breadcrumb-item active">{{ __('dashboard.company_settings') }}</li>
                         </ol>
                     </div>
                 </div>
@@ -35,7 +35,7 @@
                             <div class="card-header">
                                 <h3 class="card-title">
                                     <i class="fas fa-cog mr-1"></i>
-                                    Attendance Rules
+                                    {{ __('dashboard.attendance_rules') }}
                                 </h3>
                             </div>
 
@@ -49,7 +49,7 @@
                                     <div class="form-group">
                                         <label for="late_deduction_percentage">
                                             <i class="fas fa-hourglass-half text-warning mr-1"></i>
-                                            Late Arrival Deduction (%)
+                                            {{ __('dashboard.late_arrival_deduction') }} (%)
                                         </label>
                                         <div class="input-group">
                                             <input type="number" class="form-control" id="late_deduction_percentage"
@@ -57,11 +57,10 @@
                                                 value="{{ old('late_deduction_percentage', $setting->late_deduction_percentage ?? 0) }}"
                                                 min="0" max="100" onchange="updateLateDeduction(this.value)">
                                             <div class="input-group-append">
-                                                <span class="input-group-text">% of daily wage</span>
+                                                <span class="input-group-text">% {{ __('dashboard.of_daily_wage') }}</span>
                                             </div>
                                         </div>
-                                        <small class="form-text text-muted">Percentage deducted from daily wage when
-                                            employee arrives late</small>
+                                        <small class="form-text text-muted">{{ __('dashboard.percentage_deducted_from_daily_wage_when_employee_arrives_late') }}</small>
                                         <div id="lateDeductionFeedback" class="mt-2"></div>
                                     </div>
                                     <script>
@@ -75,7 +74,7 @@
                                     <div class="form-group">
                                         <label for="half_day_deduction_percentage">
                                             <i class="fas fa-calendar-day text-info mr-1"></i>
-                                            Half Day Absence Deduction (%)
+                                            {{ __('dashboard.half_day_absence_deduction') }} (%)
                                         </label>
                                         <div class="input-group">
                                             <input type="number" class="form-control" id="half_day_deduction_percentage"
@@ -83,11 +82,10 @@
                                                 value="{{ old('half_day_deduction_percentage', $setting->half_day_deduction_percentage ?? 0) }}"
                                                 min="0" max="100" onchange="updateHalfDayDeduction(this.value)">
                                             <div class="input-group-append">
-                                                <span class="input-group-text">% of daily wage</span>
+                                                <span class="input-group-text">% {{ __('dashboard.of_daily_wage') }}</span>
                                             </div>
                                         </div>
-                                        <small class="form-text text-muted">Percentage deducted from daily wage for half-day
-                                            absences</small>
+                                        <small class="form-text text-muted">{{ __('dashboard.percentage_deducted_from_daily_wage_for_half_day_absences') }}</small>
                                         <div id="half_day_deduction_feedback" class="mt-1"></div>
                                     </div>
 
@@ -102,14 +100,13 @@
                                     <!-- Bonus Per Hour -->
                                     <div class="form-group">
                                         <label for="bonus_per_hour">
-                                            <i class="fas fa-dollar-sign text-success mr-1"></i>                                            Bonus Per Hour
+                                            <i class="fas fa-dollar-sign text-success mr-1"></i>                                            {{ __('dashboard.bonus_per_hour') }}
                                         </label>
                                         <input type="number" step="0.01" class="form-control" id="bonus_per_hour"
                                             name="bonus_per_hour"
                                             value="{{ old('bonus_per_hour', $setting->bonus_per_hour ?? 0) }}"
                                             min="0">
-                                        <small class="form-text text-muted">Amount of bonus money paid per extra
-                                            hour</small>
+                                        <small class="form-text text-muted">{{ __('dashboard.amount_of_bonus_money_paid_per_extra_hour') }}</small>
                                         <div id="bonus_per_hour_feedback" class="mt-1"></div>
                                     </div>
 
@@ -122,14 +119,13 @@
                                     <div class="form-group">
                                         <label for="work_hours_per_day">
                                             <i class="fas fa-clock text-primary mr-1"></i>
-                                            Work Hours per Day
+                                            {{ __('dashboard.work_hours_per_day') }}
                                         </label>
                                         <input type="number" step="0.5" class="form-control"
                                             id="work_hours_per_day" name="work_hours_per_day"
                                             value="{{ old('work_hours_per_day', $setting->work_hours_per_day ?? 0) }}"
                                             min="1" max="24">
-                                        <small class="form-text text-muted">Define the expected working hours per
-                                            day</small>
+                                        <small class="form-text text-muted">{{ __('dashboard.define_the_expected_working_hours_per_day') }}</small>
                                         <div id="work_hours_feedback" class="mt-1"></div>
                                     </div>
 
@@ -138,7 +134,7 @@
                                     <div class="form-group">
                                         <label>
                                             <i class="fas fa-calendar-week text-success mr-1"></i>
-                                            Working Days in Week
+                                            {{ __('dashboard.working_days_in_week') }}
                                         </label>
                                         @php
                                             $workingDays = isset($setting->working_days)
@@ -160,8 +156,7 @@
                                                 </div>
                                             @endforeach
                                         </div>
-                                        <small class="form-text text-muted">Select the working days in a typical
-                                            week</small>
+                                        <small class="form-text text-muted">{{ __('dashboard.select_the_working_days_in_a_typical_week') }}</small>
                                     </div>
 
 
@@ -172,13 +167,13 @@
                                     <div class="form-group">
                                         <label for="vacation_balance">
                                             <i class="fas fa-suitcase-rolling text-warning mr-1"></i>
-                                            Vacation Balance
+                                            {{ __('dashboard.vacation_balance') }}
                                         </label>
                                         <input type="number" class="form-control" id="vacation_balance"
                                             name="vacation_balance"
                                             value="{{ old('vacation_balance', $setting->vacation_balance ?? 0) }}"
                                             min="0">
-                                        <small class="form-text text-muted">Total paid vacation days per year</small>
+                                        <small class="form-text text-muted">{{ __('dashboard.total_paid_vacation_days_per_year') }}</small>
                                         <div id="vacation_balance_feedback" class="mt-1"></div>
                                     </div>
 
@@ -187,7 +182,7 @@
                                     <div class="form-group">
                                         <label for="official_holidays">
                                             <i class="fas fa-umbrella-beach text-danger mr-1"></i>
-                                            Official Holidays (No Salary Deduction)
+                                            {{ __('dashboard.official_holidays_no_salary_deduction') }}
                                         </label>
                                         <div id="holiday-container">
                                             @php
@@ -237,10 +232,9 @@
                                             @endif
                                         </div>
                                         <button type="button" class="btn btn-success mt-2" id="add-holiday-btn">
-                                            <i class="fas fa-plus"></i> Add More Holidays
+                                            <i class="fas fa-plus"></i> {{ __('dashboard.add_more_holidays') }}
                                         </button>
-                                        <small class="form-text text-muted">Add multiple holidays with titles and
-                                            dates</small>
+                                        <small class="form-text text-muted">{{ __('dashboard.add_multiple_holidays_with_titles_and_dates') }}</small>
                                     </div>
 
 
@@ -254,11 +248,11 @@
                                             <div class="info-box bg-gradient-info">
                                                 <span class="info-box-icon"><i class="fas fa-calculator"></i></span>
                                                 <div class="info-box-content">
-                                                    <strong>Summary:</strong>
+                                                    <strong>{{ __('dashboard.summary') }}:</strong>
                                                     <span class="info-box-number">
-                                                        Late Arrival: <span
+                                                        {{ __('dashboard.late_arrival') }}: <span
                                                             id="late_deduction_preview">{{ $setting->late_deduction_percentage ?? 0 }}</span>%
-                                                        deduction
+                                                        {{ __('dashboard.deduction') }}
                                                     </span>
 
                                                     <div class="progress">
@@ -266,9 +260,9 @@
                                                         </div>
                                                     </div>
                                                     <span class="info-box-number mt-1">
-                                                        Half Day: <span
+                                                        {{ __('dashboard.half_day') }}: <span
                                                             id="half_day_deduction_preview">{{ $setting->half_day_deduction_percentage ?? 0 }}</span>%
-                                                        deduction
+                                                        {{ __('dashboard.deduction') }}
                                                     </span>
                                                     <div class="progress">
                                                         <div class="progress-bar" id="half_day_progress"
@@ -281,9 +275,9 @@
                                                     <!-- New Summary Items -->
                                                     <hr class="mt-3 mb-2">
                                                     <span class="info-box-number">
-                                                        Bonus Per Hour: <span
+                                                        {{ __('dashboard.bonus_per_hour') }}: <span
                                                             id="work_hours_preview">{{ $setting->bonus_per_hour ?? 0 }}</span>
-                                                        hrs
+                                                        {{ __('dashboard.hrs') }}
                                                     </span>
                                                     <div class="progress">
                                                         <div class="progress-bar" id="half_day_progress"
@@ -292,9 +286,9 @@
 
 
                                                     <span class="info-box-number">
-                                                        Work Hours/Day: <span
+                                                        {{ __('dashboard.work_hours_per_day') }}: <span
                                                             id="work_hours_preview">{{ $setting->work_hours_per_day ?? 0 }}</span>
-                                                        hrs
+                                                        {{ __('dashboard.hrs') }}
                                                     </span>
                                                     <div class="progress">
                                                         <div class="progress-bar" id="half_day_progress"
@@ -303,7 +297,7 @@
 
 
                                                     <span class="info-box-number">
-                                                        <strong>Working Days:</strong>
+                                                        <strong>{{ __('dashboard.working_days') }}:</strong>
                                                         <span id="working_days_preview">
                                                             {{ $setting && isset($setting->working_days) && $setting->working_days
                                                                 ? implode(', ', json_decode($setting->working_days))
@@ -317,10 +311,10 @@
 
 
                                                     <span class="info-box-number">
-                                                        <strong>Vacation Balance:</strong>
+                                                        <strong>{{ __('dashboard.vacation_balance') }}:</strong>
                                                         <span
                                                             id="vacation_balance_preview">{{ $setting->vacation_balance ?? 0 }}</span>
-                                                        days
+                                                        {{ __('dashboard.days') }}
                                                     </span>
                                                     <div class="progress">
                                                         <div class="progress-bar" id="half_day_progress"
@@ -329,7 +323,7 @@
 
 
                                                     <span class="info-box-number">
-                                                        Official Holidays:
+                                                        {{ __('dashboard.official_holidays') }}:
                                                         <ul id="official_holidays_preview" class="pl-3 mb-0">
                                                             @foreach (json_decode($setting->official_holidays ?? '[]') as $holiday)
                                                                 <li>{{ $holiday->title }} -
@@ -351,10 +345,10 @@
                                             <div class="text-right mt-4">
                                                 <button type="button" class="btn btn-default mr-2"
                                                     onclick="location.reload()">
-                                                    <i class="fas fa-undo"></i> Refresh
+                                                    <i class="fas fa-undo"></i> {{ __('dashboard.refresh') }}
                                                 </button>
                                                 <button type="submit" class="btn btn-primary">
-                                                    <i class="fas fa-save"></i> Save Policy
+                                                    <i class="fas fa-save"></i> {{ __('dashboard.save_policy') }}
                                                 </button>
                                             </div>
                                         </div>
@@ -371,22 +365,19 @@
                             <div class="card-header">
                                 <h3 class="card-title">
                                     <i class="fas fa-info-circle mr-1"></i>
-                                    Help & Information
+                                    {{ __('dashboard.help_information') }}
                                 </h3>
                             </div>
                             <div class="card-body">
                                 <div class="callout callout-warning">
-                                    <h5><i class="fas fa-exclamation-triangle"></i> Important Notes:</h5>
-                                    <p>Changes to attendance Rules will make effect in payroll calculation but you must
-                                        click save policy at the end.</p>
+                                    <h5><i class="fas fa-exclamation-triangle"></i> {{ __('dashboard.important_notes') }}:</h5>
+                                    <p>{{ __('dashboard.changes_to_attendance_rules_will_make_effect_in_payroll_calculation_but_you_must_click_save_policy_at_the_end') }}</p>
                                 </div>
 
                                 <div class="text-muted mt-3">
-                                    <p><strong>Late Arrival:</strong> Applied when an employee clocks in after the attend
-                                        period.</p>
-                                    <p><strong>Half Day:</strong> Applied for arrivals after the half-day time .</p>
-                                    <p><strong>Full Absence:</strong> Applies when an employee doesn't report to work
-                                        without prior approval.</p>
+                                    <p><strong>Late Arrival:</strong> {{ __('dashboard.applied_when_an_employee_clocks_in_after_the_attend_period') }}.</p>
+                                    <p><strong>{{ __('dashboard.half_day') }}:</strong> {{ __('dashboard.applied_for_arrivals_after_the_half_day_time') }} .</p>
+                                    <p><strong>{{ __('dashboard.full_absence') }}:</strong> {{ __('dashboard.applies_when_an_employee_doesnt_report_to_work_without_prior_approval') }}.</p>
                                 </div>
                             </div>
                         </div>

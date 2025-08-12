@@ -11,7 +11,7 @@
                     <div class="col-sm-6">
                         <h1>{{ __('h_employee.employees') }}</h1>
                     </div><!-- /.col -->
-                    <div class="col-sm-6" style="text-align: right;">
+                    <div class="col-sm-6 text-end" style="text-align: right;">
 
                         <form action="{{ url('admin/employees_export') }}" method="get">
                             <!-- Include other search parameters as hidden fields -->

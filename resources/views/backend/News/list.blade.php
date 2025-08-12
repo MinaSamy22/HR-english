@@ -5,14 +5,14 @@
 <div class="content-wrapper">
     <div class="content-header">
         <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0">Company News</h1>
+            <div class=" mb-2 d-flex justify-content-between">
+                <div class="">
+                    <h1 class="m-0">{{ __('dashboard.company_news') }}</h1>
                 </div>
-                <div class="col-sm-6">
+                <div class="">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">News</li>
+                        <li class="breadcrumb-item"><a href="#">{{ __('dashboard.home') }}</a></li>
+                        <li class="breadcrumb-item active">{{ __('dashboard.news') }}</li>
                     </ol>
                 </div>
             </div>
@@ -25,11 +25,13 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">News Management</h3>
-                            <div class="card-tools">
-                                <a href="{{ route('news.create') }}" class="btn btn-primary btn-sm">
-                                    <i class="fas fa-plus"></i> Add News
-                                </a>
+                            <div class="d-flex justify-content-between">
+                                <h3 class="card-title">{{ __('dashboard.news_management') }}</h3>
+                                <div class="card-tools">
+                                    <a href="{{ route('news.create') }}" class="btn btn-primary btn-sm">
+                                        <i class="fas fa-plus"></i> {{ __('dashboard.add_news') }}
+                                    </a>
+                                </div>
                             </div>
                         </div>
 
@@ -45,12 +47,12 @@
                                 <table class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th width="5%">ID</th>
-                                            <th width="15%">Image</th>
-                                            <th width="25%">Title</th>
-                                            <th width="30%">Description</th>
-                                            <th width="10%">Date</th>
-                                            <th width="15%">Actions</th>
+                                            <th width="5%">{{ __('dashboard.id') }}</th>
+                                            <th width="15%">{{ __('dashboard.image') }}</th>
+                                            <th width="25%">{{ __('dashboard.title') }}</th>
+                                            <th width="30%">{{ __('dashboard.description') }}</th>
+                                            <th width="10%">{{ __('dashboard.date') }}</th>
+                                            <th width="15%">{{ __('dashboard.actions') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -65,7 +67,7 @@
      style="max-width: 60px; max-height: 60px;">
 
                                                     @else
-                                                        <span class="badge badge-secondary">No Image</span>
+                                                        <span class="badge badge-secondary">{{ __('dashboard.no_image') }}</span>
                                                     @endif
                                                 </td>
                                                 <td>{{ $item->title }}</td>
@@ -98,7 +100,7 @@
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="6" class="text-center">No news found</td>
+                                                <td colspan="6" class="text-center">{{ __('dashboard.no_news_found') }}</td>
                                             </tr>
                                         @endforelse
                                     </tbody>

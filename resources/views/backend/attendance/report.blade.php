@@ -8,7 +8,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Attendance Report</h1>
+                    <h1>{{ __('dashboard.attendance_report') }}</h1>
                 </div><!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
@@ -23,27 +23,27 @@
                             <div class="card-body">
                                 <div class="row align-items-end">
                                     <div class="form-group col-md-2">
-                                        <label>Employee Name</label>
-                                        <input type="text" value="{{ Request::get('employee_name') }}" name="employee_name" class="form-control" placeholder="Enter Name">
+                                        <label>{{ __('dashboard.employee_name') }}</label>
+                                        <input type="text" value="{{ Request::get('employee_name') }}" name="employee_name" class="form-control" placeholder="{{ __('dashboard.enter_name') }}">
                                     </div>
                                     <div class="form-group col-md-2">
-                                        <label>Attendance Type</label>
+                                        <label>{{ __('dashboard.attendance_type') }}</label>
                                         <select class="form-control" name="attendance_type">
-                                            <option value="">Select ..</option>
-                                            <option {{ (Request::get('attendance_type') == 1) ? 'selected' : '' }} value="1">Present</option>
-                                            <option {{ (Request::get('attendance_type') == 2) ? 'selected' : '' }} value="2">Late</option>
-                                            <option {{ (Request::get('attendance_type') == 3) ? 'selected' : '' }} value="3">Absent</option>
-                                            <option {{ (Request::get('attendance_type') == 4) ? 'selected' : '' }} value="4">Half Day</option>
+                                            <option value="">{{ __('dashboard.select') }}</option>
+                                            <option {{ (Request::get('attendance_type') == 1) ? 'selected' : '' }} value="1">{{ __('dashboard.present') }}</option>
+                                            <option {{ (Request::get('attendance_type') == 2) ? 'selected' : '' }} value="2">{{ __('dashboard.late') }}</option>
+                                            <option {{ (Request::get('attendance_type') == 3) ? 'selected' : '' }} value="3">{{ __('dashboard.absent') }}</option>
+                                            <option {{ (Request::get('attendance_type') == 4) ? 'selected' : '' }} value="4">{{ __('dashboard.half_day') }}</option>
                                         </select>
                                     </div>
 
                                     <div class="form-group col-md-2">
-                                        <label>Date</label>
+                                        <label>{{ __('dashboard.date') }}</label>
                                         <input type="date" value="{{ Request()->start_date }}" name="start_date" class="form-control">
                                     </div>
 
                                     <div class="form-group col-md-2">
-                                        <label>To Date</label>
+                                        <label>{{ __('dashboard.to_date') }}</label>
                                         <input type="date" value="{{ Request()->end_date }}" name="end_date" class="form-control">
                                     </div>
 
@@ -59,7 +59,7 @@
                                             </div>
                                             <div>
                                                 <a href="{{ route('reports.exportPdf', Request::all()) }}" class="btn btn-danger">
-                                                    <i class="fas fa-file-pdf"></i> PDF
+                                                    <i class="fas fa-file-pdf"></i> {{ __('dashboard.pdf') }}
                                                 </a>
                                             </div>
                                         </div>
@@ -72,17 +72,17 @@
 
                     <div class="card" style="background-color: rgba(255, 255, 255, 0.9); border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
                         <div class="card-header">
-                            <h3 class="card-title">Attendance List</h3>
+                            <h3 class="card-title">{{ __('dashboard.attendance_list') }}</h3>
                         </div>
                         <div class="card-body p-0" style="overflow: auto;">
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Employee ID</th>
-                                        <th>Employee Name</th>
-                                        <th>Attendance</th>
-                                        <th>Attendance Date</th>
-                                        <th>Created Date</th>
+                                        <th>{{ __('dashboard.employee_id') }}</th>
+                                        <th>{{ __('dashboard.employee_name') }}</th>
+                                        <th>{{ __('dashboard.attendance') }}</th>
+                                        <th>{{ __('dashboard.attendance_date') }}</th>
+                                        <th>{{ __('dashboard.created_date') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -92,13 +92,13 @@
                                         <td>{{ $value->employee_name }}</td>
                                         <td>
                                             @if ($value->attendance_type == 1)
-                                            Present
+                                            {{ __('dashboard.present') }}
                                             @elseif($value->attendance_type == 2)
-                                            Late
+                                            {{ __('dashboard.late') }}
                                             @elseif($value->attendance_type == 3)
-                                            Absent
+                                            {{ __('dashboard.absent') }}
                                             @elseif($value->attendance_type == 4)
-                                            Half Day
+                                            {{ __('dashboard.half_day') }}
                                             @endif
                                         </td>
                                         <td>{{ date('d-m-Y', strtotime($value->attendance_date)) }}</td>
@@ -106,7 +106,7 @@
                                     </tr>
                                     @empty
                                     <tr>
-                                        <td colspan="5">Record not Found</td>
+                                        <td colspan="5">{{ __('dashboard.record_not_found') }}</td>
                                     </tr>
                                     @endforelse
                                 </tbody>

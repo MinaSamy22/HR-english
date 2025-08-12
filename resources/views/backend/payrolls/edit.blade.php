@@ -7,7 +7,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6" style="margin-left: 450px">
-                        <h1 class="m-0"> {{ $employeeName }}'s Payroll</h1>
+                        <h1 class="m-0"> {{ $employeeName }}{{ __('dashboard.s_payroll') }}</h1>
                     </div><!-- /.col -->
 
                 </div><!-- /.row -->
@@ -41,49 +41,49 @@ value = old for not rebeating the input  --}}
 
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-lable"> Basic Salary <span style="color: red;">
+                                        <label class="col-sm-2 col-form-lable"> {{ __('dashboard.basic_salary') }} <span style="color: red;">
                                             </span></label>
                                         <div class="col-sm-10">
                                             <input type="number" value="{{ $getRecord-> basic_salary }}" name="basic_salary"
-                                                class="form-control" placeholder="Basic Salary">
+                                                class="form-control" placeholder="{{ __('dashboard.basic_salary') }}">
                                         </div>
                                     </div>
 
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-lable"> Bonuses <span style="color: red;">
+                                        <label class="col-sm-2 col-form-lable"> {{ __('dashboard.bonuses') }} <span style="color: red;">
                                             </span></label>
                                         <div class="col-sm-10">
                                             <input type="number" value="{{ $getRecord-> bounas }}" name="bounas"
-                                                class="form-control" placeholder="bounas">
+                                                class="form-control" placeholder="{{ __('dashboard.bounas') }}">
                                         </div>
                                     </div>
 
 
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-lable"> Deductions <span style="color: red;">
+                                        <label class="col-sm-2 col-form-lable"> {{ __('dashboard.deductions') }} <span style="color: red;">
                                             </span></label>
                                         <div class="col-sm-10">
                                             <input type="number" value="{{ $getRecord-> deductions }}" name="deductions"
-                                                class="form-control" placeholder="Deductions">
+                                                class="form-control" placeholder="{{ __('dashboard.deductions') }}">
                                         </div>
                                     </div>
 
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-lable"> Taxes/Inscurance <span style="color: red;">
+                                        <label class="col-sm-2 col-form-lable"> {{ __('dashboard.taxes_inscurance') }} <span style="color: red;">
                                             </span></label>
                                         <div class="col-sm-10">
                                             <input type="number" value="{{ $getRecord-> taxes }}" name="taxes"
-                                                class="form-control" placeholder="Taxes">
+                                                class="form-control" placeholder="{{ __('dashboard.taxes') }}">
                                         </div>
                                     </div>
 
 
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-lable"> Vacation Balance <span style="color: red;">
+                                        <label class="col-sm-2 col-form-lable"> {{ __('dashboard.vacation_balance') }} <span style="color: red;">
                                             </span></label>
                                         <div class="col-sm-10">
                                             <input type="number" value="{{ $getRecord-> rest_vacancy }}" name="rest_vacancy"
@@ -94,11 +94,11 @@ value = old for not rebeating the input  --}}
 
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-lable"> Net Pay <span style="color: red;">
+                                        <label class="col-sm-2 col-form-lable"> {{ __('dashboard.net_pay') }} <span style="color: red;">
                                             </span></label>
                                         <div class="col-sm-10">
                                             <input type="number" value="{{ $getRecord-> net_pay }}" name="net_pay"
-                                                class="form-control" placeholder="Net Pay">
+                                                class="form-control" placeholder="{{ __('dashboard.net_pay') }}">
                                         </div>
                                     </div>
 
@@ -131,9 +131,9 @@ value = old for not rebeating the input  --}}
 
 
                                 <div class="card-footer">
-                                    <a href="{{ url('admin/payroll') }}" class="btn btn-default float-left">Back</a>
+                                    <a href="{{ url('admin/payroll') }}" class="btn btn-default float-left">{{ __('dashboard.back') }}</a>
                                     {{-- float for the place of the button --}}
-                                    <button type="submit" class="btn btn-warning float-right">Edit</button>
+                                    <button type="submit" class="btn btn-warning float-right">{{ __('dashboard.edit') }}</button>
 
                                 </div>
                             </form>

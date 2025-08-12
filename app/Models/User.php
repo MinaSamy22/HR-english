@@ -176,9 +176,9 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(VacationRequest::class, 'user_id');
     }
-    public function resignationRequests()
+    public function resignations()
     {
-        return $this->hasMany(ResignationRequest::class, 'employee_id');
+        return $this->hasMany(Resignation::class, 'employee_id');
     }
 
 
