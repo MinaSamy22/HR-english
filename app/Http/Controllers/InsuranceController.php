@@ -65,7 +65,7 @@ class InsuranceController extends Controller
         $insurance->save();
     }
 
-    return redirect('admin/insurance')->with('success', 'Insurance added for selected employees.');
+        return redirect('admin/insurance')->with('success', __('h_insurance.insurance_added_success'));
 }
 
 
@@ -94,13 +94,13 @@ class InsuranceController extends Controller
     }
         $insurance->save();
 
-        return redirect()->route('insurance')->with('success', 'Insurance updated successfully.');
+        return redirect()->route('insurance')->with('success', __('h_insurance.insurance_updated_success'));
     }
 
     public function delete($id)
     {
         Insurance::findOrFail($id)->delete();
-        return redirect()->back()->with('error', 'Insurance deleted successfully.');
+        return redirect()->back()->with('success', __('h_insurance.insurance_deleted_success'));
     }
 
     public function deleteMultiple(Request $request)
@@ -113,7 +113,7 @@ class InsuranceController extends Controller
 
         Insurance::whereIn('id', $ids)->delete();
 
-        return response()->json(['success' => true, 'message' => 'Selected insurance deleted successfully.']);
+        return response()->json(['success' => true,  'message' => __('h_insurance.selected_insurances_deleted_success')]);
     }
 
     public function toggleCompanyInsurance(Request $request)
@@ -131,9 +131,9 @@ class InsuranceController extends Controller
             ->update(['apply_to_payroll' => !$currentlyApplied]);
 
         // Optional: flash message to show in Blade
-        $message = $currentlyApplied
-            ? 'Insurances will no longer be applied to payroll for this company.'
-            : 'Insurances are now applied to payroll for this company.';
+              $message = $currentlyApplied
+            ? __('h_insurance.insurances_not_applied_to_payroll')
+            : __('h_insurance.insurances_applied_to_payroll');
 
         return redirect()->back()->with('success', $message);
     }

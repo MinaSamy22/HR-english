@@ -7,12 +7,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Extra Time Requests</h1>
+                        <h1 class="m-0">{{ __('E_extra.extra_time_requests') }}</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{ route('employee.home') }}">Home</a></li>
-                            <li class="breadcrumb-item active">Extra Time Requests</li>
+                            <li class="breadcrumb-item"><a href="{{ route('employee.home') }}">{{ __('E_extra.home') }}</a></li>
+                            <li class="breadcrumb-item active">{{ __('E_extra.extra_time_requests') }}</li>
                         </ol>
                     </div>
                 </div>
@@ -29,7 +29,7 @@
                         <div class="card card-primary">
                             <div class="card-header">
                                 <h3 class="card-title">
-                                    <i class="fas fa-clock mr-2"></i>Submit New Extra Time Request
+                                    <i class="fas fa-clock mr-2"></i>{{ __('E_extra.submit_new_request') }}
                                 </h3>
                             </div>
                             <form action="{{ route('employee.extra.store') }}" method="POST">
@@ -60,7 +60,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="date">
-                                                    <i class="fas fa-calendar-alt mr-1"></i>Date <span
+                                                    <i class="fas fa-calendar-alt mr-1"></i>{{ __('E_extra.date') }} <span
                                                         class="text-danger">*</span>
                                                 </label>
                                                 <input type="date" name="date" id="date"
@@ -74,13 +74,13 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="hours">
-                                                    <i class="fas fa-hourglass-half mr-1"></i>Hours <span
+                                                    <i class="fas fa-hourglass-half mr-1"></i>{{ __('E_extra.hours') }} <span
                                                         class="text-danger">*</span>
                                                 </label>
                                                 <input type="number" step="0.5" min="0.5" max="12" name="hours" id="hours"
                                                     class="form-control @error('hours') is-invalid @enderror"
-                                                    value="{{ old('hours') }}" placeholder="e.g., 2.5" required>
-                                                <small class="text-muted">Enter hours in decimal format (e.g., 1.5 for 1 hour 30 minutes)</small>
+                                                    value="{{ old('hours') }}" placeholder="{{ __('E_extra.hours_placeholder') }}" required>
+                                                <small class="text-muted">{{ __('E_extra.hours_help') }}</small>
                                                 @error('hours')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
@@ -90,32 +90,30 @@
 
                                     <div class="form-group">
                                         <label for="reason">
-                                            <i class="fas fa-comment mr-1"></i>Reason <span class="text-muted">(Optional)</span>
+                                            <i class="fas fa-comment mr-1"></i>{{ __('E_extra.reason_optional') }}
                                         </label>
                                         <textarea name="reason" id="reason" rows="4" class="form-control @error('reason') is-invalid @enderror"
-                                            placeholder="Please provide a brief description of why extra time is needed...">{{ old('reason') }}</textarea>
+                                            placeholder="{{ __('E_extra.reason_placeholder') }}">{{ old('reason') }}</textarea>
                                         @error('reason')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
 
-
-
                                     <!-- Hours Summary Display -->
                                     <div class="alert alert-info" id="hours_summary" style="display: none;">
                                         <i class="fas fa-calculator mr-2"></i>
-                                        <strong>Extra Hours Requested: <span id="total_hours">0</span> hours</strong>
+                                        <strong>{{ __('E_extra.extra_hours_requested') }}: <span id="total_hours">0</span> {{ __('E_extra.hours_unit') }}</strong>
                                         <br>
-                                        <small class="text-muted">Date: <span id="selected_date">-</span></small>
+                                        <small class="text-muted">{{ __('E_extra.date_label') }}: <span id="selected_date">-</span></small>
                                     </div>
                                 </div>
 
                                 <div class="card-footer">
                                     <button type="submit" class="btn btn-primary">
-                                        <i class="fas fa-paper-plane mr-1"></i>Submit Request
+                                        <i class="fas fa-paper-plane mr-1"></i>{{ __('E_extra.submit_request') }}
                                     </button>
                                     <button type="reset" class="btn btn-secondary ml-2">
-                                        <i class="fas fa-undo mr-1"></i>Reset Form
+                                        <i class="fas fa-undo mr-1"></i>{{ __('E_extra.reset_form') }}
                                     </button>
                                 </div>
                             </form>
@@ -127,7 +125,7 @@
                         <div class="card card-info">
                             <div class="card-header">
                                 <h3 class="card-title">
-                                    <i class="fas fa-chart-bar mr-2"></i>My Extra Time Summary
+                                    <i class="fas fa-chart-bar mr-2"></i>{{ __('E_extra.my_extra_time_summary') }}
                                 </h3>
                             </div>
                             <div class="card-body">
@@ -142,25 +140,25 @@
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <span>
-                                            <i class="fas fa-check-circle mr-2 text-success"></i>Approved Hours
+                                            <i class="fas fa-check-circle mr-2 text-success"></i>{{ __('E_extra.approved_hours') }}
                                         </span>
-                                        <span class="badge badge-success badge-pill">{{ number_format($totalHours, 1) }} hrs</span>
+                                        <span class="badge badge-success badge-pill">{{ number_format($totalHours, 1) }} {{ __('E_extra.hrs') }}</span>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <span>
-                                            <i class="fas fa-hourglass-half mr-2 text-warning"></i>Pending Hours
+                                            <i class="fas fa-hourglass-half mr-2 text-warning"></i>{{ __('E_extra.pending_hours') }}
                                         </span>
-                                        <span class="badge badge-warning badge-pill">{{ number_format($pendingHours, 1) }} hrs</span>
+                                        <span class="badge badge-warning badge-pill">{{ number_format($pendingHours, 1) }} {{ __('E_extra.hrs') }}</span>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <span>
-                                            <i class="fas fa-list mr-2 text-info"></i>Total Requests
+                                            <i class="fas fa-list mr-2 text-info"></i>{{ __('E_extra.total_requests') }}
                                         </span>
                                         <span class="badge badge-info badge-pill">{{ $requests->count() }}</span>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <span>
-                                            <i class="fas fa-times-circle mr-2 text-danger"></i>Rejected
+                                            <i class="fas fa-times-circle mr-2 text-danger"></i>{{ __('E_extra.rejected') }}
                                         </span>
                                         <span class="badge badge-danger badge-pill">{{ $rejected }}</span>
                                     </li>
@@ -168,17 +166,17 @@
 
                                 <hr>
 
-                                <h6><i class="fas fa-clock mr-2"></i>Processing Time</h6>
+                                <h6><i class="fas fa-clock mr-2"></i>{{ __('E_extra.processing_time') }}</h6>
                                 <p class="text-sm text-muted">
-                                    • Normal requests: 1-2 business days<br>
-                                    • Urgent requests: Same day<br>
+                                    • {{ __('E_extra.normal_requests') }}<br>
+                                    • {{ __('E_extra.urgent_requests') }}<br>
                                 </p>
 
-                                <h6><i class="fas fa-exclamation-triangle mr-2"></i>Important Notes</h6>
+                                <h6><i class="fas fa-exclamation-triangle mr-2"></i>{{ __('E_extra.important_notes') }}</h6>
                                 <p class="text-sm text-muted">
-                                    • Submit requests in advance when possible<br>
-                                    • Provide clear justification for approval<br>
-                                    • Check with supervisor before submitting
+                                    • {{ __('E_extra.submit_advance') }}<br>
+                                    • {{ __('E_extra.provide_justification') }}<br>
+                                    • {{ __('E_extra.check_supervisor') }}
                                 </p>
                             </div>
                         </div>
@@ -191,7 +189,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">
-                                    <i class="fas fa-history mr-2"></i>My Extra Time Requests
+                                    <i class="fas fa-history mr-2"></i>{{ __('E_extra.my_extra_time_requests') }}
                                 </h3>
                             </div>
                             <div class="card-body">
@@ -201,12 +199,12 @@
                                             <thead class="thead">
                                                 <tr>
                                                     <th>#</th>
-                                                    <th>Date</th>
-                                                    <th>Hours</th>
-                                                    <th>Reason</th>
-                                                    <th>Status</th>
-                                                    <th>Submitted</th>
-                                                    <th>Action</th>
+                                                    <th>{{ __('E_extra.date_table') }}</th>
+                                                    <th>{{ __('E_extra.hours_table') }}</th>
+                                                    <th>{{ __('E_extra.reason_table') }}</th>
+                                                    <th>{{ __('E_extra.status') }}</th>
+                                                    <th>{{ __('E_extra.submitted') }}</th>
+                                                    <th>{{ __('E_extra.action') }}</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -219,7 +217,7 @@
                                                             <small class="text-muted">{{ date('l', strtotime($request->date)) }}</small>
                                                         </td>
                                                         <td>
-                                                            <span class="badge badge-light badge-pill">{{ number_format($request->hours, 1) }} hrs</span>
+                                                            <span class="badge badge-light badge-pill">{{ number_format($request->hours, 1) }} {{ __('E_extra.hrs') }}</span>
                                                         </td>
                                                         <td>
                                                             @if($request->reason)
@@ -227,7 +225,7 @@
                                                                     {{ $request->reason }}
                                                                 </span>
                                                             @else
-                                                                <span class="text-muted font-italic">No reason provided</span>
+                                                                <span class="text-muted font-italic">{{ __('E_extra.no_reason_provided') }}</span>
                                                             @endif
                                                         </td>
                                                         <td>
@@ -253,7 +251,7 @@
                                                                 }
                                                             @endphp
                                                             <span class="badge {{ $statusClass }}">
-                                                                <i class="fas {{ $statusIcon }} mr-1"></i>{{ ucfirst($request->status) }}
+                                                                <i class="fas {{ $statusIcon }} mr-1"></i>{{ __('E_extra.' . $request->status) }}
                                                             </span>
                                                         </td>
                                                         <td>
@@ -264,7 +262,7 @@
                                                         <td>
                                                             @if ($request->status == 'pending')
                                                                 <form action="{{ route('employee.extra.destroy', $request->id) }}" method="POST" class="d-inline"
-                                                                    onsubmit="return confirm('Are you sure you want to cancel this request?')">
+                                                                    onsubmit="return confirm('{{ __('E_extra.confirm_cancel') }}')">
                                                                     @csrf
                                                                     @method('DELETE')
                                                                     <button type="submit" class="btn btn-sm btn-danger">
@@ -288,8 +286,8 @@
                                 @else
                                     <div class="text-center py-5">
                                         <i class="fas fa-clock fa-3x text-muted mb-3"></i>
-                                        <h4 class="text-muted">No extra time requests found</h4>
-                                        <p class="text-muted">Submit your first extra time request using the form above</p>
+                                        <h4 class="text-muted">{{ __('E_extra.no_requests_found') }}</h4>
+                                        <p class="text-muted">{{ __('E_extra.submit_first_request') }}</p>
                                     </div>
                                 @endif
                             </div>
@@ -314,7 +312,7 @@
                     var hours = $('#hours').val();
 
                     if (date && hours) {
-                        var formattedDate = new Date(date).toLocaleDateString('en-US', {
+                        var formattedDate = new Date(date).toLocaleDateString('{{ app()->getLocale() == "ar" ? "ar-EG" : "en-US" }}', {
                             weekday: 'long',
                             year: 'numeric',
                             month: 'long',
@@ -354,13 +352,13 @@
                     var today = new Date().toISOString().split('T')[0];
 
                     if (date < today) {
-                        alert('Please select a current or future date.');
+                        alert('{{ __('E_extra.select_current_future_date') }}');
                         e.preventDefault();
                         return false;
                     }
 
                     if (hours < 0.5 || hours > 12) {
-                        alert('Hours must be between 0.5 and 12.');
+                        alert('{{ __('E_extra.hours_range_validation') }}');
                         e.preventDefault();
                         return false;
                     }

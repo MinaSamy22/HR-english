@@ -8,11 +8,11 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 style="color: #333;">Managers</h1>
+                        <h1 style="color: #333;">{{ __('h_manager.managers') }}</h1>
                     </div><!-- /.col -->
-                    <div class="col-sm-6" style="text-align: right;">
+                    <div class="col-sm-6 text-right">
                         <a href="{{ url('admin/manager/add') }}" class="btn btn-primary rounded-pill">
-                            <i class="fas fa-user-plus"></i> Add Managers
+                            <i class="fas fa-user-plus"></i> {{ __('h_manager.add_managers') }}
                         </a>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -26,20 +26,20 @@
                     <section class="col-md-12">
                         <div class="card" style="background-color: rgba(255, 255, 255, 0.9); border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
                             <div class="card-header">
-                                <h3 class="card-title">Search Managers</h3>
+                                <h3 class="card-title">{{ __('h_manager.search_managers') }}</h3>
                             </div>
                             <form method="get" action="">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="form-group col-md-2 col-sm-6">
-                                            <label>Manger Name</label>
-                                            <input type="text" value="{{ Request()->name }}" name="name" class="form-control" placeholder="Name">
+                                            <label>{{ __('h_manager.manager_name') }}</label>
+                                            <input type="text" value="{{ Request()->name }}" name="name" class="form-control" placeholder="{{ __('h_manager.name') }}">
                                         </div>
                                         <div class="form-group col-md-3 col-sm-6 d-flex align-items-end">
-                                            <button class="btn btn-primary rounded-pill" type="submit" style="margin-right: 10px;" title="Search">
+                                            <button class="btn btn-primary rounded-pill" type="submit" style="margin-right: 10px;" title="{{ __('h_manager.search') }}">
                                                 <i class="fas fa-search"></i>
                                             </button>
-                                            <a href="{{ url('admin/manager') }}" class="btn btn-success rounded-pill" title="Reset">
+                                            <a href="{{ url('admin/manager') }}" class="btn btn-success rounded-pill" title="{{ __('h_manager.reset') }}">
                                                 <i class="fas fa-sync-alt"></i>
                                             </a>
                                         </div>
@@ -52,19 +52,19 @@
 
                         <div class="card" style="background-color: rgba(255, 255, 255, 0.9); border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
                             <div class="card-header">
-                                <h3 class="card-title">Managers List</h3>
+                                <h3 class="card-title">{{ __('h_manager.managers_list') }}</h3>
                             </div>
                             <div class="card-body p-0">
                                 <div class="table-responsive">
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
-                                                <th>ID</th>
-                                                <th>Name</th>
-                                                <th>Email</th>
-                                                <th>Phone Number</th>
-                                                <th>Hire Date</th>
-                                                <th>Action</th>
+                                                <th>{{ __('h_manager.id') }}</th>
+                                                <th>{{ __('h_manager.name') }}</th>
+                                                <th>{{ __('h_manager.email') }}</th>
+                                                <th>{{ __('h_manager.phone_number') }}</th>
+                                                <th>{{ __('h_manager.hire_date') }}</th>
+                                                <th>{{ __('h_manager.action') }}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -76,20 +76,20 @@
                                                 <td>{{ $value->phone_number }}</td>
                                                 <td>{{ $value->hire_date }}</td>
                                                 <td>
-                                                        <a href="{{ url('admin/manager/view/' .$value->id) }}" class="btn btn-info rounded-pill" title="View">
-                                                            <i class="fas fa-eye"></i>
-                                                        </a>
-                                                        <a href="{{ url('admin/manager/edit/' .$value->id) }}" class="btn btn-primary rounded-pill" title="Edit">
-                                                            <i class="fas fa-edit"></i>
-                                                        </a>
-                                                        <a href="{{ url('admin/manager/delete/' .$value->id) }}" onclick="return confirm('Are you sure you want to delete?')" class="btn btn-danger rounded-pill" title="Delete">
-                                                            <i class="fas fa-trash-alt"></i>
-                                                        </a>
+                                                    <a href="{{ url('admin/manager/view/' .$value->id) }}" class="btn btn-info rounded-pill" title="{{ __('h_manager.view') }}">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                    <a href="{{ url('admin/manager/edit/' .$value->id) }}" class="btn btn-primary rounded-pill" title="{{ __('h_manager.edit') }}">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    <a href="{{ url('admin/manager/delete/' .$value->id) }}" onclick="return confirm('{{ __('h_manager.delete_confirmation') }}')" class="btn btn-danger rounded-pill" title="{{ __('h_manager.delete') }}">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </a>
                                                 </td>
                                             </tr>
                                             @empty
                                             <tr>
-                                                <td colspan="5" class="text-center">Not Found..</td>
+                                                <td colspan="6" class="text-center">{{ __('h_manager.not_found') }}</td>
                                             </tr>
                                             @endforelse
                                         </tbody>

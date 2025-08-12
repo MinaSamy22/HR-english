@@ -61,7 +61,7 @@ public function my_account(Request $request)
         }
 
         $record->save();
-        return redirect('employee/my_account')->with('success', 'My Account Successfully Updated!');
+        return redirect('employee/my_account')->with('success', __('E_myaccount.controller message'));
 
     }
 }

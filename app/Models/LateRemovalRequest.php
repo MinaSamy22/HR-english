@@ -14,6 +14,7 @@ class LateRemovalRequest extends Model
     protected $fillable = [
         'attendance_id',
         'employee_id',
+        'day',        // Add this
         'reason',
         'status'
     ];

@@ -34,7 +34,7 @@ class BranchController extends Controller
         $branch->is_main = $request->has('is_main') ? 1 : 0;
         $branch->save();
 
-        return redirect('admin/branches')->with('success', 'Branch successfully created.');
+        return redirect('admin/branches')->with('success', __('h_branches.branch_created_success'));
     }
 
     public function edit($id)
@@ -56,7 +56,7 @@ class BranchController extends Controller
         $branch->is_main = $request->has('is_main') ? 1 : 0;
         $branch->save();
 
-        return redirect('admin/branches')->with('success', 'Branch successfully updated.');
+        return redirect('admin/branches')->with('success', __('h_branches.branch_updated_success'));
     }
 
     public function delete($id)
@@ -64,7 +64,7 @@ class BranchController extends Controller
         $branch = Branch::findOrFail($id);
         $branch->delete();
 
-        return redirect()->back()->with('error', 'Branch deleted successfully.');
+        return redirect()->back()->with('success', __('h_branches.branch_deleted_success'));
     }
 
     public function assignEmployee(Request $request)
@@ -96,12 +96,17 @@ class BranchController extends Controller
     $branchName = Branch::find($branchId)->name;
     $employeeCount = count($userIds);
 
-    $message = $employeeCount === 1
-        ? "Employee transferred to {$branchName} successfully."
-        : "{$employeeCount} employees transferred to {$branchName} successfully.";
+  if ($employeeCount === 1) {
+            $message = __('h_branches.employee_transferred_success', ['branch' => $branchName]);
+        } else {
+            $message = __('h_branches.employees_transferred_success', [
+                'count' => $employeeCount,
+                'branch' => $branchName
+            ]);
+        }
 
-    return redirect()->back()->with('success', $message);
-}
+        return redirect()->back()->with('success', $message);
+    }
 
 public function showTransferForm()
 {

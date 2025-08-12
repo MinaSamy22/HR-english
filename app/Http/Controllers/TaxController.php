@@ -67,7 +67,7 @@ class TaxController extends Controller
         $tax->save();
     }
 
-    return redirect('admin/taxes')->with('success', 'Tax added for selected employees.');
+        return redirect('admin/taxes')->with('success', __('h_tax.tax_added_success'));
 }
 
 
@@ -97,13 +97,13 @@ class TaxController extends Controller
     }
         $tax->save();
 
-        return redirect()->route('taxes')->with('success', 'Tax updated successfully.');
+        return redirect()->route('taxes')->with('success', __('h_tax.tax_updated_success'));
     }
 
     public function delete($id)
     {
         Tax::findOrFail($id)->delete();
-        return redirect()->back()->with('error', 'Tax deleted successfully.');
+        return redirect()->back()->with('success', __('h_tax.tax_deleted_success'));
     }
 
     public function deleteMultiple(Request $request)
@@ -116,11 +116,12 @@ class TaxController extends Controller
 
         Tax::whereIn('id', $ids)->delete();
 
-        return response()->json(['success' => true, 'message' => 'Selected taxes deleted successfully.']);
+
+        return response()->json(['success' => true,  'message' => __('h_tax.selected_taxes_deleted_success')]);
     }
 
 
-    public function toggleCompanyTax(Request $request)
+ public function toggleCompanyTax(Request $request)
     {
         // Get the logged-in HR's company ID
         $companyId = auth()->user()->company_id;
@@ -134,10 +135,10 @@ class TaxController extends Controller
         Tax::where('company_id', $companyId)
             ->update(['apply_to_payroll' => !$currentlyApplied]);
 
-        // Optional: flash message to show in Blade
+        // Localized flash message
         $message = $currentlyApplied
-            ? 'Taxes will no longer be applied to payroll for this company.'
-            : 'Taxes are now applied to payroll for this company.';
+            ? __('h_tax.taxes_not_applied_to_payroll')
+            : __('h_tax.taxes_applied_to_payroll');
 
         return redirect()->back()->with('success', $message);
     }

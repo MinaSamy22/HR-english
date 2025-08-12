@@ -51,7 +51,7 @@ class OverTimeController extends Controller
     }
     $bounas->save();
 
-    return redirect('admin/bounas')->with('success', ' successfully register.');
+return redirect('admin/bounas')->with('success', __('h_bounas.success_register'));
     }
 
 
@@ -59,9 +59,9 @@ class OverTimeController extends Controller
         $recordDelete = Time::find($id);
         if ($recordDelete) {
             $recordDelete->delete();
-            return redirect()->back()->with('success', 'Record successfully deleted.');
+return redirect()->back()->with('success', __('h_bounas.success_deleted'));
         } else {
-            return redirect()->back()->with('error', 'Record not found.');
+return response()->json(['success' => false, 'message' => __('h_bounas.no_time_selected')]);
         }
     }
 
@@ -75,7 +75,6 @@ class OverTimeController extends Controller
 
         Time::whereIn('id', $ids)->delete();
 
-        return response()->json(['success' => true, 'message' => 'Selected Time deleted successfully.']);
-    }
+return response()->json(['success' => true, 'message' => __('h_bounas.selected_deleted')]);    }
 
 }

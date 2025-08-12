@@ -5,16 +5,12 @@
         <!-- Content Header (Page header) -->
         <div class="content-header">
             <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1>Departments</h1>
-                    </div><!-- /.col -->
-                    <div class="col-sm-6" style="text-align: right;">
+                <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap">
+                        <h1>{{ __('h_department.home') }}</h1>
                         <a href="{{ url('admin/department/add') }}" class="btn btn-primary rounded-pill">
-                            <i class="fas fa-user-plus"></i> Add Department
+                            <i class="fas fa-user-plus"></i> {{ __('h_department.add') }}
                         </a>
-                    </div><!-- /.col -->
-                </div><!-- /.row -->
+                </div>
             </div><!-- /.container-fluid -->
         </div>
         <!-- /.content-header -->
@@ -25,7 +21,7 @@
                     <section class="col-md-12">
                         <div class="card" style="background-color: rgba(255, 255, 255, 0.9); border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
                             <div class="card-header">
-                                <h3 class="card-title">Search Department</h3>
+                                <h3 class="card-title">{{ __('h_department.search') }}</h3>
                             </div>
 
                             <form method="get" action="">
@@ -36,15 +32,15 @@
                                         {{-- md3 for the size of the label md2 small --}}
 
                                         <div class="form-group col-md-2 col-sm-6">
-                                            <label>Department Name </label>
-                                            <input type="text" value="{{ Request()->department_name }}" name="department_name" class="form-control" placeholder=" Name">
+                                            <label>{{ __('h_department.department_name') }}</label>
+                                            <input type="text" value="{{ Request()->department_name }}" name="department_name" class="form-control" placeholder="{{ __('h_department.search_name_placeholder') }}">
                                         </div>
 
                                         <div class="form-group col-md-3 col-sm-6 d-flex align-items-end">
-                                            <button class="btn btn-primary rounded-pill" type="submit" style="margin-right: 10px;" title="Search">
+                                            <button class="btn btn-primary rounded-pill" type="submit" style="margin-right: 10px;" title="{{ __('h_department.search') }}">
                                                 <i class="fas fa-search"></i>
                                             </button>
-                                            <a href="{{ url('admin/department') }}" class="btn btn-success rounded-pill" title="Reset">
+                                            <a href="{{ url('admin/department') }}" class="btn btn-success rounded-pill" title="{{ __('h_department.reset') }}">
                                                 <i class="fas fa-sync-alt"></i>
                                             </a>
                                         </div>
@@ -57,7 +53,7 @@
 
                         <div class="card" style="background-color: rgba(255, 255, 255, 0.9); border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
                             <div class="card-header">
-                                <h3 class="card-title"> Department List </h3>
+                                <h3 class="card-title">{{ __('h_department.department_list') }}</h3>
                             </div>
 
                             <div class="card-body p-0">
@@ -65,12 +61,12 @@
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
-                                                <th>ID</th>
-                                                <th>Department Name</th>
-                                                <th>Administration Name</th>
-                                                <th>Manager Name</th>
-                                                <th>Location</th>
-                                                <th>Action</th>{{-- buttons of crud inside it --}}
+                                                <th>{{ __('h_department.id') }}</th>
+                                                <th>{{ __('h_department.department_name') }}</th>
+                                                <th>{{ __('h_department.administration_name') }}</th>
+                                                <th>{{ __('h_department.manager_name') }}</th>
+                                                <th>{{ __('h_department.location') }}</th>
+                                                <th>{{ __('h_department.action') }}</th>{{-- buttons of crud inside it --}}
                                             </tr>
                                         </thead>
 
@@ -80,25 +76,25 @@
                                                 <td>{{ $value->id }}</td>
                                                 <td>{{ $value->department_name }}</td>
                                                  <td>
-                                                    {{ $value->administration_name ?? 'N/A' }}<!-- 34an de tzhar lazm n3dl querry el model Display N/A if administration is null -->
+                                                    {{ $value->administration_name ?? __('h_department.na') }}<!-- 34an de tzhar lazm n3dl querry el model Display N/A if administration is null -->
                                                 </td>
                                                 <td>
-                                                    {{ $value->manager_name ?? 'N/A' }}<!-- Display N/A if manager is null -->
+                                                    {{ $value->manager_name ?? __('h_department.na') }}<!-- Display N/A if manager is null -->
                                                 </td>
                                                 <td>{{ $value->location }}</td>
 
                                                 <td>
-                                                        <a href="{{ url('admin/department/edit/' .$value->id) }}" class="btn btn-primary rounded-pill" title="Edit">
+                                                        <a href="{{ url('admin/department/edit/' .$value->id) }}" class="btn btn-primary rounded-pill" title="{{ __('h_department.edit') }}">
                                                             <i class="fas fa-edit"></i>
                                                         </a>
-                                                        <a href="{{ url('admin/department/delete/' .$value->id) }}" onclick="return confirm('Are you sure you want to delete?')" class="btn btn-danger rounded-pill" title="Delete">
+                                                        <a href="{{ url('admin/department/delete/' .$value->id) }}" onclick="return confirm('{{ __('h_department.delete_confirmation') }}')" class="btn btn-danger rounded-pill" title="{{ __('h_department.delete') }}">
                                                             <i class="fas fa-trash-alt"></i>
                                                         </a>
                                                 </td>
                                             </tr>
                                             @empty
                                             <tr>
-                                                <td colspan="100%" class="text-center"> Not Found.. </td>
+                                                <td colspan="100%" class="text-center">{{ __('h_department.not_found') }}</td>
                                             </tr>
                                             @endforelse
                                         </tbody>

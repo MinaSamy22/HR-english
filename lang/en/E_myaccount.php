@@ -13,6 +13,9 @@ return [
     'My Account' => 'My Account',
     'Enter new password' => 'Enter new password',
 
+    'controller message' =>'My Account Successfully Updated!'
+
+
 
 
 

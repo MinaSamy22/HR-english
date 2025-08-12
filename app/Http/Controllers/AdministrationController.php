@@ -55,7 +55,8 @@ $administration->company_id           = session('company_id'); // Important!
     }
 $administration->save();
 
-return redirect('admin/administration')->with('success', 'Administration successfully add.');
+return redirect('admin/administration')->with('success', __('h_adminstration.administration_added'));
+
 }
 
 
@@ -90,14 +91,15 @@ $administration->manager_id           = trim ($request->manager_id);
 
 $administration->save();
 
-    return redirect('admin/administration')->with('success', 'Administration successfully update.');
+return redirect('admin/administration')->with('success', __('h_adminstration.administration_updated'));
 }
 
 
 public function delete($id){
     $recordDelete = Administration::find($id);
     $recordDelete->delete();
-    return redirect()->back()->with('error', 'Record successfully deleted');
+    // return redirect()->back()->with('error', 'Record successfully deleted');
+    return redirect()->back()->with('error', __('h_adminstration.record_deleted'));
 
 }
 

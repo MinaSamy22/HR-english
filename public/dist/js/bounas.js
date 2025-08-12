@@ -1,4 +1,4 @@
-// File: public/dist/js/overtime-management.js
+// File: public/dist/js/bounas.js
 document.addEventListener('DOMContentLoaded', function() {
     const selectAllCheckbox = document.getElementById('selectAll');
     const deleteSelectedButton = document.getElementById('deleteSelected');
@@ -23,11 +23,18 @@ document.addEventListener('DOMContentLoaded', function() {
             .map(checkbox => checkbox.value);
 
         if (selectedIds.length === 0) {
-            alert('No row selected.');
+            // Get the current locale from Laravel
+            const locale = document.documentElement.lang || 'en';
+            const noRowMessage = locale === 'ar' ? 'لم يتم تحديد أي صف.' : 'No row selected.';
+            alert(noRowMessage);
             return;
         }
 
-        if (confirm('Are you sure you want to delete the selection?')) {
+        const locale = document.documentElement.lang || 'en';
+        const confirmMessage = locale === 'ar' ? 'هل أنت متأكد من حذف المحدد؟' : 'Are you sure you want to delete the selection?';
+        const errorMessage = locale === 'ar' ? 'حدث خطأ. يرجى المحاولة مرة أخرى.' : 'An error occurred. Please try again.';
+
+        if (confirm(confirmMessage)) {
             fetch("/admin/bounas/delete-multiple", {
                 method: 'POST',
                 headers: {
@@ -41,12 +48,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.success) {
                     location.reload();
                 } else {
-                    alert('An error occurred. Please try again.');
+                    alert(errorMessage);
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('An error occurred. Please try again.');
+                alert(errorMessage);
             });
         }
     }

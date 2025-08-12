@@ -97,7 +97,7 @@ if ($request->hasFile('company_logo')) {
 
         $company->save();
 
-        return redirect('admin/company-info')->with('success', 'Company Information Successfully Updated!');
+return redirect('admin/company-info')->with('success', __('h_companyinfo.success_message'));
     }
 
     /**

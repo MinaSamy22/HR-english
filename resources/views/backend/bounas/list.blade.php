@@ -7,11 +7,11 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>OverTime</h1>
+                        <h1>{{ __('h_bounas.page_title') }}</h1>
                     </div><!-- /.col -->
-                    <div class="col-sm-6" style="text-align: right;">
+                    <div class="col-sm-6 text-right">
                         <a href="{{ url('admin/bounas/add') }}" class="btn btn-primary rounded-pill">
-                            <i class="fas fa-user-plus"></i> Add
+                            <i class="fas fa-user-plus"></i> {{ __('h_bounas.add_btn') }}
                         </a>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -27,7 +27,6 @@
                     <section class="col-md-12">
                         <div class="card" style="background-color: rgba(255, 255, 255, 0.9); border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
 
-
                             <form method="get" action="">
                                 <div class="card-body">
                                     <div class="row">
@@ -36,38 +35,32 @@
                                         {{-- name and value I put the name el mktop fl database --}}
                                         {{-- md3 for the size of the label md2 small --}}
 
-
                                         <div class="form-group col-md-2 col-sm-6">
-                                            <label>Employee Name </label>
-                                            <input type="text" value="{{ Request()->name }}" name="name" class="form-control" placeholder=" Name">
+                                            <label>{{ __('h_bounas.employee_name') }}</label>
+                                            <input type="text" value="{{ Request()->name }}" name="name" class="form-control" placeholder="{{ __('h_bounas.name_placeholder') }}">
                                         </div>
-
-
 
                                         <div class="form-group col-md-3 col-sm-6 d-flex align-items-end">
-
-                                                <button class="btn btn-primary rounded-pill" type="submit" style="margin-right: 10px;" title="Search">
-                                                    <i class="fas fa-search"></i>
-                                                </button>
-                                                <a href="{{ url('admin/bounas') }}" class="btn btn-success rounded-pill" title="Reset">
-                                                    <i class="fas fa-sync-alt"></i>
-                                                </a>
+                                            <button class="btn btn-primary rounded-pill" type="submit" style="margin-right: 10px;" title="{{ __('h_bounas.search_btn') }}">
+                                                <i class="fas fa-search"></i>
+                                            </button>
+                                            <a href="{{ url('admin/bounas') }}" class="btn btn-success rounded-pill" title="{{ __('h_bounas.reset_btn') }}">
+                                                <i class="fas fa-sync-alt"></i>
+                                            </a>
                                         </div>
-
 
                                     </div>
                                 </div>
                             </form>
                         </div>
 
-
                      @include('_message')
 
                      <div class="card" style="background-color: rgba(255, 255, 255, 0.9); border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
                         <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
-                            <h3 class="card-title mb-2 mb-md-0">OverTime List</h3>
+                            <h3 class="card-title mb-2 mb-md-0">{{ __('h_bounas.list_title') }}</h3>
                             <div class="ml-auto">
-                                <button class="btn btn-danger" id="deleteSelected">Delete Selection</button>
+                                <button class="btn btn-danger" id="deleteSelected">{{ __('h_bounas.delete_selection_btn') }}</button>
                             </div>
                         </div>
 
@@ -77,14 +70,13 @@
                                     <thead>
                                         <tr>
                                             <th><input type="checkbox" id="selectAll"></th>
-                                            <th>Employee Id</th>
-                                            <th>Employee Name</th>
-                                            <th>Hours</th>
-                                            <th>Date</th>
-                                            <th>Action</th>{{-- buttons of crud inside it --}}
+                                            <th>{{ __('h_bounas.table_employee_id') }}</th>
+                                            <th>{{ __('h_bounas.table_employee_name') }}</th>
+                                            <th>{{ __('h_bounas.table_hours') }}</th>
+                                            <th>{{ __('h_bounas.table_date') }}</th>
+                                            <th>{{ __('h_bounas.table_action') }}</th>{{-- buttons of crud inside it --}}
                                         </tr>
                                     </thead>
-
 
                                     <tbody>
                                         @forelse ($getRecord as $value )  {{-- forelse insted of foreach it found with col spam and empty for writing not found if not found --}}
@@ -97,16 +89,15 @@
                                             <td>{{ $value->hours }}</td>
                                             <td>{{ date('d-m-Y', strtotime($value->created_at)) }}</td>
 
-
                                             <td>
-                                                <a href="{{ url('admin/bounas/delete/' .$value->id) }}" onclick="return confirm('Are you sure you want to delete?')" class="btn btn-danger rounded-pill" title="Delete">
+                                                <a href="{{ url('admin/bounas/delete/' .$value->id) }}" onclick="return confirm('{{ __('h_bounas.confirm_delete') }}')" class="btn btn-danger rounded-pill" title="{{ __('h_bounas.delete_btn') }}">
                                                     <i class="fas fa-trash-alt"></i>
                                                 </a>
                                             </td>
                                         </tr>
                                         @empty
                                         <tr>
-                                            <td colspan="100%"> Not Found.. </td>
+                                            <td colspan="100%">{{ __('h_bounas.not_found') }}</td>
                                         </tr>
                                         @endforelse
                                     </tbody>
@@ -118,13 +109,11 @@
                             </div>
                         </div>
                      </div>
-
                     </section>
                 </div>
             </div>
         </section>
     </div>
-
 
  <!-- Link to the new JavaScript file -->
  <script src="{{ url('dist/js/bounas.js') }}"></script>

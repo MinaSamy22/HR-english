@@ -20,7 +20,7 @@ class VacationRequest extends Model
         'emergency_contact',
         'is_urgent',
         'status',
-        'total_days'
+        'total'
     ];
 
     protected $casts = [

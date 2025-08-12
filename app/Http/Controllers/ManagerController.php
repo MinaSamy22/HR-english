@@ -56,7 +56,7 @@ $manager->company_id           = session('company_id'); // Important!
     }
 $manager->save();
 
-return redirect('admin/manager')->with('success', 'Manager successfully register.');
+return redirect('admin/manager')->with('success', __('h_manager.manager_register_success'));
 }
 
 
@@ -95,16 +95,14 @@ public function edit_update ($id, Request $request){
 
     $manager->save();
 
-    return redirect('admin/manager')->with('success', 'manager successfully update.');
-}
+return redirect('admin/manager')->with('success', __('h_manager.manager_update_success'));}
 
 
 
 public function delete($id){
     $recordDelete = Manager::find($id);
     $recordDelete->delete();
-    return redirect()->back()->with('error', 'Record successfully deleted');
-
+return redirect()->back()->with('success', __('h_manager.manager_delete_success'));
 }
 
 public function info(Request $request){

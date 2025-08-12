@@ -62,7 +62,7 @@ $department->company_id              = session('company_id'); // Important!
     }
 $department->save();
 
-return redirect('admin/department')->with('success', 'Department successfully add.');
+return redirect('admin/department')->with('success', __('h_department.department_added'));
 }
 
 
@@ -104,14 +104,14 @@ $department->location                = trim ($request->location);
 
 $department->save();
 
-    return redirect('admin/department')->with('success', 'Department successfully update.');
+return redirect('admin/department')->with('success', __('h_department.department_updated'));
 }
 
 
 public function delete($id){
     $recordDelete = Department::find($id);
     $recordDelete->delete();
-    return redirect()->back()->with('error', 'Record successfully deleted');
+return redirect()->back()->with('error', __('h_department.record_deleted'));
 
 }
 

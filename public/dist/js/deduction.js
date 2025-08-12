@@ -22,11 +22,16 @@ document.addEventListener('DOMContentLoaded', function() {
             .map(checkbox => checkbox.value);
 
         if (selectedIds.length === 0) {
-            alert('No row selected.');
+            // Get translated message from meta tag or use default
+            const noRowMessage = document.querySelector('meta[name="no-row-selected"]')?.getAttribute('content') || 'No row selected.';
+            alert(noRowMessage);
             return;
         }
 
-        if (confirm('Are you sure you want to delete the selection?')) {
+        // Get translated confirmation message from meta tag or use default
+        const confirmMessage = document.querySelector('meta[name="delete-selection-confirm"]')?.getAttribute('content') || 'Are you sure you want to delete the selection?';
+
+        if (confirm(confirmMessage)) {
             fetch("/admin/deductions/delete-multiple", {
                 method: 'POST',
                 headers: {
@@ -40,12 +45,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.success) {
                     location.reload();
                 } else {
-                    alert('An error occurred. Please try again.');
+                    // Get translated error message from meta tag or use default
+                    const errorMessage = document.querySelector('meta[name="error-occurred"]')?.getAttribute('content') || 'An error occurred. Please try again.';
+                    alert(errorMessage);
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('An error occurred. Please try again.');
+                // Get translated error message from meta tag or use default
+                const errorMessage = document.querySelector('meta[name="error-occurred"]')?.getAttribute('content') || 'An error occurred. Please try again.';
+                alert(errorMessage);
             });
         }
     }
