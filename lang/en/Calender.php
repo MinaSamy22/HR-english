@@ -1,10 +1,8 @@
 <?php
 
 return [
-    'calendar' => 'Calendar',
+    'title' => 'Calendar',
     'home' => 'Home',
-    'my_account' => 'My Account',
-
     'days' => [
         'sun' => 'Sun',
         'mon' => 'Mon',
@@ -14,7 +12,6 @@ return [
         'fri' => 'Fri',
         'sat' => 'Sat',
     ],
-
     'months' => [
         'january' => 'January',
         'february' => 'February',

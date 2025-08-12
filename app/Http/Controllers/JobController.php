@@ -66,7 +66,7 @@ public function add(Request $request)
     }
     $job->save();
 
-    return redirect('admin/jobs')->with('success', 'successfully register.');
+return redirect('admin/jobs')->with('success', __('h_jobs.successfully_register'));
     }
 
 
@@ -103,7 +103,7 @@ public function edit($id)
     $job->department_id        = trim ($request->department_id);
     $job->save();
 
-        return redirect('admin/jobs')->with('success', 'successfully update.');
+return redirect('admin/jobs')->with('success', __('h_jobs.successfully_update'));
 
 
     }
@@ -112,7 +112,7 @@ public function edit($id)
     public function delete($id){
         $recordDelete = Job::find($id);
         $recordDelete->delete();
-        return redirect()->back()->with('error', 'Record successfully deleted');
+return redirect()->back()->with('success', __('h_jobs.successfully_deleted'));
 
     }
 

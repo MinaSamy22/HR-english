@@ -7,7 +7,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 >Job History</h1>
+                        <h1>{{ __('h_job_history.job_history') }}</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6" style="text-align: right;">
                         <form action="{{ url('admin/jobhistory_export') }}" method="get"> <!-- excel export form -->
@@ -17,13 +17,13 @@
                             <input type="hidden" name="end_date" value="{{ Request()->end_date }}">
 
                             <button type="submit" class="btn btn-success">
-                                <i class="fas fa-file-excel"></i> Export
+                                <i class="fas fa-file-excel"></i> {{ __('h_job_history.export') }}
                             </button>
                         </form>
                         <br>
 
                         <a href="{{ url('admin/job_history/add') }}" class="btn btn-primary rounded-pill">
-                            <i class="fas fa-user-plus"></i> Add History
+                            <i class="fas fa-user-plus"></i> {{ __('h_job_history.add_history_btn') }}
                         </a>
 
                     </div><!-- /.col -->
@@ -39,121 +39,93 @@
                     <section class="col-md-12">
                         <div class="card" style="background-color: rgba(255, 255, 255, 0.9); border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
                             <div class="card-header">
-
-                           <h3 class="card-title">Search Job History</h3>
-
+                                <h3 class="card-title">{{ __('h_job_history.search_job_history') }}</h3>
                             </div>
 
                             <form method="get" action="">
                                 <div class="card-body">
                                     <div class="row">
 
-                                        {{-- here the searching options --}}
-                                        {{-- name and value I put the name el mktop fl database --}}
-                                        {{-- md3 for the size of the label md2 small --}}
-
-                                        {{-- <div class="form-group col-md-3">
-                                            <label> ID </label>
-                                            <input type="number" name="h_id" class="form-control" value="{{ Request()->h_id }}" placeholder="ID">
-                                        </div> --}}
-
                                         <div class="form-group col-md-2">
-                                            <label> Employee Name </label>
-                                            <input type="text" value="{{ Request()->employee_name }}" name="employee_name" class="form-control" placeholder=" Name">
+                                            <label>{{ __('h_job_history.employee_name') }}</label>
+                                            <input type="text" value="{{ Request()->employee_name }}" name="employee_name" class="form-control" placeholder="{{ __('h_job_history.name_placeholder') }}">
                                         </div>
 
-
-
                                         <div class="form-group col-md-3">
-                                            <label> From Date (Start Date) </label>
+                                            <label>{{ __('h_job_history.from_date') }}</label>
                                             <input type="date" value="{{ Request()->start_date }}" name="start_date" class="form-control">
                                         </div>
 
-
-
                                         <div class="form-group col-md-2">
-                                            <label> Job Title </label>
-                                            <input type="text" value="{{ Request()->job_title }}" name="job_title" class="form-control" placeholder="Job Title">
+                                            <label>{{ __('h_job_history.job_title') }}</label>
+                                            <input type="text" value="{{ Request()->job_title }}" name="job_title" class="form-control" placeholder="{{ __('h_job_history.job_title_placeholder') }}">
                                         </div>
 
                                         <div class="form-group col-md-3 d-flex align-items-end">
-
-                                                <button class="btn btn-primary rounded-pill" type="submit" style="margin-right: 10px;" title="Search">
-                                                    <i class="fas fa-search"></i>
-                                                </button>
-                                                <a href="{{ url('admin/job_history') }}" class="btn btn-success rounded-pill" title="Reset">
-                                                    <i class="fas fa-sync-alt"></i>
-                                                </a>
+                                            <button class="btn btn-primary rounded-pill" type="submit" style="margin-right: 10px;" title="{{ __('h_job_history.search') }}">
+                                                <i class="fas fa-search"></i>
+                                            </button>
+                                            <a href="{{ url('admin/job_history') }}" class="btn btn-success rounded-pill" title="{{ __('h_job_history.reset') }}">
+                                                <i class="fas fa-sync-alt"></i>
+                                            </a>
                                         </div>
 
-
-                                      </div>
                                     </div>
-                                    </form>
+                                </div>
+                            </form>
                         </div>
 
+                        @include('_message')
 
-                     @include('_message')
-
-                     <div class="card" style="background-color: rgba(255, 255, 255, 0.9); border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-                        <div class="card-header">
-                            <h3 class="card-title"> Job History List </h3>
-                        </div>
-
-                        <div class="card-body p-0">
-                            <div class="table-responsive">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Employee Name</th>
-                                            <th>Start Date</th>
-                                            <th>End Date</th>
-                                            <th>Job Title</th>
-                                            <th>Department Name </th>
-                                            <th>Action</th>{{-- buttons of crud inside it --}}
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @forelse ($getRecord as $value )  {{-- forelse insted of foreach it found with col spam and empty for writing not found if not found --}}
-                                        <tr>
-                                            <td>{{ $value->employee_name }}</td>
-                                            <td>{{ $value->start_date }}</td>
-                                            <td>{{ $value->end_date }}</td>
-
-                                            <td>{{ $value->job_title }}</td>
-                                            <td>{{ $value->department_name }}</td>
-
-
-                                            <td>
-                                                <a href="{{ url('admin/job_history/edit/' .$value->id) }}" class="btn btn-primary rounded-pill" title="Edit">
-                                                    <i class="fas fa-edit"></i>
-                                                </a>
-                                                <a href="{{ url('admin/job_history/delete/' .$value->id) }}" onclick="return confirm('Are you sure you want to delete?')" class="btn btn-danger rounded-pill" title="Delete">
-                                                    <i class="fas fa-trash-alt"></i>
-                                                </a>
-                                            </td>
-                                    </tr>
-                                    @empty
-                                    <tr>
-                                        <td colspan="100%"> Not Found.. </td>
-                                    </tr>
-                                    @endforelse
-                                    </tbody>
-                                </table>
+                        <div class="card" style="background-color: rgba(255, 255, 255, 0.9); border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                            <div class="card-header">
+                                <h3 class="card-title">{{ __('h_job_history.job_history_list') }}</h3>
                             </div>
 
-                            <div style="padding: 10px; float:right;">   {{-- for pagination --}}
-                                {!! $getRecord->appends(Illuminate\Support\Facades\Request::except('page'))->links() !!}
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>{{ __('h_job_history.employee_name') }}</th>
+                                                <th>{{ __('h_job_history.start_date') }}</th>
+                                                <th>{{ __('h_job_history.end_date') }}</th>
+                                                <th>{{ __('h_job_history.job_title') }}</th>
+                                                <th>{{ __('h_job_history.department_name') }}</th>
+                                                <th>{{ __('h_job_history.action') }}</th>{{-- buttons of crud inside it --}}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @forelse ($getRecord as $value )  {{-- forelse insted of foreach it found with col spam and empty for writing not found if not found --}}
+                                            <tr>
+                                                <td>{{ $value->employee_name }}</td>
+                                                <td>{{ $value->start_date }}</td>
+                                                <td>{{ $value->end_date }}</td>
+                                                <td>{{ $value->job_title }}</td>
+                                                <td>{{ $value->department_name }}</td>
+                                                <td>
+                                                    <a href="{{ url('admin/job_history/edit/' .$value->id) }}" class="btn btn-primary rounded-pill" title="{{ __('h_job_history.edit') }}">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    <a href="{{ url('admin/job_history/delete/' .$value->id) }}" onclick="return confirm('{{ __('h_job_history.delete_confirm') }}')" class="btn btn-danger rounded-pill" title="{{ __('h_job_history.delete') }}">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            @empty
+                                            <tr>
+                                                <td colspan="100%">{{ __('h_job_history.not_found') }}</td>
+                                            </tr>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
+                                </div>
 
-
-
+                                <div style="padding: 10px; float:right;">   {{-- for pagination --}}
+                                    {!! $getRecord->appends(Illuminate\Support\Facades\Request::except('page'))->links() !!}
+                                </div>
                             </div>
                         </div>
-                     </div>
-
-
-
-
 
                     </section>
                 </div>

@@ -6,12 +6,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0 text">Reminder</h1>
+                    <h1 class="m-0 text">{{ __('h_todo.reminder') }}</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#" class="text">Home</a></li>
-                        <li class="breadcrumb-item active text">Reminder</li>
+                        <li class="breadcrumb-item"><a href="#" class="text">{{ __('h_todo.home') }}</a></li>
+                        <li class="breadcrumb-item active text">{{ __('h_todo.reminder') }}</li>
                     </ol>
                 </div>
             </div>
@@ -24,7 +24,7 @@
         <div class="card-header">
             <h3 class="card-title">
                 <i class="ion ion-clipboard mr-1"></i>
-                To Do List
+                {{ __('h_todo.to_do_list') }}
             </h3>
             <button type="button" class="btn btn-danger float-right ml-2" onclick="deleteSelected()">
                 <i class="fas fa-trash"></i>
@@ -34,7 +34,7 @@
 
         <div class="card-body">
             <div class="mb-2">
-                <input type="checkbox" id="selectAll" onclick="toggleSelectAll()"> Select All
+                <input type="checkbox" id="selectAll" onclick="toggleSelectAll()"> {{ __('h_todo.select_all') }}
             </div>
             <ul class="todo-list" data-widget="todo-list">
                 @foreach($tasks as $task)
@@ -72,9 +72,9 @@
             <form action="{{ route('tasks.store') }}" method="POST">
                 @csrf
                 <div class="input-group">
-                    <input type="text" name="task" class="form-control" placeholder="Add new task...">
+                    <input type="text" name="task" class="form-control" placeholder="{{ __('h_todo.add_new_task') }}">
                     <span class="input-group-append">
-                        <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Add item</button>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> {{ __('h_todo.add_item') }}</button>
                     </span>
                 </div>
             </form>
@@ -82,10 +82,15 @@
     </div>
 </div>
 
+<!-- Pass translations to JavaScript -->
+<script>
+    window.translations = {
+        deleteConfirm: "{{ __('h_todo.delete_selected_confirm') }}",
+        noTasksSelected: "{{ __('h_todo.no_tasks_selected') }}"
+    };
+</script>
 
-    <!-- Link to the new JavaScript file -->
+<!-- Link to the new JavaScript file -->
 <script src="{{ url('dist/js/todo.js') }}"></script>
-
-
 
 @endsection
