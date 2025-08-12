@@ -59,6 +59,6 @@ class MyAccountController extends Controller
 
         $use->save();
 
-        return redirect('admin/my_account')->with('success', 'My Account Successfully Updated!');
+        return redirect('admin/my_account')->with('success', __('E_myaccount.controller message'));
     }
 }

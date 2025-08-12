@@ -134,7 +134,7 @@ class RequestController extends Controller
             $this->updateAttendanceForLateRemoval($model);
         }
 
-        return back()->with('success', 'Request accepted successfully.');
+     return back()->with('success', __('h_requests.accept message'));
     }
 
     public function reject($type, $id)
@@ -143,7 +143,8 @@ class RequestController extends Controller
         $model->status = 'rejected';
         $model->save();
 
-        return back()->with('success', 'Request rejected successfully.');
+     return back()->with('success', __('h_requests.reject message'));
+
     }
 
     private function getModelInstance($type, $id)

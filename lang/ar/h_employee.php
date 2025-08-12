@@ -1,0 +1,115 @@
+<?php
+
+return [
+    // Page Headers
+    'employees' => 'الموظفون',
+    'add_employee' => 'إضافة موظف',
+    'employees_list' => 'قائمة الموظفون',
+    'search_employees' => 'البحث عن الموظفين',
+
+    // Buttons
+    'export' => 'تصدير',
+    'import' => 'استيراد',
+    'add' => 'إضافة',
+    'search' => 'بحث',
+    'reset' => 'إعادة تعيين',
+    'view' => 'عرض',
+    'edit' => 'تعديل',
+    'delete' => 'حذف',
+    'submit' => 'إرسال',
+    'back' => 'رجوع',
+
+    // Form Labels
+    'id' => 'الكود',
+    'name' => 'الاسم',
+    'employee_name' => 'اسم الموظف',
+    'email' => 'البريد الإلكتروني',
+    'phone_number' => 'رقم الهاتف',
+    'mobile_mac_address' => 'عنوان ماك الجوال',
+    'role' => 'الدور',
+    'birth_date' => 'تاريخ الميلاد',
+    'hire_date' => 'تاريخ التوظيف',
+    'job_title' => 'المسمى الوظيفي',
+    'salary_type' => 'نوع الراتب',
+    'salary' => 'الراتب',
+    'attachment' => 'المرفق (PDF)',
+    'work_start_time' => 'وقت بداية العمل',
+    'work_end_time' => 'وقت نهاية العمل',
+    'free_biometric' => 'البصمة حرة',
+    'manager_name' => 'اسم المدير',
+    'department_name' => 'اسم القسم',
+    'password' => 'كلمة المرور',
+
+    // Placeholders
+    'enter_name' => 'أدخل الاسم',
+    'enter_phone_number' => 'أدخل رقم الهاتف',
+    'enter_mac_address_optional' => 'أدخل عنوان الماك (اختياري)',
+    'enter_email' => 'أدخل البريد الإلكتروني',
+    'enter_salary' => 'أدخل الراتب',
+    'enter_password' => 'أدخل كلمة المرور',
+
+    // Select Options
+    'select_job_title' => 'اختر المسمى الوظيفي',
+    'select_salary_type' => 'اختر نوع الراتب',
+    'select_manager_name' => 'اختر اسم المدير',
+    'select_department' => 'اختر القسم',
+    'select_role' => 'اختر الدور',
+
+    // Salary Types
+    'monthly_salary' => 'راتب شهري',
+    'weekly_wage' => 'أجر أسبوعي',
+    'daily_wage' => 'أجر يومي',
+
+    // Roles
+    'employee' => 'موظف',
+    'hr' => 'HR',
+
+    // Options
+    'yes' => 'نعم',
+    'no' => 'لا',
+
+    // Messages
+    'not_found' => 'غير موجود..',
+    'delete_confirmation' => 'هل أنت متأكد من أنك تريد الحذف؟',
+    'required_field' => '*',
+
+    // Actions
+    'action' => 'الإجراء',
+
+    // Breadcrumbs
+    'home' => 'الرئيسية',
+    'employees_breadcrumb' => 'الموظفون',
+    'add_breadcrumb' => 'إضافة',
+    'edit_breadcrumb' => 'تعديل',
+
+    // Additional Form Labels
+    'first_name' => 'الاسم الأول',
+    'last_name' => 'اسم العائلة',
+    'email_id' => 'البريد الإلكتروني',
+    'is_role' => 'الدور',
+    'edit_employee' => 'تعديل الموظف',
+    'update' => 'تحديث',
+    'current_file' => 'الملف الحالي',
+
+    // Additional Placeholders
+    'enter_first_name' => 'أدخل الاسم الأول',
+    'enter_last_name' => 'أدخل اسم العائلة',
+    'enter_start_time' => 'أدخل وقت البداية',
+    'enter_end_time' => 'أدخل وقت النهاية',
+    'enter_mac_address' => 'أدخل عنوان الماك',
+
+    // File Management
+    'view_file' => 'عرض',
+    'attachment_pdf' => 'المرفق',
+
+    'View Employees' => 'عرض الموظفين',
+    'View'           => 'عرض',
+    'Employees' => 'الموظفين',
+    'Updated Date' => 'تاريخ التحديث',
+    'Created Date' => 'تاريخ الانشاء',
+
+    'not_set' => 'لم يتم التحديد',
+    'Download' => 'تحميل',
+    'View PDF' => 'عرض PDF'
+
+];

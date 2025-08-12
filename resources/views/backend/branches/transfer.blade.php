@@ -6,7 +6,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Transfer Employees Between Branches</h1>
+                        <h1>{{ __('h_branches.transfer_employees_between_branches') }}</h1>
                     </div>
                 </div>
             </div>
@@ -25,10 +25,10 @@
                         @csrf
 
                         <div class="form-group">
-                            <label for="employee_selection">Choose Employees</label>
+                            <label for="employee_selection">{{ __('h_branches.choose_employees') }}</label>
                             <div class="mb-2">
                                 <button type="button" class="btn btn-sm btn-success" onclick="toggleSelectAll()" id="select-all-btn">
-                                    <i class="fas fa-check-double"></i> Select All
+                                    <i class="fas fa-check-double"></i> {{ __('h_branches.select_all') }}
                                 </button>
                             </div>
                             <div id="employee-list" style="max-height: 300px; overflow-y: auto; border: 1px solid #ddd; border-radius: 5px; padding: 10px;">
@@ -48,15 +48,15 @@
                             </div>
                             <div class="mt-2">
                                 <small class="text-muted">
-                                    Selected: <span id="selected-count">0</span> employees
+                                    {{ __('h_branches.selected') }}: <span id="selected-count">0</span> {{ __('h_branches.employees') }}
                                 </small>
                             </div>
                         </div>
 
                         <div class="form-group mt-3">
-                            <label for="branch_id">Choose the new branch</label>
+                            <label for="branch_id">{{ __('h_branches.choose_new_branch') }}</label>
                             <select name="branch_id" class="form-control" required>
-                                <option value="">-- Select Branch --</option>
+                                <option value="">{{ __('h_branches.select_branch') }}</option>
                                 @foreach($branches as $branch)
                                     <option value="{{ $branch->id }}">{{ $branch->name }}</option>
                                 @endforeach
@@ -65,7 +65,7 @@
 
                         <div class="form-group mt-4">
                             <button type="submit" class="btn btn-primary" id="transfer-btn" disabled>
-                                <i class="fas fa-random"></i> Transfer Selected Employees
+                                <i class="fas fa-random"></i> {{ __('h_branches.transfer_selected_employees') }}
                             </button>
                         </div>
                     </form>
@@ -74,8 +74,18 @@
         </section>
     </div>
 
+    <script>
+        // Pass translations to JavaScript
+        window.translations = {
+            selectAll: '{{ __("h_branches.select_all") }}',
+            deselectAll: '{{ __("h_branches.deselect_all") }}',
+            transferSelectedEmployees: '{{ __("h_branches.transfer_selected_employees") }}',
+            transferSelectedEmployee: '{{ __("h_branches.transfer_selected_employee") }}',
+            transferXSelectedEmployees: '{{ __("h_branches.transfer_x_selected_employees") }}',
+            pleaseSelectEmployee: '{{ __("h_branches.please_select_employee") }}',
+            pleaseSelectBranch: '{{ __("h_branches.please_select_branch") }}'
+        };
+    </script>
     <script src="{{ asset('dist/js/transfere.js') }}"></script>
-
-
 
 @endsection

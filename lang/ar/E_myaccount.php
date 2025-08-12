@@ -12,4 +12,7 @@ return [
     'Setting' => 'الاعدادات',
     'My Account' => 'حسابي',
     'Enter new password' => 'ادخل كلمة السر الجديدة',
+
+    'controller message' =>'تم تحديث حسابي بنجاح!'
+
 ];
