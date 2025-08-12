@@ -149,6 +149,14 @@ html[dir="rtl"] .mr-auto {
     margin-left: auto !important;
 }
 
+[dir="ltr"] .text-end {
+    text-align: right !important;
+}
+
+[dir="rtl"] .text-end {
+    text-align: left !important;
+}
+
 /* Media query fix for small screens */
 @media (max-width: 767.98px) {
     html[dir="rtl"] .main-sidebar,
@@ -200,4 +208,11 @@ html[dir="rtl"] .card-header {
 }
 html[dir="rtl"] .card-title {
     float: right !important;
+}
+
+html[dir="rtl"] .breadcrumb-item + .breadcrumb-item::before {
+    float: none !important; /* override float: left */
+    padding-right: 0.0rem;
+    color: #6c757d;
+    content: "\\";
 }

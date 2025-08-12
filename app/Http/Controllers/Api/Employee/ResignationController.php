@@ -50,7 +50,7 @@ class ResignationController extends Controller
             'resignation_date' => $request->resignation_date,
             'reason' => $request->reason,
             'status'=>VacationType::PENDING->value,
-            'company_id'=>$employee->company_id,
+            // 'company_id'=>$employee->company_id,
         ];
 
         $resignationRequest = $this->employeeService->resignationRequest($data);

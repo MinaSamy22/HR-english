@@ -3,7 +3,7 @@
 namespace App\Services;
 use App\Models\User;
 use App\Models\VacationRequest;
-use App\Models\ResignationRequest;
+use App\Models\Resignation;
 use App\Models\Payroll;
 use App\Enums\VacationType;
 use Carbon\Carbon;
@@ -102,15 +102,15 @@ class EmployeeService
     }
     
     public function getResignationRequests($from = null ,$to = null){
-        return $this->employee->resignationRequests;
+        return $this->employee->resignations;
     }
     
     public function resignationRequest($data){
-        return $this->employee->ResignationRequests()->create($data);
+        return $this->employee->Resignations()->create($data);
     }
     
     public function deleteResignationRequest($id){
-        if($resignationRequest = ResignationRequest::where('status',VacationType::PENDING->value)->find($id)){
+        if($resignationRequest = Resignation::where('status',VacationType::PENDING->value)->find($id)){
             $resignationRequest->delete();
             return true;
         }

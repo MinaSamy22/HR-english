@@ -92,7 +92,7 @@ class VacationController extends Controller
             'reason'=>$request->reason,
             'vacation_type'=>$request->vacation_type,
             'status'=>VacationType::PENDING->value,
-            'company_id'=>$employee->company_id,
+            // 'company_id'=>$employee->company_id,
         ];
 
         $vacationRequest = $this->employeeService->vacationRequest($data);

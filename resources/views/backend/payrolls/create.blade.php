@@ -12,7 +12,7 @@
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <div class="card-header">
-                        <h1 class="card-title">Create Payroll</h1>
+                        <h1 class="card-title">{{ __('dashboard.create_payroll') }}</h1>
                     </div>
                 </div>
             </div>
@@ -22,22 +22,22 @@
                 {{ csrf_field() }}
 
                     <div class="form-group row align-items-center">
-                        <label class="col-sm-3 col-form-label mb-0">Payroll Type <span style="color: red;">*</span></label>
+                        <label class="col-sm-3 col-form-label mb-0">{{ __('dashboard.payroll_type') }} <span style="color: red;">*</span></label>
                         <div class="col-sm-9 d-flex align-items-center gap-3 flex-wrap">
                             <div class="form-check form-check-inline mb-0">
                                 <input class="form-check-input" type="radio" name="payroll_type" id="type_monthly"
                                     value="monthly">
-                                <label class="form-check-label" for="type_monthly">Monthly</label>
+                                <label class="form-check-label" for="type_monthly">{{ __('dashboard.monthly') }}</label>
                             </div>
                             <div class="form-check form-check-inline mb-0">
                                 <input class="form-check-input" type="radio" name="payroll_type" id="type_weekly"
                                     value="weekly">
-                                <label class="form-check-label" for="type_weekly">Weekly</label>
+                                <label class="form-check-label" for="type_weekly">{{ __('dashboard.weekly') }}</label>
                             </div>
                             <div class="form-check form-check-inline mb-0">
                                 <input class="form-check-input" type="radio" name="payroll_type" id="type_daily"
                                     value="daily">
-                                <label class="form-check-label" for="type_daily">Daily</label>
+                                <label class="form-check-label" for="type_daily">{{ __('dashboard.daily') }}</label>
                             </div>
                             <small id="type-error" class="text-danger d-block w-100 mt-1" style="display:none;"></small>
                         </div>
@@ -45,33 +45,33 @@
                     <hr><br>
 
                     <div class="form-group row">
-                        <label class="col-sm-3 col-form-label">Start Date<span style="color: red;">*</span></label>
+                        <label class="col-sm-3 col-form-label">{{ __('dashboard.start_date') }}<span style="color: red;">*</span></label>
                         <div class="col-sm-9">
                             <input type="date" name="start_date" class="form-control" required>
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-sm-3 col-form-label">End Date<span style="color: red;">*</span></label>
+                        <label class="col-sm-3 col-form-label">{{ __('dashboard.end_date') }}<span style="color: red;">*</span></label>
                         <div class="col-sm-9">
                             <input type="date" name="end_date" class="form-control" required>
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-sm-3 col-form-label">Employee Name<span style="color: red;">*</span></label>
+                        <label class="col-sm-3 col-form-label">{{ __('dashboard.employee_name') }}<span style="color: red;">*</span></label>
                         <div class="col-sm-9">
                             <div class="checkbox-box">
                                 <!-- Daily Employees -->
                                 @if($getEmployees->where('salary_type', 3)->count() > 0)
                                     <div class="employee-category" id="daily-employees" style="display: none;">
                                         <h5 class="category-title">
-                                            <i class="fas fa-calendar-day"></i> Daily Wage Employees
+                                            <i class="fas fa-calendar-day"></i> {{ __('dashboard.daily_wage_employees') }}
                                             <span class="employee-count" id="daily-count">(0/{{ $getEmployees->where('salary_type', 3)->count() }})</span>
                                         </h5>
                                         <div class="category-controls mb-2">
                                             <input type="checkbox" id="select-all-daily" class="select-all-category">
-                                            <label for="select-all-daily"><strong>Select All Daily</strong></label>
+                                            <label for="select-all-daily"><strong>{{ __('dashboard.select_all_daily') }}</strong></label>
                                         </div>
                                         <div class="employee-list">
                                             @foreach ($getEmployees->where('salary_type', 3) as $employee)
@@ -89,12 +89,12 @@
                                 @if($getEmployees->where('salary_type', 2)->count() > 0)
                                     <div class="employee-category" id="weekly-employees" style="display: none;">
                                         <h5 class="category-title">
-                                            <i class="fas fa-calendar-week"></i> Weekly Wage Employees
+                                            <i class="fas fa-calendar-week"></i> {{ __('dashboard.weekly_wage_employees') }}
                                             <span class="employee-count" id="weekly-count">(0/{{ $getEmployees->where('salary_type', 2)->count() }})</span>
                                         </h5>
                                         <div class="category-controls mb-2">
                                             <input type="checkbox" id="select-all-weekly" class="select-all-category">
-                                            <label for="select-all-weekly"><strong>Select All Weekly</strong></label>
+                                            <label for="select-all-weekly"><strong>{{ __('dashboard.select_all_weekly') }}</strong></label>
                                         </div>
                                         <div class="employee-list">
                                             @foreach ($getEmployees->where('salary_type', 2) as $employee)
@@ -112,12 +112,12 @@
                                 @if($getEmployees->where('salary_type', 1)->count() > 0)
                                     <div class="employee-category" id="monthly-employees" style="display: none;">
                                         <h5 class="category-title">
-                                            <i class="fas fa-calendar-alt"></i> Monthly Wage Employees
+                                            <i class="fas fa-calendar-alt"></i> {{ __('dashboard.monthly_wage_employees') }}
                                             <span class="employee-count" id="monthly-count">(0/{{ $getEmployees->where('salary_type', 1)->count() }})</span>
                                         </h5>
                                         <div class="category-controls mb-2">
                                             <input type="checkbox" id="select-all-monthly" class="select-all-category">
-                                            <label for="select-all-monthly"><strong>Select All Monthly</strong></label>
+                                            <label for="select-all-monthly"><strong>{{ __('dashboard.select_all_monthly') }}</strong></label>
                                         </div>
                                         <div class="employee-list">
                                             @foreach ($getEmployees->where('salary_type', 1) as $employee)
@@ -135,7 +135,7 @@
                     </div>
 
                     <div class="card">
-                        <button type="submit" class="btn btn-white float-right" style="background-color: #ffc852;">Calculate Payroll </button>
+                        <button type="submit" class="btn btn-white float-right" style="background-color: #ffc852;">{{ __('dashboard.calculate_payroll') }} </button>
                     </div>
 
                 </form>
