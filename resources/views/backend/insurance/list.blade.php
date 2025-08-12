@@ -8,11 +8,11 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Insurance</h1>
+                    <h1>{{ __('h_insurance.insurance') }}</h1>
                 </div><!-- /.col -->
-                <div class="col-sm-6" style="text-align: right;">
+                    <div class="col-sm-6 text-right">
                     <a href="{{ url('admin/insurance/add') }}" class="btn btn-primary rounded-pill">
-                        <i class="fas fa-user-plus"></i> Add Insurance
+                        <i class="fas fa-user-plus"></i> {{ __('h_insurance.add_insurance') }}
                     </a>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -25,24 +25,24 @@
                 <section class="col-md-12">
                     <div class="card" style="background-color: rgba(255, 255, 255, 0.9); border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
                         <div class="card-header">
-                            <h3 class="card-title">Search Insurance</h3>
+                            <h3 class="card-title">{{ __('h_insurance.search_insurance') }}</h3>
                         </div>
                         <form method="get" action="">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="form-group col-md-2">
-                                        <label>Insurance code</label>
-                                        <input type="text" name="code" class="form-control" value="{{ Request()->code }}" placeholder=" Code">
+                                        <label>{{ __('h_insurance.insurance_code') }}</label>
+                                        <input type="text" name="code" class="form-control" value="{{ Request()->code }}" placeholder="{{ __('h_insurance.code') }}">
                                     </div>
                                     <div class="form-group col-md-2">
-                                        <label>Insurance Name</label>
-                                        <input type="text" value="{{ Request()->name }}" name="name" class="form-control" placeholder=" Name">
+                                        <label>{{ __('h_insurance.insurance_name') }}</label>
+                                        <input type="text" value="{{ Request()->name }}" name="name" class="form-control" placeholder="{{ __('h_insurance.name') }}">
                                     </div>
                                     <div class="form-group col-md-3 d-flex align-items-end">
-                                        <button class="btn btn-primary rounded-pill" type="submit" style="margin-right: 10px;" title="Search">
+                                        <button class="btn btn-primary rounded-pill" type="submit" style="margin-right: 10px;" title="{{ __('h_insurance.search') }}">
                                             <i class="fas fa-search"></i>
                                         </button>
-                                        <a href="{{ url('admin/insurance') }}" class="btn btn-success rounded-pill" title="Reset">
+                                        <a href="{{ url('admin/insurance') }}" class="btn btn-success rounded-pill" title="{{ __('h_insurance.reset') }}">
                                             <i class="fas fa-sync-alt"></i>
                                         </a>
                                     </div>
@@ -58,15 +58,15 @@
                                 <form method="POST" action="{{ route('insurances.toggleCompanyInsurance') }}" style="display: inline;">
                                     @csrf
                                     <button type="submit" class="btn btn-{{ $isInsuranceApplied ? 'danger' : 'success' }}">
-                                        {{ $isInsuranceApplied ? 'Don\'t Apply Insurance to Payroll' : 'Apply Insurance to Payroll' }}
+                                        {{ $isInsuranceApplied ? __('h_insurance.dont_apply_insurance_payroll') : __('h_insurance.apply_insurance_payroll') }}
                                     </button>
                                 </form>
                             </div>
 
-                            <h3 class="card-title text-center flex-grow-1 text-center">Insurance List</h3>
+                            <h3 class="card-title text-center flex-grow-1 text-center">{{ __('h_insurance.insurance_list') }}</h3>
 
                             <div>
-                                <button class="btn btn-danger" id="deleteSelected">Delete Selection</button>
+                                <button class="btn btn-danger" id="deleteSelected">{{ __('h_insurance.delete_selected') }}</button>
                             </div>
                         </div>
 
@@ -77,11 +77,11 @@
                                     <thead>
                                         <tr>
                                             <th><input type="checkbox" id="selectAll"></th>
-                                            <th>Employee Name</th>
-                                            <th>Code</th>
-                                            <th>Insurance Name</th>
-                                            <th>Percentage</th>
-                                            <th>Action</th>
+                                            <th>{{ __('h_insurance.table_headers.employee_name') }}</th>
+                                            <th>{{ __('h_insurance.table_headers.code') }}</th>
+                                            <th>{{ __('h_insurance.table_headers.insurance_name') }}</th>
+                                            <th>{{ __('h_insurance.table_headers.percentage') }}</th>
+                                            <th>{{ __('h_insurance.table_headers.action') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -93,17 +93,17 @@
                                             <td>{{ $value->name }}</td>
                                             <td>{{ $value->percent }}%</td>
                                             <td>
-                                                <a href="{{ url('admin/insurance/edit/' .$value->id) }}" class="btn btn-primary rounded-pill" title="Edit">
+                                                <a href="{{ url('admin/insurance/edit/' .$value->id) }}" class="btn btn-primary rounded-pill" title="{{ __('h_insurance.edit') }}">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <a href="{{ url('admin/insurance/delete/' .$value->id) }}" onclick="return confirm('Are you sure you want to delete?')" class="btn btn-danger rounded-pill" title="Delete">
+                                                <a href="{{ url('admin/insurance/delete/' .$value->id) }}" onclick="return confirm('{{ __('h_insurance.delete_confirmation') }}')" class="btn btn-danger rounded-pill" title="{{ __('h_insurance.delete') }}">
                                                     <i class="fas fa-trash-alt"></i>
                                                 </a>
                                             </td>
                                         </tr>
                                         @empty
                                         <tr>
-                                            <td colspan="6">Not Found..</td>
+                                            <td colspan="6">{{ __('h_insurance.not_found') }}</td>
                                         </tr>
                                         @endforelse
                                     </tbody>
@@ -111,7 +111,7 @@
                             </div>
 
                             <div style="padding: 10px; float:right;">
-                                {{-- {!! $getRecord->appends(Illuminate\Support\Facades\Request::except('page'))->links() !!} --}}
+                                {!! $getRecord->appends(Illuminate\Support\Facades\Request::except('page'))->links() !!}
                             </div>
                         </div>
                     </div>

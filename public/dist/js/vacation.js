@@ -1,4 +1,4 @@
-// File: public/dist/js/overtime-management.js
+// File: public/dist/js/vacation.js
 document.addEventListener('DOMContentLoaded', function() {
     const selectAllCheckbox = document.getElementById('selectAll');
     const deleteSelectedButton = document.getElementById('deleteSelected');
@@ -23,11 +23,45 @@ document.addEventListener('DOMContentLoaded', function() {
             .map(checkbox => checkbox.value);
 
         if (selectedIds.length === 0) {
-            alert('No row selected.');
+            // Get the current language from the HTML lang attribute or use a default
+            const currentLang = document.documentElement.lang || 'en';
+
+            // Messages based on language
+            const messages = {
+                'en': {
+                    'no_selection': 'No row selected.',
+                    'confirm_delete': 'Are you sure you want to delete the selection?',
+                    'error_occurred': 'An error occurred. Please try again.'
+                },
+                'ar': {
+                    'no_selection': 'لم يتم تحديد أي صف.',
+                    'confirm_delete': 'هل أنت متأكد أنك تريد حذف المحدد؟',
+                    'error_occurred': 'حدث خطأ. حاول مرة أخرى.'
+                }
+            };
+
+            const msg = messages[currentLang] || messages['en'];
+            alert(msg.no_selection);
             return;
         }
 
-        if (confirm('Are you sure you want to delete the selection?')) {
+        const currentLang = document.documentElement.lang || 'en';
+        const messages = {
+            'en': {
+                'no_selection': 'No row selected.',
+                'confirm_delete': 'Are you sure you want to delete the selection?',
+                'error_occurred': 'An error occurred. Please try again.'
+            },
+            'ar': {
+                'no_selection': 'لم يتم تحديد أي صف.',
+                'confirm_delete': 'هل أنت متأكد أنك تريد حذف المحدد؟',
+                'error_occurred': 'حدث خطأ. حاول مرة أخرى.'
+            }
+        };
+
+        const msg = messages[currentLang] || messages['en'];
+
+        if (confirm(msg.confirm_delete)) {
             fetch("/admin/vacations/delete-multiple", {
                 method: 'POST',
                 headers: {
@@ -41,13 +75,32 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.success) {
                     location.reload();
                 } else {
-                    alert('An error occurred. Please try again.');
+                    alert(msg.error_occurred);
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('An error occurred. Please try again.');
+                alert(msg.error_occurred);
             });
         }
     }
 });
+
+// Additional function to handle language-specific date formatting if needed
+function formatDate(dateString, locale = 'en') {
+    const date = new Date(dateString);
+
+    if (locale === 'ar') {
+        return date.toLocaleDateString('ar-EG', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        });
+    } else {
+        return date.toLocaleDateString('en-GB', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        });
+    }
+}

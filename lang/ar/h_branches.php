@@ -17,7 +17,7 @@ return [
     'no_branches_found' => 'لم يتم العثور على فروع.',
     'search' => 'بحث',
     'reset' => 'إعادة تعيين',
-    'id' => 'المعرف',
+    'id' => 'الكود',
     'edit_branch' => 'تعديل الفرع',
     'save_changes' => 'حفظ التغييرات',
     'main_branch_question' => 'فرع رئيسي؟',

@@ -1,6 +1,5 @@
 @extends('backend.layouts.app')
 @section('content')
-
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper"
         style="background-image: url('{{ asset('/dist/img/vacation.jpg') }}'); background-size: cover; background-position: center;">
@@ -9,12 +8,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Vacation</h1>
+                        <h1 class="m-0">{{ __('h_vacation.vacation') }}</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Add</a></li>
-                            <li class="breadcrumb-item active">Vacations</li>
+                        <ol class="breadcrumb float-sm-{{ app()->getLocale() == 'ar' ? 'left' : 'right' }}">
+                            <li class="breadcrumb-item"><a href="#">{{ __('h_vacation.add') }}</a></li>
+                            <li class="breadcrumb-item active">{{ __('h_vacation.vacations') }}</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -37,7 +36,7 @@
                     <div class="col-md-12">
                         <div class="card card-info">
                             <div class="card-header">
-                                <h3 class="card-title"> Add Vacation </h3>
+                                <h3 class="card-title">{{ __('h_vacation.add_vacation_title') }}</h3>
                             </div>
                             <form class="form-horizontal" method="post" action="{{ url('admin/vacations/add') }}"
                                 enctype="multipart/form-data">
@@ -45,11 +44,11 @@
                                 <div class="card-body">
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Employee Name <span
+                                        <label class="col-sm-2 col-form-label">{{ __('h_vacation.employee_name') }} <span
                                                 style="color: red;">*</span></label>
                                         <div class="col-sm-10">
                                             <select class="form-control" name="employee_id" required>
-                                                <option value="">Select Employee Name</option>
+                                                <option value="">{{ __('h_vacation.select_employee_name') }}</option>
                                                 @foreach ($getUsers as $value_users)
                                                     <option value="{{ $value_users->id }}">{{ $value_users->name }}</option>
                                                 @endforeach
@@ -58,14 +57,14 @@
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Vacation Type <span
+                                        <label class="col-sm-2 col-form-label">{{ __('h_vacation.vacation_type') }} <span
                                                 style="color: red;">*</span></label>
                                         <div class="col-sm-10">
                                             <select name="vacation_type" id="vacation_type" class="form-control" required>
-                                                <option value="">Select Vacation Type</option>
-                                                <option value="Annual">Annual Vacation</option>
-                                                <option value="Sick">Sick Leave</option>
-                                                <option value="Unpaid">Unpaid Leave</option>
+                                                <option value="">{{ __('h_vacation.select_vacation_type') }}</option>
+                                                <option value="Annual">{{ __('h_vacation.annual_vacation') }}</option>
+                                                <option value="Sick">{{ __('h_vacation.sick_leave') }}</option>
+                                                <option value="Unpaid">{{ __('h_vacation.unpaid_leave') }}</option>
 
                                                 @php
                                                     $existingTypes = DB::table('vacations')
@@ -85,14 +84,14 @@
                                                 @endforeach
                                             </select>
                                             <small class="form-text text-muted">
-                                                <a href="javascript:void(0)" onclick="addCustomType()">Add Custom Type</a>
+                                                <a href="javascript:void(0)" onclick="addCustomType()">{{ __('h_vacation.add_custom_type') }}</a>
                                             </small>
                                         </div>
                                     </div>
 
                                     <script>
                                         function addCustomType() {
-                                            var customType = prompt("Enter new vacation type:");
+                                            var customType = prompt("{{ __('h_vacation.enter_new_vacation_type') }}");
                                             if (customType && customType.trim() !== '') {
                                                 customType = customType.trim();
 
@@ -117,7 +116,7 @@
                                     </script>
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Start Date <span
+                                        <label class="col-sm-2 col-form-label">{{ __('h_vacation.start_date') }} <span
                                                 style="color: red;">*</span></label>
                                         <div class="col-sm-10">
                                             <input type="date" value="{{ old('start_date') }}" name="start_date"
@@ -126,7 +125,7 @@
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">End Date <span
+                                        <label class="col-sm-2 col-form-label">{{ __('h_vacation.end_date') }} <span
                                                 style="color: red;">*</span></label>
                                         <div class="col-sm-10">
                                             <input type="date" value="{{ old('end_date') }}" name="end_date"
@@ -137,8 +136,8 @@
                                 </div>
 
                                 <div class="card-footer">
-                                    <a href="{{ url('admin/vacations') }}" class="btn btn-default float-left">Back</a>
-                                    <button type="submit" class="btn btn-primary float-right">Submit</button>
+                                    <a href="{{ url('admin/vacations') }}" class="btn btn-default float-{{ app()->getLocale() == 'ar' ? 'right' : 'left' }}">{{ __('h_vacation.back') }}</a>
+                                    <button type="submit" class="btn btn-primary float-{{ app()->getLocale() == 'ar' ? 'left' : 'right' }}">{{ __('h_vacation.submit') }}</button>
                                 </div>
                             </form>
 
@@ -148,4 +147,45 @@
             </div>
         </section>
     </div>
+
+    <!-- RTL Support for Arabic -->
+    @if(app()->getLocale() == 'ar')
+        <style>
+            body {
+                direction: rtl;
+                text-align: right;
+            }
+
+            .float-sm-right {
+                float: left !important;
+            }
+
+            .float-left {
+                float: right !important;
+            }
+
+            .float-right {
+                float: left !important;
+            }
+
+            .text-right {
+                text-align: left !important;
+            }
+
+            .ml-auto {
+                margin-left: 0 !important;
+                margin-right: auto !important;
+            }
+
+            .mr-1, .mr-2 {
+                margin-right: 0 !important;
+                margin-left: 0.25rem;
+            }
+
+            .mr-2 {
+                margin-left: 0.5rem !important;
+            }
+        </style>
+    @endif
+
 @endsection

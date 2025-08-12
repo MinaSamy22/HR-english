@@ -53,7 +53,7 @@ class DeductionController extends Controller
     }
     $deduction->save();
 
-    return redirect('admin/deductions')->with('success', ' successfully register.');
+    return redirect('admin/deductions')->with('success', __('h_deduction.add-message'));
     }
 
 
@@ -62,7 +62,7 @@ class DeductionController extends Controller
     $recordDelete = Deduction::find($id);
     if ($recordDelete) {
         $recordDelete->delete();
-        return redirect()->back()->with('success', 'Record successfully deleted.');
+        return redirect()->back()->with('success', __('h_deduction.delete-message'));
     } else {
         return redirect()->back()->with('error', 'Record not found.');
     }

@@ -79,7 +79,7 @@ public function add_post(Request $request)
     }
     $vacation->save();
 
-    return redirect('admin/vacations')->with('success', 'Vacation successfully registered.');
+    return redirect('admin/vacations')->with('success', __('h_vacation.controller-add-message'));
 }
 
 
@@ -88,7 +88,7 @@ public function add_post(Request $request)
         $recordDelete = Vacation::find($id);
         if ($recordDelete) {
             $recordDelete->delete();
-            return redirect()->back()->with('success', 'Record successfully deleted.');
+            return redirect()->back()->with('success', __('h_vacation.controller-delete-message'));
         } else {
             return redirect()->back()->with('error', 'Record not found.');
         }

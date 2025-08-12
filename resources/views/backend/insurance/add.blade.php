@@ -10,12 +10,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Insurance</h1>
+                        <h1 class="m-0">{{ __('h_insurance.insurance') }}</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Add</a></li>
-                            <li class="breadcrumb-item active">Insurance </li>
+                            <li class="breadcrumb-item"><a href="#">{{ __('h_insurance.add') }}</a></li>
+                            <li class="breadcrumb-item active">{{ __('h_insurance.insurance') }}</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -29,23 +29,20 @@
                     <div class="col-md-12">
                         <div class="card card-info">
                             <div class="card-header">
-                                <h3 class="card-title"> Add Insurance </h3>
+                                <h3 class="card-title">{{ __('h_insurance.add_insurance') }}</h3>
                             </div>
                                 <form class="form-horizontal" method="post" action="{{ url('admin/insurance/add') }}" enctype="multipart/form-data">
 
                                 {{ csrf_field() }}
                                 <div class="card-body">
 
-
-
-
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Employee Name <span style="color: red;">*</span></label>
+                                        <label class="col-sm-2 col-form-label">{{ __('h_insurance.employee_name') }} <span style="color: red;">*</span></label>
                                         <div class="col-sm-6">
                                             <div class="checkbox-box">
                                                 <div class="checkbox-item">
                                                     <input type="checkbox" id="select-all">
-                                                    <label for="select-all">Select All</label>
+                                                    <label for="select-all">{{ __('h_insurance.select_all') }}</label>
                                                 </div>
 
                                                 @foreach ($getEmployees as $employee)
@@ -59,47 +56,36 @@
                                         </div>
                                     </div>
 
-
-
-
-
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-lable"> Code <span style="color: red;">
-                                                *</span></label>
+                                        <label class="col-sm-2 col-form-lable">{{ __('h_insurance.code') }} <span style="color: red;">*</span></label>
                                         <div class="col-sm-10">
                                             <input type="text" value="{{ old('code') }}" name="code"
-                                                class="form-control" required placeholder="Enter Code">
+                                                class="form-control" required placeholder="{{ __('h_insurance.enter_code') }}">
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-lable"> Name <span style="color: red;">
-                                                *</span></label>
+                                        <label class="col-sm-2 col-form-lable">{{ __('h_insurance.name') }} <span style="color: red;">*</span></label>
                                         <div class="col-sm-10">
                                             <input type="text" value="{{ old('name') }}" name="name"
-                                                class="form-control" required placeholder="Enter Name">
+                                                class="form-control" required placeholder="{{ __('h_insurance.enter_name') }}">
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-lable"> Percentage <span style="color: red;">
-                                                *</span></label>
+                                        <label class="col-sm-2 col-form-lable">{{ __('h_insurance.percentage') }} <span style="color: red;">*</span></label>
                                         <div class="col-sm-10">
                                             <input type="number" value="{{ old('percent') }}" name="percent"
-                                                class="form-control" required placeholder="Enter Percent">
+                                                class="form-control" required placeholder="{{ __('h_insurance.enter_percent') }}">
                                         </div>
                                     </div>
-
-
 
                                 </div>
 
-
                                 <div class="card-footer">
-                                    <a href="{{ url('admin/insurance') }}" class="btn btn-default float-left">Back</a>
+                                    <a href="{{ url('admin/insurance') }}" class="btn btn-default float-left">{{ __('h_insurance.back') }}</a>
                                     {{-- float for the place of the button --}}
-                                    <button type="submit" class="btn btn-primary float-right">Submit</button>
-
+                                    <button type="submit" class="btn btn-primary float-right">{{ __('h_insurance.submit') }}</button>
                                 </div>
                             </form>
 
@@ -111,6 +97,5 @@
     </div>
     <script src="{{ url('dist/js/insurance.js') }}"></script>
     <script src="{{ url('dist/js/insurancecreate.js') }}"></script>
-
 
 @endsection
