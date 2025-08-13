@@ -106,7 +106,7 @@ class EmployeeService
     }
     
     public function resignationRequest($data){
-        return $this->employee->Resignations()->create($data);
+        return $this->employee->resignations()->create($data);
     }
     
     public function deleteResignationRequest($id){
