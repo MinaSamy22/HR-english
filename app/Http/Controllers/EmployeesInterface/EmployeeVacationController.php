@@ -14,6 +14,9 @@ public function index(Request $request)
 {
     $employeeId = Auth::guard('employee')->id();
 
+    // Debug: Check if employeeId is correct
+    // dd($employeeId); // Uncomment this to debug
+
     // Get vacation requests for the authenticated employee user
     $vacationRequests = VacationRequest::where('user_id', $employeeId)
         ->orderBy('created_at', 'desc')
@@ -35,11 +38,23 @@ public function index(Request $request)
         ->where('employee_id', $employeeId)
         ->sum('total') ?? 0;
 
-    // Get pending vacation requests total
-    $pendingVacations = DB::table('vacation_requests')
-        ->where('user_id', $employeeId)
+    // Get count of pending vacation requests
+    $pendingVacations = VacationRequest::where('user_id', $employeeId)
+        ->where('status', 'pending')
+        ->count();
+
+    // Get total days for pending requests (if you still need it)
+    $pendingVacationDays = VacationRequest::where('user_id', $employeeId)
         ->where('status', 'pending')
         ->sum('total_days') ?? 0;
+
+    // Alternative debug query to see what's in the database
+    /*
+    $debugPending = VacationRequest::where('user_id', $employeeId)
+        ->where('status', 'pending')
+        ->get();
+    dd($debugPending); // Uncomment to see all pending records
+    */
 
     // Calculate remaining vacation balance
     $vacationBalance = $totalVacationAllowed - $vacationsTaken;
@@ -52,6 +67,7 @@ public function index(Request $request)
         'totalVacationAllowed',
         'vacationsTaken',
         'pendingVacations',
+        'pendingVacationDays',
         'vacationBalance',
         'availableBalance'
     ));

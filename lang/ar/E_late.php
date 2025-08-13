@@ -67,4 +67,12 @@ return [
 
     // Validation
     'reason_min_length' => 'يرجى تقديم سبب يحتوي على 10 أحرف على الأقل.',
+
+    // controller messages
+    // Add these to your existing array
+'invalid_attendance_record' => 'سجل حضور غير صحيح.',
+'request_already_submitted' => 'تم تقديم الطلب مسبقاً لهذا السجل.',
+'request_submitted_successfully' => 'تم تقديم طلب إزالة التأخير/نصف اليوم بنجاح!',
+'submission_error' => 'حدث خطأ أثناء تقديم طلبك. يرجى المحاولة مرة أخرى.',
+
 ];

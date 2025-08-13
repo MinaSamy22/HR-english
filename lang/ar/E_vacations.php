@@ -4,6 +4,8 @@ return [
     // Page Title & Navigation
     'vacation_requests' => 'طلبات الإجازة',
     'home' => 'الرئيسية',
+        'requests' => 'طلبات',
+
 
     // Form Section
     'submit_new_request' => 'تقديم طلب إجازة جديد',

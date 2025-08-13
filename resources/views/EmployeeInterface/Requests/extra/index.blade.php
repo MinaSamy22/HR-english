@@ -135,12 +135,12 @@
                             </div>
                             <div class="card-body">
                                 @php
-                                    $pending = $requests->where('status', 'pending')->count();
-                                    $approved = $requests->where('status', 'approved')->count();
-                                    $rejected = $requests->where('status', 'rejected')->count();
-                                    $totalHours = $requests->where('status', 'approved')->sum('hours');
-                                    $pendingHours = $requests->where('status', 'pending')->sum('hours');
-                                @endphp
+    $pending = $requests->where('status', 'pending')->count();
+    $approved = $requests->whereIn('status', ['approved', 'accepted'])->count();
+    $rejected = $requests->where('status', 'rejected')->count();
+    $totalHours = $requests->whereIn('status', ['approved', 'accepted'])->sum('hours');
+    $pendingHours = $requests->where('status', 'pending')->sum('hours');
+@endphp
 
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item d-flex justify-content-between align-items-center">

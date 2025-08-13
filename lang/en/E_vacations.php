@@ -4,6 +4,7 @@ return [
     // Page Title & Navigation
     'vacation_requests' => 'Vacation Requests',
     'home' => 'Home',
+    'requests' => 'Requests',
 
     // Form Section
     'submit_new_request' => 'Submit New Vacation Request',

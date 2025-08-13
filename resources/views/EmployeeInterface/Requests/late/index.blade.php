@@ -97,42 +97,53 @@
                                                                 </span>
                                                             @endif
                                                         </td>
-                                                        <td>
-                                                            @if(isset($requests[$record->id]))
-                                                                @php
-                                                                    $request = $requests[$record->id];
-                                                                    $status = $request->status ?? 'pending';
-                                                                    $statusClass = '';
-                                                                    $statusIcon = '';
-                                                                    switch ($status) {
-                                                                        case 'pending':
-                                                                            $statusClass = 'badge-warning';
-                                                                            $statusIcon = 'fa-hourglass-half';
-                                                                            break;
-                                                                        case 'approved':
-                                                                        case 'accepted':
-                                                                            $statusClass = 'badge-success';
-                                                                            $statusIcon = 'fa-check-circle';
-                                                                            $status = 'approved'; // Standardize to approved
-                                                                            break;
-                                                                        case 'rejected':
-                                                                            $statusClass = 'badge-danger';
-                                                                            $statusIcon = 'fa-times-circle';
-                                                                            break;
-                                                                        default:
-                                                                            $statusClass = 'badge-secondary';
-                                                                            $statusIcon = 'fa-question';
-                                                                    }
-                                                                @endphp
-                                                                <span class="badge {{ $statusClass }}">
-                                                                    <i class="fas {{ $statusIcon }} mr-1"></i>{{ __('E_late.' . $status) }}
-                                                                </span>
-                                                            @else
-                                                                <span class="badge badge-light">
-                                                                    <i class="fas fa-exclamation-triangle mr-1"></i>{{ __('E_late.not_requested') }}
-                                                                </span>
-                                                            @endif
-                                                        </td>
+                                                       <!-- Replace the status display section in your blade file -->
+<td>
+    @if(isset($requests[$record->id]))
+        @php
+            $request = $requests[$record->id];
+            $status = $request->status ?? 'pending';
+            $statusClass = '';
+            $statusIcon = '';
+            $displayStatus = $status; // Keep original status for translation
+
+            switch ($status) {
+                case 'pending':
+                    $statusClass = 'badge-warning';
+                    $statusIcon = 'fa-hourglass-half';
+                    break;
+                case 'approved':
+                case 'accepted':
+                    $statusClass = 'badge-success';
+                    $statusIcon = 'fa-check-circle';
+                    $displayStatus = 'approved'; // Standardize display to approved
+                    break;
+                case 'rejected':
+                    $statusClass = 'badge-danger';
+                    $statusIcon = 'fa-times-circle';
+                    break;
+                default:
+                    $statusClass = 'badge-secondary';
+                    $statusIcon = 'fa-question';
+                    $displayStatus = 'unknown';
+            }
+        @endphp
+        <span class="badge {{ $statusClass }}">
+            <i class="fas {{ $statusIcon }} mr-1"></i>{{ __('E_late.' . $displayStatus) }}
+        </span>
+
+        @if($status == 'rejected' && !empty($request->admin_notes))
+            <br>
+            <small class="text-muted mt-1 d-block">
+                <i class="fas fa-comment mr-1"></i>{{ $request->admin_notes }}
+            </small>
+        @endif
+    @else
+        <span class="badge badge-light">
+            <i class="fas fa-exclamation-triangle mr-1"></i>{{ __('E_late.not_requested') }}
+        </span>
+    @endif
+</td>
                                                         <td>
                                                             @if(!isset($requests[$record->id]))
                                                                 <button type="button" class="btn btn-primary btn-sm"

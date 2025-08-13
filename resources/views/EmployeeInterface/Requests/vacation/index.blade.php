@@ -222,27 +222,20 @@
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <span>
                                             <i
-                                                class="fas fa-calendar-times mr-2 text-danger"></i>{{ __('E_vacations.used_days') }}
-                                        </span>
-                                        <span class="badge badge-danger badge-pill">{{ $vacationsTaken }}
-                                            {{ __('E_vacations.days') }}</span>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <span>
-                                            <i
-                                                class="fas fa-hourglass-half mr-2 text-warning"></i>{{ __('E_vacations.pending_requests') }}
-                                        </span>
-                                        <span class="badge badge-warning badge-pill">{{ $pendingVacations }}
-                                            {{ __('E_vacations.days') }}</span>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <span>
-                                            <i
                                                 class="fas fa-balance-scale mr-2 text-primary"></i>{{ __('E_vacations.remaining_balance') }}
                                         </span>
                                         <span class="badge badge-primary badge-pill">{{ $vacationBalance }}
                                             {{ __('E_vacations.days') }}</span>
                                     </li>
+
+                                   <li class="list-group-item d-flex justify-content-between align-items-center">
+    <span>
+        <i class="fas fa-hourglass-half mr-2 text-warning"></i>{{ __('E_vacations.pending_requests') }}
+    </span>
+    <span class="badge badge-warning badge-pill">{{ $pendingVacations }}
+        {{ __('E_vacations.requests') }}</span>
+</li>
+
 
                                 </ul>
 
