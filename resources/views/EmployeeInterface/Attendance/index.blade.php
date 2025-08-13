@@ -141,7 +141,7 @@
                             <h3 class="card-title">
                                 <i class="fas fa-calendar-check mr-2"></i>{{ __('E_attendance.attendance_records') }}
                             </h3>
-                            <div class="card-tools">
+                            <div>
                                 <span class="badge badge-info">
                                     {{ __('E_attendance.total_records') }}: {{ $getRecord->total() }}
                                 </span>

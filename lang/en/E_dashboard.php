@@ -55,4 +55,18 @@ return [
     'recent_activity' => 'Recent Activity',
     'no_recent_activity' => 'No recent activity found',
     'request' => 'request',
+
+// Add these keys to your existing E_dashboard.php file
+'activity_type' => [
+    'vacation' => 'Vacation',
+    'resignation' => 'Resignation',
+    'late_removal' => 'Late Removal',
+    'extra_time' => 'Extra Time',
+],
+'status' => [
+    'accepted' => 'Accepted',
+    'rejected' => 'Rejected',
+    'pending' => 'Pending',
+],
+
 ];

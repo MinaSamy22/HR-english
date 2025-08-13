@@ -60,15 +60,21 @@
         <tr>
             <td>{{ $resignation->resignation_date }}</td>
             <td>{{ $resignation->reason ?? __('E_resignation.no_reason') }}</td>
-            <td>
-                @if($resignation->status === 'pending')
-                    <span class="badge badge-warning">{{ __('E_resignation.pending') }}</span>
-                @elseif($resignation->status === 'approved')
-                    <span class="badge badge-success">{{ __('E_resignation.approved') }}</span>
-                @else
-                    <span class="badge badge-danger">{{ __('E_resignation.rejected') }}</span>
-                @endif
-            </td>
+           <td>
+    @php
+        $status = trim(strtolower($resignation->status));
+    @endphp
+
+    @if($status === 'pending')
+        <span class="badge badge-warning">{{ __('E_resignation.pending') }}</span>
+    @elseif($status === 'approved')
+        <span class="badge badge-success">{{ __('E_resignation.approved') }}</span>
+    @elseif($status === 'rejected')
+        <span class="badge badge-danger">{{ __('E_resignation.rejected') }}</span>
+    @else
+        <span class="badge badge-secondary">{{ ucfirst($resignation->status) }}</span>
+    @endif
+</td>
             <td>{{ $resignation->created_at->format('Y-m-d') }}</td>
             <td>
                 @if($resignation->status === 'pending')

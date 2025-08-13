@@ -36,7 +36,7 @@ class ExtraTimeRequestController extends Controller
         ]);
 
         return redirect()->route('employee.extra.index')
-            ->with('success', 'Extra time request submitted successfully.');
+         ->with('success', __('E_extra.add-message'));
     }
 
     public function destroy($id)
@@ -49,7 +49,7 @@ class ExtraTimeRequestController extends Controller
     $request->delete();
 
     return redirect()->route('employee.extra.index')
-        ->with('success', 'Request deleted successfully.');
+         ->with('success', __('E_extra.delete-message'));
 }
 
 

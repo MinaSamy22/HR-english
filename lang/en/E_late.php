@@ -23,6 +23,8 @@ return [
     // Status
     'pending' => 'Pending',
     'approved' => 'Approved',
+    'accepted' => 'Approved',
+
     'rejected' => 'Rejected',
     'not_requested' => 'Not Requested',
     'requested' => 'Requested',

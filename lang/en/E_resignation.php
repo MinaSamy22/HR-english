@@ -44,4 +44,8 @@ return [
     'resignation_permanent' => 'Resignation is a permanent action that cannot be undone once approved.',
     'notice_period' => 'Please ensure you provide adequate notice period as per company policy.',
     'pending_approval' => 'Your resignation is pending approval from management.',
+
+    //controller messages
+    'add-message' => 'Resignation request submitted successfully, It will be reviewed by your hr.',
+    'delete-message' => 'Resignation request deleted.',
 ];

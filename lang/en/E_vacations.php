@@ -69,10 +69,11 @@ return [
     'submitted' => 'Submitted',
     'action' => 'Action',
 
-    // Status
-    'pending' => 'Pending',
+// Status
+'pending' => 'Pending',
     'approved' => 'Approved',
-    'rejected' => 'Rejected',
+'rejected' => 'Rejected',
+
 
     // Empty State
     'no_requests_found' => 'No vacation requests found',
@@ -80,4 +81,8 @@ return [
 
     // Confirmation
     'confirm_cancel' => 'Are you sure you want to cancel this request?',
+
+    //controller messages
+    'add-message' => 'Vacation request submitted successfully, It will be reviewed by your hr.',
+    'delete-message' => 'Resignation request deleted.',
 ];

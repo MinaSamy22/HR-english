@@ -12,7 +12,10 @@ class Resignation extends Model
         'employee_id',
         'resignation_date',
         'reason',
-        'status',
+        'status'
+    ];
+        protected $attributes = [
+        'status' => 'pending'
     ];
 
 public function user()

@@ -67,4 +67,8 @@ return [
     'select_current_future_date' => 'Please select a current or future date.',
     'hours_range_validation' => 'Hours must be between 0.5 and 12.',
     'confirm_cancel' => 'Are you sure you want to cancel this request?',
+
+    //controller messages
+    'add-message' => 'Extra time request submitted successfully, It will be reviewed by your hr.',
+    'delete-message' => 'Request deleted successfully.',
 ];

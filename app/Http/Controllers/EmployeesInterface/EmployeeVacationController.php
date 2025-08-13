@@ -88,7 +88,7 @@ public function store(Request $request)
     ]);
 
     return redirect()->route('vacation.index')
-        ->with('success', 'Vacation request submitted successfully! It will be reviewed by your manager.');
+         ->with('success', __('E_vacations.add-message'));
 }
 
 
@@ -111,7 +111,7 @@ public function show($id)
     $vacationRequest->delete();
 
     return redirect()->route('vacation.index')
-        ->with('success', 'Vacation request cancelled successfully!');
+         ->with('success', __('E_vacations.delete-message'));
 }
 
 }

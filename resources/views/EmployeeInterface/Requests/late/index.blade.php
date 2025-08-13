@@ -101,16 +101,19 @@
                                                             @if(isset($requests[$record->id]))
                                                                 @php
                                                                     $request = $requests[$record->id];
+                                                                    $status = $request->status ?? 'pending';
                                                                     $statusClass = '';
                                                                     $statusIcon = '';
-                                                                    switch ($request->status ?? 'pending') {
+                                                                    switch ($status) {
                                                                         case 'pending':
                                                                             $statusClass = 'badge-warning';
                                                                             $statusIcon = 'fa-hourglass-half';
                                                                             break;
                                                                         case 'approved':
+                                                                        case 'accepted':
                                                                             $statusClass = 'badge-success';
                                                                             $statusIcon = 'fa-check-circle';
+                                                                            $status = 'approved'; // Standardize to approved
                                                                             break;
                                                                         case 'rejected':
                                                                             $statusClass = 'badge-danger';
@@ -122,7 +125,7 @@
                                                                     }
                                                                 @endphp
                                                                 <span class="badge {{ $statusClass }}">
-                                                                    <i class="fas {{ $statusIcon }} mr-1"></i>{{ __('E_late.' . ($request->status ?? 'pending')) }}
+                                                                    <i class="fas {{ $statusIcon }} mr-1"></i>{{ __('E_late.' . $status) }}
                                                                 </span>
                                                             @else
                                                                 <span class="badge badge-light">
@@ -160,7 +163,8 @@
 
                     <!-- Info Card -->
                     <div class="col-md-4">
-                        <div class="card card-info">
+                        <!-- Attendance Information Card -->
+                        <div class="card card-info mb-3">
                             <div class="card-header">
                                 <h3 class="card-title">
                                     <i class="fas fa-info-circle mr-2"></i>{{ __('E_late.attendance_information') }}
@@ -171,7 +175,7 @@
                                     $totalRecords = $lateOrHalfDayAttendances->count();
                                     $requestedRecords = collect($requests)->count();
                                     $pendingRequests = collect($requests)->where('status', 'pending')->count();
-                                    $approvedRequests = collect($requests)->where('status', 'approved')->count();
+                                    $approvedRequests = collect($requests)->whereIn('status', ['approved', 'accepted'])->count();
                                     $rejectedRequests = collect($requests)->where('status', 'rejected')->count();
                                 @endphp
 
@@ -190,22 +194,29 @@
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <span>
-                                            <i class="fas fa-paper-plane mr-2 text-primary"></i>{{ __('E_late.half_days') }}
+                                            <i class="fas fa-hourglass-half mr-2 text-info"></i>{{ __('E_late.half_days') }}
                                         </span>
-                                        <span class="badge badge-primary badge-pill">{{ $halfDays }}</span>
+                                        <span class="badge badge-info badge-pill">{{ $halfDays }}</span>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <span>
-                                            <i class="fas fa-paper-plane mr-2 text-primary"></i>{{ __('E_late.absent_days') }}
+                                            <i class="fas fa-times-circle mr-2 text-danger"></i>{{ __('E_late.absent_days') }}
                                         </span>
-                                        <span class="badge badge-primary badge-pill">{{ $absentDays }}</span>
+                                        <span class="badge badge-danger badge-pill">{{ $absentDays }}</span>
                                     </li>
+                                </ul>
+                            </div>
+                        </div>
 
-                                      <div class="card-header">
-                                     <h3 class="card-title">
-                                    <i class="fas fa-info-circle mr-2"></i>{{ __('E_late.request_information') }}
+                        <!-- Request Information Card -->
+                        <div class="card card-warning">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="fas fa-paper-plane mr-2"></i>{{ __('E_late.request_information') }}
                                 </h3>
-                                      </div>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-group list-group-flush">
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <span>
                                             <i class="fas fa-hourglass-half mr-2 text-warning"></i>{{ __('E_late.pending') }}

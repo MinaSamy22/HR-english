@@ -28,4 +28,6 @@ return [
     'unknown' => 'غير معروف',
     'no_records_found' => 'لم يتم العثور على سجلات حضور',
     'try_adjusting_criteria' => 'حاول تعديل معايير البحث',
+        'accepted' => 'مقبول',
+
 ];

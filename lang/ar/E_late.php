@@ -22,7 +22,8 @@ return [
 
     // Status
     'pending' => 'معلق',
-    'approved' => 'مقبول',
+    'approved' => 'موافق عليه',
+    'accepted' => 'مقبول',
     'rejected' => 'مرفوض',
     'not_requested' => 'لم يُطلب',
     'requested' => 'مُطلب',
