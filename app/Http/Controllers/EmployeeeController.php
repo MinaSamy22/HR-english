@@ -114,7 +114,7 @@ $destinationPath = public_path('../../HR-Uploads/shared_attachments/');
     // Save the user to the database
     $user->save();
 
-    return redirect('admin/employees')->with('success', 'Employee successfully registered.');
+return redirect('admin/employees')->with('success', __('h_employee.employee_registered'));
 }
 
 
@@ -193,7 +193,7 @@ public function edit_update($id, Request $request){
 
     $user->save();
 
-    return redirect('admin/employees')->with('success', 'Employee successfully updated.');
+return redirect('admin/employees')->with('success', __('h_employee.employee_updated'));
 }
 
 
@@ -218,7 +218,7 @@ public function delete($id){
     // Delete the user record
     $recordDelete->delete();
 
-    return redirect()->back()->with('success', 'Record and attachment successfully deleted');
+return redirect()->back()->with('success', __('h_employee.record_deleted'));
 }
 
 public function info(Request $request){
@@ -505,7 +505,7 @@ public function importEmployees(Request $request)
             }
         }
 
-        $message = "$processedCount employee(s) imported or updated successfully.";
+$message = __('h_employee.employees_imported', ['count' => $processedCount]);
 
         if (!empty($errors)) {
             $errorMessage = implode("\n", array_slice($errors, 0, 10));

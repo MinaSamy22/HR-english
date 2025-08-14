@@ -110,6 +110,58 @@ return [
 
     'not_set' => 'لم يتم التحديد',
     'Download' => 'تحميل',
-    'View PDF' => 'عرض PDF'
+    'View PDF' => 'عرض PDF',
+
+     // Page titles and headers
+    'import_employees' => 'استيراد الموظفين',
+    'employees' => 'الموظفون',
+    'import_excel' => 'استيراد إكسل',
+    'upload_excel_file' => 'رفع ملف إكسل',
+    'guidelines' => 'التوجيهات',
+    'important_notes' => 'ملاحظات مهمة',
+
+    // Form elements
+    'choose_excel_file' => 'اختر ملف إكسل',
+    'upload_file' => 'رفع الملف',
+    'back' => 'رجوع',
+    'download_sample_template' => 'تحميل قالب نموذجي',
+
+    // Instructions and notes
+    'required_columns' => 'الأعمدة المطلوبة',
+    'column_list' => 'المعرف، الاسم، البريد الإلكتروني، رقم الهاتف، تاريخ الميلاد، تاريخ التوظيف، معرف المسمى الوظيفي، نوع الراتب، الراتب، وقت البداية، وقت النهاية، معرف المدير، معرف القسم، الدور',
+    'excel_fields_note' => 'يجب أن يحتوي ملف الإكسل على الحقول التالية بهذا **الترتيب المحدد**',
+
+    // Field names
+    'id' => 'المعرف',
+    'name' => 'الاسم',
+    'email' => 'البريد الإلكتروني',
+    'phone_number' => 'رقم الهاتف',
+    'birth_date' => 'تاريخ الميلاد',
+    'hire_date' => 'تاريخ التوظيف',
+    'job_title_id' => 'معرف المسمى الوظيفي',
+    'salary_type' => 'نوع الراتب',
+    'salary' => 'الراتب',
+    'start_time' => 'وقت البداية',
+    'end_time' => 'وقت النهاية',
+    'manager_id' => 'معرف المدير',
+    'department_id' => 'معرف القسم',
+    'role' => 'الدور',
+
+    // Format notes
+    'date_format' => 'يوم/شهر/سنة',
+    'time_format' => 'ساعة:دقيقة صباحاً/مساءً',
+    'role_options' => 'موارد بشرية أو موظف',
+
+    // Salary type notes
+    'salary_type_note' => 'نوع الراتب يجب أن يكون 1 أو 2 أو 3.',
+    'monthly' => '1 => شهري.',
+    'weekly' => '2 => أسبوعي.',
+    'daily' => '3 => يومي.',
+
+    // Success messages (for controller)
+    'employee_registered' => 'تم تسجيل الموظف بنجاح.',
+    'employee_updated' => 'تم تحديث الموظف بنجاح.',
+    'record_deleted' => 'تم حذف السجل والمرفق بنجاح',
+    'employees_imported' => 'تم استيراد أو تحديث :count موظف بنجاح.',
 
 ];

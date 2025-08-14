@@ -79,7 +79,7 @@
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="year">Year</label>
+                                                <label for="year">{{ __('dashboard.year') }}</label>
                                                 <select class="form-control" id="year" name="year">
                                                     <option value="">{{ __('dashboard.select_year') }}</option>
                                                     @for ($i = date('Y'); $i >= date('Y') - 5; $i--)

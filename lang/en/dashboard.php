@@ -253,6 +253,9 @@ return [
     'actions' => 'Actions',
     'no_image' => 'No Image',
     'no_news_found' => 'No news found',
-'late-arrival' => 'Late Arrival'
+'late-arrival' => 'Late Arrival',
+    'attendance_saved' => 'Attendance Successfully Saved',
+'record_not_found' => 'Record not found ',
+    'attendance_imported_success' => ':count attendance record(s) imported successfully.',
 
 ];

@@ -2,7 +2,7 @@
 @section('content')
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <div class="content-wrapper" style="background-image: url('{{ asset('/dist/img/bio.png') }}'); background-size: cover; background-position: center;">
+    <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">

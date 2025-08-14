@@ -124,7 +124,7 @@ return [
 'year' => 'السنة',
 
 'excel' => 'إكسل',
-'pdf' => 'بي دي إف',
+'pdf' => 'pdf',
 'delete_selection' => 'حذف المحدد',
 'employee_name' => 'اسم الموظف',
 'bounas' => 'علاوة',
@@ -135,11 +135,11 @@ return [
 'start_date' => 'تاريخ البداية',
 'end_date' => 'تاريخ النهاية',
 'daily_wage_employees' => 'الموظفون بأجر يومي',
-'select_all_daily' => 'اختر الكل يومياً',
+'select_all_daily' => 'اختر الكل ',
 'weekly_wage_employees' => 'الموظفون بأجر أسبوعي',
-'select_all_weekly' => 'اختر الكل أسبوعياً',
+'select_all_weekly' => 'اختر الكل ',
 'monthly_wage_employees' => 'الموظفون بأجر شهري',
-'select_all_monthly' => 'اختر الكل شهرياً',
+'select_all_monthly' => 'اختر الكل ',
 
 'company_settings' => 'إعدادات الشركة',
 'settings' => 'الإعدادات',
@@ -192,7 +192,7 @@ return [
 'date' => 'التاريخ',
 'to_date' => 'إلى تاريخ',
 'biometric_excel_upload' => 'رفع بصمة الإصبع من ملف إكسل',
-'biometric' => 'البصمة الحيوية',
+'biometric' => 'بيانات البصمة',
 'upload_excel' => 'رفع ملف إكسل',
 'upload_attendance_sheet' => 'رفع كشف الحضور',
 'choose_excel_file' => 'اختر ملف إكسل',
@@ -218,8 +218,9 @@ return [
 'no_image' => 'لا توجد صورة',
 'no_news_found' => 'لا توجد أخبار',
 'late-arrival' => 'الحضور متأخر',
+    'attendance_saved' => 'تم حفظ الحضور بنجاح',
+'record_not_found' => 'لا يوجد',
 
-
-
+    'attendance_imported_success' => 'تم استيراد :count سجل حضور بنجاح.',
 
 ];
