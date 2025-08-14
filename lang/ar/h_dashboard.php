@@ -2,7 +2,7 @@
 
 return [
     // Header
-    'branch' => 'فرع',
+    'branch' => 'الفرع',
     'welcome' => 'مرحباً',
 
     // Statistics Cards

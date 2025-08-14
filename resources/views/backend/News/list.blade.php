@@ -1,18 +1,16 @@
 @extends('backend.layouts.app')
-
-
 @section('content')
 <div class="content-wrapper">
     <div class="content-header">
         <div class="container-fluid">
-            <div class=" mb-2 d-flex justify-content-between">
-                <div class="">
-                    <h1 class="m-0">{{ __('dashboard.company_news') }}</h1>
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">{{ __('h_news.company_news') }}</h1>
                 </div>
-                <div class="">
+                <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">{{ __('dashboard.home') }}</a></li>
-                        <li class="breadcrumb-item active">{{ __('dashboard.news') }}</li>
+                        <li class="breadcrumb-item"><a href="#">{{ __('h_news.home') }}</a></li>
+                        <li class="breadcrumb-item active">{{ __('h_news.news') }}</li>
                     </ol>
                 </div>
             </div>
@@ -25,13 +23,11 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <div class="d-flex justify-content-between">
-                                <h3 class="card-title">{{ __('dashboard.news_management') }}</h3>
-                                <div class="card-tools">
-                                    <a href="{{ route('news.create') }}" class="btn btn-primary btn-sm">
-                                        <i class="fas fa-plus"></i> {{ __('dashboard.add_news') }}
-                                    </a>
-                                </div>
+                            <h3 class="card-title">{{ __('h_news.news_management') }}</h3>
+                            <div class="card-tools">
+                                <a href="{{ route('news.create') }}" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-plus"></i> {{ __('h_news.add_news_btn') }}
+                                </a>
                             </div>
                         </div>
 
@@ -47,12 +43,12 @@
                                 <table class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th width="5%">{{ __('dashboard.id') }}</th>
-                                            <th width="15%">{{ __('dashboard.image') }}</th>
-                                            <th width="25%">{{ __('dashboard.title') }}</th>
-                                            <th width="30%">{{ __('dashboard.description') }}</th>
-                                            <th width="10%">{{ __('dashboard.date') }}</th>
-                                            <th width="15%">{{ __('dashboard.actions') }}</th>
+                                            <th width="5%">{{ __('h_news.id') }}</th>
+                                            <th width="15%">{{ __('h_news.image') }}</th>
+                                            <th width="25%">{{ __('h_news.title') }}</th>
+                                            <th width="30%">{{ __('h_news.description') }}</th>
+                                            <th width="10%">{{ __('h_news.date') }}</th>
+                                            <th width="15%">{{ __('h_news.actions') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -67,7 +63,7 @@
      style="max-width: 60px; max-height: 60px;">
 
                                                     @else
-                                                        <span class="badge badge-secondary">{{ __('dashboard.no_image') }}</span>
+                                                        <span class="badge badge-secondary">{{ __('h_news.no_image') }}</span>
                                                     @endif
                                                 </td>
                                                 <td>{{ $item->title }}</td>
@@ -76,22 +72,22 @@
                                                 <td>
                                                     <div class="btn-group" role="group">
                                                         <a href="{{ route('news.show', $item) }}"
-                                                           class="btn btn-info rounded-pill" title="View">
+                                                           class="btn btn-info rounded-pill" title="{{ __('h_news.view_btn') }}">
                                                             <i class="fas fa-eye"></i>
                                                         </a>
                                                         <a href="{{ route('news.edit', $item) }}"
-                                                           class="btn btn-primary rounded-pill" title="Edit">
+                                                           class="btn btn-primary rounded-pill" title="{{ __('h_news.edit_btn') }}">
                                                             <i class="fas fa-edit"></i>
                                                         </a>
                                                         <form action="{{ route('news.destroy', $item) }}"
                                                               method="POST"
                                                               style="display: inline;"
-                                                              onsubmit="return confirm('Are you sure you want to delete this news?')">
+                                                              onsubmit="return confirm('{{ __('h_news.delete_confirm') }}')">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="submit"
                                                                     class="btn btn-danger rounded-pill"
-                                                                    title="Delete">
+                                                                    title="{{ __('h_news.delete_btn') }}">
                                                                 <i class="fas fa-trash"></i>
                                                             </button>
                                                         </form>
@@ -100,7 +96,7 @@
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="6" class="text-center">{{ __('dashboard.no_news_found') }}</td>
+                                                <td colspan="6" class="text-center">{{ __('h_news.no_news_found') }}</td>
                                             </tr>
                                         @endforelse
                                     </tbody>

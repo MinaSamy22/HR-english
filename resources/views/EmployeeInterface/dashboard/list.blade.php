@@ -127,7 +127,7 @@
                     <!-- Latest Company News -->
                     <div class="col-md-6 mb-4">
                         <div class="card shadow-sm h-100"
-                            style="border-radius: 10px; border: none; border-left: 4px solid #28a745;">
+style="border-radius: 10px; border: none; border-inline-start: 4px solid #28a745;">
                             <div class="card-header d-flex justify-content-between align-items-center"
                                 style="background: white; color: #333; border: none; border-bottom: 1px solid #e9ecef;">
                                 <h3 class="card-title" style="font-weight: 600; font-size: 1.1rem; color: #28a745;">
@@ -140,7 +140,7 @@
     @foreach($recentNews as $newsItem)
         <div class="mb-4">
             <div class="news-item border rounded p-3 h-100"
-                style="border-left: 3px solid #28a745 !important; background: #f8f9fa; word-wrap: break-word;">
+        style="border-inline-start: 3px solid #28a745 !important; background: #f8f9fa; word-wrap: break-word;">
                 <div class="row no-gutters">
                     @if($newsItem->hasImage())
                         <div class="col-4">

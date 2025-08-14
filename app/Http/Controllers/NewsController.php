@@ -42,7 +42,7 @@ class NewsController extends Controller
 
         News::create($data);
 
-        return redirect()->route('news.index')->with('success', 'News created successfully!');
+return redirect()->route('news.index')->with('success', __('h_news.created_successfully'));
     }
 
     public function show(News $news)
@@ -78,7 +78,7 @@ class NewsController extends Controller
 
         $news->update($data);
 
-        return redirect()->route('news.index')->with('success', 'News updated successfully!');
+return redirect()->route('news.index')->with('success', __('h_news.updated_successfully'));
     }
 
     public function destroy(News $news)
@@ -88,8 +88,7 @@ class NewsController extends Controller
 
         $news->delete();
 
-        return redirect()->route('news.index')->with('success', 'News deleted successfully!');
-    }
+return redirect()->route('news.index')->with('success', __('h_news.deleted_successfully'));    }
 
     // Private function to handle image upload
     private function uploadImage($file)

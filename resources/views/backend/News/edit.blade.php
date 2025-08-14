@@ -1,6 +1,6 @@
 @extends('backend.layouts.app')
 
-@section('title', 'Edit News')
+@section('title', __('h_news.edit_news'))
 
 @section('content')
 <div class="content-wrapper">
@@ -8,12 +8,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Edit News</h1>
+                    <h1 class="m-0">{{ __('h_news.edit_news') }}</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('news.index') }}">News</a></li>
-                        <li class="breadcrumb-item active">Edit</li>
+                        <li class="breadcrumb-item"><a href="{{ route('news.index') }}">{{ __('h_news.news') }}</a></li>
+                        <li class="breadcrumb-item active">{{ __('h_news.edit') }}</li>
                     </ol>
                 </div>
             </div>
@@ -26,10 +26,10 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Edit News: {{ $news->title }}</h3>
+                            <h3 class="card-title">{{ __('h_news.edit_news_title', ['title' => $news->title]) }}</h3>
                             <div class="card-tools">
                                 <a href="{{ route('news.index') }}" class="btn btn-secondary btn-sm">
-                                    <i class="fas fa-arrow-left"></i> Back to List
+                                    <i class="fas fa-arrow-left"></i> {{ __('h_news.back_to_list') }}
                                 </a>
                             </div>
                         </div>
@@ -49,7 +49,7 @@
                                 @endif
 
                                 <div class="form-group">
-                                    <label for="title">Title <span class="text-danger">*</span></label>
+                                    <label for="title">{{ __('h_news.title_required') }} <span class="text-danger">{{ __('h_news.required') }}</span></label>
                                     <input type="text"
                                            class="form-control @error('title') is-invalid @enderror"
                                            id="title"
@@ -62,7 +62,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="description">Description <span class="text-danger">*</span></label>
+                                    <label for="description">{{ __('h_news.description_required') }} <span class="text-danger">{{ __('h_news.required') }}</span></label>
                                     <textarea class="form-control @error('description') is-invalid @enderror"
                                               id="description"
                                               name="description"
@@ -74,7 +74,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="news_date">News Date <span class="text-danger">*</span></label>
+                                    <label for="news_date">{{ __('h_news.news_date_required') }} <span class="text-danger">{{ __('h_news.required') }}</span></label>
                                     <input type="date"
                                            class="form-control @error('news_date') is-invalid @enderror"
                                            id="news_date"
@@ -87,14 +87,14 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="image">Image</label>
+                                    <label for="image">{{ __('h_news.image_field') }}</label>
                                     @if($news->image)
                                         <div class="mb-2">
                                             <img src="{{ asset('storage/' . $news->image) }}"
                                                  alt="{{ $news->title }}"
                                                  class="img-thumbnail"
                                                  style="max-width: 200px;">
-                                            <p class="text-muted mt-1">Current image</p>
+                                            <p class="text-muted mt-1">{{ __('h_news.current_image') }}</p>
                                         </div>
                                     @endif
                                     <div class="input-group">
@@ -104,10 +104,10 @@
                                                    id="image"
                                                    name="image"
                                                    accept="image/*">
-                                            <label class="custom-file-label" for="image">Choose file</label>
+                                            <label class="custom-file-label" for="image">{{ __('h_news.choose_file') }}</label>
                                         </div>
                                     </div>
-                                    <small class="form-text text-muted">Leave empty to keep current image. Supported formats: JPEG, PNG, JPG, GIF. Max size: 2MB</small>
+                                    <small class="form-text text-muted">{{ __('h_news.image_help_edit') }}</small>
                                     @error('image')
                                         <span class="invalid-feedback d-block">{{ $message }}</span>
                                     @enderror
@@ -118,7 +118,7 @@
 
                             <div class="card-footer">
                                 <button type="submit" class="btn btn-primary float-right">
-                                    <i class="fas fa-save"></i> Update News
+                                    <i class="fas fa-save"></i> {{ __('h_news.update_news') }}
                                 </button>
 
                             </div>
