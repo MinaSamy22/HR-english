@@ -1,4 +1,4 @@
-// File: public/dist/js/overtime-management.js
+// File: public/dist/js/payroll.js
 document.addEventListener('DOMContentLoaded', function() {
     const selectAllCheckbox = document.getElementById('selectAll');
     const deleteSelectedButton = document.getElementById('deleteSelected');
@@ -23,11 +23,16 @@ document.addEventListener('DOMContentLoaded', function() {
             .map(checkbox => checkbox.value);
 
         if (selectedIds.length === 0) {
-            alert('No row selected.');
+            // Get translated message from a data attribute or use fallback
+            const noRowMessage = document.body.getAttribute('data-no-row-message') || 'No row selected.';
+            alert(noRowMessage);
             return;
         }
 
-        if (confirm('Are you sure you want to delete the selection?')) {
+        // Get translated confirmation message from a data attribute or use fallback
+        const confirmMessage = document.body.getAttribute('data-delete-confirm-message') || 'Are you sure you want to delete the selection?';
+
+        if (confirm(confirmMessage)) {
             fetch("/admin/payrolls/delete-multiple", {
                 method: 'POST',
                 headers: {
@@ -41,12 +46,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.success) {
                     location.reload();
                 } else {
-                    alert('An error occurred. Please try again.');
+                    // Get translated error message from a data attribute or use fallback
+                    const errorMessage = document.body.getAttribute('data-error-message') || 'An error occurred. Please try again.';
+                    alert(errorMessage);
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('An error occurred. Please try again.');
+                // Get translated error message from a data attribute or use fallback
+                const errorMessage = document.body.getAttribute('data-error-message') || 'An error occurred. Please try again.';
+                alert(errorMessage);
             });
         }
     }
