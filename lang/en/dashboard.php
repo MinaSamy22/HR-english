@@ -253,5 +253,6 @@ return [
     'actions' => 'Actions',
     'no_image' => 'No Image',
     'no_news_found' => 'No news found',
+'late-arrival' => 'Late Arrival'
 
 ];

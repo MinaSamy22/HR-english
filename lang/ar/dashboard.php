@@ -217,6 +217,9 @@ return [
 'actions' => 'الإجراءات',
 'no_image' => 'لا توجد صورة',
 'no_news_found' => 'لا توجد أخبار',
+'late-arrival' => 'الحضور متأخر',
+
+
 
 
 ];

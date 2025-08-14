@@ -143,7 +143,7 @@
                     <!-- Bar Chart Section (Responsive) -->
                     <div class="col-lg-8 col-md-12">
                         <div class="card shadow-sm"
-                            style="border-radius: 10px; border: none; border-left: 4px solid #007bff;">
+style="border-radius: 10px; border: none; border-inline-start: 4px solid #007bff;">
                             <div class="card-header"
                                 style="background: white; color: #333; border: none; border-bottom: 1px solid #e9ecef;">
                                 <h3 class="card-title" style="font-weight: 600; font-size: 1.1rem; color: #007bff;">
@@ -161,7 +161,7 @@
                     <!-- Quick Access Section -->
                     <div class="col-lg-4 col-md-12">
                         <div class="card shadow-sm"
-                            style="border-radius: 10px; border: none; border-left: 4px solid #007bff;">
+style="border-radius: 10px; border: none; border-inline-start: 4px solid #007bff;">
                             <div class="card-header"
                                 style="background: white; color: #333; border: none; border-bottom: 1px solid #e9ecef;">
                                 <h3 class="card-title" style="font-weight: 600; font-size: 1.1rem; color: #007bff;">
@@ -234,7 +234,7 @@
                 <div class="row mt-4">
                     <div class="col-12">
                         <div class="card shadow-sm"
-                            style="border-radius: 10px; border: none; border-left: 4px solid #28a745;">
+                            style="border-radius: 10px; border: none; border-inline-start: 4px solid #28a745;">
                             <div class="card-header d-flex justify-content-between align-items-center"
                                 style="background: white; color: #333; border: none; border-bottom: 1px solid #e9ecef;">
                                 <h3 class="card-title" style="font-weight: 600; font-size: 1.1rem; color: #28a745;">
@@ -248,7 +248,7 @@
                                         @foreach($recentNews as $newsItem)
                                             <div class="col-lg-6 col-md-12 mb-4">
                                                 <div class="news-item border rounded p-3 h-100"
-                                                     style="border-left: 3px solid #28a745 !important; transition: all 0.3s ease; background: #f8f9fa;">
+                                                     style="border-inline-start: 3px solid #28a745 !important; transition: all 0.3s ease; background: #f8f9fa;">
                                                     <div class="row">
                                                         @if($newsItem->hasImage())
                                                             <div class="col-4">
