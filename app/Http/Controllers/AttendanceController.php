@@ -6,7 +6,7 @@ use App\Models\Attendance;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Barryvdh\DomPDF\Facade\Pdf;
+use niklasravnsborg\LaravelPdf\Facades\Pdf;
 
 
 class AttendanceController extends Controller
@@ -76,7 +76,7 @@ $data['getRecord'] = $query->get();
         $getRecord = Attendance::getRecord();
 
         // Render the PDF-specific view and pass the filtered records
-        $pdf = Pdf::loadView('backend.attendance.pdf', compact('getRecord'));
+        $pdf = Pdf::loadView('backend.attendance.pdf', compact('getRecord'),['format' => 'A4','display_mode'=> 'fullpage'],['tempDir' => storage_path('temp/mpdf'),]);
 
         return $pdf->download('attendance-report.pdf');  // Return the the name of PDF for download
     }

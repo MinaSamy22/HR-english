@@ -124,7 +124,7 @@ return [
 'year' => 'السنة',
 
 'excel' => 'إكسل',
-'pdf' => 'بي دي إف',
+'pdf' => 'PDF',
 'delete_selection' => 'حذف المحدد',
 'employee_name' => 'اسم الموظف',
 'bounas' => 'علاوة',
@@ -217,6 +217,7 @@ return [
 'actions' => 'الإجراءات',
 'no_image' => 'لا توجد صورة',
 'no_news_found' => 'لا توجد أخبار',
+'signature'=>'توقيع',
 
 
 ];
