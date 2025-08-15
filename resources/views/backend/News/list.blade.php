@@ -8,9 +8,9 @@
                     <h1 class="m-0">{{ __('h_news.company_news') }}</h1>
                 </div>
                 <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">{{ __('h_news.home') }}</a></li>
-                        <li class="breadcrumb-item active">{{ __('h_news.news') }}</li>
+                   <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">{{ __('dashboard.home') }}</a></li>
+                        <li class="breadcrumb-item active">{{ __('dashboard.news') }}</li>
                     </ol>
                 </div>
             </div>
@@ -23,13 +23,15 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">{{ __('h_news.news_management') }}</h3>
-                            <div class="card-tools">
-                                <a href="{{ route('news.create') }}" class="btn btn-primary btn-sm">
-                                    <i class="fas fa-plus"></i> {{ __('h_news.add_news_btn') }}
-                                </a>
+                            <div class="d-flex justify-content-between">
+                                <h3 class="card-title">{{ __('dashboard.news_management') }}</h3>
+                                <div class="card-tools">
+                                    <a href="{{ route('news.create') }}" class="btn btn-primary btn-sm">
+                                        <i class="fas fa-plus"></i> {{ __('dashboard.add_news') }}
+                                    </a>
+                                </div>
                             </div>
-                        </div>
+                        </div>
 
                         <div class="card-body">
                             @if(session('success'))
