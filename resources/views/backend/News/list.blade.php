@@ -1,14 +1,16 @@
 @extends('backend.layouts.app')
+
+
 @section('content')
 <div class="content-wrapper">
     <div class="content-header">
         <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0">{{ __('h_news.company_news') }}</h1>
+            <div class=" mb-2 d-flex justify-content-between">
+                <div class="">
+                    <h1 class="m-0">{{ __('dashboard.company_news') }}</h1>
                 </div>
                 <div class="">
-                   <ol class="breadcrumb float-sm-right">
+                    <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">{{ __('dashboard.home') }}</a></li>
                         <li class="breadcrumb-item active">{{ __('dashboard.news') }}</li>
                     </ol>
