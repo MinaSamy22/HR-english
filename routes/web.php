@@ -286,23 +286,22 @@ Route::post('admin/Requests/reject/{type}/{id}', [RequestController::class, 'rej
     Route::post('admin/news/{news}/toggle-status', [NewsController::class, 'toggleStatus'])->name('news.toggle-status');
     Route::post('admin/news/bulk-delete', [NewsController::class, 'bulkDelete'])->name('news.bulk-delete');
 
-    //my account   admin/my_account
-    route::get('admin/my_account', [MyAccountController::class, 'my_account'])->name('my_account'); //34an roue bdl url
-    route::post('admin/my_account/update', [MyAccountController::class, 'edit_update'])->name('edit_update');
+//my account   admin/my_account
+route::get('admin/my_account', [MyAccountController::class, 'my_account'])->name('my_account');
+route::post('admin/my_account/update', [MyAccountController::class, 'edit_update'])->name('my_account_update');
 
+//Company information  admin/company-info..
+route::get('admin/company-info', [CompanyInfoController::class, 'index'])->name('company-info');
+route::post('admin/company-info/update', [CompanyInfoController::class, 'edit_update'])->name('company_info_update');
+Route::get('/view-logo/{filename}', function ($filename) {
+    $path = public_path('../../HR-Uploads/company_logos/' . $filename);
 
-    //Company information  admin/my_account
-    route::get('admin/company-info', [CompanyInfoController::class, 'index'])->name('company-info'); //34an roue bdl url
-    route::post('admin/company-info/update', [CompanyInfoController::class, 'edit_update'])->name('edit_update');
-    Route::get('/view-logo/{filename}', function ($filename) {
-        $path = public_path('../../HR-Uploads/company_logos/' . $filename);
+    if (!file_exists($path)) {
+        abort(404);
+    }
 
-        if (!file_exists($path)) {
-            abort(404);
-        }
-
-        return response()->file($path);
-    })->name('view.logo');
+    return response()->file($path);
+})->name('view.logo');
 
 });
 
@@ -338,8 +337,7 @@ Route::post('/employee/my_account/update', [EmployeeMyAccountController::class, 
 
 //payroll
 Route::get('employee/payroll', [EmployeePayrollController::class, 'index'])->name('employee.payroll');
-Route::post('employee/payroll/download-pdf', [EmployeePayrollController::class, 'downloadSinglePayslip'])->name('payslip.download.single');
-
+Route::post('employee/payroll/download-pdf', [EmployeePayrollController::class, 'downloadSinglePayslip'])->name('employee.payslip.download.single');
 //attendance
 Route::get('employee/attendance', [EmployeeAttendanceController::class, 'index'])->name('employee.attendance');
 
@@ -363,14 +361,14 @@ Route::post('employee/extra', [ExtraTimeRequestController::class, 'store'])->nam
 Route::delete('extra/{id}', [ExtraTimeRequestController::class, 'destroy'])->name('employee.extra.destroy');
 
 //late request
+//late request
 Route::get('employee/late', [EmployeeLateRemovalController::class, 'index'])->name('employee.late.index');
-Route::post('/employee/late/request', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.request');
-Route::post('/employee/late-removal-request', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.request');
-Route::post('employee/late-removal/store', [EmployeeLateRemovalController::class, 'store'])->name('late-removal.store');
-
+Route::post('employee/late/request', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.request');
+Route::post('employee/late-removal-request', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.removal.request');
+Route::post('employee/late-removal/store', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.removal.store');
 
 });
 
 
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
-Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+
