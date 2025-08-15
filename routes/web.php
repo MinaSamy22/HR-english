@@ -328,8 +328,8 @@ Route::middleware('employee')->group(function () {
 Route::get('employee/home', [EmployeeHomeController::class, 'index'])->name('employee.home');
 Route::get('employee/logout', [EmployeeHomeController::class, 'logout'])->name('employee.logout');
 // Route to serve news images
-Route::get('/view-news-image/{filename}', [EmployeeHomeController::class, 'viewNewsImage'])->name('view.news.image')->where('filename', '[^/]+');
-Route::get('employee/news/{news}', [EmployeeHomeController::class, 'show'])->name('Employeenews.show');
+Route::get('employee/news-image/{filename}', [EmployeeHomeController::class, 'viewNewsImage'])
+    ->name('employee.news.image');Route::get('employee/news/{news}', [EmployeeHomeController::class, 'show'])->name('Employeenews.show');
 Route::get('employee/calendar', [EmployeeCalendarController::class, 'index'])->name('employee.calendar');
 
 //my account   employee/my_account

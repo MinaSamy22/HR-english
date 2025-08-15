@@ -22,7 +22,7 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
 
-         <li class="nav-item d-flex align-items-center">
+         {{-- <li class="nav-item d-flex align-items-center">
             <a href="{{ url('lang/' . (app()->getLocale() == 'ar' ? 'en' : 'ar')) }}" class="nav-link px-2" role="button"
                 title="Switch to Arabic">
                 <span class="d-inline-flex align-items-center">
@@ -34,7 +34,52 @@
                     <i class="fas fa-globe d-sm-none ms-1"></i>
                 </span>
             </a>
-        </li>
+        </li> --}}
+
+                <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle d-flex align-items-center"
+       href="#"
+       id="languageDropdown"
+       role="button"
+       data-toggle="dropdown"
+       aria-haspopup="true"
+       aria-expanded="false">
+
+        <div class="badge badge-secondary d-flex align-items-center">
+            <i class="fas fa-globe mr-1"></i>
+            <span class="font-weight-bold">
+                {{ app()->getLocale() == 'ar' ? 'عربي' : 'EN' }}
+            </span>
+        </div>
+    </a>
+
+    <div class="dropdown-menu dropdown-menu-right shadow-sm" aria-labelledby="languageDropdown">
+        <style>
+            .dropdown-item.active, .dropdown-item:active {
+                background-color: #e3f2fd !important;
+                color: #1976d2 !important;
+            }
+            .dropdown-item:hover {
+                background-color: #f5f5f5 !important;
+            }
+        </style>
+        <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'en' ? 'active' : '' }}"
+           href="{{ url('lang/en') }}">
+            <span>English</span>
+            @if(app()->getLocale() == 'en')
+                <i class="fas fa-check ml-auto text-success"></i>
+            @endif
+        </a>
+
+        <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'ar' ? 'active' : '' }}"
+           href="{{ url('lang/ar') }}">
+            <span>العربية</span>
+            @if(app()->getLocale() == 'ar')
+                <i class="fas fa-check ml-auto text-success"></i>
+            @endif
+        </a>
+    </div>
+</li>
 
 
 
