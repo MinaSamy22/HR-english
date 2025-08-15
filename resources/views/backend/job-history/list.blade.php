@@ -9,7 +9,7 @@
                     <div class="col-sm-6">
                         <h1>{{ __('h_job_history.job_history') }}</h1>
                     </div><!-- /.col -->
-                    <div class="col-sm-6" style="text-align: right;">
+                    <div class="col-sm-6 text-end" style="text-align: right;">
                         <form action="{{ url('admin/jobhistory_export') }}" method="get"> <!-- excel export form -->
                             <input type="hidden" name="employee_name" value="{{ Request()->employee_name }}">
                             <input type="hidden" name="job_title" value="{{ Request()->job_title }}">

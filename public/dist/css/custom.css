@@ -220,3 +220,114 @@ html[dir="rtl"] .breadcrumb-item + .breadcrumb-item::before {
     border-left: none;
     border-right: 4px solid #007bff;
 }
+
+
+/* RTL fixes for mobile stat cards */
+@media (max-width: 767.98px) {
+    html[dir="rtl"] .card-content {
+        text-align: right !important;
+        direction: rtl !important;
+    }
+
+    html[dir="rtl"] .stat-info {
+        text-align: right !important;
+        direction: rtl !important;
+        margin-right: 0 !important;
+        margin-left: 14px !important;
+    }
+
+    html[dir="rtl"] .stat-number {
+        text-align: right !important;
+    }
+
+    html[dir="rtl"] .stat-label {
+        text-align: right !important;
+    }
+
+    html[dir="rtl"] .stat-trend {
+        text-align: right !important;
+        justify-content: flex-end !important;
+        direction: rtl !important;
+    }
+
+    html[dir="rtl"] .stat-icon {
+        margin-left: 0 !important;
+        margin-right: 14px !important;
+    }
+}
+
+@media (max-width: 575.98px) {
+    html[dir="rtl"] .card-content {
+        text-align: right !important;
+        /* Remove flex-direction: row-reverse to keep icon on left */
+    }
+
+    html[dir="rtl"] .stat-info {
+        text-align: right !important;
+        margin-right: 14px !important;
+        margin-left: 0 !important;
+    }
+
+    html[dir="rtl"] .stat-number {
+        text-align: right !important;
+    }
+
+    html[dir="rtl"] .stat-label {
+        text-align: right !important;
+    }
+
+    html[dir="rtl"] .stat-trend {
+        text-align: right !important;
+        justify-content: flex-end !important;
+        flex-direction: row-reverse !important;
+    }
+
+    html[dir="rtl"] .stat-icon {
+        margin-left: 14px !important;
+        margin-right: 0 !important;
+    }
+}
+
+/* Add this CSS to fix navbar spacing in RTL mode */
+
+/* Fix navbar item spacing in RTL */
+html[dir="rtl"] .navbar-nav .nav-item {
+    margin-left: 0.37rem !important;
+    margin-right: 0.37rem !important;
+}
+
+/* Ensure proper spacing for navbar links */
+html[dir="rtl"] .navbar-nav .nav-link {
+    padding-left: 0.37rem !important;
+    padding-right: 0.37rem !important;
+}
+
+/* Fix for dropdown items spacing */
+html[dir="rtl"] .nav-item.dropdown {
+    margin-left: 0.37rem !important;
+    margin-right: 0.37rem !important;
+}
+
+/* Alternative approach - modify your existing ml-auto/mr-auto rules */
+/* Replace your existing ml-auto/mr-auto rules with these: */
+
+html[dir="rtl"] .navbar-nav.ml-auto {
+    margin-left: 0 !important;
+    margin-right: auto !important;
+}
+
+html[dir="rtl"] .navbar-nav.mr-auto {
+    margin-right: 0 !important;
+    margin-left: auto !important;
+}
+
+/* Keep spacing for other ml-auto/mr-auto elements but exclude navbar */
+html[dir="rtl"] .ml-auto:not(.navbar-nav) {
+    margin-left: 0 !important;
+    margin-right: auto !important;
+}
+
+html[dir="rtl"] .mr-auto:not(.navbar-nav) {
+    margin-right: 0 !important;
+    margin-left: auto !important;
+}

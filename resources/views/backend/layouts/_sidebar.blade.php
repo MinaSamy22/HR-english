@@ -22,29 +22,87 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
         {{-- https://hrar.prosofteg.com/admin/dashboard --}}
-        <li class="nav-item d-flex align-items-center">
-            <a href="{{ url('lang/' . (app()->getLocale() == 'ar' ? 'en' : 'ar')) }}" class="nav-link px-2"
-                role="button" title="Switch to Arabic">
-                <span class="d-inline-flex align-items-center">
-                    <span class="fw-bold d-none d-sm-inline">EN</span> <!-- Hidden on xs -->
-                    <span class="mx-1 d-none d-sm-inline">/</span> <!-- Hidden on xs -->
-                    <span class="fw-bold">عربي</span> <!-- Always visible -->
 
-                    <!-- Mobile-only icon (globe) -->
-                    <i class="fas fa-globe d-sm-none ms-1"></i>
-                </span>
+
+        <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle d-flex align-items-center"
+       href="#"
+       id="languageDropdown"
+       role="button"
+       data-toggle="dropdown"
+       aria-haspopup="true"
+       aria-expanded="false">
+
+        <div class="badge badge-secondary d-flex align-items-center">
+            <i class="fas fa-globe mr-1"></i>
+            <span class="font-weight-bold">
+                {{ app()->getLocale() == 'ar' ? 'عربي' : 'EN' }}
+            </span>
+        </div>
+    </a>
+
+    <div class="dropdown-menu dropdown-menu-right shadow-sm" aria-labelledby="languageDropdown">
+        <style>
+            .dropdown-item.active, .dropdown-item:active {
+                background-color: #e3f2fd !important;
+                color: #1976d2 !important;
+            }
+            .dropdown-item:hover {
+                background-color: #f5f5f5 !important;
+            }
+        </style>
+        <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'en' ? 'active' : '' }}"
+           href="{{ url('lang/en') }}">
+            <span>English</span>
+            @if(app()->getLocale() == 'en')
+                <i class="fas fa-check ml-auto text-success"></i>
+            @endif
+        </a>
+
+        <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'ar' ? 'active' : '' }}"
+           href="{{ url('lang/ar') }}">
+            <span>العربية</span>
+            @if(app()->getLocale() == 'ar')
+                <i class="fas fa-check ml-auto text-success"></i>
+            @endif
+        </a>
+    </div>
+</li>
+
+        <!-- Employee Requests Notification -->
+        @php
+            $pendingRequestsCount = getPendingRequestsCount();
+        @endphp
+        <li class="nav-item">
+            <a class="nav-link position-relative p-2" href="{{ url('admin/Requests') }}"
+                title="{{ __('dashboard.requests') }}">
+                <i class="fas fa-bell fa-lg text-secondary"></i>
+
+                @if ($pendingRequestsCount > 0)
+                    <span class="badge badge-danger position-absolute"
+                        style="
+                      top: 2px;
+                      right: 2px;
+                      font-size: 0.65rem;
+                      padding: 0.25em 0.5em;
+                      border-radius: 8px;
+                      box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+                  ">
+                        {{ $pendingRequestsCount > 99 ? '99+' : $pendingRequestsCount }}
+                    </span>
+                @endif
             </a>
         </li>
+
 
 
 
         <!-- Moon Icon for Dark Mode Toggle -->
-        <li class="nav-item">
+        {{-- <li class="nav-item">
             <a class="nav-link dark-mode-toggle" role="button">
                 <i class="nav-icon fa fa-moon" style="color: #908a8a;"></i>
             </a>
-        </li>
-
+        </li> --}}
 
         <li class="nav-item">
             <a href="{{ url('admin/do') }}" class="nav-link" role="button">
@@ -52,13 +110,11 @@
             </a>
         </li>
 
-
         <li class="nav-item">
             <a href="{{ url('admin/charts') }}" class="nav-link" role="button">
                 <i class="nav-icon fa fa-chart-bar"></i>
             </a>
         </li>
-
 
         <li class="nav-item">
             <a href="{{ url('admin/calendar') }}" class="nav-link" role="button">
@@ -66,15 +122,12 @@
             </a>
         </li>
 
-
         <!-- Logout link -->
-
         <li class="nav-item">
             <a class="nav-link" href="{{ url('logout') }}">
                 <i class="fas fa-sign-out-alt"></i>
             </a>
         </li>
-
 
     </ul>
 </nav>

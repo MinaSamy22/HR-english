@@ -9,7 +9,7 @@
                     <div class="col-sm-6">
                         <h1>{{ __('h_jobs.jobs') }}</h1>
                     </div><!-- /.col -->
-                    <div class="col-sm-6" style="text-align: right;">
+                    <div class="col-sm-6 text-end" style="text-align: right;">
 
                         <form action="{{ url('admin/jobs_export') }}" method="get">
                             <input type="hidden" name="job_title" value="{{ Request()->job_title }}">
