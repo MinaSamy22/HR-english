@@ -50,24 +50,27 @@ class EmployeeService
 
     public function getSalaries($year = null, $month = null)
     {
-        // Default to last month
-        $date = Carbon::createFromDate($year ?? '2000', $month ?? '01', 1);
+        $query = $this->employee->payrolls();
 
-        $from = $date->copy()->startOfMonth()->toDateString();
-        $to = $date->copy()->endOfMonth()->toDateString();
+        if ($year && $month) {
+            // Build date range for the given year/month
+            $date = Carbon::createFromDate($year, $month, 1);
+            $from = $date->copy()->startOfMonth()->toDateString();
+            $to   = $date->copy()->endOfMonth()->toDateString();
 
-        return $this->employee
-            ->payrolls()
-            ->where(function ($query) use ($from, $to) {
+            $query->where(function ($query) use ($from, $to) {
                 $query->whereBetween('start_date', [$from, $to])
                     ->orWhereBetween('end_date', [$from, $to])
                     ->orWhere(function ($query) use ($from, $to) {
                         $query->where('start_date', '<=', $from)
-                                ->where('end_date', '>=', $to);
+                            ->where('end_date', '>=', $to);
                     });
-            })
-            ->get();
+            });
+        }
+
+        return $query->get();
     }
+
 
 
 
