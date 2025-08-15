@@ -51,7 +51,7 @@ class EmployeeService
     public function getSalaries($year = null, $month = null)
     {
         // Default to last month
-        $date = Carbon::createFromDate($year ?? now()->year, $month ?? now()->month, 1)->subMonth();
+        $date = Carbon::createFromDate($year ?? '2000', $month ?? '01', 1);
 
         $from = $date->copy()->startOfMonth()->toDateString();
         $to = $date->copy()->endOfMonth()->toDateString();
