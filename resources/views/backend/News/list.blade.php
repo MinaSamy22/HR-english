@@ -7,7 +7,7 @@
                 <div class="col-sm-6">
                     <h1 class="m-0">{{ __('h_news.company_news') }}</h1>
                 </div>
-                <div class="col-sm-6">
+                <div class="">
                    <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">{{ __('dashboard.home') }}</a></li>
                         <li class="breadcrumb-item active">{{ __('dashboard.news') }}</li>
