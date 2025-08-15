@@ -5,11 +5,11 @@
     <div class="content-wrapper">
         <section class="content-header">
             <div class="container-fluid">
-                <div class="row mb-2">
+            <div class=" mb-2 d-flex justify-content-between">
                     <div class="col-sm-6">
                         <h1>{{ __('dashboard.employee_payslips_report') }}</h1>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{ url('admin/payroll') }}">{{ __('dashboard.payroll') }}</a></li>
                             <li class="breadcrumb-item active">{{ __('dashboard.employee_payslips') }}</li>

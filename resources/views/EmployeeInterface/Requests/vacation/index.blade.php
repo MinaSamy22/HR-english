@@ -4,14 +4,14 @@
         <!-- Content Header (Page header) -->
         <div class="content-header">
             <div class="container-fluid">
-                <div class="row mb-2">
+            <div class=" mb-2 d-flex justify-content-between">
                     <div class="col-sm-6">
                         <h1 class="m-0">{{ __('E_vacations.vacation_requests') }}</h1>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a
-                                    href="{{ route('employee.home') }}">{{ __('E_vacations.home') }}</a></li>
+                        <li class="breadcrumb-item"><a href="home" class="text">{{ __('Calender.home') }}</a></li>
+
                             <li class="breadcrumb-item active">{{ __('E_vacations.vacation_requests') }}</li>
                         </ol>
                     </div>
