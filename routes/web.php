@@ -337,8 +337,7 @@ Route::post('/employee/my_account/update', [EmployeeMyAccountController::class, 
 
 //payroll
 Route::get('employee/payroll', [EmployeePayrollController::class, 'index'])->name('employee.payroll');
-Route::post('employee/payroll/download-pdf', [EmployeePayrollController::class, 'downloadSinglePayslip'])->name('payslip.download.single');
-
+Route::post('employee/payroll/download-pdf', [EmployeePayrollController::class, 'downloadSinglePayslip'])->name('employee.payslip.download.single');
 //attendance
 Route::get('employee/attendance', [EmployeeAttendanceController::class, 'index'])->name('employee.attendance');
 
@@ -362,14 +361,14 @@ Route::post('employee/extra', [ExtraTimeRequestController::class, 'store'])->nam
 Route::delete('extra/{id}', [ExtraTimeRequestController::class, 'destroy'])->name('employee.extra.destroy');
 
 //late request
+//late request
 Route::get('employee/late', [EmployeeLateRemovalController::class, 'index'])->name('employee.late.index');
-Route::post('/employee/late/request', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.request');
-Route::post('/employee/late-removal-request', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.request');
-Route::post('employee/late-removal/store', [EmployeeLateRemovalController::class, 'store'])->name('late-removal.store');
-
+Route::post('employee/late/request', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.request');
+Route::post('employee/late-removal-request', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.removal.request');
+Route::post('employee/late-removal/store', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.removal.store');
 
 });
 
 
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
-Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+
