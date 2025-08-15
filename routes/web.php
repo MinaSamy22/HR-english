@@ -290,7 +290,7 @@ Route::post('admin/Requests/reject/{type}/{id}', [RequestController::class, 'rej
 route::get('admin/my_account', [MyAccountController::class, 'my_account'])->name('my_account');
 route::post('admin/my_account/update', [MyAccountController::class, 'edit_update'])->name('my_account_update');
 
-//Company information  admin/company-info
+//Company information  admin/company-info..
 route::get('admin/company-info', [CompanyInfoController::class, 'index'])->name('company-info');
 route::post('admin/company-info/update', [CompanyInfoController::class, 'edit_update'])->name('company_info_update');
 Route::get('/view-logo/{filename}', function ($filename) {
