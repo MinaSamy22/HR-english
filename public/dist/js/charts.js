@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var chartData1 = {
         labels: departmentNames,
         datasets: [{
-            label: 'Number of Employees',
+            label: translations.number_of_employees,
             backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
             data: employeeCounts
         }]
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
             plugins: {
                 title: {
                     display: true,
-                    text: 'Departments Overview'
+                    text: translations.departments_overview
                 }
             }
         }
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var chartData2 = {
         labels: filteredNames,
         datasets: [{
-            label: 'Overtime Hours',
+            label: translations.overtime_hours,
             backgroundColor: 'rgba(54, 162, 235, 5)', // Blue color with transparency
             borderColor: 'rgba(54, 162, 235, 1)', // Solid blue color
             data: filteredHours,
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     beginAtZero: true,
                     title: {
                         display: true,
-                        text: 'Overtime Hours'
+                        text: translations.overtime_hours
                     },
                     ticks: {
                         stepSize: 1
@@ -68,14 +68,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 x: {
                     title: {
                         display: true,
-                        text: 'Employees'
+                        text: translations.employees
                     }
                 }
             },
             plugins: {
                 title: {
                     display: true,
-                    text: 'Top Employees per Month'
+                    text: translations.top_employees_per_month
                 }
             }
         }

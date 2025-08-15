@@ -3,7 +3,7 @@
 return [
     // General
     'home' => 'الرئيسية',
-    'vacation' => 'الإجازة',
+    'vacation' => 'الإجازة', 
     'vacations' => 'الإجازات',
 
     // Page titles and navigation

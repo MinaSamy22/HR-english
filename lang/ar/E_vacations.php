@@ -4,6 +4,8 @@ return [
     // Page Title & Navigation
     'vacation_requests' => 'طلبات الإجازة',
     'home' => 'الرئيسية',
+        'requests' => 'طلبات',
+
 
     // Form Section
     'submit_new_request' => 'تقديم طلب إجازة جديد',
@@ -69,10 +71,12 @@ return [
     'submitted' => 'تم التقديم',
     'action' => 'الإجراء',
 
-    // Status
-    'pending' => 'معلق',
-    'approved' => 'مقبول',
-    'rejected' => 'مرفوض',
+// Status
+'pending' => 'قيد الانتظار',
+'approved' => 'موافق عليه',
+'rejected' => 'مرفوض',
+'accepted' => 'مقبول',  // Add this line
+
 
     // Empty State
     'no_requests_found' => 'لم يتم العثور على طلبات إجازة',
@@ -80,4 +84,8 @@ return [
 
     // Confirmation
     'confirm_cancel' => 'هل أنت متأكد من أنك تريد إلغاء هذا الطلب؟',
+
+    //controller messages
+    'add-message' => ' تم اضافة الطلب بنجاح وسيتم المراجعة بواسطة ال hr',
+    'delete-message' => 'تم حذف الطلب بنجاح',
 ];

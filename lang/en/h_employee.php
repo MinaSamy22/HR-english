@@ -109,7 +109,59 @@ return [
     'Created Date' => 'Created Date',
     'not_set' => 'Not Set',
     'Download' => 'Download',
-    'View PDF' => 'View PDF'
+    'View PDF' => 'View PDF',
+
+      // Page titles and headers
+    'import_employees' => 'Import Employees',
+    'employees' => 'Employees',
+    'import_excel' => 'Import Excel',
+    'upload_excel_file' => 'Upload Excel File',
+    'guidelines' => 'Guidelines',
+    'important_notes' => 'Important Notes',
+
+    // Form elements
+    'choose_excel_file' => 'Choose Excel File',
+    'upload_file' => 'Upload file',
+    'back' => 'Back',
+    'download_sample_template' => 'Download Sample Template',
+
+    // Instructions and notes
+    'required_columns' => 'Required columns',
+    'column_list' => 'ID, Name, Email, Phone Number, Birth Date, Hire Date, Job Title Id, Salary Type, Salary, Start Time, End Time, ManagerId, DepartmentID, Role',
+    'excel_fields_note' => 'The Excel file must include the following fields in this **exact order**',
+
+    // Field names
+    'id' => 'ID',
+    'name' => 'Name',
+    'email' => 'Email',
+    'phone_number' => 'Phone Number',
+    'birth_date' => 'Birth Date',
+    'hire_date' => 'Hire Date',
+    'job_title_id' => 'Job Title ID',
+    'salary_type' => 'Salary Type',
+    'salary' => 'Salary',
+    'start_time' => 'Start Time',
+    'end_time' => 'End Time',
+    'manager_id' => 'ManagerId',
+    'department_id' => 'DepartmentID',
+    'role' => 'Role',
+
+    // Format notes
+    'date_format' => 'dd/mm/yyyy',
+    'time_format' => 'hh:mm AM/PM',
+    'role_options' => 'HR or Employee',
+
+    // Salary type notes
+    'salary_type_note' => 'Salary type should be 1 or 2 or 3.',
+    'monthly' => '1 => Monthly.',
+    'weekly' => '2 => Weekly.',
+    'daily' => '3 => Daily.',
+
+    // Success messages (for controller)
+    'employee_registered' => 'Employee successfully registered.',
+    'employee_updated' => 'Employee successfully updated.',
+    'record_deleted' => 'Record and attachment successfully deleted',
+    'employees_imported' => ':count employee(s) imported or updated successfully.',
 
 
 ];

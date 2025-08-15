@@ -76,7 +76,7 @@ public function import(Request $request)
     }
 
 
-    return back()->with('success', "$insertedCount attendance record(s) imported successfully.");
+        return back()->with('success', __('dashboard.attendance_imported_success', ['count' => $insertedCount]));
 }
 
 

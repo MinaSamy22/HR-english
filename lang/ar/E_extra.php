@@ -53,7 +53,7 @@ return [
 
     // Status
     'pending' => 'معلق',
-    'approved' => 'مقبول',
+    'approved' => 'موافق عليه',
     'rejected' => 'مرفوض',
 
     // Table Content
@@ -67,4 +67,8 @@ return [
     'select_current_future_date' => 'يرجى اختيار تاريخ حالي أو مستقبلي.',
     'hours_range_validation' => 'يجب أن تكون الساعات بين 0.5 و 12.',
     'confirm_cancel' => 'هل أنت متأكد من أنك تريد إلغاء هذا الطلب؟',
+
+    //controller messages
+    'add-message' => ' تم اضافة الطلب بنجاح وسيتم المراجعة بواسطة ال hr',
+    'delete-message' => 'تم حذف الطلب بنجاح',
 ];

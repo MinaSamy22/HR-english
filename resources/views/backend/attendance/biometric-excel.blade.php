@@ -2,15 +2,15 @@
 @section('content')
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <div class="content-wrapper" style="background-image: url('{{ asset('/dist/img/bio.png') }}'); background-size: cover; background-position: center;">
+    <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
-            <div class="row mb-2">
+            <div class=" mb-2 d-flex justify-content-between">
                 <div class="col-sm-6">
                     <h1><i class="fas fa-file-excel mr-2"></i>{{ __('dashboard.biometric_excel_upload') }}</h1>
                 </div>
-                <div class="col-sm-6">
+                <div class="">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">{{ __('dashboard.biometric') }}</a></li>
                         <li class="breadcrumb-item active">{{ __('dashboard.upload_excel') }}</li>

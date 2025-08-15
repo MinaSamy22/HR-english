@@ -56,8 +56,11 @@ public function index()
         ->whereYear('attendance_date', $currentYear)
         ->get();
 
-    // Requests already submitted
-    $requests = LateRemovalRequest::where('employee_id', $user->id)->get()->keyBy('attendance_id');
+    // Requests already submitted - include all details
+    $requests = LateRemovalRequest::select('*')
+        ->where('employee_id', $user->id)
+        ->get()
+        ->keyBy('attendance_id');
 
     // Vacation balance
     $totalVacationAllowed = DB::table('attendance_rules')
@@ -99,7 +102,7 @@ public function store(Request $request)
             ->first();
 
         if (!$attendance) {
-            return redirect()->back()->with('error', 'Invalid attendance record.');
+            return redirect()->back()->with('error', __('E_late.invalid_attendance_record'));
         }
 
         // Check if request already exists for this attendance
@@ -108,7 +111,7 @@ public function store(Request $request)
             ->first();
 
         if ($existingRequest) {
-            return redirect()->back()->with('error', 'Request already submitted for this attendance record.');
+            return redirect()->back()->with('error', __('E_late.request_already_submitted'));
         }
 
         // Create new request with the attendance date automatically saved in 'day' column
@@ -120,11 +123,11 @@ public function store(Request $request)
             'status' => 'pending',
         ]);
 
-        return redirect()->back()->with('success', 'Late/Half Day removal request submitted successfully!');
+        return redirect()->back()->with('success', __('E_late.request_submitted_successfully'));
 
     } catch (\Exception $e) {
         Log::error('Late removal request error: ' . $e->getMessage());
-        return redirect()->back()->with('error', 'An error occurred while submitting your request. Please try again.');
+        return redirect()->back()->with('error', __('E_late.submission_error'));
     }
 }
 

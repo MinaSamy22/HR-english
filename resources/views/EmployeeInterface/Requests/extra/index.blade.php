@@ -5,13 +5,14 @@
         <!-- Content Header (Page header) -->
         <div class="content-header">
             <div class="container-fluid">
-                <div class="row mb-2">
+            <div class=" mb-2 d-flex justify-content-between">
                     <div class="col-sm-6">
                         <h1 class="m-0">{{ __('E_extra.extra_time_requests') }}</h1>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{ route('employee.home') }}">{{ __('E_extra.home') }}</a></li>
+                        <li class="breadcrumb-item"><a href="home" class="text">{{ __('Calender.home') }}</a></li>
+
                             <li class="breadcrumb-item active">{{ __('E_extra.extra_time_requests') }}</li>
                         </ol>
                     </div>
@@ -74,12 +75,14 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="hours">
-                                                    <i class="fas fa-hourglass-half mr-1"></i>{{ __('E_extra.hours') }} <span
-                                                        class="text-danger">*</span>
+                                                    <i class="fas fa-hourglass-half mr-1"></i>{{ __('E_extra.hours') }}
+                                                    <span class="text-danger">*</span>
                                                 </label>
-                                                <input type="number" step="0.5" min="0.5" max="12" name="hours" id="hours"
+                                                <input type="number" step="0.5" min="0.5" max="12"
+                                                    name="hours" id="hours"
                                                     class="form-control @error('hours') is-invalid @enderror"
-                                                    value="{{ old('hours') }}" placeholder="{{ __('E_extra.hours_placeholder') }}" required>
+                                                    value="{{ old('hours') }}"
+                                                    placeholder="{{ __('E_extra.hours_placeholder') }}" required>
                                                 <small class="text-muted">{{ __('E_extra.hours_help') }}</small>
                                                 @error('hours')
                                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -102,9 +105,11 @@
                                     <!-- Hours Summary Display -->
                                     <div class="alert alert-info" id="hours_summary" style="display: none;">
                                         <i class="fas fa-calculator mr-2"></i>
-                                        <strong>{{ __('E_extra.extra_hours_requested') }}: <span id="total_hours">0</span> {{ __('E_extra.hours_unit') }}</strong>
+                                        <strong>{{ __('E_extra.extra_hours_requested') }}: <span id="total_hours">0</span>
+                                            {{ __('E_extra.hours_unit') }}</strong>
                                         <br>
-                                        <small class="text-muted">{{ __('E_extra.date_label') }}: <span id="selected_date">-</span></small>
+                                        <small class="text-muted">{{ __('E_extra.date_label') }}: <span
+                                                id="selected_date">-</span></small>
                                     </div>
                                 </div>
 
@@ -130,25 +135,29 @@
                             </div>
                             <div class="card-body">
                                 @php
-                                    $pending = $requests->where('status', 'pending')->count();
-                                    $approved = $requests->where('status', 'approved')->count();
-                                    $rejected = $requests->where('status', 'rejected')->count();
-                                    $totalHours = $requests->where('status', 'approved')->sum('hours');
-                                    $pendingHours = $requests->where('status', 'pending')->sum('hours');
-                                @endphp
+    $pending = $requests->where('status', 'pending')->count();
+    $approved = $requests->whereIn('status', ['approved', 'accepted'])->count();
+    $rejected = $requests->where('status', 'rejected')->count();
+    $totalHours = $requests->whereIn('status', ['approved', 'accepted'])->sum('hours');
+    $pendingHours = $requests->where('status', 'pending')->sum('hours');
+@endphp
 
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <span>
-                                            <i class="fas fa-check-circle mr-2 text-success"></i>{{ __('E_extra.approved_hours') }}
+                                            <i
+                                                class="fas fa-check-circle mr-2 text-success"></i>{{ __('E_extra.approved_hours') }}
                                         </span>
-                                        <span class="badge badge-success badge-pill">{{ number_format($totalHours, 1) }} {{ __('E_extra.hrs') }}</span>
+                                        <span class="badge badge-success badge-pill">{{ number_format($totalHours, 1) }}
+                                            {{ __('E_extra.hrs') }}</span>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <span>
-                                            <i class="fas fa-hourglass-half mr-2 text-warning"></i>{{ __('E_extra.pending_hours') }}
+                                            <i
+                                                class="fas fa-hourglass-half mr-2 text-warning"></i>{{ __('E_extra.pending_hours') }}
                                         </span>
-                                        <span class="badge badge-warning badge-pill">{{ number_format($pendingHours, 1) }} {{ __('E_extra.hrs') }}</span>
+                                        <span class="badge badge-warning badge-pill">{{ number_format($pendingHours, 1) }}
+                                            {{ __('E_extra.hrs') }}</span>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <span>
@@ -158,7 +167,8 @@
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <span>
-                                            <i class="fas fa-times-circle mr-2 text-danger"></i>{{ __('E_extra.rejected') }}
+                                            <i
+                                                class="fas fa-times-circle mr-2 text-danger"></i>{{ __('E_extra.rejected') }}
                                         </span>
                                         <span class="badge badge-danger badge-pill">{{ $rejected }}</span>
                                     </li>
@@ -172,7 +182,8 @@
                                     • {{ __('E_extra.urgent_requests') }}<br>
                                 </p>
 
-                                <h6><i class="fas fa-exclamation-triangle mr-2"></i>{{ __('E_extra.important_notes') }}</h6>
+                                <h6><i class="fas fa-exclamation-triangle mr-2"></i>{{ __('E_extra.important_notes') }}
+                                </h6>
                                 <p class="text-sm text-muted">
                                     • {{ __('E_extra.submit_advance') }}<br>
                                     • {{ __('E_extra.provide_justification') }}<br>
@@ -214,32 +225,41 @@
                                                         <td>
                                                             <strong>{{ date('d M Y', strtotime($request->date)) }}</strong>
                                                             <br>
-                                                            <small class="text-muted">{{ date('l', strtotime($request->date)) }}</small>
+                                                            <small
+                                                                class="text-muted">{{ date('l', strtotime($request->date)) }}</small>
                                                         </td>
                                                         <td>
-                                                            <span class="badge badge-light badge-pill">{{ number_format($request->hours, 1) }} {{ __('E_extra.hrs') }}</span>
+                                                            <span
+                                                                class="badge badge-light badge-pill">{{ number_format($request->hours, 1) }}
+                                                                {{ __('E_extra.hrs') }}</span>
                                                         </td>
                                                         <td>
-                                                            @if($request->reason)
-                                                                <span class="text-truncate d-inline-block" style="max-width: 200px;" title="{{ $request->reason }}">
+                                                            @if ($request->reason)
+                                                                <span class="text-truncate d-inline-block"
+                                                                    style="max-width: 200px;"
+                                                                    title="{{ $request->reason }}">
                                                                     {{ $request->reason }}
                                                                 </span>
                                                             @else
-                                                                <span class="text-muted font-italic">{{ __('E_extra.no_reason_provided') }}</span>
+                                                                <span
+                                                                    class="text-muted font-italic">{{ __('E_extra.no_reason_provided') }}</span>
                                                             @endif
                                                         </td>
                                                         <td>
                                                             @php
+                                                                $status = $request->status;
                                                                 $statusClass = '';
                                                                 $statusIcon = '';
-                                                                switch ($request->status) {
+                                                                switch ($status) {
                                                                     case 'pending':
                                                                         $statusClass = 'badge-warning';
                                                                         $statusIcon = 'fa-hourglass-half';
                                                                         break;
                                                                     case 'approved':
+                                                                    case 'accepted':
                                                                         $statusClass = 'badge-success';
                                                                         $statusIcon = 'fa-check-circle';
+                                                                        $status = 'approved'; // Standardize to approved
                                                                         break;
                                                                     case 'rejected':
                                                                         $statusClass = 'badge-danger';
@@ -251,17 +271,21 @@
                                                                 }
                                                             @endphp
                                                             <span class="badge {{ $statusClass }}">
-                                                                <i class="fas {{ $statusIcon }} mr-1"></i>{{ __('E_extra.' . $request->status) }}
+                                                                <i
+                                                                    class="fas {{ $statusIcon }} mr-1"></i>{{ __('E_extra.' . $status) }}
                                                             </span>
                                                         </td>
                                                         <td>
                                                             <strong>{{ date('d M Y', strtotime($request->created_at)) }}</strong>
                                                             <br>
-                                                            <small class="text-muted">{{ date('h:i A', strtotime($request->created_at)) }}</small>
+                                                            <small
+                                                                class="text-muted">{{ date('h:i A', strtotime($request->created_at)) }}</small>
                                                         </td>
                                                         <td>
                                                             @if ($request->status == 'pending')
-                                                                <form action="{{ route('employee.extra.destroy', $request->id) }}" method="POST" class="d-inline"
+                                                                <form
+                                                                    action="{{ route('employee.extra.destroy', $request->id) }}"
+                                                                    method="POST" class="d-inline"
                                                                     onsubmit="return confirm('{{ __('E_extra.confirm_cancel') }}')">
                                                                     @csrf
                                                                     @method('DELETE')
@@ -312,12 +336,13 @@
                     var hours = $('#hours').val();
 
                     if (date && hours) {
-                        var formattedDate = new Date(date).toLocaleDateString('{{ app()->getLocale() == "ar" ? "ar-EG" : "en-US" }}', {
-                            weekday: 'long',
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric'
-                        });
+                        var formattedDate = new Date(date).toLocaleDateString(
+                            '{{ app()->getLocale() == 'ar' ? 'ar-EG' : 'en-US' }}', {
+                                weekday: 'long',
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                            });
 
                         $('#selected_date').text(formattedDate);
                         $('#total_hours').text(parseFloat(hours).toFixed(1));

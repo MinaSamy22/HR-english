@@ -1,19 +1,19 @@
 @extends('backend.layouts.app')
 
-@section('title', 'Add News')
+@section('title', __('h_news.add_news'))
 
 @section('content')
 <div class="content-wrapper">
     <div class="content-header">
         <div class="container-fluid">
-            <div class="row mb-2">
+            <div class=" mb-2 d-flex justify-content-between">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Add News</h1>
+                    <h1 class="m-0">{{ __('h_news.add_news') }}</h1>
                 </div>
-                <div class="col-sm-6">
+                <div class="">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('news.index') }}">News</a></li>
-                        <li class="breadcrumb-item active">Add</li>
+                        <li class="breadcrumb-item"><a href="{{ route('news.index') }}">{{ __('h_news.news') }}</a></li>
+                        <li class="breadcrumb-item active">{{ __('h_news.add') }}</li>
                     </ol>
                 </div>
             </div>
@@ -26,12 +26,14 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Add New News</h3>
+                          <div class="d-flex justify-content-between">
+                            <h3 class="card-title">{{ __('h_news.add_new_news') }}</h3>
                             <div class="card-tools">
                                 <a href="{{ route('news.index') }}" class="btn btn-secondary btn-sm">
-                                    <i class="fas fa-arrow-left"></i> Back to List
+                                    <i class="fas fa-arrow-left"></i> {{ __('h_news.back_to_list') }}
                                 </a>
                             </div>
+                        </div>
                         </div>
 
                         <form action="{{ route('news.store') }}" method="POST" enctype="multipart/form-data">
@@ -48,7 +50,7 @@
                                 @endif
 
                                 <div class="form-group">
-                                    <label for="title">Title <span class="text-danger">*</span></label>
+                                    <label for="title">{{ __('h_news.title_required') }} <span class="text-danger">{{ __('h_news.required') }}</span></label>
                                     <input type="text"
                                            class="form-control @error('title') is-invalid @enderror"
                                            id="title"
@@ -61,7 +63,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="description">Description <span class="text-danger">*</span></label>
+                                    <label for="description">{{ __('h_news.description_required') }} <span class="text-danger">{{ __('h_news.required') }}</span></label>
                                     <textarea class="form-control @error('description') is-invalid @enderror"
                                               id="description"
                                               name="description"
@@ -73,7 +75,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="news_date">News Date <span class="text-danger">*</span></label>
+                                    <label for="news_date">{{ __('h_news.news_date_required') }} <span class="text-danger">{{ __('h_news.required') }}</span></label>
                                     <input type="date"
                                            class="form-control @error('news_date') is-invalid @enderror"
                                            id="news_date"
@@ -86,7 +88,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="image">Image</label>
+                                    <label for="image">{{ __('h_news.image_field') }}</label>
                                     <div class="input-group">
                                         <div class="custom-file">
                                             <input type="file"
@@ -94,10 +96,10 @@
                                                    id="image"
                                                    name="image"
                                                    accept="image/*">
-                                            <label class="custom-file-label" for="image">Choose file</label>
+                                            <label class="custom-file-label" for="image">{{ __('h_news.choose_file') }}</label>
                                         </div>
                                     </div>
-                                    <small class="form-text text-muted">Supported formats: JPEG, PNG, JPG, GIF. Max size: 2MB</small>
+                                    <small class="form-text text-muted">{{ __('h_news.image_help_create') }}</small>
                                     @error('image')
                                         <span class="invalid-feedback d-block">{{ $message }}</span>
                                     @enderror
@@ -106,7 +108,7 @@
                                     <div class="mt-2" id="selectedFileName" style="display: none;">
                                         <small class="text-info">
                                             <i class="fas fa-file-image mr-1"></i>
-                                            Selected: <span id="fileNameText"></span>
+                                            {{ __('h_news.selected') }}: <span id="fileNameText"></span>
                                         </small>
                                     </div>
 
@@ -119,7 +121,7 @@
 
                             <div class="card-footer">
                                 <button type="submit" class="btn btn-primary float-right" >
-                                    <i class="fas fa-save"></i> Save News
+                                    <i class="fas fa-save"></i> {{ __('h_news.save_news') }}
                                 </button>
                             </div>
                         </form>
@@ -155,7 +157,7 @@
                 reader.readAsDataURL(file);
             } else {
                 // Reset everything if no file selected
-                $(this).next('.custom-file-label').removeClass("selected").html('Choose file');
+                $(this).next('.custom-file-label').removeClass("selected").html('{{ __('h_news.choose_file') }}');
                 $('#selectedFileName').hide();
                 $('#imagePreview').hide();
             }
@@ -170,7 +172,7 @@
                 label.textContent = file.name;
                 label.classList.add('selected');
             } else if (label) {
-                label.textContent = 'Choose file';
+                label.textContent = '{{ __('h_news.choose_file') }}';
                 label.classList.remove('selected');
             }
         });
@@ -196,6 +198,5 @@
     }
 </style>
 @endpush
-
 @endpush
 @endsection

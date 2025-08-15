@@ -24,7 +24,6 @@ class JobHistoryController extends Controller
 
     }
 
-
 public function add(Request $request)
 {
     $company_id = session('company_id');
@@ -67,10 +66,8 @@ public function add(Request $request)
     }
     $history->save();
 
-        return redirect('admin/job_history')->with('success', 'successfully register.');
+return redirect('admin/job_history')->with('success', __('h_job_history.successfully_register'));
     }
-
-
 
 public function edit($id)
 {
@@ -90,7 +87,6 @@ public function edit($id)
     return view('backend.job-history.edit', $data);
 }
 
-
     public function edit_update ($id, Request $request){
 
 
@@ -104,21 +100,14 @@ public function edit($id)
         $history->department_id            = trim ($request->department_id);
         $history->save();
 
-        return redirect('admin/job_history')->with('success', 'successfully update.');
-
-
+        return redirect('admin/job_history')->with('success', __('h_job_history.successfully_update'));
     }
-
 
     public function delete($id){
         $recordDelete = History::find($id);
         $recordDelete->delete();
-        return redirect()->back()->with('error', 'Record successfully deleted');
+        return redirect()->back()->with('success', __('h_job_history.successfully_deleted'));
 
     }
 
-
-
     }
-
-

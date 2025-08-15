@@ -46,7 +46,8 @@ class ResignationController extends Controller
             'reason' => $request->reason,
         ]);
 
-        return redirect()->route('employee.resignation.index')->with('success', 'Resignation request submitted successfully.');
+         return redirect()->route('employee.resignation.index')
+         ->with('success', __('E_resignation.add-message'));
     }
 
     public function destroy($id)
@@ -58,7 +59,8 @@ class ResignationController extends Controller
 
     $resignation->delete();
 
-    return redirect()->route('employee.resignation.index')->with('success', 'Resignation request deleted.');
+    return redirect()->route('employee.resignation.index')
+    ->with('success', __('E_resignation.delete-message'));
 }
 
 }

@@ -61,7 +61,7 @@ $data['getRecord'] = $query->get();
             $attendance->attendance_type       = $request->attendance_type;
             $attendance->save();
 
-            return response()->json(['message' => 'Attendance Successfully Saved']);
+          return response()->json(['message' => __('dashboard.attendance_saved')]);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Error: ' . $e->getMessage()

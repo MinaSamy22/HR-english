@@ -55,4 +55,18 @@ return [
     'recent_activity' => 'النشاط الحديث',
     'no_recent_activity' => 'لم يتم العثور على نشاط حديث',
     'request' => 'طلب',
+
+
+// Add these keys to your existing E_dashboard.php file
+'activity_type' => [
+    'vacation' => 'إجازة',
+    'resignation' => 'استقالة',
+    'late_removal' => 'إزالة التأخير',
+    'extra_time' => 'وقت إضافي',
+],
+'status' => [
+    'accepted' => 'مقبول',
+    'rejected' => 'مرفوض',
+    'pending' => 'قيد الانتظار',
+],
 ];

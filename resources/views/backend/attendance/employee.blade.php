@@ -30,7 +30,7 @@
                                         <button class="btn btn-primary" type="submit" style="margin-right: 10px;">
                                             {{ __('dashboard.check') }}
                                         </button>
-                                        <a href="{{ url('admin/attendance') }}" class="btn btn-success">
+                                        <a href="{{ url('admin/attendance') }}" class="btn btn-success" style="margin-right: 10px;">
                                             {{ __('dashboard.reset') }}
                                         </a>
                                     </div>

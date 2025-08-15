@@ -44,17 +44,23 @@ class News extends Model
     }
 
     // Method to handle images from shared folder
-    public function getImageUrlAttribute()
-    {
-        if ($this->image) {
-            // Check if file exists in the shared folder
-            $filePath = public_path('../../HR-Uploads/newsimages/' . $this->image);
-            if (file_exists($filePath)) {
-                return route('view.news.image', $this->image); // Assuming you have a similar route
+   public function getImageUrlAttribute()
+{
+    if ($this->image) {
+        $filePath = public_path('../../HR-Uploads/newsimages/' . $this->image);
+        if (file_exists($filePath)) {
+            // Check current route to determine which interface
+            $currentRoute = request()->route()->getName();
+
+            if (str_contains($currentRoute, 'employee') || request()->is('employee/*')) {
+                return route('employee.news.image', $this->image);
+            } else {
+                return route('view.news.image', $this->image);
             }
         }
-        return asset('dist/img/default-news.png'); // Default image if none exists
     }
+    return asset('dist/img/default-news.png');
+}
 
     public function getImagePathAttribute()
     {

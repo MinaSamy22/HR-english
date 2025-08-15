@@ -45,7 +45,8 @@ function deleteSelected() {
     const taskIds = Array.from(taskCheckboxes).map(checkbox => checkbox.value);
 
     if (taskIds.length > 0) {
-        const confirmation = confirm('Are you sure you want to delete the selected tasks?');
+        // Use translations from window.translations object
+        const confirmation = confirm(window.translations.deleteConfirm);
         if (confirmation) {
             const form = document.createElement('form');
             form.method = 'POST';
@@ -75,7 +76,7 @@ function deleteSelected() {
             form.submit();
         }
     } else {
-        alert('No tasks selected for delete.');
+        // Use translations from window.translations object
+        alert(window.translations.noTasksSelected);
     }
 }
-

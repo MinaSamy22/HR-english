@@ -5,13 +5,13 @@
     <div class="content-wrapper">
         <section class="content-header">
             <div class="container-fluid">
-                <div class="row mb-2">
+            <div class=" mb-2 d-flex justify-content-between">
                     <div class="col-sm-6">
                         <h1>{{ __('E_payroll.payslips_report') }}</h1>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{ url('employee/payroll') }}">{{ __('E_payroll.payroll') }}</a></li>
+                        <li class="breadcrumb-item"><a href="home" class="text">{{ __('Calender.home') }}</a></li>
                             <li class="breadcrumb-item active">{{ __('E_payroll.employee_payslips') }}</li>
                         </ol>
                     </div>
@@ -290,13 +290,13 @@
                                                                         {{ date('M d, Y', strtotime($payroll->created_at)) }}
                                                                     </p>
                                                                 </div>
-                                                                <div class="col-6 text-right">
+                                                                {{-- <div class="col-6 text-right">
 
                                                                     <button class="btn btn-sm btn-info"
                                                                         onclick="downloadPayslip({{ $payroll->id }})">
                                                                         <i class="fas fa-download"></i> {{ __('E_payroll.download') }}
                                                                     </button>
-                                                                </div>
+                                                                </div> --}}
                                                             </div>
                                                         </div>
                                                     </div>

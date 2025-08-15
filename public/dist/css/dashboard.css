@@ -356,30 +356,49 @@
 
 
 
- /* Custom CSS for quick access & Barcharts grapgh  */
+/* Custom CSS for quick access & Barcharts grapgh  */
 .quick-btn:hover {
-        background-color: #f8f9fa !important;
-        border-color: #007bff !important;
-        border-left: 4px solid #007bff !important;
-        transform: translateX(5px);
-        box-shadow: 0 2px 8px rgba(0, 123, 255, 0.15);
-    }
+       background-color: #f8f9fa !important;
+       border-color: #007bff !important;
+       border-left: 4px solid #007bff !important;
+       transform: translateX(5px);
+       box-shadow: 0 2px 8px rgba(0, 123, 255, 0.15);
+   }
 
-    .quick-btn:hover i {
-        color: #007bff !important;
-    }
+   /* RTL (Right-to-Left) Support for Quick Access Hover */
+   [dir="rtl"] .quick-btn:hover {
+       border-left: 1px solid #e9ecef !important;
+       border-right: 4px solid #007bff !important;
+       transform: translateX(-5px);
+   }
 
-    .quick-btn:hover span {
-        color: #007bff !important;
-    }
+   .rtl .quick-btn:hover {
+       border-left: 1px solid #e9ecef !important;
+       border-right: 4px solid #007bff !important;
+       transform: translateX(-5px);
+   }
 
-    .card {
-        transition: all 0.3s ease;
-    }
+   .quick-btn:hover i {
+       color: #007bff !important;
+   }
 
-    .card:hover {
-        box-shadow: 0 4px 15px rgba(0, 123, 255, 0.1) !important;
-    }
+   .quick-btn:hover span {
+       color: #007bff !important;
+   }
+
+   .card {
+       transition: all 0.3s ease;
+   }
+
+   .card:hover {
+       box-shadow: 0 4px 15px rgba(0, 123, 255, 0.1) !important;
+   }
+
+ 
+   .rtl .card {
+       border-inline-start: none !important;
+       border-inline-end: 4px solid #007bff !important;
+   }
 
     /* Responsive Chart Container */
     .chart-container {

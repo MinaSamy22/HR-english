@@ -7,10 +7,9 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 >Jobs</h1>
+                        <h1>{{ __('h_jobs.jobs') }}</h1>
                     </div><!-- /.col -->
-                    <div class="col-sm-6" style="text-align: right;">
-
+                    <div class="col-sm-6 text-end" style="text-align: right;">
 
                         <form action="{{ url('admin/jobs_export') }}" method="get">
                             <input type="hidden" name="job_title" value="{{ Request()->job_title }}">
@@ -19,13 +18,13 @@
                             <input type="hidden" name="end_date" value="{{ Request()->end_date }}">
 
                             <button type="submit" class="btn btn-success">
-                                <i class="fas fa-file-excel"></i> Export
+                                <i class="fas fa-file-excel"></i> {{ __('h_jobs.export') }}
                             </button>
                         </form>
                     <br>
 
                     <a href="{{ url('admin/jobs/add') }}" class="btn btn-primary rounded-pill">
-                        <i class="fas fa-user-plus"></i> Add Jobs
+                        <i class="fas fa-user-plus"></i> {{ __('h_jobs.add_jobs_btn') }}
                     </a>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -40,9 +39,7 @@
                     <section class="col-md-12">
                         <div class="card" style="background-color: rgba(255, 255, 255, 0.9); border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
                             <div class="card-header">
-
-                           <h3 class="card-title">Search Jobs</h3>
-
+                                <h3 class="card-title">{{ __('h_jobs.search_jobs') }}</h3>
                             </div>
 
                             <form method="get" action="">
@@ -53,110 +50,83 @@
                                         {{-- name and value I put the name el mktop fl database --}}
                                         {{-- md3 for the size of the label md2 small --}}
 
-                                        {{-- <div class="form-group col-md-3">
-                                            <label> ID </label>
-                                            <input type="text" name="id" class="form-control" value="{{ Request()->id }}" placeholder="ID">
-                                        </div> --}}
-
                                         <div class="form-group col-md-2">
-                                            <label> Job Title </label>
-                                            <input type="text" value="{{ Request()->job_title }}" name="job_title" class="form-control" placeholder="Name">
+                                            <label>{{ __('h_jobs.job_title') }}</label>
+                                            <input type="text" value="{{ Request()->job_title }}" name="job_title" class="form-control" placeholder="{{ __('h_jobs.name_placeholder') }}">
                                         </div>
-
-                                        {{-- <div class="form-group col-md-2">
-                                            <label> Min Salary </label>
-                                            <input type="number" value="{{ Request()->min_salary }}" name="min_salary" class="form-control" placeholder="Min Salary">
-                                        </div>
-
-                                        <div class="form-group col-md-3">
-                                            <label> Max Salary </label>
-                                            <input type="number" value="{{ Request()->max_salary }}" name="max_salary" class="form-control" placeholder="Max Salary">
-                                        </div> --}}
-
-
-
 
                                         <div class="form-group col-md-3 d-flex align-items-end">
-                                            <button class="btn btn-primary rounded-pill" type="submit" style="margin-right: 10px;" title="Search">
+                                            <button class="btn btn-primary rounded-pill" type="submit" style="margin-right: 10px;" title="{{ __('h_jobs.search') }}">
                                                 <i class="fas fa-search"></i>
                                             </button>
-                                            <a href="{{ url('admin/jobs') }}" class="btn btn-success rounded-pill" title="Reset">
+                                            <a href="{{ url('admin/jobs') }}" class="btn btn-success rounded-pill" title="{{ __('h_jobs.reset') }}">
                                                 <i class="fas fa-sync-alt"></i>
                                             </a>
                                         </div>
 
-
                                     </div>
                                 </div>
-                                    </form>
+                            </form>
                         </div>
 
+                        @include('_message')
 
-                     @include('_message')
-
-                     <div class="card" style="background-color: rgba(255, 255, 255, 0.9); border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-                        <div class="card-header">
-                            <h3 class="card-title"> Jobs List </h3>
-                        </div>
-
-                        <div class="card-body p-0">
-                            <div class="table-responsive">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Job Title</th>
-                                            <th>Min Salary</th>
-                                            <th>Max Salary</th>
-                                            <th>Department Name</th>
-                                            <th>Created At </th>
-                                            <th>Action</th>{{-- buttons of crud inside it --}}
-                                        </tr>
-                                    </thead>
-
-
-                                    <tbody>
-                                        @forelse ($getRecord as $value )  {{-- forelse insted of foreach it found with col spam and empty for writing not found if not found --}}
-                                        <tr>
-                                            <td>{{ $value->id }}</td>
-                                            <td>{{ $value->job_title }}</td>
-                                            <td>{{ $value->min_salary }}</td>
-                                            <td>{{ $value->max_salary }}</td>
-                                            <td>{{ $value->department_name ?? 'N/A' }}</td>
-                                            <td>{{ $value->created_at }}</td>
-
-                                            <td>
-                                                <a href="{{ url('admin/jobs/view/' .$value->id) }}" class="btn btn-info rounded-pill" title="View">
-                                                    <i class="fas fa-eye"></i>
-                                                </a>
-                                                <a href="{{ url('admin/jobs/edit/' .$value->id) }}" class="btn btn-primary rounded-pill" title="Edit">
-                                                    <i class="fas fa-edit"></i>
-                                                </a>
-                                                <a href="{{ url('admin/jobs/delete/' .$value->id) }}" onclick="return confirm('Are you sure you want to delete?')" class="btn btn-danger rounded-pill" title="Delete">
-                                                    <i class="fas fa-trash-alt"></i>
-                                                </a>
-                                            </td>
-                                    </tr>
-                                    @empty
-                                    <tr>
-                                        <td colspan="100%"> Not Found.. </td>
-                                    </tr>
-                                    @endforelse
-                                    </tbody>
-                                </table>
+                        <div class="card" style="background-color: rgba(255, 255, 255, 0.9); border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                            <div class="card-header">
+                                <h3 class="card-title">{{ __('h_jobs.jobs_list') }}</h3>
                             </div>
 
-                           <div style="padding: 10px; float:right;">   {{-- for pagination --}}
-                                {!! $getRecord->appends(Illuminate\Support\Facades\Request::except('page'))->links() !!}
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>{{ __('h_jobs.id') }}</th>
+                                                <th>{{ __('h_jobs.job_title') }}</th>
+                                                <th>{{ __('h_jobs.min_salary') }}</th>
+                                                <th>{{ __('h_jobs.max_salary') }}</th>
+                                                <th>{{ __('h_jobs.department_name') }}</th>
+                                                <th>{{ __('h_jobs.created_at') }}</th>
+                                                <th>{{ __('h_jobs.action') }}</th>{{-- buttons of crud inside it --}}
+                                            </tr>
+                                        </thead>
 
+                                        <tbody>
+                                            @forelse ($getRecord as $value )  {{-- forelse insted of foreach it found with col spam and empty for writing not found if not found --}}
+                                            <tr>
+                                                <td>{{ $value->id }}</td>
+                                                <td>{{ $value->job_title }}</td>
+                                                <td>{{ $value->min_salary }}</td>
+                                                <td>{{ $value->max_salary }}</td>
+                                                <td>{{ $value->department_name ?? __('h_jobs.na') }}</td>
+                                                <td>{{ $value->created_at }}</td>
 
+                                                <td>
+                                                    <a href="{{ url('admin/jobs/view/' .$value->id) }}" class="btn btn-info rounded-pill" title="{{ __('h_jobs.view_btn') }}">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                    <a href="{{ url('admin/jobs/edit/' .$value->id) }}" class="btn btn-primary rounded-pill" title="{{ __('h_jobs.edit') }}">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    <a href="{{ url('admin/jobs/delete/' .$value->id) }}" onclick="return confirm('{{ __('h_jobs.delete_confirm') }}')" class="btn btn-danger rounded-pill" title="{{ __('h_jobs.delete') }}">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            @empty
+                                            <tr>
+                                                <td colspan="100%">{{ __('h_jobs.not_found') }}</td>
+                                            </tr>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
+                                </div>
 
+                                <div style="padding: 10px; float:right;">   {{-- for pagination --}}
+                                    {!! $getRecord->appends(Illuminate\Support\Facades\Request::except('page'))->links() !!}
+                                </div>
                             </div>
                         </div>
-                     </div>
-
-
-
                     </section>
                 </div>
             </div>

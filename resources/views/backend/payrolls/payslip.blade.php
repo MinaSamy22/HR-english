@@ -5,11 +5,11 @@
     <div class="content-wrapper">
         <section class="content-header">
             <div class="container-fluid">
-                <div class="row mb-2">
+            <div class=" mb-2 d-flex justify-content-between">
                     <div class="col-sm-6">
                         <h1>{{ __('dashboard.employee_payslips_report') }}</h1>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{ url('admin/payroll') }}">{{ __('dashboard.payroll') }}</a></li>
                             <li class="breadcrumb-item active">{{ __('dashboard.employee_payslips') }}</li>
@@ -79,7 +79,7 @@
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="year">Year</label>
+                                                <label for="year">{{ __('dashboard.year') }}</label>
                                                 <select class="form-control" id="year" name="year">
                                                     <option value="">{{ __('dashboard.select_year') }}</option>
                                                     @for ($i = date('Y'); $i >= date('Y') - 5; $i--)

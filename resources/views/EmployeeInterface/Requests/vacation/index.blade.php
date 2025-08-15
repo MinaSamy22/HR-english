@@ -1,16 +1,17 @@
 @extends('EmployeeInterface.layouts.app')
 @section('content')
-<div class="content-wrapper">
+    <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <div class="content-header">
             <div class="container-fluid">
-                <div class="row mb-2">
+            <div class=" mb-2 d-flex justify-content-between">
                     <div class="col-sm-6">
                         <h1 class="m-0">{{ __('E_vacations.vacation_requests') }}</h1>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{ route('employee.home') }}">{{ __('E_vacations.home') }}</a></li>
+                        <li class="breadcrumb-item"><a href="home" class="text">{{ __('Calender.home') }}</a></li>
+
                             <li class="breadcrumb-item active">{{ __('E_vacations.vacation_requests') }}</li>
                         </ol>
                     </div>
@@ -59,25 +60,32 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="vacation_type">
-                                                    <i class="fas fa-list mr-1"></i>{{ __('E_vacations.vacation_type') }} <span
-                                                        class="text-danger">*</span>
+                                                    <i class="fas fa-list mr-1"></i>{{ __('E_vacations.vacation_type') }}
+                                                    <span class="text-danger">*</span>
                                                 </label>
                                                 <select name="vacation_type" id="vacation_type"
                                                     class="form-control @error('vacation_type') is-invalid @enderror"
                                                     required>
-                                                    <option value="">{{ __('E_vacations.select_vacation_type') }}</option>
+                                                    <option value="">{{ __('E_vacations.select_vacation_type') }}
+                                                    </option>
                                                     <option value="annual"
-                                                        {{ old('vacation_type') == 'annual' ? 'selected' : '' }}>{{ __('E_vacations.annual_leave') }}</option>
+                                                        {{ old('vacation_type') == 'annual' ? 'selected' : '' }}>
+                                                        {{ __('E_vacations.annual_leave') }}</option>
                                                     <option value="sick"
-                                                        {{ old('vacation_type') == 'sick' ? 'selected' : '' }}>{{ __('E_vacations.sick_leave') }}</option>
+                                                        {{ old('vacation_type') == 'sick' ? 'selected' : '' }}>
+                                                        {{ __('E_vacations.sick_leave') }}</option>
                                                     <option value="emergency"
-                                                        {{ old('vacation_type') == 'emergency' ? 'selected' : '' }}>{{ __('E_vacations.emergency_leave') }}</option>
+                                                        {{ old('vacation_type') == 'emergency' ? 'selected' : '' }}>
+                                                        {{ __('E_vacations.emergency_leave') }}</option>
                                                     <option value="personal"
-                                                        {{ old('vacation_type') == 'personal' ? 'selected' : '' }}>{{ __('E_vacations.personal_leave') }}</option>
+                                                        {{ old('vacation_type') == 'personal' ? 'selected' : '' }}>
+                                                        {{ __('E_vacations.personal_leave') }}</option>
                                                     <option value="maternity"
-                                                        {{ old('vacation_type') == 'maternity' ? 'selected' : '' }}>{{ __('E_vacations.maternity_leave') }}</option>
+                                                        {{ old('vacation_type') == 'maternity' ? 'selected' : '' }}>
+                                                        {{ __('E_vacations.maternity_leave') }}</option>
                                                     <option value="paternity"
-                                                        {{ old('vacation_type') == 'paternity' ? 'selected' : '' }}>{{ __('E_vacations.paternity_leave') }}</option>
+                                                        {{ old('vacation_type') == 'paternity' ? 'selected' : '' }}>
+                                                        {{ __('E_vacations.paternity_leave') }}</option>
                                                 </select>
                                                 @error('vacation_type')
                                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -91,8 +99,9 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="start_date">
-                                                    <i class="fas fa-calendar-alt mr-1"></i>{{ __('E_vacations.start_date') }} <span
-                                                        class="text-danger">*</span>
+                                                    <i
+                                                        class="fas fa-calendar-alt mr-1"></i>{{ __('E_vacations.start_date') }}
+                                                    <span class="text-danger">*</span>
                                                 </label>
                                                 <input type="date" name="start_date" id="start_date"
                                                     class="form-control @error('start_date') is-invalid @enderror"
@@ -105,8 +114,9 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="end_date">
-                                                    <i class="fas fa-calendar-alt mr-1"></i>{{ __('E_vacations.end_date') }} <span
-                                                        class="text-danger">*</span>
+                                                    <i
+                                                        class="fas fa-calendar-alt mr-1"></i>{{ __('E_vacations.end_date') }}
+                                                    <span class="text-danger">*</span>
                                                 </label>
                                                 <input type="date" name="end_date" id="end_date"
                                                     class="form-control @error('end_date') is-invalid @enderror"
@@ -125,15 +135,18 @@
                                         <select name="half_day_period" id="half_day_period" class="form-control">
                                             <option value="">{{ __('E_vacations.select_period') }}</option>
                                             <option value="morning"
-                                                {{ old('half_day_period') == 'morning' ? 'selected' : '' }}>{{ __('E_vacations.morning') }}</option>
+                                                {{ old('half_day_period') == 'morning' ? 'selected' : '' }}>
+                                                {{ __('E_vacations.morning') }}</option>
                                             <option value="afternoon"
-                                                {{ old('half_day_period') == 'afternoon' ? 'selected' : '' }}>{{ __('E_vacations.afternoon') }}</option>
+                                                {{ old('half_day_period') == 'afternoon' ? 'selected' : '' }}>
+                                                {{ __('E_vacations.afternoon') }}</option>
                                         </select>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="reason">
-                                            <i class="fas fa-comment mr-1"></i>{{ __('E_vacations.reason') }} <span class="text-danger">*</span>
+                                            <i class="fas fa-comment mr-1"></i>{{ __('E_vacations.reason') }} <span
+                                                class="text-danger">*</span>
                                         </label>
                                         <textarea name="reason" id="reason" rows="4" class="form-control @error('reason') is-invalid @enderror"
                                             placeholder="{{ __('E_vacations.reason_placeholder') }}" required>{{ old('reason') }}</textarea>
@@ -171,7 +184,8 @@
                                     <!-- Days Calculation Display -->
                                     <div class="alert alert-info" id="days_calculation" style="display: none;">
                                         <i class="fas fa-calculator mr-2"></i>
-                                        <strong>{{ __('E_vacations.total_days_requested') }}: <span id="total_days">0</span></strong>
+                                        <strong>{{ __('E_vacations.total_days_requested') }}: <span
+                                                id="total_days">0</span></strong>
                                     </div>
                                 </div>
 
@@ -196,33 +210,34 @@
                                 </h3>
                             </div>
                             <div class="card-body">
-                               <ul class="list-group list-group-flush">
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-        <span>
-            <i class="fas fa-check-circle mr-2 text-success"></i>{{ __('E_vacations.total_balance') }}
-        </span>
-        <span class="badge badge-success badge-pill">{{ $totalVacationAllowed }} {{ __('E_vacations.days') }}</span>
-    </li>
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-        <span>
-            <i class="fas fa-calendar-times mr-2 text-danger"></i>{{ __('E_vacations.used_days') }}
-        </span>
-        <span class="badge badge-danger badge-pill">{{ $vacationsTaken }} {{ __('E_vacations.days') }}</span>
-    </li>
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-        <span>
-            <i class="fas fa-hourglass-half mr-2 text-warning"></i>{{ __('E_vacations.pending_requests') }}
-        </span>
-        <span class="badge badge-warning badge-pill">{{ $pendingVacations }} {{ __('E_vacations.days') }}</span>
-    </li>
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-        <span>
-            <i class="fas fa-balance-scale mr-2 text-primary"></i>{{ __('E_vacations.remaining_balance') }}
-        </span>
-        <span class="badge badge-primary badge-pill">{{ $vacationBalance }} {{ __('E_vacations.days') }}</span>
-    </li>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span>
+                                            <i
+                                                class="fas fa-check-circle mr-2 text-success"></i>{{ __('E_vacations.total_balance') }}
+                                        </span>
+                                        <span class="badge badge-success badge-pill">{{ $totalVacationAllowed }}
+                                            {{ __('E_vacations.days') }}</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span>
+                                            <i
+                                                class="fas fa-balance-scale mr-2 text-primary"></i>{{ __('E_vacations.remaining_balance') }}
+                                        </span>
+                                        <span class="badge badge-primary badge-pill">{{ $vacationBalance }}
+                                            {{ __('E_vacations.days') }}</span>
+                                    </li>
 
-</ul>
+                                   <li class="list-group-item d-flex justify-content-between align-items-center">
+    <span>
+        <i class="fas fa-hourglass-half mr-2 text-warning"></i>{{ __('E_vacations.pending_requests') }}
+    </span>
+    <span class="badge badge-warning badge-pill">{{ $pendingVacations }}
+        {{ __('E_vacations.requests') }}</span>
+</li>
+
+
+                                </ul>
 
                                 <hr>
 
@@ -233,7 +248,9 @@
                                     • {{ __('E_vacations.emergency_same_day') }}
                                 </p>
 
-                                <h6><i class="fas fa-exclamation-triangle mr-2"></i>{{ __('E_vacations.important_notes') }}</h6>
+                                <h6><i
+                                        class="fas fa-exclamation-triangle mr-2"></i>{{ __('E_vacations.important_notes') }}
+                                </h6>
                                 <p class="text-sm text-muted">
                                     • {{ __('E_vacations.submit_advance') }}<br>
                                     • {{ __('E_vacations.emergency_documentation') }}<br>
@@ -284,9 +301,12 @@
                                                                         'emergency' => 'emergency_leave',
                                                                         'personal' => 'personal_leave',
                                                                         'maternity' => 'maternity_leave',
-                                                                        'paternity' => 'paternity_leave'
+                                                                        'paternity' => 'paternity_leave',
                                                                     ];
-                                                                    echo __('E_vacations.' . ($typeTranslations[$typeKey] ?? $typeKey));
+                                                                    echo __(
+                                                                        'E_vacations.' .
+                                                                            ($typeTranslations[$typeKey] ?? $typeKey),
+                                                                    );
                                                                 @endphp
                                                             </span>
                                                         </td>
@@ -298,16 +318,19 @@
                                                         </td>
                                                         <td>
                                                             @php
+                                                                $status = $request->status;
                                                                 $statusClass = '';
                                                                 $statusIcon = '';
-                                                                switch ($request->status) {
+                                                                switch ($status) {
                                                                     case 'pending':
                                                                         $statusClass = 'badge-warning';
                                                                         $statusIcon = 'fa-hourglass-half';
                                                                         break;
                                                                     case 'approved':
+                                                                    case 'accepted':
                                                                         $statusClass = 'badge-success';
                                                                         $statusIcon = 'fa-check-circle';
+                                                                        $status = 'approved'; // Standardize to approved
                                                                         break;
                                                                     case 'rejected':
                                                                         $statusClass = 'badge-danger';
@@ -319,7 +342,8 @@
                                                                 }
                                                             @endphp
                                                             <span class="badge {{ $statusClass }}">
-                                                                <i class="fas {{ $statusIcon }} mr-1"></i>{{ __('E_vacations.' . $request->status) }}
+                                                                <i
+                                                                    class="fas {{ $statusIcon }} mr-1"></i>{{ __('E_vacations.' . $status) }}
                                                             </span>
                                                         </td>
                                                         <td>{{ date('d M Y', strtotime($request->created_at)) }}</td>

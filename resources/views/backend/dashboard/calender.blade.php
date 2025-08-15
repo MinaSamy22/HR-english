@@ -1,9 +1,8 @@
 @extends('backend.layouts.app')
 @section('content')
 
-
-  {{-- mina css --}}
-  <link rel="stylesheet" href="{{ url('dist/css/calender.css') }}">
+{{-- mina css --}}
+<link rel="stylesheet" href="{{ url('dist/css/calender.css') }}">
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper" style="background-image: url('{{ asset('/dist/img/dashboard.jpg') }}'); background-size: cover; background-position: center;">
@@ -11,14 +10,14 @@
     <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
-            <div class="row mb-2">
+            <div class=" mb-2 d-flex justify-content-between">
                 <div class="col-sm-6">
-                    <h1 class="m-0 text">Calendar</h1>
+                    <h1 class="m-0 text">{{ __('Calender.title') }}</h1>
                 </div><!-- /.col -->
-                <div class="col-sm-6">
+                <div class="">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#" class="text">Home</a></li>
-                        <li class="breadcrumb-item active text">Calendar</li>
+                        <li class="breadcrumb-item"><a href="#" class="text">{{ __('Calender.home') }}</a></li>
+                        <li class="breadcrumb-item active text">{{ __('Calender.title') }}</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -27,15 +26,8 @@
 
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Calendar</h3>
-            <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                    <i class="fas fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-tool" data-card-widget="remove">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
+            <h3 class="card-title">{{ __('Calender.title') }}</h3>
+
         </div>
         <div class="card-body">
 
@@ -43,13 +35,13 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Sun</th>
-                        <th>Mon</th>
-                        <th>Tue</th>
-                        <th>Wed</th>
-                        <th>Thu</th>
-                        <th>Fri</th>
-                        <th>Sat</th>
+                        <th>{{ __('Calender.days.sun') }}</th>
+                        <th>{{ __('Calender.days.mon') }}</th>
+                        <th>{{ __('Calender.days.tue') }}</th>
+                        <th>{{ __('Calender.days.wed') }}</th>
+                        <th>{{ __('Calender.days.thu') }}</th>
+                        <th>{{ __('Calender.days.fri') }}</th>
+                        <th>{{ __('Calender.days.sat') }}</th>
                     </tr>
                 </thead>
                 <tbody>

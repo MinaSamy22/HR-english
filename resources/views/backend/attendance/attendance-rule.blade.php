@@ -11,11 +11,11 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <div class="container-fluid">
-                <div class="row mb-2">
+            <div class=" mb-2 d-flex justify-content-between">
                     <div class="col-sm-6">
                         <h1><i class="fas fa-clock mr-2"></i>{{ __('dashboard.company_settings') }}</h1>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">{{ __('dashboard.settings') }}</a></li>
                             <li class="breadcrumb-item active">{{ __('dashboard.company_settings') }}</li>
@@ -277,7 +277,6 @@
                                                     <span class="info-box-number">
                                                         {{ __('dashboard.bonus_per_hour') }}: <span
                                                             id="work_hours_preview">{{ $setting->bonus_per_hour ?? 0 }}</span>
-                                                        {{ __('dashboard.hrs') }}
                                                     </span>
                                                     <div class="progress">
                                                         <div class="progress-bar" id="half_day_progress"
@@ -375,7 +374,7 @@
                                 </div>
 
                                 <div class="text-muted mt-3">
-                                    <p><strong>Late Arrival:</strong> {{ __('dashboard.applied_when_an_employee_clocks_in_after_the_attend_period') }}.</p>
+                                    <p><strong>{{ __('dashboard.late-arrival') }}</strong> {{ __('dashboard.applied_when_an_employee_clocks_in_after_the_attend_period') }}.</p>
                                     <p><strong>{{ __('dashboard.half_day') }}:</strong> {{ __('dashboard.applied_for_arrivals_after_the_half_day_time') }} .</p>
                                     <p><strong>{{ __('dashboard.full_absence') }}:</strong> {{ __('dashboard.applies_when_an_employee_doesnt_report_to_work_without_prior_approval') }}.</p>
                                 </div>

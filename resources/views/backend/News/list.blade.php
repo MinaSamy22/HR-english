@@ -1,7 +1,7 @@
 @extends('backend.layouts.app')
 
 
-@section('content')
+@section('content') 
 <div class="content-wrapper">
     <div class="content-header">
         <div class="container-fluid">
@@ -33,7 +33,7 @@
                                     </a>
                                 </div>
                             </div>
-                        </div>
+                        </div>
 
                         <div class="card-body">
                             @if(session('success'))
@@ -47,12 +47,12 @@
                                 <table class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th width="5%">{{ __('dashboard.id') }}</th>
-                                            <th width="15%">{{ __('dashboard.image') }}</th>
-                                            <th width="25%">{{ __('dashboard.title') }}</th>
-                                            <th width="30%">{{ __('dashboard.description') }}</th>
-                                            <th width="10%">{{ __('dashboard.date') }}</th>
-                                            <th width="15%">{{ __('dashboard.actions') }}</th>
+                                            <th width="5%">{{ __('h_news.id') }}</th>
+                                            <th width="15%">{{ __('h_news.image') }}</th>
+                                            <th width="25%">{{ __('h_news.title') }}</th>
+                                            <th width="30%">{{ __('h_news.description') }}</th>
+                                            <th width="10%">{{ __('h_news.date') }}</th>
+                                            <th width="15%">{{ __('h_news.actions') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -67,7 +67,7 @@
      style="max-width: 60px; max-height: 60px;">
 
                                                     @else
-                                                        <span class="badge badge-secondary">{{ __('dashboard.no_image') }}</span>
+                                                        <span class="badge badge-secondary">{{ __('h_news.no_image') }}</span>
                                                     @endif
                                                 </td>
                                                 <td>{{ $item->title }}</td>
@@ -76,22 +76,22 @@
                                                 <td>
                                                     <div class="btn-group" role="group">
                                                         <a href="{{ route('news.show', $item) }}"
-                                                           class="btn btn-info rounded-pill" title="View">
+                                                           class="btn btn-info rounded-pill" title="{{ __('h_news.view_btn') }}">
                                                             <i class="fas fa-eye"></i>
                                                         </a>
                                                         <a href="{{ route('news.edit', $item) }}"
-                                                           class="btn btn-primary rounded-pill" title="Edit">
+                                                           class="btn btn-primary rounded-pill" title="{{ __('h_news.edit_btn') }}">
                                                             <i class="fas fa-edit"></i>
                                                         </a>
                                                         <form action="{{ route('news.destroy', $item) }}"
                                                               method="POST"
                                                               style="display: inline;"
-                                                              onsubmit="return confirm('Are you sure you want to delete this news?')">
+                                                              onsubmit="return confirm('{{ __('h_news.delete_confirm') }}')">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="submit"
                                                                     class="btn btn-danger rounded-pill"
-                                                                    title="Delete">
+                                                                    title="{{ __('h_news.delete_btn') }}">
                                                                 <i class="fas fa-trash"></i>
                                                             </button>
                                                         </form>
@@ -100,7 +100,7 @@
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="6" class="text-center">{{ __('dashboard.no_news_found') }}</td>
+                                                <td colspan="6" class="text-center">{{ __('h_news.no_news_found') }}</td>
                                             </tr>
                                         @endforelse
                                     </tbody>

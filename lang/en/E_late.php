@@ -23,6 +23,8 @@ return [
     // Status
     'pending' => 'Pending',
     'approved' => 'Approved',
+    'accepted' => 'Approved',
+
     'rejected' => 'Rejected',
     'not_requested' => 'Not Requested',
     'requested' => 'Requested',
@@ -66,4 +68,10 @@ return [
 
     // Validation
     'reason_min_length' => 'Please provide a reason with at least 10 characters.',
+
+    // controller messages
+'invalid_attendance_record' => 'Invalid attendance record.',
+'request_already_submitted' => 'Request already submitted for this attendance record.',
+'request_submitted_successfully' => 'Late/Half Day removal request submitted successfully!',
+'submission_error' => 'An error occurred while submitting your request. Please try again.',
 ];

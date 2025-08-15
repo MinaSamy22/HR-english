@@ -104,7 +104,7 @@ class PayrollController extends Controller
             $payroll->save();
         }
 
-        return redirect('admin/payroll')->with('success', 'Payrolls successfully registered.');
+return redirect('admin/payroll')->with('success', __('h_payroll.payroll_registered'));
     }
 
 
@@ -153,7 +153,7 @@ class PayrollController extends Controller
         $payroll->save();
 
 
-        return redirect('admin/payroll')->with('success', 'successfully update.');
+return redirect('admin/payroll')->with('success', __('h_payroll.payroll_updated'));
     }
 
     // Method to delete a Payroll record
@@ -162,7 +162,7 @@ class PayrollController extends Controller
         $recordDelete = Payroll::find($id);
         if ($recordDelete) {
             $recordDelete->delete();
-            return redirect()->back()->with('success', 'Record successfully deleted.');
+return redirect()->back()->with('success', __('h_payroll.record_deleted'));
         } else {
             return redirect()->back()->with('error', 'Record not found.');
         }
@@ -173,12 +173,11 @@ class PayrollController extends Controller
         $ids = $request->input('ids');
 
         if (!$ids) {
-            return response()->json(['success' => false, 'message' => 'No Payroll selected.']);
-        }
+return response()->json(['success' => false, 'message' => __('h_payroll.no_payroll_selected')]);        }
 
         Payroll::whereIn('id', $ids)->delete();
 
-        return response()->json(['success' => true, 'message' => 'Selected Payroll deleted successfully.']);
+return response()->json(['success' => true, 'message' => __('h_payroll.selected_deleted')]);
     }
 
 
