@@ -39,7 +39,7 @@ class ResignationController extends Controller
         if($request->resignation_date < $employee->hire_date){
             return sendResponse([], 'The resignation date is less than the hiring date.', 0);
         }
-        $hasRequest = $employee->resignationRequests()->where('status','!=',VacationType::REJECTED->value)->exists();
+        $hasRequest = $employee->resignations()->where('status','!=',VacationType::REJECTED->value)->exists();
 
         if ($hasRequest) {
             return sendResponse([], 'You already have a resignation request.', 0);

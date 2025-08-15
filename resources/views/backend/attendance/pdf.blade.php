@@ -1,93 +1,107 @@
+@php
+    $locale = app()->getLocale();
+    $isArabic = ($locale === 'ar');
+@endphp
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ $locale }}" dir="{{ $isArabic ? 'rtl' : 'ltr' }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Attendance Report</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-        direction: ltr;
-        text-align: left;
-    }
-    .header {
-        text-align: center;
-        margin-bottom: 20px;
-        border-bottom: 2px solid #333;
-        padding-bottom: 20px;
-    }
-    .company-logo {
-        max-width: 150px;
-        max-height: 80px;
-        margin-bottom: 5px;
-    }
-    .company-name {
-        font-size: 24px;
-        font-weight: bold;
-        margin: 10px 0;
-        color: #333;
-    }
-    .report-title {
-        font-size: 20px;
-        margin: 10px 0;
-        color: #666;
-    }
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-    }
-    th, td {
-        padding: 8px 6px; /* Slightly increased */
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-    }
-    th {
-        background-color: #f2f2f2;
-        font-weight: bold;
-        color: #333;
-    }
-    tr:nth-child(even) {
-        background-color: #f9f9f9;
-    }
-    .no-record {
-        text-align: center;
-        color: #666;
-        font-style: italic;
-    }
-    .signature-section {
-        margin-top: 50px;
-        text-align: left;
-    }
-    .signature-line {
-        border-bottom: 2px solid #333;
-        width: 200px;
-        display: inline-block;
-        margin-left: 10px;
-    }
-</style>
+    <title>{{ __('dashboard.attendance_report') }}</title>
+    <style>
+        /* Font setup */
+        /* @font-face {
+            font-family: 'Amiri';
+            src: url("{{ public_path('fonts/Amiri-Regular.ttf') }}") format('truetype');
+        }
+        @font-face {
+            font-family: 'DejaVu Sans';
+            src: url("{{ public_path('fonts/DejaVuSans.ttf') }}") format('truetype');
+        } */
 
+        body {
+            font-family: {{ $isArabic ? "'Amiri'" : "'DejaVu Sans'" }}, sans-serif;
+            margin: 20px;
+            direction: {{ $isArabic ? 'rtl' : 'ltr' }};
+            unicode-bidi: {{ $isArabic ? 'embed' : 'normal' }};
+            text-align: {{ $isArabic ? 'right' : 'left' }};
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #333;
+        }
+        .company-logo {
+            max-width: 150px;
+            max-height: 80px;
+            margin-bottom: 5px;
+        }
+        .report-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #444;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            padding: 8px 6px;
+            border: 1px solid #ddd;
+            text-align: {{ $isArabic ? 'right' : 'left' }};
+        }
+        th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+        tr:nth-child(even) td {
+            background-color: #fafafa;
+        }
+        .no-record {
+            text-align: center;
+            color: #777;
+            font-style: italic;
+        }
+
+        /* Signature */
+        .signature-section {
+            margin-top: 50px;
+            text-align: {{ $isArabic ? 'right' : 'left' }};
+        }
+        .signature-line {
+            border-bottom: 2px solid #333;
+            width: 200px;
+            display: inline-block;
+            margin-{{ $isArabic ? 'right' : 'left' }}: 10px;
+        }
+    </style>
 </head>
 <body>
+
     <div class="header">
         @if(Auth::user()->company && Auth::user()->company->logo)
-            <img src="{{ public_path('uploads/company_logos/' . Auth::user()->company->logo) }}"
-                 alt="Company Logo"
-                 class="company-logo">
+            <img src="{{ public_path('uploads/company_logos/' . Auth::user()->company->logo) }}" alt="Company Logo" class="company-logo">
         @endif
-
-        <div class="report-title">Attendance Report</div>
+        <div class="report-title">{{ __('dashboard.attendance_report') }}</div>
     </div>
 
     <table>
         <thead>
             <tr>
-                <th>Employee ID</th>
-                <th>Employee Name</th>
-                <th>Attendance</th>
-                <th>Attendance Date</th>
-                <th>Created Date</th>
+                <th>{{ __('dashboard.employee_id') }}</th>
+                <th>{{ __('dashboard.employee_name') }}</th>
+                <th>{{ __('dashboard.attendance') }}</th>
+                <th>{{ __('dashboard.attendance_date') }}</th>
+                <th>{{ __('dashboard.created_date') }}</th>
             </tr>
         </thead>
         <tbody>
@@ -96,29 +110,28 @@
                 <td>{{ $value->employee_id }}</td>
                 <td>{{ $value->employee_name }}</td>
                 <td>
-                    @if ($value->attendance_type == 1)
-                        Present
-                    @elseif($value->attendance_type == 2)
-                        Late
-                    @elseif($value->attendance_type == 3)
-                        Absent
-                    @elseif($value->attendance_type == 4)
-                        Half Day
-                    @endif
+                    @switch($value->attendance_type)
+                        @case(1) {{ __('dashboard.present') }} @break
+                        @case(2) {{ __('dashboard.late') }} @break
+                        @case(3) {{ __('dashboard.absent') }} @break
+                        @case(4) {{ __('dashboard.half_day') }} @break
+                    @endswitch
                 </td>
                 <td>{{ date('d-m-Y', strtotime($value->attendance_date)) }}</td>
                 <td>{{ date('d-m-Y (h:i A)', strtotime($value->created_at)) }}</td>
             </tr>
             @empty
             <tr>
-                <td colspan="5" class="no-record">No records found</td>
+                <td colspan="5" class="no-record">{{ __('dashboard.no_records_found') }}</td>
             </tr>
             @endforelse
         </tbody>
     </table>
 
     <div class="signature-section">
-        <h3>Signature: <span class="signature-line"></span></h3>
+        <strong>{{ __('dashboard.signature') }}:</strong>
+        <span class="signature-line"></span>
     </div>
+
 </body>
 </html>
