@@ -36,5 +36,8 @@ Route::group(['middleware'=>'auth:api'],function(){
    Route::group(['prefix'=>'home'],function(){
       Route::get('/salaries',[HomeController::class,'salary']);
       Route::get('/news',[HomeController::class,'news']);
+      Route::post('/check-in',[HomeController::class,'checkIn']);
+      Route::post('/check-out',[HomeController::class,'checkOut']);
+      Route::get('/attendance',[HomeController::class,'attendance']);
    });
 });
