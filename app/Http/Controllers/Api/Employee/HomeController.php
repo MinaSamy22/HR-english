@@ -34,5 +34,22 @@ class HomeController extends Controller
         return sendResponse(NewsResource::collection($news),'');
     }
 
+    public function checkIn(){
+        $attendance = $this->employeeService->checkIn();
+        return sendResponse($attendance['data'],$attendance['msg'],$attendance['status']);
+    }
+
+    public function checkOut(){
+        $attendance = $this->employeeService->checkOut();
+        return sendResponse($attendance['data'],$attendance['msg'],$attendance['status']);
+    }
+
+    public function attendance(){
+        $attendance = $this->employeeService->getAttendances();
+
+        return sendResponse($attendance['data'],$attendance['msg'],$attendance['status']);
+
+    }
+
 
 }
