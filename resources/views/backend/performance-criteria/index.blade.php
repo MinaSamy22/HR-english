@@ -1,7 +1,7 @@
 {{-- resources/views/backend/performance-criteria/index.blade.php --}}
 @extends('backend.layouts.app')
 
-@section('title', 'Performance Criteria')
+@section('title', __('h_criteria.title'))
 
 @section('content')
 <div class="content-wrapper">
@@ -9,12 +9,12 @@
         <div class="container-fluid">
             <div class=" mb-2 d-flex justify-content-between">
                 <div class="col-sm-6">
-                    <h1>Performance Criteria</h1>
+                    <h1>{{ __('h_criteria.title') }}</h1>
                 </div>
                 <div class="">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ url('admin/dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Performance Criteria</li>
+                        <li class="breadcrumb-item"><a href="{{ url('admin/dashboard') }}">{{ __('h_criteria.dashboard') }}</a></li>
+                        <li class="breadcrumb-item active">{{ __('h_criteria.title') }}</li>
                     </ol>
                 </div>
             </div>
@@ -33,13 +33,13 @@
             <div class="card">
                 <div class="card-header">
                   <div class="d-flex justify-content-between">
-                    <h3 class="card-title">Evaluation Criteria</h3>
+                    <h3 class="card-title">{{ __('h_criteria.evaluation_criteria') }}</h3>
                     <div class="card-tools">
-                        <a href="{{ route('performance-criteria.create') }}" class="btn btn-primary btn-sm">
-                            <i class="fas fa-plus"></i> Add Criteria
-                        </a>
+    <a href="{{ route('performance-criteria.create') }}" class="btn btn-primary btn-sm rounded-pill">
+        <i class="fas fa-plus"></i> {{ __('h_criteria.add_criteria') }}
+    </a>
+</div>
 
-                    </div>
                   </div>
                 </div>
 
@@ -47,24 +47,22 @@
                     @if($criteria->count() > 0)
                         <div class="alert alert-info">
                             <i class="fas fa-info-circle"></i>
-                            <strong>Note:</strong> These criteria will be used when creating new performance evaluations. You can drag and drop to reorder them.
+                            <strong>{{ __('h_criteria.info') }}:</strong> {{ __('h_criteria.note_info') }}
                         </div>
 
                         <div class="table-responsive">
                             <table class="table table-bordered table-striped" id="criteria-table">
                                 <thead>
                                     <tr>
-
-                                        <th>Criteria Name</th>
-                                        <th>Description</th>
-                                        <th>Status</th>
-                                        <th width="120">Actions</th>
+                                        <th>{{ __('h_criteria.criteria_name') }}</th>
+                                        <th>{{ __('h_criteria.description') }}</th>
+                                        <th>{{ __('h_criteria.status') }}</th>
+                                        <th width="120">{{ __('h_criteria.actions') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody id="sortable-criteria">
                                     @foreach($criteria as $criterion)
                                         <tr data-id="{{ $criterion->id }}">
-
                                             <td>
                                                 <strong>{{ $criterion->name }}</strong>
                                             </td>
@@ -74,22 +72,22 @@
 
                                             <td>
                                                 <span class="badge badge-{{ $criterion->is_active ? 'success' : 'secondary' }}">
-                                                    {{ $criterion->is_active ? 'Active' : 'Inactive' }}
+                                                    {{ $criterion->is_active ? __('h_criteria.active') : __('h_criteria.inactive') }}
                                                 </span>
                                             </td>
                                             <td>
                                                 <div class="btn-group" role="group">
                                                     <a href="{{ route('performance-criteria.edit', $criterion->id) }}"
-                                                       class="btn btn-primary rounded-pill" title="Edit">
+                                                       class="btn btn-primary rounded-pill" title="{{ __('h_criteria.edit') }}">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
                                                     <form method="POST" action="{{ route('performance-criteria.destroy', $criterion->id) }}" style="display: inline;">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit"
-                                                                onclick="return confirm('Are you sure you want to delete this criteria? ')"
+                                                                onclick="return confirm('{{ __('h_criteria.delete_confirm') }}')"
                                                                 class="btn btn-danger rounded-pill"
-                                                                title="Delete">
+                                                                title="{{ __('h_criteria.delete') }}">
                                                             <i class="fas fa-trash"></i>
                                                         </button>
                                                     </form>
@@ -107,10 +105,10 @@
                     @else
                         <div class="text-center py-4">
                             <i class="fas fa-list-ul fa-3x text-muted mb-3"></i>
-                            <h5>No Performance Criteria Found</h5>
-                            <p class="text-muted">Create your first evaluation criteria to customize performance evaluations for your company.</p>
+                            <h5>{{ __('h_criteria.no_criteria_found') }}</h5>
+                            <p class="text-muted">{{ __('h_criteria.no_criteria_description') }}</p>
                             <a href="{{ route('performance-criteria.create') }}" class="btn btn-primary">
-                                <i class="fas fa-plus"></i> Add Criteria
+                                <i class="fas fa-plus"></i> {{ __('h_criteria.add_criteria') }}
                             </a>
                         </div>
                     @endif
@@ -160,16 +158,16 @@ $(document).ready(function() {
                     },
                     success: function(response) {
                         console.log('Order updated successfully:', response);
-                        showToast('Order updated successfully!', 'success');
+                        showToast('{{ __("h_criteria.order_updated") }}', 'success');
                     },
                     error: function(xhr, status, error) {
                         console.error('Error updating order:', error);
                         console.error('Response:', xhr.responseText);
-                        showToast('Failed to update order. Please try again.', 'error');
+                        showToast('{{ __("h_criteria.order_update_failed") }}', 'error');
 
                         // Refresh page to restore original order
                         setTimeout(() => {
-                            if (confirm('Would you like to refresh the page to restore the original order?')) {
+                            if (confirm('{{ __("h_criteria.restore_order_confirm") }}')) {
                                 window.location.reload();
                             }
                         }, 2000);
@@ -197,11 +195,11 @@ function showToast(message, type = 'info') {
     }[type] || 'alert-info';
 
     const toastTitle = {
-        'success': 'Success!',
-        'error': 'Error!',
-        'warning': 'Warning!',
-        'info': 'Info:'
-    }[type] || 'Info:';
+        'success': '{{ __("h_criteria.success") }}',
+        'error': '{{ __("h_criteria.error") }}',
+        'warning': '{{ __("h_criteria.warning") }}',
+        'info': '{{ __("h_criteria.info") }}'
+    }[type] || '{{ __("h_criteria.info") }}';
 
     const toast = $(`
         <div class="alert ${toastClass} alert-dismissible fade show position-fixed"

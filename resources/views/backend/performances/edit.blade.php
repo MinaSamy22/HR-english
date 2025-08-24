@@ -1,21 +1,21 @@
 {{-- resources/views/backend/performances/edit.blade.php --}}
 @extends('backend.layouts.app')
 
-@section('title', 'Edit Performance Evaluation')
+@section('title', __('h_performance.edit_performance_evaluation'))
 
 @section('content')
 <div class="content-wrapper">
     <div class="content-header">
         <div class="container-fluid">
-            <div class="row mb-2">
+            <div class=" mb-2 d-flex justify-content-between">
                 <div class="col-sm-6">
-                    <h1>Edit Performance Evaluation</h1>
+                    <h1>{{ __('h_performance.edit_performance_evaluation') }}</h1>
                 </div>
-                <div class="col-sm-6">
+                <div class="">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ url('admin/dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('performance.index') }}">Performance</a></li>
-                        <li class="breadcrumb-item active">Edit</li>
+                        <li class="breadcrumb-item"><a href="{{ url('admin/dashboard') }}">{{ __('h_performance.dashboard') }}</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('performance.index') }}">{{ __('h_performance.performance') }}</a></li>
+                        <li class="breadcrumb-item active">{{ __('h_performance.edit') }}</li>
                     </ol>
                 </div>
             </div>
@@ -26,15 +26,8 @@
         <div class="container-fluid">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Edit Performance Evaluation</h3>
-                    <div class="card-tools">
-                        <span class="badge badge-{{ $evaluation->getStatusBadgeClass() }}">{{ ucfirst($evaluation->status) }}</span>
-                        @if($evaluation->uses_custom_criteria && $customCriteria->count() > 0)
-                            <span class="badge badge-info ml-2">{{ $customCriteria->count() }} Custom Criteria</span>
-                        @else
-                            <span class="badge badge-secondary ml-2">Standard Criteria</span>
-                        @endif
-                    </div>
+                    <h3 class="card-title">{{ __('h_performance.edit_performance_evaluation') }}</h3>
+
                 </div>
 
                 <form action="{{ route('performance.update', $evaluation->id) }}" method="POST" id="evaluationForm">
@@ -45,9 +38,9 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="alert alert-info">
-                                    <h5><i class="icon fas fa-info"></i> Employee Information</h5>
+                                    <h5><i class="icon fas fa-info"></i> {{ __('h_performance.employee_information') }}</h5>
                                     <strong>{{ $evaluation->employee->name }}</strong> - {{ $evaluation->employee->email }}
-                                    <br><small>Evaluating: {{ $evaluation->getFullEvaluationPeriod() }}</small>
+                                    <br><small>{{ __('h_performance.evaluating') }} {{ $evaluation->getFullEvaluationPeriod() }}</small>
                                 </div>
                             </div>
                         </div>
@@ -56,9 +49,9 @@
                             <!-- Employee Selection -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="employee_id">Employee <span class="text-danger">*</span></label>
+                                    <label for="employee_id">{{ __('h_performance.employee') }} <span class="text-danger">{{ __('h_performance.required') }}</span></label>
                                     <select name="employee_id" id="employee_id" class="form-control @error('employee_id') is-invalid @enderror" required>
-                                        <option value="">Select Employee</option>
+                                        <option value="">{{ __('h_performance.select_employee') }}</option>
                                         @foreach($employees as $employee)
                                             <option value="{{ $employee->id }}" {{ old('employee_id', $evaluation->employee_id) == $employee->id ? 'selected' : '' }}>
                                                 {{ $employee->name }} - {{ $employee->email }}
@@ -74,10 +67,10 @@
                             <!-- Evaluation Period -->
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="evaluation_period">Evaluation Period <span class="text-danger">*</span></label>
+                                    <label for="evaluation_period">{{ __('h_performance.evaluation_period') }} <span class="text-danger">{{ __('h_performance.required') }}</span></label>
                                     <input type="text" name="evaluation_period" id="evaluation_period"
                                            class="form-control @error('evaluation_period') is-invalid @enderror"
-                                           placeholder="e.g., Q1, January, Annual"
+                                           placeholder="{{ __('h_performance.evaluation_period_placeholder') }}"
                                            value="{{ old('evaluation_period', $evaluation->evaluation_period) }}" required>
                                     @error('evaluation_period')
                                         <span class="invalid-feedback">{{ $message }}</span>
@@ -88,7 +81,7 @@
                             <!-- Year -->
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="evaluation_year">Year <span class="text-danger">*</span></label>
+                                    <label for="evaluation_year">{{ __('h_performance.year') }} <span class="text-danger">{{ __('h_performance.required') }}</span></label>
                                     <select name="evaluation_year" id="evaluation_year" class="form-control @error('evaluation_year') is-invalid @enderror" required>
                                         @for($year = date('Y'); $year >= 2020; $year--)
                                             <option value="{{ $year }}" {{ old('evaluation_year', $evaluation->evaluation_year) == $year ? 'selected' : '' }}>
@@ -108,8 +101,8 @@
                             <!-- Custom Criteria Section -->
                             <div class="row mt-4">
                                 <div class="col-12">
-                                    <h5 class="text-primary">Performance Metrics (Rate 1-5)</h5>
-                                    <small class="text-muted">1 = Poor, 2 = Needs Improvement, 3 = Satisfactory, 4 = Good, 5 = Excellent</small>
+                                    <h5 class="text-primary">{{ __('h_performance.performance_metrics') }}</h5>
+                                    <small class="text-muted">{{ __('h_performance.rating_description') }}</small>
                                 </div>
                             </div>
 
@@ -123,21 +116,21 @@
         <div class="form-group">
             <label for="criteria_{{ $criteria->id }}">
                 {{ $criteria->name }}
-                <span class="text-danger">*</span>
+                <span class="text-danger">{{ __('h_performance.required') }}</span>
             </label>
             @if($criteria->description)
                 <div class="text-muted small mb-1">{{ $criteria->description }}</div>
             @endif
             <select name="criteria_{{ $criteria->id }}" id="criteria_{{ $criteria->id }}"
                     class="form-control @error('criteria_'.$criteria->id) is-invalid @enderror" required>
-                <option value="">Select Rating</option>
+                <option value="">{{ __('h_performance.select_rating') }}</option>
                 @for($i = 1; $i <= 5; $i++)
                     @php
                         $currentScore = isset($currentScores[$criteria->id]) ? $currentScores[$criteria->id]['score'] : null;
                         $selected = old('criteria_'.$criteria->id, $currentScore) == $i ? 'selected' : '';
                     @endphp
                     <option value="{{ $i }}" {{ $selected }}>
-                        {{ $i }} - {{ ['', 'Poor', 'Needs Improvement', 'Satisfactory', 'Good', 'Excellent'][$i] }}
+                        {{ $i }} - {{ __('h_performance.' . ['', 'poor', 'needs_improvement', 'satisfactory', 'good', 'excellent'][$i]) }}
                     </option>
                 @endfor
             </select>
@@ -160,7 +153,7 @@
                                 <div class="alert alert-light">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <strong>Current Overall Score:</strong>
+                                            <strong>{{ __('h_performance.current_overall_score') }}:</strong>
                                             <span class="badge badge-{{ $evaluation->getPerformanceRatingClass() }} badge-lg">
                                                 {{ $evaluation->overall_score }}/5.0 - {{ $evaluation->getPerformanceRating() }}
                                             </span>
@@ -174,7 +167,7 @@
                         <!-- Comments Section -->
                         <div class="row mt-4">
                             <div class="col-12">
-                                <h5 class="text-primary">Comments & Feedback</h5>
+                                <h5 class="text-primary">{{ __('h_performance.comments_feedback') }}</h5>
                             </div>
                         </div>
 
@@ -182,10 +175,10 @@
                             <!-- Strengths -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="strengths">Strengths</label>
+                                    <label for="strengths">{{ __('h_performance.strengths') }}</label>
                                     <textarea name="strengths" id="strengths" rows="4"
                                               class="form-control @error('strengths') is-invalid @enderror"
-                                              placeholder="Highlight the employee's key strengths and achievements...">{{ old('strengths', $evaluation->strengths) }}</textarea>
+                                              placeholder="{{ __('h_performance.strengths_placeholder') }}">{{ old('strengths', $evaluation->strengths) }}</textarea>
                                     @error('strengths')
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
@@ -195,10 +188,10 @@
                             <!-- Areas for Improvement -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="areas_for_improvement">Areas for Improvement</label>
+                                    <label for="areas_for_improvement">{{ __('h_performance.areas_for_improvement') }}</label>
                                     <textarea name="areas_for_improvement" id="areas_for_improvement" rows="4"
                                               class="form-control @error('areas_for_improvement') is-invalid @enderror"
-                                              placeholder="Identify areas where the employee can improve...">{{ old('areas_for_improvement', $evaluation->areas_for_improvement) }}</textarea>
+                                              placeholder="{{ __('h_performance.areas_improvement_placeholder') }}">{{ old('areas_for_improvement', $evaluation->areas_for_improvement) }}</textarea>
                                     @error('areas_for_improvement')
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
@@ -208,10 +201,10 @@
                             <!-- Goals for Next Period -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="goals_for_next_period">Goals for Next Period</label>
+                                    <label for="goals_for_next_period">{{ __('h_performance.goals_for_next_period') }}</label>
                                     <textarea name="goals_for_next_period" id="goals_for_next_period" rows="4"
                                               class="form-control @error('goals_for_next_period') is-invalid @enderror"
-                                              placeholder="Set goals and expectations for the next evaluation period...">{{ old('goals_for_next_period', $evaluation->goals_for_next_period) }}</textarea>
+                                              placeholder="{{ __('h_performance.goals_next_period_placeholder') }}">{{ old('goals_for_next_period', $evaluation->goals_for_next_period) }}</textarea>
                                     @error('goals_for_next_period')
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
@@ -221,10 +214,10 @@
                             <!-- HR Comments -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="hr_comments">HR Comments</label>
+                                    <label for="hr_comments">{{ __('h_performance.hr_comments') }}</label>
                                     <textarea name="hr_comments" id="hr_comments" rows="4"
                                               class="form-control @error('hr_comments') is-invalid @enderror"
-                                              placeholder="Additional HR comments and notes...">{{ old('hr_comments', $evaluation->hr_comments) }}</textarea>
+                                              placeholder="{{ __('h_performance.hr_comments_placeholder') }}">{{ old('hr_comments', $evaluation->hr_comments) }}</textarea>
                                     @error('hr_comments')
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
@@ -236,11 +229,11 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="status">Status <span class="text-danger">*</span></label>
+                                    <label for="status">{{ __('h_performance.status') }} <span class="text-danger">{{ __('h_performance.required') }}</span></label>
                                     <select name="status" id="status" class="form-control @error('status') is-invalid @enderror" required>
-                                        <option value="draft" {{ old('status', $evaluation->status) == 'draft' ? 'selected' : '' }}>Draft</option>
-                                        <option value="completed" {{ old('status', $evaluation->status) == 'completed' ? 'selected' : '' }}>Completed</option>
-                                        <option value="reviewed" {{ old('status', $evaluation->status) == 'reviewed' ? 'selected' : '' }}>Reviewed</option>
+                                        <option value="draft" {{ old('status', $evaluation->status) == 'draft' ? 'selected' : '' }}>{{ __('h_performance.draft') }}</option>
+                                        <option value="completed" {{ old('status', $evaluation->status) == 'completed' ? 'selected' : '' }}>{{ __('h_performance.completed') }}</option>
+                                        <option value="reviewed" {{ old('status', $evaluation->status) == 'reviewed' ? 'selected' : '' }}>{{ __('h_performance.reviewed') }}</option>
                                     </select>
                                     @error('status')
                                         <span class="invalid-feedback">{{ $message }}</span>
@@ -249,12 +242,12 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Last Updated</label>
+                                    <label>{{ __('h_performance.last_updated') }}</label>
                                     <div class="form-control-plaintext">
                                         <small class="text-muted">
                                             {{ $evaluation->updated_at->format('M d, Y \a\t h:i A') }}
                                             @if($evaluation->evaluator)
-                                                by {{ $evaluation->evaluator->name }}
+                                                {{ __('h_performance.by') }} {{ $evaluation->evaluator->name }}
                                             @endif
                                         </small>
                                     </div>
@@ -265,28 +258,18 @@
 
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save"></i> Update Evaluation
+                            <i class="fas fa-save"></i> {{ __('h_performance.update_evaluation') }}
                         </button>
 
                         <a href="{{ route('performance.index') }}" class="btn btn-secondary">
-                            <i class="fas fa-times"></i> Cancel
+                            <i class="fas fa-times"></i> {{ __('h_performance.cancel') }}
                         </a>
 
-                        @if($evaluation->canBeEdited())
-                            <div class="float-right">
-                                <button type="button" class="btn btn-danger" onclick="confirmDelete()">
-                                    <i class="fas fa-trash"></i> Delete Evaluation
-                                </button>
-                            </div>
-                        @endif
+
                     </div>
                 </form>
 
-                <!-- Delete Form (hidden) -->
-                <form id="deleteForm" action="{{ route('performance.destroy', $evaluation->id) }}" method="POST" style="display: none;">
-                    @csrf
-                    @method('DELETE')
-                </form>
+
             </div>
         </div>
     </section>
@@ -303,13 +286,13 @@ $(document).ready(function() {
         // Check if employee is selected
         if ($('#employee_id').val() === '') {
             isValid = false;
-            errorMessage += 'Please select an employee.\n';
+            errorMessage += '{{ __('h_performance.select_employee') }}.\n';
         }
 
         // Check if evaluation period is filled
         if ($('#evaluation_period').val().trim() === '') {
             isValid = false;
-            errorMessage += 'Please enter evaluation period.\n';
+            errorMessage += '{{ __('h_performance.evaluation_period') }}.\n';
         }
 
         if (!isValid) {
@@ -331,7 +314,7 @@ $(document).ready(function() {
 });
 
 function confirmDelete() {
-    if (confirm('Are you sure you want to delete this performance evaluation? This action cannot be undone.')) {
+    if (confirm('{{ __('h_performance.delete_evaluation_confirm') }}')) {
         document.getElementById('deleteForm').submit();
     }
 }

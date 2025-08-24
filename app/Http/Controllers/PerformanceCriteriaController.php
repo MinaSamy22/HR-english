@@ -45,9 +45,9 @@ class PerformanceCriteriaController extends Controller
             'sort_order' => ($maxSortOrder ?? 0) + 1,
         ]);
 
-        return redirect()->route('performance-criteria.index')
-            ->with('success', 'Performance criteria created successfully.');
-    }
+return redirect()->route('performance-criteria.index')
+    ->with('success', __('h_criteria.created_successfully'));
+}
 
     public function edit($id)
     {
@@ -74,9 +74,10 @@ class PerformanceCriteriaController extends Controller
             'is_active' => $request->boolean('is_active', true),
         ]);
 
-        return redirect()->route('performance-criteria.index')
-            ->with('success', 'Performance criteria updated successfully.');
-    }
+return redirect()->route('performance-criteria.index')
+    ->with('success', __('h_criteria.updated_successfully'));
+
+  }
 
     public function destroy($id)
     {
@@ -85,9 +86,9 @@ class PerformanceCriteriaController extends Controller
 
         $criteria->delete();
 
-        return redirect()->route('performance-criteria.index')
-            ->with('success', 'Performance criteria deleted successfully.');
-    }
+return redirect()->route('performance-criteria.index')
+    ->with('success', __('h_criteria.deleted_successfully'));
+ }
 
 
 

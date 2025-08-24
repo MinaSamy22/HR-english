@@ -12,6 +12,8 @@ return [
     'current_jobs' => 'Current Jobs',
     'job_history' => 'Job History',
     'company_news' => 'Company News',
+    'performance' => 'Performance Evaluation',
+    'criteria' => 'Performance Criteria',
 
     'attendance_payroll' => 'Attendance & Payroll',
     'attendance' => 'Attendance',

@@ -270,7 +270,7 @@
        class="nav-link @if (Request::segment(2) == 'performance' || Request::segment(2) == 'performance-criteria') active @endif">
         <i class="nav-icon fas fa-chart-line"></i>
         <p>
-            Employee Performance
+        {{ __('dashboard.performance') }}
             <i class="right fa fa-angle-left"></i>
         </p>
     </a>
@@ -281,7 +281,7 @@
             <a href="{{ url('admin/performance-criteria') }}"
                class="nav-link @if (Request::segment(2) == 'performance-criteria') active @endif">
                 <i class="fa fa-cogs nav-icon"></i>
-                <p>Performance Criteria</p>
+        {{ __('dashboard.criteria') }}
             </a>
         </li>
 
@@ -289,7 +289,7 @@
             <a href="{{ url('admin/performance') }}"
                class="nav-link @if (Request::segment(2) == 'performance') active @endif">
                 <i class="fa fa-list nav-icon"></i>
-                <p>Performance Evaluations</p>
+        {{ __('dashboard.performance') }}
             </a>
         </li>
 

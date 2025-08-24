@@ -12,6 +12,9 @@ return [
     'current_jobs' => 'الوظائف الحالية',
     'job_history' => 'تاريخ الوظائف',
     'company_news' => 'أخبار الشركة',
+    'performance' => 'تقييم الاداء',
+    'criteria' => 'معايير التقييم',
+
 
     'attendance_payroll' => 'الحضور والرواتب',
     'attendance' => 'الحضور',

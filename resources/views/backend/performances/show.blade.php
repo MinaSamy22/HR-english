@@ -1,21 +1,21 @@
 {{-- resources/views/backend/performances/show.blade.php --}}
 @extends('backend.layouts.app')
 
-@section('title', 'Performance Evaluation Details')
+@section('title', __('h_performance.performance_evaluation_details'))
 
 @section('content')
 <div class="content-wrapper">
     <div class="content-header">
         <div class="container-fluid">
-            <div class="row mb-2">
+            <div class=" mb-2 d-flex justify-content-between">
                 <div class="col-sm-6">
-                    <h1>Performance Evaluation Details</h1>
+                    <h1>{{ __('h_performance.performance_evaluation_details') }}</h1>
                 </div>
-                <div class="col-sm-6">
+                <div class="">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ url('admin/dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('performance.index') }}">Performance</a></li>
-                        <li class="breadcrumb-item active">Details</li>
+                        <li class="breadcrumb-item"><a href="{{ url('admin/dashboard') }}">{{ __('h_performance.dashboard') }}</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('performance.index') }}">{{ __('h_performance.performance') }}</a></li>
+                        <li class="breadcrumb-item active">{{ __('h_performance.view') }}</li>
                     </ol>
                 </div>
             </div>
@@ -26,15 +26,10 @@
         <div class="container-fluid">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Performance Evaluation</h3>
-                    <div class="card-tools">
-                        @if($evaluation->canBeEdited())
-                            <a href="{{ route('performance.edit', $evaluation->id) }}" class="btn btn-warning btn-sm">
-                                <i class="fas fa-edit"></i> Edit
-                            </a>
-                        @endif
+                <div class="d-flex justify-content-between">
+                    <h3 class="card-title">{{ __('h_performance.performance_evaluations') }}</h3>
 
-                    </div>
+                </div>
                 </div>
 
                 <div class="card-body">
@@ -44,7 +39,7 @@
                             <div class="info-box">
                                 <span class="info-box-icon bg-primary"><i class="fas fa-user"></i></span>
                                 <div class="info-box-content">
-                                    <span class="info-box-text">Employee</span>
+                                    <span class="info-box-text">{{ __('h_performance.employee') }}</span>
                                     <span class="info-box-number">{{ $evaluation->employee->name }}</span>
                                     <span class="progress-description">{{ $evaluation->employee->email }}</span>
                                 </div>
@@ -55,7 +50,7 @@
                             <div class="info-box">
                                 <span class="info-box-icon bg-info"><i class="fas fa-calendar"></i></span>
                                 <div class="info-box-content">
-                                    <span class="info-box-text">Evaluation Period</span>
+                                    <span class="info-box-text">{{ __('h_performance.evaluation_period') }}</span>
                                     <span class="info-box-number">{{ $evaluation->evaluation_period }}</span>
                                     <span class="progress-description">{{ $evaluation->evaluation_year }}</span>
                                 </div>
@@ -68,7 +63,7 @@
                                     <i class="fas fa-star"></i>
                                 </span>
                                 <div class="info-box-content">
-                                    <span class="info-box-text">Overall Score</span>
+                                    <span class="info-box-text">{{ __('h_performance.overall_score') }}</span>
                                     <span class="info-box-number">{{ $evaluation->overall_score }}/5.00</span>
                                     <span class="progress-description">{{ $evaluation->getPerformanceRating() }}</span>
                                 </div>
@@ -82,15 +77,15 @@
                             <div class="alert alert-light">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <strong>Evaluation Type:</strong>
+                                        <strong>{{ __('h_performance.evaluation_type') }}</strong>
                                         <span class="badge badge-{{ $evaluation->uses_custom_criteria ? 'info' : 'secondary' }}">
-                                            {{ $evaluation->uses_custom_criteria ? 'Custom Criteria' : 'Standard Criteria' }}
+                                            {{ $evaluation->uses_custom_criteria ? __('h_performance.custom_criteria') : __('h_performance.standard_criteria') }}
                                         </span>
                                     </div>
                                     <div class="col-md-6">
-                                        <strong>Status:</strong>
+                                        <strong>{{ __('h_performance.status') }}:</strong>
                                         <span class="badge badge-{{ $evaluation->getStatusBadgeClass() }}">
-                                            {{ ucfirst($evaluation->status) }}
+                                            {{ __('h_performance.' . $evaluation->status) }}
                                         </span>
                                     </div>
                                 </div>
@@ -102,7 +97,7 @@
                     <div class="row mt-4">
                         <div class="col-12">
                             <h5 class="text-primary mb-4">
-                                <i class="fas fa-chart-bar mr-2"></i>Performance Metrics
+                                <i class="fas fa-chart-bar mr-2"></i>{{ __('h_performance.performance_metrics') }}
                             </h5>
                         </div>
                     </div>
@@ -112,7 +107,7 @@
                             <div class="card">
                                 <div class="card-header bg-gradient-primary">
                                     <h3 class="card-title text-white">
-                                        <i class="fas fa-trophy mr-2"></i>Score Breakdown
+                                        <i class="fas fa-trophy mr-2"></i>{{ __('h_performance.score_breakdown') }}
                                     </h3>
                                 </div>
                                 <div class="card-body">
@@ -154,8 +149,8 @@
                                         @else
                                             <div class="text-center text-muted py-5">
                                                 <i class="fas fa-exclamation-circle fa-3x mb-3"></i>
-                                                <h5>No Custom Criteria Scores Available</h5>
-                                                <p class="text-muted">No performance criteria have been configured for this evaluation.</p>
+                                                <h5>{{ __('h_performance.no_custom_criteria_scores') }}</h5>
+                                                <p class="text-muted">{{ __('h_performance.no_criteria_configured') }}</p>
                                             </div>
                                         @endif
                                     @else
@@ -191,7 +186,7 @@
                                                                     {{ $criteria['score'] }}/5.0
                                                                 </span>
                                                             @else
-                                                                <span class="badge badge-secondary">Not Rated</span>
+                                                                <span class="badge badge-secondary">{{ __('h_performance.not_rated') }}</span>
                                                             @endif
                                                         </div>
                                                     </div>
@@ -207,7 +202,7 @@
                     <!-- Comments Section -->
                     <div class="row mt-4">
                         <div class="col-12">
-                            <h5 class="text-primary">Comments & Feedback</h5>
+                            <h5 class="text-primary">{{ __('h_performance.comments_feedback') }}</h5>
                         </div>
                     </div>
 
@@ -217,7 +212,7 @@
                             <div class="card card-success">
                                 <div class="card-header">
                                     <h3 class="card-title">
-                                        <i class="fas fa-thumbs-up"></i> Strengths
+                                        <i class="fas fa-thumbs-up"></i> {{ __('h_performance.strengths') }}
                                     </h3>
                                 </div>
                                 <div class="card-body">
@@ -232,7 +227,7 @@
                             <div class="card card-warning">
                                 <div class="card-header">
                                     <h3 class="card-title">
-                                        <i class="fas fa-chart-line"></i> Areas for Improvement
+                                        <i class="fas fa-chart-line"></i> {{ __('h_performance.areas_for_improvement') }}
                                     </h3>
                                 </div>
                                 <div class="card-body">
@@ -247,7 +242,7 @@
                             <div class="card card-info">
                                 <div class="card-header">
                                     <h3 class="card-title">
-                                        <i class="fas fa-target"></i> Goals for Next Period
+                                        <i class="fas fa-target"></i> {{ __('h_performance.goals_for_next_period') }}
                                     </h3>
                                 </div>
                                 <div class="card-body">
@@ -262,7 +257,7 @@
                             <div class="card card-primary">
                                 <div class="card-header">
                                     <h3 class="card-title">
-                                        <i class="fas fa-comments"></i> HR Comments
+                                        <i class="fas fa-comments"></i> {{ __('h_performance.hr_comments') }}
                                     </h3>
                                 </div>
                                 <div class="card-body">
@@ -278,26 +273,26 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title">Evaluation Details</h3>
+                                    <h3 class="card-title">{{ __('h_performance.evaluation_details') }}</h3>
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-3">
-                                            <strong>Status:</strong><br>
+                                            <strong>{{ __('h_performance.status') }}:</strong><br>
                                             <span class="badge badge-{{ $evaluation->getStatusBadgeClass() }}">
-                                                {{ ucfirst($evaluation->status) }}
+                                                {{ __('h_performance.' . $evaluation->status) }}
                                             </span>
                                         </div>
                                         <div class="col-md-3">
-                                            <strong>Evaluated By:</strong><br>
+                                            <strong>{{ __('h_performance.evaluated_by') }}:</strong><br>
                                             {{ $evaluation->evaluator->name ?? 'N/A' }}
                                         </div>
                                         <div class="col-md-3">
-                                            <strong>Created:</strong><br>
+                                            <strong>{{ __('h_performance.created') }}:</strong><br>
                                             {{ $evaluation->created_at->format('M d, Y h:i A') }}
                                         </div>
                                         <div class="col-md-3">
-                                            <strong>Last Updated:</strong><br>
+                                            <strong>{{ __('h_performance.last_updated') }}:</strong><br>
                                             {{ $evaluation->updated_at->format('M d, Y h:i A') }}
                                         </div>
                                     </div>
@@ -324,7 +319,7 @@
 <script>
 
 function confirmDelete() {
-    if (confirm('Are you sure you want to delete this performance evaluation? This action cannot be undone.')) {
+    if (confirm('{{ __('h_performance.delete_evaluation_confirm') }}')) {
         document.getElementById('deleteForm').submit();
     }
 }

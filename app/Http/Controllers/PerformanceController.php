@@ -124,7 +124,7 @@ class PerformanceController extends Controller
 
         if ($existingEvaluation) {
             return back()->withErrors([
-                'employee_id' => 'An evaluation for this employee already exists for the selected period and year.'
+             'employee_id' => __('h_performance.employee_evaluation_exists')
             ])->withInput();
         }
 
@@ -147,21 +147,20 @@ class PerformanceController extends Controller
             $evaluationData['uses_custom_criteria'] = true;
             $criteriaScores = [];
             $totalScore = 0;
-            $totalWeight = 0;
+            $criteriaCount = 0;
 
             foreach ($customCriteria as $criteria) {
                 $score = $request->input('criteria_' . $criteria->id);
                 $criteriaScores[$criteria->id] = [
                     'score' => $score,
-                    'name' => $criteria->name,
-                    'weight' => $criteria->weight
+                    'name' => $criteria->name
                 ];
-                $totalScore += ($score * $criteria->weight);
-                $totalWeight += $criteria->weight;
+                $totalScore += $score;
+                $criteriaCount++;
             }
 
             $evaluationData['criteria_scores'] = $criteriaScores;
-            $evaluationData['overall_score'] = $totalWeight > 0 ? round($totalScore / $totalWeight, 2) : 0;
+            $evaluationData['overall_score'] = $criteriaCount > 0 ? round($totalScore / $criteriaCount, 2) : 0;
         } else {
             // Handle standard criteria
             $evaluationData['uses_custom_criteria'] = false;
@@ -172,7 +171,7 @@ class PerformanceController extends Controller
             $evaluationData['punctuality'] = $request->punctuality;
             $evaluationData['initiative'] = $request->initiative;
 
-            // Calculate overall score for standard criteria
+            // Calculate overall score for standard criteria (simple average)
             $scores = [
                 $request->quality_of_work,
                 $request->productivity,
@@ -186,8 +185,8 @@ class PerformanceController extends Controller
 
         $evaluation = PerformanceEvaluation::create($evaluationData);
 
-        return redirect()->route('performance.index')
-            ->with('success', 'Performance evaluation created successfully.');
+return redirect()->route('performance.index')
+    ->with('success', __('h_performance.evaluation_created_success'));
     }
 
     public function show($id)
@@ -278,22 +277,21 @@ class PerformanceController extends Controller
             // Handle custom criteria update
             $criteriaScores = [];
             $totalScore = 0;
-            $totalWeight = 0;
+            $criteriaCount = 0;
 
             foreach ($customCriteria as $criteria) {
                 $score = $request->input('criteria_' . $criteria->id);
                 $criteriaScores[$criteria->id] = [
                     'score' => $score,
-                    'name' => $criteria->name,
-                    'weight' => $criteria->weight
+                    'name' => $criteria->name
                 ];
-                $totalScore += ($score * $criteria->weight);
-                $totalWeight += $criteria->weight;
+                $totalScore += $score;
+                $criteriaCount++;
             }
 
             $evaluation->update([
                 'criteria_scores' => $criteriaScores,
-                'overall_score' => $totalWeight > 0 ? round($totalScore / $totalWeight, 2) : 0,
+                'overall_score' => $criteriaCount > 0 ? round($totalScore / $criteriaCount, 2) : 0,
             ]);
         } else {
             // Handle standard criteria update
@@ -317,8 +315,8 @@ class PerformanceController extends Controller
             ]);
         }
 
-        return redirect()->route('performance.index')
-            ->with('success', 'Performance evaluation updated successfully.');
+return redirect()->route('performance.index')
+    ->with('success', __('h_performance.evaluation_updated_success'));
     }
 
     public function destroy($id)
@@ -328,8 +326,8 @@ class PerformanceController extends Controller
 
         $evaluation->delete();
 
-        return redirect()->route('performance.index')
-            ->with('success', 'Performance evaluation deleted successfully.');
+return redirect()->route('performance.index')
+    ->with('success', __('h_performance.evaluation_deleted_success'));
     }
 
     public function employeeReport($employeeId)
