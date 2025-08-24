@@ -1,12 +1,14 @@
 <?php
 
 namespace App\Services;
-use App\Models\User;
-use App\Models\VacationRequest;
-use App\Models\Resignation;
-use App\Models\Payroll;
-use App\Enums\VacationType;
 use Carbon\Carbon;
+use App\Models\User;
+use App\Models\Payroll;
+use App\Models\Attendance;
+use App\Enums\VacationType;
+use App\Models\Resignation;
+use App\Models\VacationRequest;
+use App\Http\Resources\AttendanceResource;
 
 
 class EmployeeService
@@ -44,30 +46,50 @@ class EmployeeService
         return $vacations;
     }
 
-    public function getAttendances(){
-        return $this->employee->attendances;
+    public function getAttendances()
+    {
+        $now = now();
+
+        $startOfMonth = $now->copy()->startOfMonth()->toDateString();
+        $endOfMonth   = $now->copy()->endOfMonth()->toDateString();
+
+        $attendances = $this->employee->attendances()
+            ->whereBetween('attendance_date', [$startOfMonth, $endOfMonth])
+            ->get();
+
+        return $this->sendResponse('success',[
+            'attend_count' => $attendances->where('attendance_type',1)->count(),
+            'late_count' => $attendances->where('attendance_type',2)->count(),
+            'absent_count' => $attendances->where('attendance_type',3)->count(),
+            'half_day_count' => $attendances->where('attendance_type',4)->count(),
+            'attendances' => AttendanceResource::collection($attendances),
+        ],1);
     }
+
 
     public function getSalaries($year = null, $month = null)
     {
-        // Default to last month
-        $date = Carbon::createFromDate($year ?? '2000', $month ?? '01', 1);
+        $query = $this->employee->payrolls();
 
-        $from = $date->copy()->startOfMonth()->toDateString();
-        $to = $date->copy()->endOfMonth()->toDateString();
+        if ($year && $month) {
+            // Build date range for the given year/month
+            $date = Carbon::createFromDate($year, $month, 1);
+            $from = $date->copy()->startOfMonth()->toDateString();
+            $to   = $date->copy()->endOfMonth()->toDateString();
 
-        return $this->employee
-            ->payrolls()
-            ->where(function ($query) use ($from, $to) {
+            $query->where(function ($query) use ($from, $to) {
                 $query->whereBetween('start_date', [$from, $to])
                     ->orWhereBetween('end_date', [$from, $to])
                     ->orWhere(function ($query) use ($from, $to) {
                         $query->where('start_date', '<=', $from)
-                                ->where('end_date', '>=', $to);
+                            ->where('end_date', '>=', $to);
                     });
-            })
-            ->get();
+            });
+        }
+
+        return $query->get();
     }
+
 
 
 
@@ -119,6 +141,66 @@ class EmployeeService
     public function getNews(){
         return $this->employee->company->news()->whereDate('news_date', '>=', now()->subDays(30))
                   ->orderBy('news_date', 'desc')->get();
+    }
+
+    public function checkIn()
+    {
+        $now = now();
+
+        $alreadyCheckedIn = $this->employee->attendances()
+            ->where('attendance_date', $now->format('Y-m-d'))
+            ->exists();
+
+        if ($alreadyCheckedIn) {
+            return $this->sendResponse('You have already checked in.', [], 0);
+        }
+
+        $employee = $this->employee;
+        $attendance_type = 1;
+        if ($employee->is_biometric) {
+            $workStart = Carbon::createFromFormat('H:i:s', $employee->work_start_time);
+            $attendance_type = $now->lessThanOrEqualTo($workStart) ? 1 : 2; // 1 = On time, 2 = Late
+        }
+
+        $attendance = $this->employee->attendances()->create([
+            'attendance_date' => $now->toDateString(),
+            'check_in'        => $now->toTimeString(),
+            'attendance_type' => $attendance_type,
+        ]);
+
+        return $this->sendResponse('You have checked in.', AttendanceResource::make($attendance), 1);
+    }
+
+    public function checkOut()
+    {
+        $now = now();
+
+        $attendance = $this->employee->attendances()
+            ->where('attendance_date', $now->format('Y-m-d'))
+            ->first();
+
+        if (!$attendance) {
+            return $this->sendResponse('You have to check in first.', [], 0);
+        }
+
+        if ($attendance->check_out) {
+            return $this->sendResponse('You have already checked out.', [], 0);
+        }
+
+        $attendance->update([
+            'check_out' => $now->format('H:i:s'),
+        ]);
+
+        return $this->sendResponse('You have checked out.', AttendanceResource::make($attendance), 1);
+    }
+
+
+    public function sendResponse($message,$data,$status=1){
+        return [
+            'msg' =>$message,
+            'data' =>$data,
+            'status' =>$status,
+        ];
     }
 
 }
