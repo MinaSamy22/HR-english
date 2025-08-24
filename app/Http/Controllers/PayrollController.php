@@ -54,58 +54,129 @@ class PayrollController extends Controller
 
 
 
-    public function add_post(Request $request)
-    {
-        $employeeIds = $request->input('employee_ids');
-        $startDate = $request->input('start_date');
-        $endDate = $request->input('end_date');
-        $payrollType  = $request->input('payroll_type'); // NEW: Get selected payroll type
-        $companyId = auth()->user()->company_id;
+public function add_post(Request $request)
+{
+    $employeeIds = $request->input('employee_ids');
+    $startDate = $request->input('start_date');
+    $endDate = $request->input('end_date');
+    $payrollType  = $request->input('payroll_type'); // NEW: Get selected payroll type
+    $companyId = auth()->user()->company_id;
 
-        $employees = User::with('company.attendanceSetting','attendances','vacations','times')->whereIn('id',$employeeIds)->get();
-        foreach ($employees as $employee) {
+    $employees = User::with('company.attendanceSetting','attendances','vacations','times')->whereIn('id',$employeeIds)->get();
 
-            $salary = $employee->salary;
+    $validationErrors = [];
+    $processedEmployees = [];
 
-            // Calculate components and retreve from service file
-            [$attendanceDeductions, $dailyWage, $daysAbsent]   = $this->payrollService->calculateAttendanceDeductions($employee, $salary, $startDate, $endDate, $companyId, $payrollType);
-            $leaveDeductions                                   = $this->payrollService->calculateDeductions($employee, $startDate, $endDate);
-            [$restVacancy, $vacationDeductions]                = $this->payrollService->calculateVacationDeductions($employee, $startDate, $endDate);
-            $bonus                                             = $this->payrollService->calculateBonus($employee, $startDate, $endDate);
-            $taxAmount                                         = $this->payrollService->calculateTaxes($employee, $companyId, $salary);
-            $insuranceAmount                                   = $this->payrollService->calculateInsurance($employee, $companyId, $salary);
-            $totalDeductions                                   = $leaveDeductions + $vacationDeductions;
-            $totalTaxes                                        = $taxAmount + $insuranceAmount;
+    foreach ($employees as $employee) {
+        $hasError = false;
 
-            // Final payroll record
-            $payroll                            = new Payroll();
-            $payroll->employee_id               = $employee->id;
-            $payroll->start_date                = $startDate;
-            $payroll->end_date                  = $endDate;
-            $payroll->basic_salary              = $salary;
-            $payroll->bounas                    = $bonus;
-            $payroll->deductions                = $totalDeductions;
-            $payroll->attendance_deduction      = $attendanceDeductions;
-            $payroll->taxes                     = $totalTaxes; //tax + assurance
-            $payroll->rest_vacancy              = $restVacancy; // Only for info/reporting, not deducted in net pay
-            $payroll->payroll_type              = $payrollType; // ✅ NEW: Save the payroll type
-
-            $payroll->net_pay                   = $salary - ($totalDeductions + $totalTaxes + $attendanceDeductions ) + $bonus;
-            $payroll->company_id                = $companyId;
-            $payroll->company_id                = $companyId;
-            $payroll->daily_wage                = $dailyWage;
-            $payroll->days_absent               = $daysAbsent;
-
-            // Handle company/branch assignment
-    $payroll->company_id = session('company_id');
-    if (session()->has('branch_id')) {
-        $payroll->branch_id = session('branch_id');
-    }
-            $payroll->save();
+        // Validation 1: Check if payroll start date is before employee hire date
+        if ($employee->hire_date && $startDate < $employee->hire_date) {
+            $validationErrors[] = __('Employee') . ' ' . $employee->name . ': ' .
+                __('h_payroll.payroll_period_starts_before_hire_date') . ' (' . $employee->hire_date . ')';
+            $hasError = true;
         }
 
-return redirect('admin/payroll')->with('success', __('h_payroll.payroll_registered'));
+        // Validation 2: Check if payroll already exists for overlapping period
+        if (!$hasError) {
+            $existingPayroll = Payroll::where('employee_id', $employee->id)
+                ->where('payroll_type', $payrollType)
+                ->where(function($query) use ($startDate, $endDate) {
+                    $query->where(function($q) use ($startDate, $endDate) {
+                        // Case 1: Existing payroll starts before or on current start and ends after or on current start
+                        $q->where('start_date', '<=', $startDate)
+                          ->where('end_date', '>=', $startDate);
+                    })
+                    ->orWhere(function($q) use ($startDate, $endDate) {
+                        // Case 2: Existing payroll starts before or on current end and ends after or on current end
+                        $q->where('start_date', '<=', $endDate)
+                          ->where('end_date', '>=', $endDate);
+                    })
+                    ->orWhere(function($q) use ($startDate, $endDate) {
+                        // Case 3: Current period completely contains existing payroll
+                        $q->where('start_date', '>=', $startDate)
+                          ->where('end_date', '<=', $endDate);
+                    });
+                })
+                ->first();
+
+            if ($existingPayroll) {
+                $validationErrors[] = __('Employee') . ' ' . $employee->name . ': ' .
+                    __('h_payroll.overlapping_payroll_exists_for_period') . ' (' . $existingPayroll->start_date . ' - ' . $existingPayroll->end_date . ')';
+                $hasError = true;
+            }
+        }
+
+        // If no validation errors, add to processing list
+        if (!$hasError) {
+            $processedEmployees[] = $employee;
+        }
     }
+
+    // If there are validation errors, return with error message
+    if (!empty($validationErrors)) {
+        $errorMessage = __('h_payroll.payroll_generation_failed_for_following_employees') . "\n\n";
+        foreach ($validationErrors as $error) {
+            $errorMessage .= "• " . $error . "\n";
+        }
+
+        if (!empty($processedEmployees)) {
+            $errorMessage .= "\n" . __('h_payroll.note_payroll_successfully_generated_for_other_employees');
+        }
+
+        return redirect('admin/payroll')->with('error', $errorMessage);
+    }
+
+    // Process employees that passed validation
+    foreach ($processedEmployees as $employee) {
+
+        $salary = $employee->salary;
+
+        // Calculate components and retrieve from service file
+        [$attendanceDeductions, $dailyWage, $daysAbsent]       = $this->payrollService->calculateAttendanceDeductions($employee, $salary, $startDate, $endDate, $companyId, $payrollType);
+        $leaveDeductions                                       = $this->payrollService->calculateDeductions($employee, $startDate, $endDate);
+        [$restVacancy, $vacationDeductions]                    = $this->payrollService->calculateVacationDeductions($employee, $startDate, $endDate);
+        $bonus                                                 = $this->payrollService->calculateBonus($employee, $startDate, $endDate);
+        $taxAmount                                             = $this->payrollService->calculateTaxes($employee, $companyId, $salary);
+        $insuranceAmount                                       = $this->payrollService->calculateInsurance($employee, $companyId, $salary);
+        $totalDeductions                                       = $leaveDeductions + $vacationDeductions;
+        $totalTaxes                                            = $taxAmount + $insuranceAmount;
+
+        // Final payroll record
+        $payroll = new Payroll();
+        $payroll->employee_id = $employee->id;
+        $payroll->start_date = $startDate;
+        $payroll->end_date = $endDate;
+        $payroll->basic_salary = $salary;
+        $payroll->bounas = $bonus;
+        $payroll->deductions = $totalDeductions;
+        $payroll->attendance_deduction = $attendanceDeductions;
+        $payroll->taxes = $totalTaxes; // tax + insurance
+        $payroll->rest_vacancy = $restVacancy; // Only for info/reporting, not deducted in net pay
+        $payroll->payroll_type = $payrollType;
+
+        $payroll->net_pay = $salary - ($totalDeductions + $totalTaxes + $attendanceDeductions) + $bonus;
+        $payroll->daily_wage = $dailyWage;
+        $payroll->days_absent = $daysAbsent;
+
+        // Handle company/branch assignment
+        $payroll->company_id = session('company_id') ?: $companyId;
+        if (session()->has('branch_id')) {
+            $payroll->branch_id = session('branch_id');
+        }
+
+        $payroll->save();
+    }
+
+    $successMessage = __('h_payroll.payroll_registered');
+    if (count($processedEmployees) > 0) {
+        $successMessage .= "\n\n" . __('h_payroll.generated_for') . ":\n";
+        $employeeNames = array_map(function($emp) { return '• ' . $emp->name; }, $processedEmployees);
+        $successMessage .= implode("\n", $employeeNames);
+    }
+
+    return redirect('admin/payroll')->with('success', $successMessage);
+}
 
 
 

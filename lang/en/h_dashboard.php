@@ -4,6 +4,8 @@ return [
     // Header
     'branch' => 'Branch',
     'welcome' => 'Welcome',
+    'branch' => 'Branch',
+    'main_branch' => 'Main Branch',
 
     // Statistics Cards
     'total_employees' => 'TOTAL EMPLOYEES',

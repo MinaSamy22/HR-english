@@ -162,6 +162,7 @@ return [
     'employee_updated' => 'Employee successfully updated.',
     'record_deleted' => 'Record and attachment successfully deleted',
     'employees_imported' => ':count employee(s) imported or updated successfully.',
+    'all' => 'Show all '
 
 
 ];

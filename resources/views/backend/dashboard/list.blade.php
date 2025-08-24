@@ -21,8 +21,17 @@
             style="max-height: 60px; max-width: 120px; object-fit: contain; border-radius: 8px; box-shadow: 0 2px 50px rgba(0,0,0,0.1);">
     </div>
 @endif
-                        <h6 class="mb-0 text-black bg-white px-2 py-6 rounded d-none d-md-block">{{ $branchName }} {{ __('h_dashboard.branch') }}</h6>
-                        <small class="mb-0 text-black bg-white px-2 py-1 rounded d-block d-md-none">{{ $branchName }} {{ __('h_dashboard.branch') }}</small>
+@php
+    $branchLabel = $branchName === 'Main' ? __('h_dashboard.main_branch') : $branchName . ' ' . __('h_dashboard.branch');
+@endphp
+
+<h6 class="mb-0 text-black bg-white px-2 py-6 rounded d-none d-md-block">
+    {{ $branchLabel }}
+</h6>
+<small class="mb-0 text-black bg-white px-2 py-1 rounded d-block d-md-none">
+    {{ $branchLabel }}
+</small>
+
                     </div>
                     <div class="me-3">
                         <h5 class="text-muted d-none d-md-block">{{ __('h_dashboard.welcome') }}, {{ Auth::user()->name }} 👋</h5>

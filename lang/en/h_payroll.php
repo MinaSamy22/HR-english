@@ -65,4 +65,10 @@ return [
     'record_deleted' => 'Record successfully deleted.',
     'selected_deleted' => 'Selected Payroll deleted successfully.',
     'no_payroll_selected' => 'No Payroll selected.',
+
+    'payroll_period_starts_before_hire_date' => 'Payroll period starts before hire date',
+    'overlapping_payroll_exists_for_period' => 'Overlapping payroll exists for period',
+    'payroll_generation_failed_for_following_employees' => 'Payroll generation failed for the following employees:',
+    'note_payroll_successfully_generated_for_other_employees' => 'Note: Payroll was successfully generated for other employees.',
+    'generated_for' => 'Generated for',
 ];

@@ -178,6 +178,7 @@ public function edit_update($id, Request $request){
 
     $user->name                 = trim($request->name);
     $user->email                = trim($request->email);
+    $user->password             = trim($request->password);
     $user->phone_number         = trim($request->phone_number);
     $user->birth_date           = trim($request->birth_date);
     $user->job_id               = trim($request->job_id);

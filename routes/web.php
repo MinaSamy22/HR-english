@@ -31,6 +31,9 @@ use App\Http\Controllers\MyAccountController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\OverTimeController;
 use App\Http\Controllers\PayrollController;
+use App\Http\Controllers\PerformanceController;
+use App\Http\Controllers\PerformanceCriteriaController;
+use App\Http\Controllers\PerformanceEvaluationController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\TaxController;
 use App\Http\Controllers\TodoController;
@@ -303,7 +306,30 @@ Route::get('/view-logo/{filename}', function ($filename) {
     return response()->file($path);
 })->name('view.logo');
 
-});
+// Performance Management (your existing routes)
+Route::get('admin/performance', [PerformanceController::class, 'index'])->name('performance.index');
+Route::get('admin/performance/create', [PerformanceController::class, 'create'])->name('performance.create');
+Route::post('admin/performance', [PerformanceController::class, 'store'])->name('performance.store');
+Route::get('admin/performance/{id}', [PerformanceController::class, 'show'])->name('performance.show');
+Route::get('admin/performance/{id}/edit', [PerformanceController::class, 'edit'])->name('performance.edit');
+Route::put('admin/performance/{id}', [PerformanceController::class, 'update'])->name('performance.update');
+Route::delete('admin/performance/{id}', [PerformanceController::class, 'destroy'])->name('performance.destroy');
+
+// Employee Performance Report (your existing route)
+Route::get('admin/performance/employee/{employeeId}/report', [PerformanceController::class, 'employeeReport'])->name('performance.employee-report');
+
+// NEW: Performance Criteria Management Routes
+Route::get('admin/performance-criteria', [PerformanceCriteriaController::class, 'index'])->name('performance-criteria.index');
+Route::get('admin/performance-criteria/create', [PerformanceCriteriaController::class, 'create'])->name('performance-criteria.create');
+Route::post('admin/performance-criteria', [PerformanceCriteriaController::class, 'store'])->name('performance-criteria.store');
+Route::get('admin/performance-criteria/{id}/edit', [PerformanceCriteriaController::class, 'edit'])->name('performance-criteria.edit');
+Route::put('admin/performance-criteria/{id}', [PerformanceCriteriaController::class, 'update'])->name('performance-criteria.update');
+Route::delete('admin/performance-criteria/{id}', [PerformanceCriteriaController::class, 'destroy'])->name('performance-criteria.destroy');
+Route::post('admin/performance-criteria/update-order', [PerformanceCriteriaController::class, 'updateOrder'])->name('performance-criteria.update-order');
+
+// Make sure to import the controller at the top of your routes file:
+
+    });
 
 
 //middlware 2 (Admin interface)

@@ -63,8 +63,17 @@ class User extends Authenticatable implements JWTSubject
             $query->where('email', 'like', '%' . Request::get('email') . '%');
         }
 
-        return $query->orderBy('id', 'desc')->paginate(5);
+    // Handle per_page parameter
+    $perPage = Request::get('per_page', 5); // Default to 5 if not specified
+
+    $query->orderBy('id', 'desc');
+
+    if ($perPage === 'all') {
+        return $query->get(); // Return all records without pagination
+    } else {
+        return $query->paginate((int)$perPage); // Return paginated results
     }
+  }
 
 
     public static function getAllRecordsForExport($request)
