@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('company_id')->constrained()->onDelete('cascade');
             $table->string('name'); // e.g., "Quality of Work", "Communication"
             $table->text('description')->nullable();
-            $table->integer('weight')->default(1); // For weighted scoring if needed
             $table->boolean('is_active')->default(true);
             $table->integer('sort_order')->default(0);
             $table->timestamps();
