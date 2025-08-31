@@ -7,42 +7,56 @@
         style="background-image: url('{{ asset('/dist/img/dashboard.jpg') }}'); background-size: cover; background-position: center;">
 
         <!-- Content Header (Page header) -->
-<div class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-12">
-                <!-- Full width container with space between -->
-                <div class="d-flex align-items-center justify-content-between">
-                    <div class="company-logo-section d-flex align-items-center" style="margin-left: 15px">
-                        @if (Auth::user()->company && Auth::user()->company->logo)
-    <div class="company-logo-wrapper d-flex align-items-center mr-0">
-        <img src="{{ Auth::user()->company->logo_url }}"
-            alt="{{ Auth::user()->company->name }} Logo" class="company-logo mr-3"
-            style="max-height: 60px; max-width: 120px; object-fit: contain; border-radius: 8px; box-shadow: 0 2px 50px rgba(0,0,0,0.1);">
-    </div>
-@endif
-@php
-    $branchLabel = $branchName === 'Main' ? __('h_dashboard.main_branch') : $branchName . ' ' . __('h_dashboard.branch');
-@endphp
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-12">
+                        <!-- Full width container with space between -->
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="company-logo-section d-flex align-items-center" style="margin-left: 15px">
+                                @if (Auth::user()->company && Auth::user()->company->logo)
+                                    <div class="company-logo-wrapper d-flex align-items-center mr-0">
+                                        <img src="{{ Auth::user()->company->logo_url }}"
+                                            alt="{{ Auth::user()->company->name }} Logo" class="company-logo mr-3"
+                                            style="max-height: 60px; max-width: 120px; object-fit: contain; border-radius: 8px; box-shadow: 0 2px 50px rgba(0,0,0,0.1);">
+                                    </div>
+                                @endif
+                                @php
+                                    $branchLabel =
+                                        $branchName === 'Main'
+                                            ? __('h_dashboard.main_branchs')
+                                            : __('h_dashboard.branch') . ' ' . $branchName;
+                                @endphp
 
-<h6 class="mb-0 text-black bg-white px-2 py-6 rounded d-none d-md-block">
-    {{ $branchLabel }}
-</h6>
-<small class="mb-0 text-black bg-white px-2 py-1 rounded d-block d-md-none">
-    {{ $branchLabel }}
-</small>
+                                <h6
+                                    class="d-none d-md-inline-flex align-items-center mb-0
+               text-dark bg-light px-3 py-2 rounded-pill shadow-sm">
+                                    <i class="fas fa-code-branch me-2 text-primary"></i>
+                                    {{ $branchLabel }}
+                                </h6>
 
-                    </div>
-                    <div class="me-3">
-                        <h5 class="text-muted d-none d-md-block">{{ __('h_dashboard.welcome') }}, {{ Auth::user()->name }} 👋</h5>
-                        <small class="text-muted d-block d-md-none">{{ __('h_dashboard.welcome') }}, {{ Auth::user()->name }} 👋</small>
-                    </div>
-                </div>
-            </div><!-- /.col -->
+                                <!-- Mobile view -->
+                                <small
+                                    class="d-inline-flex d-md-none align-items-center mb-0
+                  text-dark bg-light px-2 py-1 rounded-pill shadow-sm">
+                                    <i class="fas fa-code-branch me-1 text-primary"></i>
+                                    {{ $branchLabel }}
+                                </small>
+                            </div>
 
-        </div><!-- /.row -->
-    </div><!-- /.container-fluid -->
-</div><!-- /.content-header -->
+
+                            <div class="me-3">
+                                <h5 class="text-muted d-none d-md-block">{{ __('h_dashboard.welcome') }},
+                                    {{ Auth::user()->name }} 👋</h5>
+                                <small class="text-muted d-block d-md-none">{{ __('h_dashboard.welcome') }},
+                                    {{ Auth::user()->name }} 👋</small>
+                            </div>
+                        </div>
+                    </div><!-- /.col -->
+
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div><!-- /.content-header -->
 
 
         <!-- Main content -->
@@ -152,11 +166,12 @@
                     <!-- Bar Chart Section (Responsive) -->
                     <div class="col-lg-8 col-md-12">
                         <div class="card shadow-sm"
-style="border-radius: 10px; border: none; border-inline-start: 4px solid #007bff;">
+                            style="border-radius: 10px; border: none; border-inline-start: 4px solid #007bff;">
                             <div class="card-header"
                                 style="background: white; color: #333; border: none; border-bottom: 1px solid #e9ecef;">
                                 <h3 class="card-title" style="font-weight: 600; font-size: 1.1rem; color: #007bff;">
-                                    <i class="fas fa-chart-bar mr-2"></i>{{ __('h_dashboard.monthly_performance_analytics') }}
+                                    <i
+                                        class="fas fa-chart-bar mr-2"></i>{{ __('h_dashboard.monthly_performance_analytics') }}
                                 </h3>
                             </div>
                             <div class="card-body" style="background: white; padding: 1rem;">
@@ -170,7 +185,7 @@ style="border-radius: 10px; border: none; border-inline-start: 4px solid #007bff
                     <!-- Quick Access Section -->
                     <div class="col-lg-4 col-md-12">
                         <div class="card shadow-sm"
-style="border-radius: 10px; border: none; border-inline-start: 4px solid #007bff;">
+                            style="border-radius: 10px; border: none; border-inline-start: 4px solid #007bff;">
                             <div class="card-header"
                                 style="background: white; color: #333; border: none; border-bottom: 1px solid #e9ecef;">
                                 <h3 class="card-title" style="font-weight: 600; font-size: 1.1rem; color: #007bff;">
@@ -190,7 +205,8 @@ style="border-radius: 10px; border: none; border-inline-start: 4px solid #007bff
                                             class="btn btn-light btn-block text-left quick-btn"
                                             style="border-radius: 8px; padding: 12px 16px; border: 1px solid #e9ecef; transition: all 0.3s ease;">
                                             <i class="fas fa-user-check mr-3" style="color: #007bff;"></i>
-                                            <span style="font-weight: 500; color: #333;">{{ __('h_dashboard.add_attendance_manually') }}</span>
+                                            <span
+                                                style="font-weight: 500; color: #333;">{{ __('h_dashboard.add_attendance_manually') }}</span>
                                         </a>
                                     </div>
 
@@ -201,7 +217,8 @@ style="border-radius: 10px; border: none; border-inline-start: 4px solid #007bff
                                             class="btn btn-light btn-block text-left quick-btn"
                                             style="border-radius: 8px; padding: 12px 16px; border: 1px solid #e9ecef; transition: all 0.3s ease;">
                                             <i class="nav-icon fa fa-coins mr-3" style="color: #007bff;"></i>
-                                            <span style="font-weight: 500; color: #333;">{{ __('h_dashboard.add_payroll') }}</span>
+                                            <span
+                                                style="font-weight: 500; color: #333;">{{ __('h_dashboard.add_payroll') }}</span>
                                         </a>
                                     </div>
 
@@ -219,7 +236,8 @@ style="border-radius: 10px; border: none; border-inline-start: 4px solid #007bff
                                             class="btn btn-light btn-block text-left quick-btn"
                                             style="border-radius: 8px; padding: 10px 16px; border: 1px solid #e9ecef; transition: all 0.3s ease;">
                                             <i class="fas fa-receipt mr-3" style="color: #007bff;"></i>
-                                            <span style="font-weight: 500; color: #333;">{{ __('h_dashboard.payslip_report') }}</span>
+                                            <span
+                                                style="font-weight: 500; color: #333;">{{ __('h_dashboard.payslip_report') }}</span>
                                         </a>
                                     </div>
 
@@ -229,7 +247,8 @@ style="border-radius: 10px; border: none; border-inline-start: 4px solid #007bff
                                             class="btn btn-light btn-block text-left quick-btn"
                                             style="border-radius: 8px; padding: 10px 16px; border: 1px solid #e9ecef; transition: all 0.3s ease;">
                                             <i class="fas fa-calendar-check mr-3" style="color: #007bff;"></i>
-                                            <span style="font-weight: 500; color: #333;">{{ __('h_dashboard.attendance_report') }}</span>
+                                            <span
+                                                style="font-weight: 500; color: #333;">{{ __('h_dashboard.attendance_report') }}</span>
                                         </a>
                                     </div>
                                 </div>
@@ -239,7 +258,7 @@ style="border-radius: 10px; border: none; border-inline-start: 4px solid #007bff
                 </div><!-- /.row -->
 
 
-<!-- Company News Section -->
+                <!-- Company News Section -->
                 <div class="row mt-4">
                     <div class="col-12">
                         <div class="card shadow-sm"
@@ -251,80 +270,83 @@ style="border-radius: 10px; border: none; border-inline-start: 4px solid #007bff
                                 </h3>
 
                             </div>
-                            <div class="card-body" style="background: white; padding: 1.5rem; max-height: 500px; overflow-y: auto;">
-                                @if(isset($recentNews) && $recentNews->count() > 0)
+                            <div class="card-body"
+                                style="background: white; padding: 1.5rem; max-height: 500px; overflow-y: auto;">
+                                @if (isset($recentNews) && $recentNews->count() > 0)
                                     <div class="row">
-                                        @foreach($recentNews as $newsItem)
+                                        @foreach ($recentNews as $newsItem)
                                             <div class="col-lg-6 col-md-12 mb-4">
                                                 <div class="news-item border rounded p-3 h-100"
-                                                     style="border-inline-start: 3px solid #28a745 !important; transition: all 0.3s ease; background: #f8f9fa;">
+                                                    style="border-inline-start: 3px solid #28a745 !important; transition: all 0.3s ease; background: #f8f9fa;">
                                                     <div class="row">
-                                                        @if($newsItem->hasImage())
+                                                        @if ($newsItem->hasImage())
                                                             <div class="col-4">
-                                                                <div class="news-image-container" style="height: 80px; width: 100%; overflow: hidden; border-radius: 0.375rem; background: #f8f9fa; display: flex; align-items: center; justify-content: center;">
+                                                                <div class="news-image-container"
+                                                                    style="height: 80px; width: 100%; overflow: hidden; border-radius: 0.375rem; background: #f8f9fa; display: flex; align-items: center; justify-content: center;">
                                                                     <img src="{{ $newsItem->imageUrl }}"
-                                                                         alt="{{ $newsItem->title }}"
-                                                                         class="img-fluid"
-                                                                         style="max-height: 100%; max-width: 100%; object-fit: contain;">
+                                                                        alt="{{ $newsItem->title }}" class="img-fluid"
+                                                                        style="max-height: 100%; max-width: 100%; object-fit: contain;">
                                                                 </div>
                                                             </div>
                                                             <div class="col-8">
-                                                        @else
-                                                            <div class="col-12">
+                                                            @else
+                                                                <div class="col-12">
                                                         @endif
-                                                            <h6 class="news-title mb-2" style="color: #333; font-weight: 600; line-height: 1.4;">
-                                                                <a href="{{ route('news.show', $newsItem) }}"
-                                                                   class="text-decoration-none"
-                                                                   style="color: inherit;">
-                                                                    {{ Str::limit($newsItem->title, 50) }}
-                                                                </a>
-                                                            </h6>
-                                                            <p class="news-excerpt mb-2 text-muted small">
-                                                                {{ Str::limit($newsItem->description, 80) }}
-                                                            </p>
-                                                            <div class="news-meta d-flex justify-content-between align-items-center">
-                                                                <small class="text-muted">
-                                                                    <i class="fas fa-calendar-alt mr-1"></i>
-                                                                    {{ $newsItem->formattedDate }}
-                                                                </small>
-                                                                <a href="{{ route('news.show', $newsItem) }}"
-                                                                   class="btn btn-success btn-sm view-btn"
-                                                                   style="font-size: 0.75rem; padding: 0.25rem 0.5rem;">
-                                                                    <i class="fas fa-eye mr-1"></i>{{ __('h_dashboard.view') }}
-                                                                </a>
-                                                            </div>
+                                                        <h6 class="news-title mb-2"
+                                                            style="color: #333; font-weight: 600; line-height: 1.4;">
+                                                            <a href="{{ route('news.show', $newsItem) }}"
+                                                                class="text-decoration-none" style="color: inherit;">
+                                                                {{ Str::limit($newsItem->title, 50) }}
+                                                            </a>
+                                                        </h6>
+                                                        <p class="news-excerpt mb-2 text-muted small">
+                                                            {{ Str::limit($newsItem->description, 80) }}
+                                                        </p>
+                                                        <div
+                                                            class="news-meta d-flex justify-content-between align-items-center">
+                                                            <small class="text-muted">
+                                                                <i class="fas fa-calendar-alt mr-1"></i>
+                                                                {{ $newsItem->formattedDate }}
+                                                            </small>
+                                                            <a href="{{ route('news.show', $newsItem) }}"
+                                                                class="btn btn-success btn-sm view-btn"
+                                                                style="font-size: 0.75rem; padding: 0.25rem 0.5rem;">
+                                                                <i
+                                                                    class="fas fa-eye mr-1"></i>{{ __('h_dashboard.view') }}
+                                                            </a>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        @endforeach
                                     </div>
-                                @else
-                                    <div class="text-center py-4">
-                                        <div class="mb-3">
-                                            <i class="fas fa-newspaper fa-3x text-muted"></i>
-                                        </div>
-                                        <h5 class="text-muted">{{ __('h_dashboard.no_recent_news') }}</h5>
-                                        <p class="text-muted mb-3">{{ __('h_dashboard.no_recent_news_desc') }}</p>
-                                        <a href="{{ route('news.create') }}" class="btn btn-success">
-                                            <i class="fas fa-plus mr-2"></i>{{ __('h_dashboard.add_first_news') }}
-                                        </a>
-                                    </div>
-                                @endif
+                                @endforeach
                             </div>
+                        @else
+                            <div class="text-center py-4">
+                                <div class="mb-3">
+                                    <i class="fas fa-newspaper fa-3x text-muted"></i>
+                                </div>
+                                <h5 class="text-muted">{{ __('h_dashboard.no_recent_news') }}</h5>
+                                <p class="text-muted mb-3">{{ __('h_dashboard.no_recent_news_desc') }}</p>
+                                <a href="{{ route('news.create') }}" class="btn btn-success">
+                                    <i class="fas fa-plus mr-2"></i>{{ __('h_dashboard.add_first_news') }}
+                                </a>
+                            </div>
+                            @endif
                         </div>
                     </div>
-                </div><!-- /.row -->
+                </div>
+            </div><!-- /.row -->
 
-            </div><!-- /.container-fluid -->
-        </section><!-- /.content -->
+    </div><!-- /.container-fluid -->
+    </section><!-- /.content -->
     </div><!-- /.content-wrapper -->
 
     <!-- CSS for News Items Hover Effect -->
     <style>
         .news-item:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
             background: white !important;
         }
 
@@ -334,13 +356,13 @@ style="border-radius: 10px; border: none; border-inline-start: 4px solid #007bff
 
         .quick-btn:hover {
             transform: translateX(3px);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             border-color: #007bff !important;
         }
 
         .view-btn:hover {
             transform: scale(1.05);
-            box-shadow: 0 2px 8px rgba(0,123,255,0.3);
+            box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
         }
 
         /* Custom scrollbar for news section */
@@ -370,8 +392,8 @@ style="border-radius: 10px; border: none; border-inline-start: 4px solid #007bff
 
 
 
-            </div><!-- /.container-fluid -->
-        </section><!-- /.content -->
+    </div><!-- /.container-fluid -->
+    </section><!-- /.content -->
     </div><!-- /.content-wrapper -->
 
 

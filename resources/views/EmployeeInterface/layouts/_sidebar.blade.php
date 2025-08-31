@@ -84,11 +84,11 @@
 
 
         <!-- Moon Icon for Dark Mode Toggle -->
-        <li class="nav-item">
+        {{-- <li class="nav-item">
             <a class="nav-link dark-mode-toggle" role="button">
                 <i class="nav-icon fa fa-moon" style="color: #908a8a;"></i>
             </a>
-        </li>
+        </li> --}}
 
 
         <li class="nav-item">

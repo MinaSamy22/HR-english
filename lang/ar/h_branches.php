@@ -36,9 +36,9 @@ return [
 
     // Add page
     'add_branch_title' => 'إضافة فرع',
-    'enter_branch_name' => 'أدخل اسم الفرع',
+    'enter_branch_name' => 'أدخل اسم الفرع مثال: فرع القاهرة',
     'enter_location_optional' => 'أدخل الموقع (اختياري)',
-    'is_main_branch_question' => 'هل هذا هو الفرع الرئيسي؟',
+    'is_main_branch_question' => 'هل هذا فرع رئيسي؟',
     'add_branch_button' => 'إضافة فرع',
 
     // JavaScript messages

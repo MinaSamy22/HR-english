@@ -6,6 +6,7 @@ use Illuminate\Http\Request; // ✅ هذا هو الصحيح
 use App\Models\Payroll;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
+use Mpdf\Mpdf;
 
 class EmployeePayrollController extends Controller
 {

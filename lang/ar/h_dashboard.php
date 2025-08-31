@@ -2,10 +2,10 @@
 
 return [
     // Header
-    'branch' => 'الفرع',
+    'branch' => ' : ',
     'welcome' => 'مرحباً',
-    'branch' => 'الفرع',
-    'main_branch' => 'الفرع الرئيسي',
+    'main_branch' => ' الفرع الرئيسي',
+    'main_branchs' => ': الفرع الرئيسي',
 
     // Statistics Cards
     'total_employees' => 'إجمالي الموظفين',

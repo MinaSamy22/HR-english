@@ -47,6 +47,7 @@ return [
     'enter_email' => 'أدخل البريد الإلكتروني',
     'enter_salary' => 'أدخل الراتب',
     'enter_password' => 'أدخل كلمة المرور',
+    'enter_new_password' => 'أدخل كلمة المرور ',
 
     // Select Options
     'select_job_title' => 'اختر المسمى الوظيفي',
@@ -146,6 +147,7 @@ return [
     'manager_id' => 'معرف المدير',
     'department_id' => 'معرف القسم',
     'role' => 'الدور',
+    'branch' => 'الفرع',
 
     // Format notes
     'date_format' => 'يوم/شهر/سنة',

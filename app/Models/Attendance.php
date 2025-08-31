@@ -40,15 +40,40 @@ class Attendance extends Model
     $company_id = session('company_id');
     $branch_id = session('branch_id');
 
+    // Determine filtering logic based on branch_id and is_main
+    $showAllCompanyData = false;
+    $filterBranchId = null;
+
+    if (!empty($branch_id)) {
+        // Get the current branch info to check if it's main
+        $currentBranch = \DB::table('branches')
+            ->where('id', $branch_id)
+            ->select('is_main')
+            ->first();
+
+        if ($currentBranch && $currentBranch->is_main == 1) {
+            // If current branch is main branch, show all attendances in the company
+            $showAllCompanyData = true;
+        } else {
+            // If current branch is not main, show only attendances of employees from this branch
+            $filterBranchId = $branch_id;
+        }
+    } else {
+        // If no branch_id in session, show all attendances in the company
+        $showAllCompanyData = true;
+    }
+
     $query = self::select('attendances.*', 'employee.name as employee_name')
         ->join('users as employee', 'employee.id', '=', 'attendances.employee_id')
         ->orderBy('attendances.id', 'desc');
 
-    // 🔎 Filter by branch_id or fallback to company_id
-    if (!empty($branch_id)) {
-        $query->where('employee.branch_id', $branch_id);
-    } else {
+    // Apply branch/company filtering through the employee's branch
+    if ($showAllCompanyData) {
+        // Show all company attendances
         $query->where('employee.company_id', $company_id);
+    } else {
+        // Show only attendances for employees from specific branch
+        $query->where('employee.branch_id', $filterBranchId);
     }
 
     // 🔍 Apply search filters

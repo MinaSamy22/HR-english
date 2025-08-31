@@ -1,5 +1,6 @@
 <?php
 namespace App\Http\Controllers;
+use App\Models\Branch;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -13,47 +14,67 @@ use App\Models\Attendance; // Add this import
 
 class RequestController extends Controller
 {
-    public function index()
-    {
-        // Get current company ID from session
-        $companyId = session('company_id');
+public function index()
+{
+    // Get current company ID and branch ID from session
+    $companyId = session('company_id');
+    $branchId = session('branch_id');
 
-        // Get pending requests for current company only
-        $pendingVacations = VacationRequest::where('status', 'pending')
-            ->whereHas('user', function($query) use ($companyId) {
-                $query->where('company_id', $companyId);
-            })
-            ->with('user')
-            ->get();
+    // Determine filtering logic based on branch_id and is_main
+    $showAllCompanyRequests = false;
+    $filterBranchId = null;
 
-        $pendingExtraTimes = ExtraTimeRequest::where('status', 'pending')
-            ->whereHas('user', function($query) use ($companyId) {
-                $query->where('company_id', $companyId);
-            })
-            ->with('user')
-            ->get();
-
-        $pendingResignations = Resignation::where('status', 'pending')
-            ->whereHas('user', function($query) use ($companyId) {
-                $query->where('company_id', $companyId);
-            })
-            ->with('user')
-            ->get();
-
-        $pendingLateRemovals = LateRemovalRequest::where('status', 'pending')
-            ->whereHas('user', function($query) use ($companyId) {
-                $query->where('company_id', $companyId);
-            })
-            ->with('user')
-            ->get();
-
-        return view('backend.requests.pending', compact(
-            'pendingVacations',
-            'pendingExtraTimes',
-            'pendingResignations',
-            'pendingLateRemovals'
-        ));
+    if ($branchId) {
+        $currentBranch = Branch::find($branchId);
+        if ($currentBranch && $currentBranch->is_main == 1) {
+            // Main branch - show all company requests
+            $showAllCompanyRequests = true;
+        } else {
+            // Regular branch - show only this branch's requests
+            $filterBranchId = $branchId;
+        }
+    } else {
+        // No branch_id in session - show all company requests
+        $showAllCompanyRequests = true;
     }
+
+    // Create a closure for the user filtering logic
+    $userFilterClosure = function($query) use ($showAllCompanyRequests, $companyId, $filterBranchId) {
+        if ($showAllCompanyRequests) {
+            $query->where('company_id', $companyId);
+        } else {
+            $query->where('branch_id', $filterBranchId);
+        }
+    };
+
+    // Get pending requests with consistent filtering
+    $pendingVacations = VacationRequest::where('status', 'pending')
+        ->whereHas('user', $userFilterClosure)
+        ->with('user')
+        ->get();
+
+    $pendingExtraTimes = ExtraTimeRequest::where('status', 'pending')
+        ->whereHas('user', $userFilterClosure)
+        ->with('user')
+        ->get();
+
+    $pendingResignations = Resignation::where('status', 'pending')
+        ->whereHas('user', $userFilterClosure)
+        ->with('user')
+        ->get();
+
+    $pendingLateRemovals = LateRemovalRequest::where('status', 'pending')
+        ->whereHas('user', $userFilterClosure)
+        ->with('user')
+        ->get();
+
+    return view('backend.requests.pending', compact(
+        'pendingVacations',
+        'pendingExtraTimes',
+        'pendingResignations',
+        'pendingLateRemovals'
+    ));
+}
 
     public function processed(Request $request)
     {

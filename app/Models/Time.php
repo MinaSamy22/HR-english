@@ -56,10 +56,23 @@ class Time extends Model
             ->where('users.company_id', $company_id)  // Filter by company_id
             ->orderBy('times.id', 'desc');  // Ensure ordering by times ID
 
-                        // 🔍 Filter by branch_id or fallback to company_id
+     // 🔍 Filter by branch_id if available, otherwise fallback to company_id or main branch
     if (!empty($branch_id)) {
-        $return->where('times.branch_id', $branch_id);
+        // Get the current branch info to check if it's main
+        $currentBranch = \DB::table('branches')
+            ->where('id', $branch_id)
+            ->select('is_main')
+            ->first();
+
+        if ($currentBranch && $currentBranch->is_main == 1) {
+            // If current branch is main branch, show all in the company
+            $return->where('times.company_id', $company_id);
+        } else {
+            // If current branch is not main, show only of this specific branch
+            $return->where('times.branch_id', $branch_id);
+        }
     } else {
+        // If no branch_id in session, show all in the company
         $return->where('times.company_id', $company_id);
     }
 

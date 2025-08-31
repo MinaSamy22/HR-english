@@ -5,6 +5,9 @@ return [
     'page_title' => 'معلومات الشركة',
     'setting' => 'الإعدادات',
     'company_information' => 'معلومات الشركة',
+    'google' => 'مفتاح جوجل',
+    'enter_google' => 'ادخل مفتاح جوجل الخاص بالشركة',
+
 
     // Form labels
     'company_name' => 'اسم الشركة',
@@ -13,7 +16,7 @@ return [
     'phone_number' => 'رقم الهاتف',
     'commercial_registration' => 'السجل التجاري',
     'tax_card' => 'البطاقة الضريبية',
-    'company_logo' => 'شعار الشركة',
+    'company_logo' => 'لوجو الشركة',
 
     // Placeholders
     'enter_company_name' => 'أدخل اسم الشركة',

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Branch;
 use App\Models\PerformanceEvaluation;
 use App\Models\PerformanceCriteria;
 use App\Models\User;
@@ -11,49 +12,87 @@ use Illuminate\Support\Facades\Auth;
 
 class PerformanceController extends Controller
 {
-    public function index(Request $request)
-    {
-        // Get current HR user's company
-        $companyId = Auth::user()->company_id;
+public function index(Request $request)
+{
+    // Get current HR user's company and branch
+    $companyId = Auth::user()->company_id;
+    $branchId = session('branch_id');
 
-        $query = PerformanceEvaluation::with(['employee', 'evaluator'])
-            ->forCompany($companyId);
+    // Determine filtering logic based on branch_id and is_main
+    $showAllCompanyData = false;
+    $filterBranchId = null;
 
-        // Search by employee name
-        if ($request->filled('employee_name')) {
-            $query->whereHas('employee', function($q) use ($request) {
-                $q->where('name', 'LIKE', '%' . $request->employee_name . '%');
-            });
+    if ($branchId) {
+        $currentBranch = Branch::find($branchId);
+        if ($currentBranch && $currentBranch->is_main == 1) {
+            // Main branch - show all company evaluations
+            $showAllCompanyData = true;
+        } else {
+            // Regular branch - show only this branch's evaluations
+            $filterBranchId = $branchId;
         }
-
-        // Filter by month and year
-        if ($request->filled('month') && $request->filled('year')) {
-            $query->where('evaluation_year', $request->year)
-                  ->where('evaluation_period', 'LIKE', '%' . $request->month . '%');
-        } elseif ($request->filled('year')) {
-            $query->where('evaluation_year', $request->year);
-        }
-
-        // Filter by status
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
-        }
-
-        $evaluations = $query->orderBy('created_at', 'desc')->paginate(15);
-
-        // Keep search parameters in pagination
-        $evaluations->appends($request->query());
-
-        // Get employees for dropdown
-        $employees = User::where('company_id', $companyId)
-            ->where('is_role', 0)
-            ->select('id', 'name')
-            ->orderBy('name')
-            ->get();
-
-        return view('backend.performances.index', compact('evaluations', 'employees'));
+    } else {
+        // No branch_id in session - show all company evaluations
+        $showAllCompanyData = true;
     }
 
+    // Create a closure for the employee filtering logic
+    $employeeFilterClosure = function($query) use ($showAllCompanyData, $companyId, $filterBranchId) {
+        if ($showAllCompanyData) {
+            $query->where('company_id', $companyId);
+        } else {
+            $query->where('branch_id', $filterBranchId);
+        }
+    };
+
+    $query = PerformanceEvaluation::with(['employee', 'evaluator'])
+        ->forCompany($companyId)
+        ->whereHas('employee', $employeeFilterClosure);
+
+    // Search by employee name
+    if ($request->filled('employee_name')) {
+        $query->whereHas('employee', function($q) use ($request, $showAllCompanyData, $companyId, $filterBranchId) {
+            $q->where('name', 'LIKE', '%' . $request->employee_name . '%');
+
+            // Apply branch filtering to the name search as well
+            if ($showAllCompanyData) {
+                $q->where('company_id', $companyId);
+            } else {
+                $q->where('branch_id', $filterBranchId);
+            }
+        });
+    }
+
+    // Filter by month and year
+    if ($request->filled('month') && $request->filled('year')) {
+        $query->where('evaluation_year', $request->year)
+              ->where('evaluation_period', 'LIKE', '%' . $request->month . '%');
+    } elseif ($request->filled('year')) {
+        $query->where('evaluation_year', $request->year);
+    }
+
+    // Filter by status
+    if ($request->filled('status')) {
+        $query->where('status', $request->status);
+    }
+
+    $evaluations = $query->orderBy('created_at', 'desc')->paginate(15);
+
+    // Keep search parameters in pagination
+    $evaluations->appends($request->query());
+
+    // Get employees for dropdown with branch filtering
+    $employees = User::when($showAllCompanyData,
+        fn($q) => $q->where('company_id', $companyId),
+        fn($q) => $q->where('branch_id', $filterBranchId)
+    )
+    ->where('is_role', 0)
+    ->select('id', 'name')
+    ->orderBy('name')
+    ->get();
+
+    return view('backend.performances.index', compact('evaluations', 'employees'));
+}
     public function create()
     {
         // Get employees from the same company

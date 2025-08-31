@@ -48,7 +48,8 @@
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label label-thin font-weight-bold">
                                                     <i class="fas fa-building text-info mr-1"></i>
-                                                    {{ __('h_companyinfo.company_name') }} <span style="color: red;">*</span>
+                                                    {{ __('h_companyinfo.company_name') }} <span
+                                                        style="color: red;">*</span>
                                                 </label>
                                                 <div class="col-sm-9">
                                                     <input type="text" value="{{ $getRecord->company->name }}"
@@ -67,7 +68,8 @@
                                                 <div class="col-sm-9">
                                                     <textarea name="company_address" class="form-control" rows="3"
                                                         placeholder="{{ __('h_companyinfo.enter_company_address') }}">{{ $getRecord->company->address }}</textarea>
-                                                    <span style="color: red;">{{ $errors->first('company_address') }}</span>
+                                                    <span
+                                                        style="color: red;">{{ $errors->first('company_address') }}</span>
                                                 </div>
                                             </div>
 
@@ -79,8 +81,10 @@
                                                 </label>
                                                 <div class="col-sm-9">
                                                     <input type="text" value="{{ $getRecord->company->country }}"
-                                                        name="company_country" class="form-control" placeholder="{{ __('h_companyinfo.enter_country') }}">
-                                                    <span style="color: red;">{{ $errors->first('company_country') }}</span>
+                                                        name="company_country" class="form-control"
+                                                        placeholder="{{ __('h_companyinfo.enter_country') }}">
+                                                    <span
+                                                        style="color: red;">{{ $errors->first('company_country') }}</span>
                                                 </div>
                                             </div>
 
@@ -92,7 +96,8 @@
                                                 </label>
                                                 <div class="col-sm-9">
                                                     <input type="text" value="{{ $getRecord->company->phone_number }}"
-                                                        name="company_phone" class="form-control" placeholder="{{ __('h_companyinfo.enter_phone_number') }}">
+                                                        name="company_phone" class="form-control"
+                                                        placeholder="{{ __('h_companyinfo.enter_phone_number') }}">
                                                     <span style="color: red;">{{ $errors->first('company_phone') }}</span>
                                                 </div>
                                             </div>
@@ -104,10 +109,12 @@
                                                     {{ __('h_companyinfo.commercial_registration') }}
                                                 </label>
                                                 <div class="col-sm-9">
-                                                    <input type="text" value="{{ $getRecord->company->commercial_registration }}"
+                                                    <input type="text"
+                                                        value="{{ $getRecord->company->commercial_registration }}"
                                                         name="commercial_registration" class="form-control"
                                                         placeholder="{{ __('h_companyinfo.enter_commercial_registration') }}">
-                                                    <span style="color: red;">{{ $errors->first('commercial_registration') }}</span>
+                                                    <span
+                                                        style="color: red;">{{ $errors->first('commercial_registration') }}</span>
                                                 </div>
                                             </div>
 
@@ -119,10 +126,27 @@
                                                 </label>
                                                 <div class="col-sm-9">
                                                     <input type="text" value="{{ $getRecord->company->tax_card }}"
-                                                        name="tax_card" class="form-control" placeholder="{{ __('h_companyinfo.enter_tax_card') }}">
+                                                        name="tax_card" class="form-control"
+                                                        placeholder="{{ __('h_companyinfo.enter_tax_card') }}">
                                                     <span style="color: red;">{{ $errors->first('tax_card') }}</span>
                                                 </div>
                                             </div>
+
+                                            {{-- Google Map Key --}}
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label label-thin font-weight-bold">
+                                                    <i class="fab fa-google text-danger mr-1"></i>
+                                                    {{ __('h_companyinfo.google') }}
+                                                </label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" value="{{ $getRecord->company->google_key }}"
+                                                        name="google_key" class="form-control"
+                                                        placeholder="{{ __('h_companyinfo.enter_google') }}">
+
+                                                    <span style="color: red;">{{ $errors->first('google_key') }}</span>
+                                                </div>
+                                            </div>
+
                                         </div>
 
                                         <!-- Right Column - Company Logo -->
@@ -138,24 +162,27 @@
                                                     <div class="card-body text-center">
                                                         <!-- Logo Preview Area -->
                                                         <div class="logo-preview-container mb-3">
-                                                            @if($getRecord->company->logo)
+                                                            @if ($getRecord->company->logo)
                                                                 <div class="current-logo-wrapper">
                                                                     <img src="{{ Auth::user()->company->logo_url }}"
-                                                                         alt="{{ __('h_companyinfo.company_logo') }}"
-                                                                         class="company-logo-preview img-fluid rounded shadow-sm"
-                                                                         style="max-width: 200px; max-height: 150px; border: 3px solid #17a2b8;">
+                                                                        alt="{{ __('h_companyinfo.company_logo') }}"
+                                                                        class="company-logo-preview img-fluid rounded shadow-sm"
+                                                                        style="max-width: 200px; max-height: 150px; border: 3px solid #17a2b8;">
                                                                     <p class="text-muted small mt-2">
-                                                                        <i class="fas fa-check-circle text-success mr-1"></i>
+                                                                        <i
+                                                                            class="fas fa-check-circle text-success mr-1"></i>
                                                                         {{ __('h_companyinfo.current_logo') }}
                                                                     </p>
                                                                 </div>
                                                             @else
                                                                 <div class="no-logo-placeholder">
                                                                     <div class="placeholder-box d-flex align-items-center justify-content-center"
-                                                                         style="width: 200px; height: 150px; border: 2px dashed #dee2e6; background-color: #f8f9fa; margin: 0 auto;">
+                                                                        style="width: 200px; height: 150px; border: 2px dashed #dee2e6; background-color: #f8f9fa; margin: 0 auto;">
                                                                         <div class="text-center">
-                                                                            <i class="fas fa-image text-muted" style="font-size: 3rem;"></i>
-                                                                            <p class="text-muted mt-2 mb-0">{{ __('h_companyinfo.no_logo') }}</p>
+                                                                            <i class="fas fa-image text-muted"
+                                                                                style="font-size: 3rem;"></i>
+                                                                            <p class="text-muted mt-2 mb-0">
+                                                                                {{ __('h_companyinfo.no_logo') }}</p>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -165,13 +192,15 @@
                                                         <!-- File Upload Section -->
                                                         <div class="upload-section">
                                                             <div class="custom-file">
-                                                                <input type="file" name="company_logo" class="custom-file-input"
-                                                                       id="logoUpload" accept="image/*">
+                                                                <input type="file" name="company_logo"
+                                                                    class="custom-file-input" id="logoUpload"
+                                                                    accept="image/*">
                                                                 <label class="custom-file-label" for="logoUpload">
                                                                     {{ __('h_companyinfo.choose_logo_file') }}
                                                                 </label>
                                                             </div>
-                                                            <span style="color: red;">{{ $errors->first('company_logo') }}</span>
+                                                            <span
+                                                                style="color: red;">{{ $errors->first('company_logo') }}</span>
 
                                                             <div class="upload-info mt-2">
                                                                 <small class="text-muted">
@@ -280,28 +309,29 @@
         }
 
         /* RTL Support for Arabic */
-        @if(app()->getLocale() == 'ar')
-        body {
-            direction: rtl;
-            text-align: right;
-        }
+        @if (app()->getLocale() == 'ar')
+            body {
+                direction: rtl;
+                text-align: right;
+            }
 
-        .breadcrumb {
-            float: left !important;
-        }
+            .breadcrumb {
+                float: left !important;
+            }
 
-        .text-right {
-            text-align: left !important;
-        }
+            .text-right {
+                text-align: left !important;
+            }
 
-        .mr-1, .mr-2 {
-            margin-right: 0 !important;
-            margin-left: 0.25rem;
-        }
+            .mr-1,
+            .mr-2 {
+                margin-right: 0 !important;
+                margin-left: 0.25rem;
+            }
 
-        .mr-2 {
-            margin-left: 0.5rem !important;
-        }
+            .mr-2 {
+                margin-left: 0.5rem !important;
+            }
         @endif
     </style>
 

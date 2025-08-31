@@ -36,9 +36,9 @@ return [
 
     // Add page
     'add_branch_title' => 'Add Branch',
-    'enter_branch_name' => 'Enter branch name',
+    'enter_branch_name' => 'Enter branch name ex: Cairo branch',
     'enter_location_optional' => 'Enter location (optional)',
-    'is_main_branch_question' => 'Is this the Main Branch?',
+    'is_main_branch_question' => 'Is this Main Branch?',
     'add_branch_button' => 'Add Branch',
 
     // JavaScript messages

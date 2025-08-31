@@ -61,9 +61,23 @@ class Department extends Authenticatable
 
 
     // شرط الفلترة حسب الفرع أو الشركة
-    if ($branch_id) {
-        $query->where('departments.branch_id', $branch_id);
+        // 🔍 Filter by branch_id if available, otherwise fallback to company_id or main branch
+    if (!empty($branch_id)) {
+        // Get the current branch info to check if it's main
+        $currentBranch = \DB::table('branches')
+            ->where('id', $branch_id)
+            ->select('is_main')
+            ->first();
+
+        if ($currentBranch && $currentBranch->is_main == 1) {
+            // If current branch is main branch, show all in the company
+            $query->where('departments.company_id', $company_id);
+        } else {
+            // If current branch is not main, show only of this specific branch
+            $query->where('departments.branch_id', $branch_id);
+        }
     } else {
+        // If no branch_id in session, show all in the company
         $query->where('departments.company_id', $company_id);
     }
 

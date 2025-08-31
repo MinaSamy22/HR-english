@@ -34,6 +34,7 @@ class CompanyInfoController extends Controller
             'company_country'          => 'nullable|string|max:255',
             'commercial_registration'  => 'nullable|string|max:255',
             'tax_card'                 => 'nullable|string|max:255',
+            'google_key'               => 'nullable|string|max:255',
             // Updated validation to include SVG files
             'company_logo'             => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
@@ -57,6 +58,7 @@ class CompanyInfoController extends Controller
         $company->country                   = $request->company_country ? trim($request->company_country) : null;
         $company->commercial_registration   = $request->commercial_registration ? trim($request->commercial_registration) : null;
         $company->tax_card                  = $request->tax_card ? trim($request->tax_card) : null;
+        $company->google_key                = $request->google_key ? trim($request->google_key) : null;
 
         // Handle logo upload with SVG support
 if ($request->hasFile('company_logo')) {

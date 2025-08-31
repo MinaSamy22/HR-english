@@ -107,7 +107,7 @@
                                                 <th>{{ __('h_employee.id') }}</th>
                                                 <th>{{ __('h_employee.name') }}</th>
                                                 <th>{{ __('h_employee.email') }}</th>
-                                                <th>{{ __('h_employee.mobile_mac_address') }}</th>
+                                                <th>{{ __('h_employee.branch') }}</th>
                                                 <th>{{ __('h_employee.role') }}</th>
                                                 <th>{{ __('h_employee.action') }}</th>
                                             </tr>
@@ -118,7 +118,7 @@
                                                     <td>{{ $value->id }}</td>
                                                     <td>{{ $value->name }}</td>
                                                     <td>{{ $value->email }}</td>
-                                                    <td>{{ $value->macaddress }}</td>
+                                                    <td>{{ $value->branch_name ?? __('h_dashboard.main_branch') }}</td>
                                                     <td>{{ !empty($value->is_role) ? __('h_employee.hr') : __('h_employee.employee') }}</td>
                                                     <td>
                                                         <a href="{{ url('admin/employees/view/' . $value->id) }}"

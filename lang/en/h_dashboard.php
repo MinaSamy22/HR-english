@@ -2,10 +2,10 @@
 
 return [
     // Header
-    'branch' => 'Branch',
     'welcome' => 'Welcome',
-    'branch' => 'Branch',
-    'main_branch' => 'Main Branch',
+    'branch' => ' : ',
+    'main_branch' => '  Main Branch',
+    'main_branchs' => ' : Main Branch',
 
     // Statistics Cards
     'total_employees' => 'TOTAL EMPLOYEES',

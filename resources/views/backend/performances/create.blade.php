@@ -112,7 +112,7 @@
                 <option value="">{{ __('h_performance.select_rating') }}</option>
                 @for($i = 1; $i <= 5; $i++)
                     <option value="{{ $i }}" {{ old('criteria_'.$criteria->id) == $i ? 'selected' : '' }}>
-                        {{ $i }} - {{ __('h_performance.' . ['', 'poor', 'needs_improvement', 'satisfactory', 'good', 'excellent'][$i]) }}
+                        {{ $i }} - {{ __('h_performance.' . ['', 'poor', 'needs improvement', 'satisfactory', 'good', 'excellent'][$i]) }}
                     </option>
                 @endfor
             </select>
@@ -141,7 +141,7 @@
                                 <div class="alert alert-warning">
                                     <h5><i class="icon fas fa-exclamation-triangle"></i> {{ __('h_performance.no_criteria_found') }}</h5>
                                     {{ __('h_performance.create_criteria_first') }}
-                                    <a href="{{ route('criteria.create') }}" class="btn btn-primary btn-sm ml-2">{{ __('h_performance.create_criteria') }}</a>
+                                    <a href="{{ route('performance-criteria.create') }}" class="btn btn-primary btn-sm ml-2">{{ __('h_performance.create_criteria') }}</a>
                                 </div>
                             </div>
                         </div>

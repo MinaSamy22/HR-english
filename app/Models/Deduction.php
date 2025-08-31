@@ -53,12 +53,27 @@ class Deduction extends Model
         ->join('users', 'users.id', '=', 'deductions.employee_id')
         ->orderBy('deductions.id', 'desc');
 
-    // 🔍 Filter by branch_id or fallback to company_id
+
+     // 🔍 Filter by branch_id if available, otherwise fallback to company_id or main branch
     if (!empty($branch_id)) {
-        $query->where('users.branch_id', $branch_id);
+        // Get the current branch info to check if it's main
+        $currentBranch = \DB::table('branches')
+            ->where('id', $branch_id)
+            ->select('is_main')
+            ->first();
+
+        if ($currentBranch && $currentBranch->is_main == 1) {
+            // If current branch is main branch, show all in the company
+            $query->where('deductions.company_id', $company_id);
+        } else {
+            // If current branch is not main, show only of this specific branch
+            $query->where('deductions.branch_id', $branch_id);
+        }
     } else {
+        // If no branch_id in session, show all in the company
         $query->where('deductions.company_id', $company_id);
     }
+
 
     // 🔎 Filter by employee name
     if (!empty(Request::get('name'))) {
