@@ -5,7 +5,7 @@
         <!-- Content Header (Page header) -->
         <div class="content-header">
             <div class="container-fluid">
-            <div class=" mb-2 d-flex justify-content-between">
+                <div class=" mb-2 d-flex justify-content-between">
                     <div class="col-sm-6">
                         <h1 class="m-0">{{ __('h_employee.View Employees') }}</h1>
                     </div><!-- /.col -->
@@ -26,7 +26,7 @@
                     <div class="col-md-12">
                         <div class="card card-info">
                             <div class="card-header">
-                                <h3 class="card-title">{{ __('h_employee.View Employees') }}  </h3>
+                                <h3 class="card-title">{{ __('h_employee.View Employees') }} </h3>
                             </div>
                             <form class="form-horizontal" method="post" enctype="multipart/form-data">
                                 <div class="card-body">
@@ -34,7 +34,8 @@
 
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-lable"> {{ __('h_employee.id') }} <span style="color: red;">
+                                        <label class="col-sm-2 col-form-lable"> {{ __('h_employee.id') }} <span
+                                                style="color: red;">
                                                 *</span></label>
                                         <div class="col-sm-10">
                                             {{ $getRecord->id }}
@@ -43,7 +44,8 @@
 
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-lable"> {{ __('h_employee.name') }} <span style="color: red;">
+                                        <label class="col-sm-2 col-form-lable"> {{ __('h_employee.name') }} <span
+                                                style="color: red;">
                                             </span></label>
                                         <div class="col-sm-10">
                                             {{ $getRecord->name }}
@@ -52,7 +54,8 @@
 
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-lable"> {{ __('h_employee.email') }} <span style="color: red;">
+                                        <label class="col-sm-2 col-form-lable"> {{ __('h_employee.email') }} <span
+                                                style="color: red;">
                                             </span></label>
                                         <div class="col-sm-10">
                                             {{ $getRecord->email }}
@@ -61,7 +64,8 @@
 
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-lable"> {{ __('h_employee.phone_number') }} <span style="color: red;">
+                                        <label class="col-sm-2 col-form-lable"> {{ __('h_employee.phone_number') }} <span
+                                                style="color: red;">
                                             </span></label>
                                         <div class="col-sm-10">
                                             {{ $getRecord->phone_number }}
@@ -69,7 +73,8 @@
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label"> {{ __('h_employee.birth_date') }} <span style="color: red;">
+                                        <label class="col-sm-2 col-form-label"> {{ __('h_employee.birth_date') }} <span
+                                                style="color: red;">
                                             </span></label>
                                         <div class="col-sm-10">
                                             {{ $getRecord->birth_date ? date('d-m-Y', strtotime($getRecord->birth_date)) : 'Not Set' }}
@@ -77,7 +82,8 @@
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label"> {{ __('h_employee.hire_date') }} <span style="color: red;">
+                                        <label class="col-sm-2 col-form-label"> {{ __('h_employee.hire_date') }} <span
+                                                style="color: red;">
                                             </span></label>
                                         <div class="col-sm-10">
                                             {{ $getRecord->hire_date ? date('d-m-Y', strtotime($getRecord->hire_date)) : 'Not Set' }}
@@ -87,7 +93,8 @@
 
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-lable"> {{ __('h_employee.job_title') }} <span style="color: red;">
+                                        <label class="col-sm-2 col-form-lable"> {{ __('h_employee.job_title') }} <span
+                                                style="color: red;">
                                             </span></label>
                                         <div class="col-sm-10">
                                             {{ !empty($getRecord->get_job_single->job_title) ? $getRecord->get_job_single->job_title : '' }}
@@ -115,7 +122,8 @@
 
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-lable"> {{ __('h_employee.salary') }} <span style="color: red;">
+                                        <label class="col-sm-2 col-form-lable"> {{ __('h_employee.salary') }} <span
+                                                style="color: red;">
                                             </span></label>
                                         <div class="col-sm-10">
                                             {{ $getRecord->salary }}
@@ -124,31 +132,44 @@
 
 
 
-@if($getRecord->attachment)
-<div class="form-group row">
-    <label class="col-sm-2 col-form-lable">{{ __('h_employee.attachment_pdf') }}</label>
-    <div class="col-sm-10">
-        <a href="{{ route('view.attachment', $getRecord->attachment) }}" target="_blank" class="btn btn-primary">
-            <i class="fas fa-file-pdf"></i> {{ __('h_employee.View PDF') }}
-        </a>
-        <a href="{{ route('view.attachment', $getRecord->attachment) }}" download class="btn btn-success ml-2">
-            <i class="fas fa-download"></i> {{ __('h_employee.Download') }}
-        </a>
-    </div>
-</div>
-@endif
+                                    @if ($getRecord->attachment)
+                                        <div class="form-group row">
+                                            <label
+                                                class="col-sm-2 col-form-lable">{{ __('h_employee.attachment_pdf') }}</label>
+                                            <div class="col-sm-10">
+                                                <a href="{{ route('view.attachment', $getRecord->attachment) }}"
+                                                    target="_blank" class="btn btn-primary">
+                                                    <i class="fas fa-file-pdf"></i> {{ __('h_employee.View PDF') }}
+                                                </a>
+                                                <a href="{{ route('view.attachment', $getRecord->attachment) }}" download
+                                                    class="btn btn-success ml-2">
+                                                    <i class="fas fa-download"></i> {{ __('h_employee.Download') }}
+                                                </a>
+                                            </div>
+                                        </div>
+                                    @endif
 
-<div class="form-group row">
-    <label class="col-sm-2 col-form-lable">{{ __('h_employee.mobile_mac_address') }} <span style="color: red;"></span></label>
-    <div class="col-sm-10">
-        {{ $getRecord->macaddress }}
-    </div>
-</div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-lable">{{ __('h_employee.mobile_mac_address') }}
+                                            <span style="color: red;"></span></label>
+                                        <div class="col-sm-10">
+                                            {{ $getRecord->macaddress }}
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-lable">{{ __('h_employee.branch') }} <span
+                                                style="color: red;"></span></label>
+                                        <div class="col-sm-10">
+                                            <td>{{ $value->branch_name ?? __('h_dashboard.main_branch') }}</td>
+                                        </div>
+                                    </div>
 
 
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-lable"> {{ __('h_employee.work_start_time') }} </label>
+                                        <label class="col-sm-2 col-form-lable"> {{ __('h_employee.work_start_time') }}
+                                        </label>
                                         <div class="col-sm-10">
                                             @if ($getRecord->work_start_time)
                                                 {{ \Carbon\Carbon::createFromFormat('H:i:s', $getRecord->work_start_time)->format('h:i A') }}
@@ -159,7 +180,8 @@
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-lable"> {{ __('h_employee.work_end_time') }} </label>
+                                        <label class="col-sm-2 col-form-lable"> {{ __('h_employee.work_end_time') }}
+                                        </label>
                                         <div class="col-sm-10">
                                             @if ($getRecord->work_end_time)
                                                 {{ \Carbon\Carbon::createFromFormat('H:i:s', $getRecord->work_end_time)->format('h:i A') }}
@@ -170,7 +192,8 @@
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label"> {{ __('h_employee.free_biometric') }} <span style="color: red;">
+                                        <label class="col-sm-2 col-form-label"> {{ __('h_employee.free_biometric') }} <span
+                                                style="color: red;">
                                             </span></label>
                                         <div class="col-sm-10">
                                             @if ($getRecord->is_biometric === 1)
@@ -185,7 +208,8 @@
 
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-lable"> {{ __('h_employee.manager_name') }} <span style="color: red;">
+                                        <label class="col-sm-2 col-form-lable"> {{ __('h_employee.manager_name') }} <span
+                                                style="color: red;">
                                             </span></label>
                                         <div class="col-sm-10">
                                             {{ !empty($getRecord->get_manager_single->name) ? $getRecord->get_manager_single->name : '' }}
@@ -195,7 +219,8 @@
 
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-lable"> {{ __('h_employee.department_name') }}  <span style="color: red;">
+                                        <label class="col-sm-2 col-form-lable"> {{ __('h_employee.department_name') }}
+                                            <span style="color: red;">
                                             </span></label>
                                         <div class="col-sm-10">
                                             {{ !empty($getRecord->get_department_single->department_name) ? $getRecord->get_department_single->department_name : '' }}
@@ -207,16 +232,18 @@
 
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-lable"> {{ __('h_employee.is_role') }} <span style="color: red;">
+                                        <label class="col-sm-2 col-form-lable"> {{ __('h_employee.is_role') }} <span
+                                                style="color: red;">
                                             </span></label>
                                         <div class="col-sm-10">
-                                         {{ !empty($getRecord->is_role) ? __('h_employee.hr') : __('h_employee.employee') }}
+                                            {{ !empty($getRecord->is_role) ? __('h_employee.hr') : __('h_employee.employee') }}
                                         </div>
                                     </div>
 
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">{{ __('h_employee.Created Date') }}  <span style="color: red;">
+                                        <label class="col-sm-2 col-form-label">{{ __('h_employee.Created Date') }} <span
+                                                style="color: red;">
                                             </span></label>
                                         <div class="col-sm-10">
                                             {{ $getRecord->created_at ? date('d-m-Y h:i A', strtotime($getRecord->created_at)) : 'Not Set' }}
@@ -224,7 +251,8 @@
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">{{ __('h_employee.Updated Date') }}  <span style="color: red;">
+                                        <label class="col-sm-2 col-form-label">{{ __('h_employee.Updated Date') }} <span
+                                                style="color: red;">
                                             </span></label>
                                         <div class="col-sm-10">
                                             {{ $getRecord->updated_at ? date('d-m-Y h:i A', strtotime($getRecord->updated_at)) : 'Not Set' }}
@@ -236,7 +264,8 @@
 
                                 </div>
                                 <div class="card-footer">
-                                    <a href="{{ url('admin/employees') }}" class="btn btn-default float-left">{{ __('h_employee.back') }}</a>
+                                    <a href="{{ url('admin/employees') }}"
+                                        class="btn btn-default float-left">{{ __('h_employee.back') }}</a>
                                     {{-- float for the place of the button --}}
                                 </div>
                             </form>

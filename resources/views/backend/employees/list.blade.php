@@ -17,6 +17,7 @@
                             <!-- Include other search parameters as hidden fields -->
                             <input type="hidden" name="id" value="{{ Request()->id }}">
                             <input type="hidden" name="name" value="{{ Request()->name }}">
+                            <input type="hidden" name="per_page" value="{{ Request()->per_page }}">
 
                             <button type="submit" class="btn btn-success">
                                 <i class="fas fa-file-excel"></i> {{ __('h_employee.export') }}
@@ -54,6 +55,7 @@
                                             <input type="text" value="{{ Request()->name }}" name="name"
                                                 class="form-control" placeholder="{{ __('h_employee.name') }}">
                                         </div>
+
                                         <div class="form-group col-md-3 col-sm-6 d-flex align-items-end">
                                             <button class="btn btn-primary rounded-pill" type="submit"
                                                 style="margin-right: 10px;" title="{{ __('h_employee.search') }}">
@@ -74,9 +76,25 @@
                         <div class="card"
                             style="background-color: rgba(255, 255, 255, 0.9); border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
                             <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
-                                <h3 class="card-title mb-2 mb-md-0">{{ __('h_employee.employees_list') }}</h3>
+                                <div class="d-flex align-items-center">
+                                    <h3 class="card-title mb-2 mb-md-0 me-3">{{ __('h_employee.employees_list') }}</h3>
+                                    <form method="get" action="" class="mb-0" style="margin-left: 15px; margin-right: 15px;">
+                                        <!-- Preserve existing search parameters -->
+                                        <input type="hidden" name="id" value="{{ Request()->id }}">
+                                        <input type="hidden" name="name" value="{{ Request()->name }}">
+
+                                        <select name="per_page" class="form-select" onchange="this.form.submit()" style="min-width: 60px; width: 60px;">
+                                            <option value="5" {{ Request()->per_page == 5 ? 'selected' : '' }}>5</option>
+                                            <option value="10" {{ Request()->per_page == 10 ? 'selected' : '' }}>10</option>
+                                            <option value="25" {{ Request()->per_page == 25 ? 'selected' : '' }}>25</option>
+                                            <option value="50" {{ Request()->per_page == 50 ? 'selected' : '' }}>50</option>
+                                            <option value="100" {{ Request()->per_page == 100 ? 'selected' : '' }}>100</option>
+                                            <option value="all" {{ Request()->per_page == 'all' ? 'selected' : '' }}>{{ __('h_employee.all') }}</option>
+                                        </select>
+                                    </form>
+                                </div>
                                 <div class="ml-auto">
-                                     <a href="{{ url('admin/employees/import') }}" class="btn btn-success mb-0">
+                                    <a href="{{ url('admin/employees/import') }}" class="btn btn-success mb-0">
                                         <i class="fas fa-file-excel"></i> {{ __('h_employee.import') }}
                                     </a>
                                 </div>
@@ -89,7 +107,7 @@
                                                 <th>{{ __('h_employee.id') }}</th>
                                                 <th>{{ __('h_employee.name') }}</th>
                                                 <th>{{ __('h_employee.email') }}</th>
-                                                <th>{{ __('h_employee.mobile_mac_address') }}</th>
+                                                <th>{{ __('h_employee.branch') }}</th>
                                                 <th>{{ __('h_employee.role') }}</th>
                                                 <th>{{ __('h_employee.action') }}</th>
                                             </tr>
@@ -100,7 +118,7 @@
                                                     <td>{{ $value->id }}</td>
                                                     <td>{{ $value->name }}</td>
                                                     <td>{{ $value->email }}</td>
-                                                    <td>{{ $value->macaddress }}</td>
+                                                    <td>{{ $value->branch_name ?? __('h_dashboard.main_branch') }}</td>
                                                     <td>{{ !empty($value->is_role) ? __('h_employee.hr') : __('h_employee.employee') }}</td>
                                                     <td>
                                                         <a href="{{ url('admin/employees/view/' . $value->id) }}"
@@ -127,9 +145,7 @@
                                     </table>
                                 </div>
 
-                                <div class="d-flex justify-content-end p-3">
-                                    {!! $getRecord->appends(Illuminate\Support\Facades\Request::except('page'))->links() !!}
-                                </div>
+                                {{-- Pagination removed as requested --}}
                             </div>
                         </div>
 

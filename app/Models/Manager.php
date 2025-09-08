@@ -52,12 +52,24 @@ class Manager extends Authenticatable
         // Start the query for retrieving managers
         $query = self::select('managers.*'); // Change 'users.*' to 'managers.*' since you're working with the Manager model
 
-        // Apply company_id filter if available in the session
-    // 🔍 Filter by branch_id if available, otherwise fallback to company_id
-    if ($branch_id) {
-        $query->where('branch_id', $branch_id);
-    } elseif ($company_id) {
-        $query->where('company_id', $company_id);
+    // 🔍 Filter by branch_id if available, otherwise fallback to company_id or main branch
+    if (!empty($branch_id)) {
+        // Get the current branch info to check if it's main
+        $currentBranch = \DB::table('branches')
+            ->where('id', $branch_id)
+            ->select('is_main')
+            ->first();
+
+        if ($currentBranch && $currentBranch->is_main == 1) {
+            // If current branch is main branch, show all in the company
+            $query->where('managers.company_id', $company_id);
+        } else {
+            // If current branch is not main, show only of this specific branch
+            $query->where('managers.branch_id', $branch_id);
+        }
+    } else {
+        // If no branch_id in session, show all in the company
+        $query->where('managers.company_id', $company_id);
     }
 
         // Apply search filters if any

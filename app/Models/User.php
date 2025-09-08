@@ -37,34 +37,52 @@ class User extends Authenticatable implements JWTSubject
         'password' => 'hashed',
     ];
 
-    public static function getRecord($request)
-    {
-        $company_id = session('company_id');
-        $branch_id = session('branch_id');
+public static function getRecord($request)
+{
+    $company_id = session('company_id');
+    $branch_id = session('branch_id');
 
-        $query = self::select('users.*');
+$query = self::select('users.*', 'branches.name as branch_name', 'branches.is_main')
+        ->leftJoin('branches', 'branches.id', '=', 'users.branch_id');
 
-        // 🔍 Filter by branch_id if available, otherwise fallback to company_id
-                // 🔍 Filter by branch_id or fallback to company_id
-        if (!empty($branch_id)) {
-            $query->where('users.branch_id', $branch_id);
-        } else {
+    // 🔍 filtering logic for branch and main branch handling
+    if (!empty($branch_id)) {
+        // Get the current branch info to check if it's main
+        $currentBranch = \DB::table('branches')
+            ->where('id', $branch_id)
+            ->select('is_main')
+            ->first();
+
+        if ($currentBranch && $currentBranch->is_main == 1) {
+            // If current branch is main branch, show all employees in the company
             $query->where('users.company_id', $company_id);
+        } else {
+            // If current branch is not main, show only employees of this specific branch
+            $query->where('users.branch_id', $branch_id);
         }
-
-        // Apply search filters if any
-        if (!empty(Request::get('id'))) {
-            $query->where('id', '=', Request::get('id'));
-        }
-        if (!empty(Request::get('name'))) {
-            $query->where('name', 'like', '%' . Request::get('name') . '%');
-        }
-        if (!empty(Request::get('email'))) {
-            $query->where('email', 'like', '%' . Request::get('email') . '%');
-        }
-
-        return $query->orderBy('id', 'desc')->paginate(5);
+    } else {
+        // If no branch_id in session, show all employees in the company
+        $query->where('users.company_id', $company_id);
     }
+
+    // Apply search filters if any
+    if (!empty(Request::get('id'))) {
+        $query->where('users.id', '=', Request::get('id'));
+    }
+    if (!empty(Request::get('name'))) {
+        $query->where('users.name', 'like', '%' . Request::get('name') . '%');
+    }
+    if (!empty(Request::get('email'))) {
+        $query->where('users.email', 'like', '%' . Request::get('email') . '%');
+    }
+    // Handle per_page parameter
+    $perPage = Request::get('per_page', 5); // Default to 5
+
+    $query->orderBy('users.id', 'desc');
+
+    return $perPage === 'all' ? $query->get() : $query->paginate((int)$perPage);
+}
+
 
 
     public static function getAllRecordsForExport($request)
@@ -168,9 +186,6 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Insurance::class, 'employee_id');
     }
 
-    public function salaries(){
-        return $this->hasMany(Salary::class,'employee_id');
-    }
 
     public function vacationRequests()
     {

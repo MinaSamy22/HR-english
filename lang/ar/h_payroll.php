@@ -65,4 +65,9 @@ return [
     'record_deleted' => 'تم حذف السجل بنجاح.',
     'selected_deleted' => 'تم حذف كشوف المرتبات المحددة بنجاح.',
     'no_payroll_selected' => 'لم يتم تحديد كشف مرتبات.',
+    'payroll_period_starts_before_hire_date' => 'فترة الراتب تبدأ قبل تاريخ التوظيف',
+    'overlapping_payroll_exists_for_period' => 'يوجد راتب متداخل للفترة',
+    'payroll_generation_failed_for_following_employees' => 'فشل في إنشاء الراتب للموظفين التاليين:',
+    'note_payroll_successfully_generated_for_other_employees' => 'ملاحظة: تم إنشاء الراتب بنجاح للموظفين الآخرين.',
+    'generated_for' => 'تم الإنشاء لـ',
 ];

@@ -19,6 +19,7 @@ class Company extends Model
         'phone_number',
         'commercial_registration',
         'tax_card',
+        'google_key',
     ];
 
     // Company.php

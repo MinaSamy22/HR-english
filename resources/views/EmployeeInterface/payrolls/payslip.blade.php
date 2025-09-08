@@ -290,13 +290,14 @@
                                                                         {{ date('M d, Y', strtotime($payroll->created_at)) }}
                                                                     </p>
                                                                 </div>
-                                                                {{-- <div class="col-6 text-right">
+                                                                <div class="col-6 text-right">
 
-                                                                    <button class="btn btn-sm btn-info"
+                                                                    {{-- <button class="btn btn-sm btn-info"
                                                                         onclick="downloadPayslip({{ $payroll->id }})">
                                                                         <i class="fas fa-download"></i> {{ __('E_payroll.download') }}
-                                                                    </button>
-                                                                </div> --}}
+                                                                    </button> --}}
+                                                                    
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>

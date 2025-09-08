@@ -5,6 +5,8 @@ return [
     'page_title' => 'Company Information',
     'setting' => 'Setting',
     'company_information' => 'Company Information',
+    'google' => 'Google key',
+    'enter_google' => 'Enter the company Google key',
 
     // Form labels
     'company_name' => 'Company Name',

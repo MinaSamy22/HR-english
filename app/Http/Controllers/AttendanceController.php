@@ -23,25 +23,42 @@ class AttendanceController extends Controller
 
 
     public function AttendanceEmployee(Request $request)
-    {
-        $data['header_title'] = "Employee Attendance";
+{
+    $data['header_title'] = "Employee Attendance";
 
-        $company_id = session('company_id'); // Get the current session's company ID
+    $company_id = session('company_id');
+    $branch_id = session('branch_id');
 
-$branch_id = session('branch_id');
+    // Determine filtering logic based on branch_id and is_main
+    $showAllCompanyEmployees = false;
+    $filterBranchId = null;
 
-$query = User::query();
-
-if (!empty($branch_id)) {
-    $query->where('branch_id', $branch_id);
-} else {
-    $query->where('company_id', $company_id);
-}
-
-$data['getRecord'] = $query->get();
-
-        return view('backend.attendance.employee', $data);
+    if ($branch_id) {
+        $currentBranch = Branch::find($branch_id);
+        if ($currentBranch && $currentBranch->is_main == 1) {
+            // Main branch - show all company employees
+            $showAllCompanyEmployees = true;
+        } else {
+            // Regular branch - show only this branch's employees
+            $filterBranchId = $branch_id;
+        }
+    } else {
+        // No branch_id in session - show all company employees
+        $showAllCompanyEmployees = true;
     }
+
+    $query = User::query();
+
+    if ($showAllCompanyEmployees) {
+        $query->where('company_id', $company_id);
+    } else {
+        $query->where('branch_id', $filterBranchId);
+    }
+
+    $data['getRecord'] = $query->get();
+
+    return view('backend.attendance.employee', $data);
+}
 
     public function AttendanceEmployeeSubmit(Request $request)
     {

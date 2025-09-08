@@ -25,49 +25,46 @@
 
 
         <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle d-flex align-items-center"
-       href="#"
-       id="languageDropdown"
-       role="button"
-       data-toggle="dropdown"
-       aria-haspopup="true"
-       aria-expanded="false">
+            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="languageDropdown"
+                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
-        <div class="badge badge-secondary d-flex align-items-center">
-            <i class="fas fa-globe mr-1"></i>
-            <span class="font-weight-bold">
-                {{ app()->getLocale() == 'ar' ? 'عربي' : 'EN' }}
-            </span>
-        </div>
-    </a>
+                <div class="badge badge-secondary d-flex align-items-center">
+                    <i class="fas fa-globe mr-1"></i>
+                    <span class="font-weight-bold">
+                        {{ app()->getLocale() == 'ar' ? 'عربي' : 'EN' }}
+                    </span>
+                </div>
+            </a>
 
-    <div class="dropdown-menu dropdown-menu-right shadow-sm" aria-labelledby="languageDropdown">
-        <style>
-            .dropdown-item.active, .dropdown-item:active {
-                background-color: #e3f2fd !important;
-                color: #1976d2 !important;
-            }
-            .dropdown-item:hover {
-                background-color: #f5f5f5 !important;
-            }
-        </style>
-        <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'en' ? 'active' : '' }}"
-           href="{{ url('lang/en') }}">
-            <span>English</span>
-            @if(app()->getLocale() == 'en')
-                <i class="fas fa-check ml-auto text-success"></i>
-            @endif
-        </a>
+            <div class="dropdown-menu dropdown-menu-right shadow-sm" aria-labelledby="languageDropdown">
+                <style>
+                    .dropdown-item.active,
+                    .dropdown-item:active {
+                        background-color: #e3f2fd !important;
+                        color: #1976d2 !important;
+                    }
 
-        <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'ar' ? 'active' : '' }}"
-           href="{{ url('lang/ar') }}">
-            <span>العربية</span>
-            @if(app()->getLocale() == 'ar')
-                <i class="fas fa-check ml-auto text-success"></i>
-            @endif
-        </a>
-    </div>
-</li>
+                    .dropdown-item:hover {
+                        background-color: #f5f5f5 !important;
+                    }
+                </style>
+                <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'en' ? 'active' : '' }}"
+                    href="{{ url('lang/en') }}">
+                    <span>English</span>
+                    @if (app()->getLocale() == 'en')
+                        <i class="fas fa-check ml-auto text-success"></i>
+                    @endif
+                </a>
+
+                <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'ar' ? 'active' : '' }}"
+                    href="{{ url('lang/ar') }}">
+                    <span>العربية</span>
+                    @if (app()->getLocale() == 'ar')
+                        <i class="fas fa-check ml-auto text-success"></i>
+                    @endif
+                </a>
+            </div>
+        </li>
 
         <!-- Employee Requests Notification -->
         @php
@@ -197,8 +194,6 @@
                     </a>
                 </li>
 
-
-
                 <!-- Administration -->
                 <li class="nav-item">
                     <a href="{{ url('admin/administration') }}"
@@ -208,8 +203,6 @@
                     </a>
                 </li>
 
-
-
                 <!-- Departments -->
                 <li class="nav-item">
                     <a href="{{ url('admin/department') }}"
@@ -218,8 +211,6 @@
                         <p>{{ __('dashboard.departments') }}</p>
                     </a>
                 </li>
-
-
 
                 <!-- Jobs -->
                 <li class="nav-item has-treeview @if (Request::segment(2) == 'jobs' || Request::segment(2) == 'job_history') menu-open @endif">
@@ -271,6 +262,39 @@
                         </p>
                     </a>
                 </li>
+
+                <!-- Performance -->
+                <li class="nav-item has-treeview
+    @if (Request::segment(2) == 'performance' || Request::segment(2) == 'performance-criteria') menu-open @endif">
+                    <a href="#" class="nav-link @if (Request::segment(2) == 'performance' || Request::segment(2) == 'performance-criteria') active @endif">
+                        <i class="nav-icon fas fa-chart-line"></i>
+                        <p>
+                            {{ __('dashboard.performance') }}
+                            <i class="right fa fa-angle-left"></i>
+                        </p>
+                    </a>
+
+                    <ul class="nav nav-treeview">
+
+                        <li class="nav-item">
+                            <a href="{{ url('admin/performance-criteria') }}"
+                                class="nav-link @if (Request::segment(2) == 'performance-criteria') active @endif">
+                                <i class="fa fa-cogs nav-icon"></i>
+                                {{ __('dashboard.criteria') }}
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ url('admin/performance') }}"
+                                class="nav-link @if (Request::segment(2) == 'performance') active @endif">
+                                <i class="fa fa-list nav-icon"></i>
+                                {{ __('dashboard.performance') }}
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+
 
 
 
@@ -380,7 +404,7 @@
                     </a>
                     <ul class="nav nav-treeview">
 
-                        @if (session('branch_id') === null)
+                        @if (session('branch_id') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1)
                             <li class="nav-item">
                                 <a href="{{ url('admin/attendance-rule') }}"
                                     class="nav-link @if (Request::segment(2) == 'attendance-rule') active @endif">
@@ -419,7 +443,7 @@
                 <li class="nav-header">{{ __('dashboard.settings') }}</li>
 
                 <!-- Branches -->
-                @if (session('branch_id') === null)
+                        @if (session('branch_id') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1)
                     <li class="nav-item">
                         <a href="{{ url('admin/branches') }}"
                             class="nav-link @if (Request::segment(2) == 'branches') active @endif">
@@ -431,7 +455,7 @@
 
 
                 <!-- Company information -->
-                @if (session('branch_id') === null)
+                        @if (session('branch_id') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1)
                     <li class="nav-item">
                         <a href="{{ url('admin/company-info') }}"
                             class="nav-link @if (Request::segment(2) == 'company-info') active @endif">

@@ -47,6 +47,7 @@ return [
     'enter_email' => 'Enter Email',
     'enter_salary' => 'Enter Salary',
     'enter_password' => 'Enter Password',
+    'enter_new_password' => 'Enter Password',
 
     // Select Options
     'select_job_title' => 'Select Job Title',
@@ -145,6 +146,8 @@ return [
     'manager_id' => 'ManagerId',
     'department_id' => 'DepartmentID',
     'role' => 'Role',
+    'branch' => 'Branch',
+
 
     // Format notes
     'date_format' => 'dd/mm/yyyy',
@@ -162,6 +165,7 @@ return [
     'employee_updated' => 'Employee successfully updated.',
     'record_deleted' => 'Record and attachment successfully deleted',
     'employees_imported' => ':count employee(s) imported or updated successfully.',
+    'all' => 'Show all '
 
 
 ];

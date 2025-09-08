@@ -1,5 +1,6 @@
 <?php
 namespace App\Http\Controllers;
+use App\Models\Branch;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -13,42 +14,103 @@ use App\Models\Attendance; // Add this import
 
 class RequestController extends Controller
 {
-    public function index()
-    {
-        // Get pending requests
-        $pendingVacations = VacationRequest::where('status', 'pending')->with('user')->get();
-        $pendingExtraTimes = ExtraTimeRequest::where('status', 'pending')->with('user')->get();
-        $pendingResignations = Resignation::where('status', 'pending')->with('user')->get();
-        $pendingLateRemovals = LateRemovalRequest::where('status', 'pending')->with('user')->get();
+public function index()
+{
+    // Get current company ID and branch ID from session
+    $companyId = session('company_id');
+    $branchId = session('branch_id');
 
-        return view('backend.requests.pending', compact(
-            'pendingVacations',
-            'pendingExtraTimes',
-            'pendingResignations',
-            'pendingLateRemovals'
-        ));
+    // Determine filtering logic based on branch_id and is_main
+    $showAllCompanyRequests = false;
+    $filterBranchId = null;
+
+    if ($branchId) {
+        $currentBranch = Branch::find($branchId);
+        if ($currentBranch && $currentBranch->is_main == 1) {
+            // Main branch - show all company requests
+            $showAllCompanyRequests = true;
+        } else {
+            // Regular branch - show only this branch's requests
+            $filterBranchId = $branchId;
+        }
+    } else {
+        // No branch_id in session - show all company requests
+        $showAllCompanyRequests = true;
     }
+
+    // Create a closure for the user filtering logic
+    $userFilterClosure = function($query) use ($showAllCompanyRequests, $companyId, $filterBranchId) {
+        if ($showAllCompanyRequests) {
+            $query->where('company_id', $companyId);
+        } else {
+            $query->where('branch_id', $filterBranchId);
+        }
+    };
+
+    // Get pending requests with consistent filtering
+    $pendingVacations = VacationRequest::where('status', 'pending')
+        ->whereHas('user', $userFilterClosure)
+        ->with('user')
+        ->get();
+
+    $pendingExtraTimes = ExtraTimeRequest::where('status', 'pending')
+        ->whereHas('user', $userFilterClosure)
+        ->with('user')
+        ->get();
+
+    $pendingResignations = Resignation::where('status', 'pending')
+        ->whereHas('user', $userFilterClosure)
+        ->with('user')
+        ->get();
+
+    $pendingLateRemovals = LateRemovalRequest::where('status', 'pending')
+        ->whereHas('user', $userFilterClosure)
+        ->with('user')
+        ->get();
+
+    return view('backend.requests.pending', compact(
+        'pendingVacations',
+        'pendingExtraTimes',
+        'pendingResignations',
+        'pendingLateRemovals'
+    ));
+}
 
     public function processed(Request $request)
     {
+        // Get current company ID from session
+        $companyId = session('company_id');
+
         // Get filter parameters
         $selectedMonth = $request->get('month');
         $searchName = $request->get('search_name');
 
-        // Build processed requests queries with filters
+        // Build processed requests queries with filters and company restriction
         $processedVacationsQuery = VacationRequest::whereIn('status', ['accepted', 'rejected'])
+            ->whereHas('user', function($query) use ($companyId) {
+                $query->where('company_id', $companyId);
+            })
             ->with('user')
             ->orderBy('updated_at', 'desc');
 
         $processedExtraTimesQuery = ExtraTimeRequest::whereIn('status', ['accepted', 'rejected'])
+            ->whereHas('user', function($query) use ($companyId) {
+                $query->where('company_id', $companyId);
+            })
             ->with('user')
             ->orderBy('updated_at', 'desc');
 
         $processedResignationsQuery = Resignation::whereIn('status', ['accepted', 'rejected'])
+            ->whereHas('user', function($query) use ($companyId) {
+                $query->where('company_id', $companyId);
+            })
             ->with('user')
             ->orderBy('updated_at', 'desc');
 
         $processedLateRemovalsQuery = LateRemovalRequest::whereIn('status', ['accepted', 'rejected'])
+            ->whereHas('user', function($query) use ($companyId) {
+                $query->where('company_id', $companyId);
+            })
             ->with('user')
             ->orderBy('updated_at', 'desc');
 
@@ -72,20 +134,24 @@ class RequestController extends Controller
 
         // Apply name search filter if provided
         if ($searchName) {
-            $processedVacationsQuery->whereHas('user', function($query) use ($searchName) {
-                $query->where('name', 'LIKE', '%' . $searchName . '%');
+            $processedVacationsQuery->whereHas('user', function($query) use ($searchName, $companyId) {
+                $query->where('name', 'LIKE', '%' . $searchName . '%')
+                      ->where('company_id', $companyId);
             });
 
-            $processedExtraTimesQuery->whereHas('user', function($query) use ($searchName) {
-                $query->where('name', 'LIKE', '%' . $searchName . '%');
+            $processedExtraTimesQuery->whereHas('user', function($query) use ($searchName, $companyId) {
+                $query->where('name', 'LIKE', '%' . $searchName . '%')
+                      ->where('company_id', $companyId);
             });
 
-            $processedResignationsQuery->whereHas('user', function($query) use ($searchName) {
-                $query->where('name', 'LIKE', '%' . $searchName . '%');
+            $processedResignationsQuery->whereHas('user', function($query) use ($searchName, $companyId) {
+                $query->where('name', 'LIKE', '%' . $searchName . '%')
+                      ->where('company_id', $companyId);
             });
 
-            $processedLateRemovalsQuery->whereHas('user', function($query) use ($searchName) {
-                $query->where('name', 'LIKE', '%' . $searchName . '%');
+            $processedLateRemovalsQuery->whereHas('user', function($query) use ($searchName, $companyId) {
+                $query->where('name', 'LIKE', '%' . $searchName . '%')
+                      ->where('company_id', $companyId);
             });
         }
 
@@ -116,6 +182,12 @@ class RequestController extends Controller
     public function accept($type, $id)
     {
         $model = $this->getModelInstance($type, $id);
+
+        // Verify the request belongs to the current company before processing
+        if (!$this->belongsToCurrentCompany($model)) {
+            abort(403, 'Unauthorized access to this request.');
+        }
+
         $model->status = 'accepted';
         $model->save();
 
@@ -134,30 +206,50 @@ class RequestController extends Controller
             $this->updateAttendanceForLateRemoval($model);
         }
 
-     return back()->with('success', __('h_requests.accept message'));
+        return back()->with('success', __('h_requests.accept message'));
     }
 
     public function reject($type, $id)
     {
         $model = $this->getModelInstance($type, $id);
+
+        // Verify the request belongs to the current company before processing
+        if (!$this->belongsToCurrentCompany($model)) {
+            abort(403, 'Unauthorized access to this request.');
+        }
+
         $model->status = 'rejected';
         $model->save();
 
-     return back()->with('success', __('h_requests.reject message'));
+        return back()->with('success', __('h_requests.reject message'));
+    }
 
+    /**
+     * Check if the request belongs to the current company
+     */
+    private function belongsToCurrentCompany($model)
+    {
+        $companyId = session('company_id');
+
+        // Load the user relationship if not already loaded
+        if (!$model->relationLoaded('user')) {
+            $model->load('user');
+        }
+
+        return $model->user && $model->user->company_id == $companyId;
     }
 
     private function getModelInstance($type, $id)
     {
         switch ($type) {
             case 'vacation':
-                return VacationRequest::findOrFail($id);
+                return VacationRequest::with('user')->findOrFail($id);
             case 'extra_time':
-                return ExtraTimeRequest::findOrFail($id);
+                return ExtraTimeRequest::with('user')->findOrFail($id);
             case 'resignation':
-                return Resignation::findOrFail($id);
+                return Resignation::with('user')->findOrFail($id);
             case 'late_removal':
-                return LateRemovalRequest::findOrFail($id);
+                return LateRemovalRequest::with('user')->findOrFail($id);
             default:
                 abort(404);
         }
