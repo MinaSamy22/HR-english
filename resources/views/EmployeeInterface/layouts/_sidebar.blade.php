@@ -158,6 +158,9 @@
 
                 <li class="nav-header">{{ __('E_dashboard.main_information') }}</li>
 
+
+
+                <!-- payroll -->
                 <li class="nav-item">
                     <a href="{{ url('employee/payroll') }}"
                         class="nav-link @if (Request::segment(2) == 'payroll') active @endif">
@@ -166,6 +169,7 @@
                     </a>
                 </li>
 
+                <!-- Attendance -->
                 <li class="nav-item">
                     <a href="{{ url('employee/attendance') }}"
                         class="nav-link @if (Request::segment(2) == 'attendance') active @endif">
@@ -174,8 +178,29 @@
                     </a>
                 </li>
 
+                <!-- My Performance -->
+                <li class="nav-item">
+                    <a href="{{ url('employee/performance') }}"
+                        class="nav-link @if (Request::segment(2) == 'performance') active @endif">
+                        <i class="nav-icon fas fa-chart-line"></i>
+                        <p>{{ __('E_dashboard.performance') }} </p>
+                    </a>
+                </li>
+
+                <!-- Company Policy -->
+                <li class="nav-item">
+                    <a href="{{ url('employee/policys') }}"
+                        class="nav-link @if (Request::segment(2) == 'policys') active @endif">
+                        <i class="fa fa-cogs nav-icon"></i>
+                        <p>{{ __('dashboard.company_policy') }}</p>
+                    </a>
+                </li>
+
+                <!-- Requests -->
                 <li class="nav-header">{{ __('E_dashboard.my_requests') }}</li>
 
+
+                <!--Late Requests -->
                 <li class="nav-item">
                     <a href="{{ url('employee/late') }}"
                         class="nav-link @if (Request::segment(2) == 'late') active @endif">
@@ -184,6 +209,7 @@
                     </a>
                 </li>
 
+                <!--vacation Requests -->
                 <li class="nav-item">
                     <a href="{{ url('employee/vacation') }}"
                         class="nav-link @if (Request::segment(2) == 'vacation') active @endif">
@@ -192,6 +218,7 @@
                     </a>
                 </li>
 
+                <!--extra time Requests -->
                 <li class="nav-item">
                     <a href="{{ url('employee/extra') }}"
                         class="nav-link @if (Request::segment(2) == 'extra') active @endif">
@@ -200,6 +227,7 @@
                     </a>
                 </li>
 
+                <!--resignation Requests -->
                 <li class="nav-item">
                     <a href="{{ url('employee/resignation') }}"
                         class="nav-link @if (Request::segment(2) == 'resignation') active @endif">

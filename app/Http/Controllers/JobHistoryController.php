@@ -12,11 +12,19 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class JobHistoryController extends Controller
 {
-    public function index(Request $request){
-        $data['getRecord'] = History::getRecord($request);    //for reterving job history data from database and retrive model logic
-        return view('backend.job-history.list',$data);
+public function index(Request $request)
+{
+    $getRecord = History::getRecord($request);
 
-    }
+    // Get branches for filter dropdown
+    $branches = \DB::table('branches')
+        ->where('company_id', session('company_id'))
+        ->select('id', 'name', 'is_main')
+        ->orderBy('name')
+        ->get();
+
+    return view('backend.job-history.list', compact('getRecord', 'branches'));
+}
 
     public function jobs_export(Request $request){    //for export to excel sheet
 

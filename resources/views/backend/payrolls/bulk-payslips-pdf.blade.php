@@ -1,15 +1,21 @@
+@php
+    $locale = app()->getLocale();
+    $isArabic = ($locale === 'ar');
+@endphp
+
 <!DOCTYPE html>
-<html>
+<html lang="{{ $locale }}" dir="{{ $isArabic ? 'rtl' : 'ltr' }}">
 <head>
     <meta charset="utf-8">
-    <title>Payslips Bulk Download</title>
+    <title>{{ __('home.bulk_pdf.title') }}</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: {{ $isArabic ? 'Arial, "Arial Unicode MS", sans-serif' : 'Arial, sans-serif' }};
             font-size: 13px;
             line-height: 1.3;
             margin: 0;
             padding: 5px;
+            direction: {{ $isArabic ? 'rtl' : 'ltr' }};
         }
         .payslip-container {
             max-width: 800px;
@@ -50,7 +56,7 @@
             display: table-cell;
             width: 50%;
             vertical-align: top;
-            padding-right: 10px;
+            padding-{{ $isArabic ? 'left' : 'right' }}: 10px;
         }
         .section-title {
             font-size: 15px;
@@ -58,8 +64,20 @@
             background-color: #f8f9fa;
             padding: 8px;
             margin: 15px 0 8px 0;
-            border-left: 4px solid #007bff;
+            border-inline-start: 4px solid #007bff;
         }
+
+        /* RTL and LTR border support for section titles */
+        [dir="ltr"] .section-title {
+            border-left: 4px solid #007bff;
+            border-right: none;
+        }
+
+        [dir="rtl"] .section-title {
+            border-right: 4px solid #007bff;
+            border-left: none;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -70,14 +88,17 @@
         }
         th, td {
             padding: 10px;
-            text-align: left;
+            text-align: {{ $isArabic ? 'right' : 'left' }};
         }
         th {
             background-color: #f8f9fa;
             font-weight: bold;
         }
         .text-right {
-            text-align: right;
+            text-align: {{ $isArabic ? 'left' : 'right' }};
+        }
+        .text-left {
+            text-align: {{ $isArabic ? 'right' : 'left' }};
         }
         .text-center {
             text-align: center;
@@ -110,7 +131,7 @@
             vertical-align: top;
         }
         .footer-right {
-            text-align: right;
+            text-align: {{ $isArabic ? 'left' : 'right' }};
         }
         @media print {
             body {
@@ -130,118 +151,114 @@
     <div class="payslip-container">
         <!-- Header -->
         <div class="payslip-header">
-            <h3 class="company-name">{{ $payrollRecord->company->name ?? 'Company Name' }}</h3>
-            <p class="company-address">{{ $payrollRecord->company->address ?? 'Company Address' }}</p>
-            <h4 style="margin: 10px 0 0 0; font-size: 17px;">EMPLOYEE PAYSLIP</h4>
+            <h3 class="company-name">{{ $payrollRecord->company->name ?? __('home.bulk_pdf.company_name_default') }}</h3>
+            <p class="company-address">{{ $payrollRecord->company->address ?? __('home.bulk_pdf.company_address_default') }}</p>
+            <h4 style="margin: 10px 0 0 0; font-size: 17px;">{{ __('home.bulk_pdf.employee_payslip') }}</h4>
         </div>
 
         <!-- Employee Information -->
         <div class="employee-info">
             <div class="info-row">
                 <div class="info-col">
-                    <strong>Employee ID:</strong> {{ $payrollRecord->employee->id }}<br>
-                    <strong>Employee Name:</strong> {{ $payrollRecord->employee->name }}<br>
-                    <strong>Department:</strong> {{ $payrollRecord->employee->department->department_name ?? 'N/A' }}<br>
-                    <strong>Job Title:</strong> {{ $payrollRecord->employee->job->job_title ?? 'N/A' }}
+                    <strong>{{ __('home.bulk_pdf.employee_id') }}:</strong> {{ $payrollRecord->employee->id }}<br>
+                    <strong>{{ __('home.bulk_pdf.employee_name') }}:</strong> {{ $payrollRecord->employee->name }}<br>
+                    <strong>{{ __('home.bulk_pdf.department') }}:</strong> {{ $payrollRecord->employee->department->department_name ?? __('home.bulk_pdf.na') }}<br>
+                    <strong>{{ __('home.bulk_pdf.job_title') }}:</strong> {{ $payrollRecord->employee->job->job_title ?? __('home.bulk_pdf.na') }}
                 </div>
                 <div class="info-col">
-                    <strong>Pay Period:</strong> {{ $payrollRecord->start_date ? date('M d, Y', strtotime($payrollRecord->start_date)) : 'N/A' }} - {{ $payrollRecord->end_date ? date('M d, Y', strtotime($payrollRecord->end_date)) : 'N/A' }}<br>
-                    <strong>Hire Date:</strong> {{ $payrollRecord->employee->hire_date ? date('M d, Y', strtotime($payrollRecord->employee->hire_date)) : 'N/A' }}<br>
-                    <strong>Phone:</strong> {{ $payrollRecord->employee->phone_number ?? 'N/A' }}<br>
-                    <strong>Email:</strong> {{ $payrollRecord->employee->email ?? 'N/A' }}
+                    <strong>{{ __('home.bulk_pdf.pay_period') }}:</strong> {{ $payrollRecord->start_date ? date('M d, Y', strtotime($payrollRecord->start_date)) : __('home.bulk_pdf.na') }} - {{ $payrollRecord->end_date ? date('M d, Y', strtotime($payrollRecord->end_date)) : __('home.bulk_pdf.na') }}<br>
+                    <strong>{{ __('home.bulk_pdf.hire_date') }}:</strong> {{ $payrollRecord->employee->hire_date ? date('M d, Y', strtotime($payrollRecord->employee->hire_date)) : __('home.bulk_pdf.na') }}<br>
+                    <strong>{{ __('home.bulk_pdf.phone') }}:</strong> {{ $payrollRecord->employee->phone_number ?? __('home.bulk_pdf.na') }}<br>
+                    <strong>{{ __('home.bulk_pdf.email') }}:</strong> {{ $payrollRecord->employee->email ?? __('home.bulk_pdf.na') }}
                 </div>
             </div>
         </div>
 
         <!-- Earnings Section -->
-        <div class="section-title">EARNINGS</div>
+        <div class="section-title">{{ __('home.bulk_pdf.earnings') }}</div>
         <table>
             <tbody>
                 <tr>
-                    <td>Basic Salary</td>
-                    <td class="text-right">{{ number_format($payrollRecord->basic_salary ?? 0, 2) }} </td>
+                    <td>{{ __('home.bulk_pdf.basic_salary') }}</td>
+                    <td class="text-right">{{ number_format($payrollRecord->basic_salary ?? 0, 2) }}</td>
                 </tr>
                 @if($payrollRecord->bounas > 0)
                 <tr>
-                    <td>Bonus</td>
-                    <td class="text-right">{{ number_format($payrollRecord->bounas, 2) }} </td>
+                    <td>{{ __('home.bulk_pdf.bonus') }}</td>
+                    <td class="text-right">{{ number_format($payrollRecord->bounas, 2) }}</td>
                 </tr>
                 @endif
                 <tr style="background-color: #e3f2fd;">
-                    <td><strong>Total Earnings</strong></td>
-                    <td class="text-right"><strong>{{ number_format(($payrollRecord->basic_salary ?? 0) + ($payrollRecord->bounas ?? 0), 2) }} </strong></td>
+                    <td><strong>{{ __('home.bulk_pdf.total_earnings') }}</strong></td>
+                    <td class="text-right"><strong>{{ number_format(($payrollRecord->basic_salary ?? 0) + ($payrollRecord->bounas ?? 0), 2) }}</strong></td>
                 </tr>
             </tbody>
         </table>
 
         <!-- Deductions Section -->
-        <div class="section-title">DEDUCTIONS</div>
+        <div class="section-title">{{ __('home.bulk_pdf.deductions') }}</div>
         <table>
             <tbody>
                 @if($payrollRecord->taxes > 0)
                 <tr>
-                    <td>Taxes & Insurance</td>
-                    <td class="text-right">{{ number_format($payrollRecord->taxes, 2) }} </td>
+                    <td>{{ __('home.bulk_pdf.taxes_insurance') }}</td>
+                    <td class="text-right">{{ number_format($payrollRecord->taxes, 2) }}</td>
                 </tr>
                 @endif
                 @if($payrollRecord->deductions > 0)
                 <tr>
-                    <td>Other Deductions</td>
-                    <td class="text-right">{{ number_format($payrollRecord->deductions, 2) }} </td>
+                    <td>{{ __('home.bulk_pdf.other_deductions') }}</td>
+                    <td class="text-right">{{ number_format($payrollRecord->deductions, 2) }}</td>
                 </tr>
                 @endif
                 @if($payrollRecord->attendance_deduction > 0)
                 <tr>
-                    <td>Attendance Deduction</td>
-                    <td class="text-right">{{ number_format($payrollRecord->attendance_deduction, 2) }} </td>
+                    <td>{{ __('home.bulk_pdf.attendance_deduction') }}</td>
+                    <td class="text-right">{{ number_format($payrollRecord->attendance_deduction, 2) }}</td>
                 </tr>
                 @endif
                 <tr style="background-color: #fff3cd;">
-                    <td><strong>Total Deductions</strong></td>
-                    <td class="text-right"><strong>{{ number_format(($payrollRecord->taxes ?? 0) + ($payrollRecord->deductions ?? 0) + ($payrollRecord->attendance_deduction ?? 0), 2) }} </strong></td>
+                    <td><strong>{{ __('home.bulk_pdf.total_deductions') }}</strong></td>
+                    <td class="text-right"><strong>{{ number_format(($payrollRecord->taxes ?? 0) + ($payrollRecord->deductions ?? 0) + ($payrollRecord->attendance_deduction ?? 0), 2) }}</strong></td>
                 </tr>
             </tbody>
         </table>
 
-         <!-- Attendance Information -->
-        <div class="section-title">ATTENDANCE DETAILS</div>
-<div class="table-responsive">
-    <table class="table table-bordered table-striped">
-
-        <tbody>
-            <tr>
-                <td><strong>Days Absent</strong></td>
-                <td>{{ $payrollRecord->days_absent ?? 0 }} days</td>
-            </tr>
-            <tr>
-                <td><strong>Rest/Vacation</strong></td>
-                <td>{{ $payrollRecord->rest_vacancy ?? 0 }} days</td>
-            </tr>
-            <tr>
-                <td><strong>Daily Wage</strong></td>
-                <td>${{ number_format($payrollRecord->daily_wage ?? 0, 2) }}</td>
-            </tr>
-            <tr>
-                <td><strong>Work Hours</strong></td>
-                <td>{{ $payrollRecord->employee->work_start_time ?? 'N/A' }} - {{ $payrollRecord->employee->work_end_time ?? 'N/A' }}</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+        <!-- Attendance Information -->
+        <div class="section-title">{{ __('home.bulk_pdf.attendance_details') }}</div>
+        <table>
+            <tbody>
+                <tr>
+                    <td><strong>{{ __('home.bulk_pdf.days_absent') }}</strong></td>
+                    <td>{{ $payrollRecord->days_absent ?? 0 }} {{ __('home.bulk_pdf.days') }}</td>
+                </tr>
+                <tr>
+                    <td><strong>{{ __('home.bulk_pdf.rest_vacation') }}</strong></td>
+                    <td>{{ $payrollRecord->rest_vacancy ?? 0 }} {{ __('home.bulk_pdf.days') }}</td>
+                </tr>
+                <tr>
+                    <td><strong>{{ __('home.bulk_pdf.daily_wage') }}</strong></td>
+                    <td>${{ number_format($payrollRecord->daily_wage ?? 0, 2) }}</td>
+                </tr>
+                <tr>
+                    <td><strong>{{ __('home.bulk_pdf.work_hours') }}</strong></td>
+                    <td>{{ $payrollRecord->employee->work_start_time ?? __('home.bulk_pdf.na') }} - {{ $payrollRecord->employee->work_end_time ?? __('home.bulk_pdf.na') }}</td>
+                </tr>
+            </tbody>
+        </table>
 
         <!-- Net Pay Section -->
         <div class="net-pay">
-            <h4><strong>NET PAY: {{ number_format($payrollRecord->net_pay ?? 0, 2) }} </strong></h4>
+            <h4><strong>{{ __('home.bulk_pdf.net_pay') }}: {{ number_format($payrollRecord->net_pay ?? 0, 2) }}</strong></h4>
         </div>
 
         <!-- Footer -->
         <div class="footer">
             <div class="footer-row">
                 <div class="footer-col">
-                    <p>Generated on: {{ date('M d, Y H:i A') }}</p>
-                    <p>Created: {{ date('M d, Y', strtotime($payrollRecord->created_at)) }}</p>
+                    <p>{{ __('home.bulk_pdf.generated_on') }}: {{ date('M d, Y H:i A') }}</p>
+                    <p>{{ __('home.bulk_pdf.created') }}: {{ date('M d, Y', strtotime($payrollRecord->created_at)) }}</p>
                 </div>
-
             </div>
         </div>
     </div>

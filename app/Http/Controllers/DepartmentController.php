@@ -12,12 +12,42 @@ use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
 {
-    public function index(Request $request)
+
+
+public function index(Request $request)
 {
     // Call the model's getRecord function, passing the $request for search functionality.
     $getRecord = Department::getRecord($request);
+    $branches = $this->getAvailableBranches(); // Add branches for dropdown
+
     // Pass the data to the view using compact
-    return view('backend.departments.list', compact('getRecord'));
+    return view('backend.departments.list', compact('getRecord', 'branches'));
+}
+
+// Add this method to get available branches for departments
+public function getAvailableBranches()
+{
+    $company_id = session('company_id');
+    $branch_id = session('branch_id');
+
+    $branchesQuery = \DB::table('branches')
+        ->where('company_id', $company_id)
+        ->select('id', 'name', 'is_main');
+
+    // Apply same branch access logic as getRecord method
+    if (!empty($branch_id)) {
+        $currentBranch = \DB::table('branches')
+            ->where('id', $branch_id)
+            ->select('is_main')
+            ->first();
+
+        if (!($currentBranch && $currentBranch->is_main == 1)) {
+            // If current branch is not main, only show current branch
+            $branchesQuery->where('id', $branch_id);
+        }
+    }
+
+    return $branchesQuery->orderBy('name')->get();
 }
 
 public function add(Request $request)

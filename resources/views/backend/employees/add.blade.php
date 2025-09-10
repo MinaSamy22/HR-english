@@ -141,6 +141,52 @@
                                         </div>
                                     </div>
 
+                           <div class="form-group row">
+    <label class="col-sm-2 col-form-label">
+        {{ __('h_employee.shift_count') }} <span style="color: red;">*</span>
+    </label>
+    <div class="col-sm-10">
+        <select name="shift_count" id="shift_count" class="form-control" required>
+            <option value="1" {{ old('shift_count', $getRecord->shift_count ?? 1) == 1 ? 'selected' : '' }}>
+                {{ __('h_employee.one_shift') }}
+            </option>
+            <option value="2" {{ old('shift_count', $getRecord->shift_count ?? 1) == 2 ? 'selected' : '' }}>
+                {{ __('h_employee.two_shifts') }}
+            </option>
+        </select>
+    </div>
+</div>
+
+<div id="secondShiftFields" style="display: none;">
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">{{ __('h_employee.second_work_start_time') }}</label>
+        <div class="col-sm-10">
+            <input type="time" name="second_work_start_time"
+                value="{{ old('second_work_start_time', $getRecord->second_work_start_time ?? '') }}"
+                class="form-control">
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">{{ __('h_employee.second_work_end_time') }}</label>
+        <div class="col-sm-10">
+            <input type="time" name="second_work_end_time"
+                value="{{ old('second_work_end_time', $getRecord->second_work_end_time ?? '') }}"
+                class="form-control">
+        </div>
+    </div>
+</div>
+
+<div class="form-group row">
+    <label class="col-sm-2 col-form-label">{{ __('h_employee.work_hours_per_day') }}</label>
+    <div class="col-sm-10">
+        <input type="number" name="work_hours_per_day"
+            value="{{ old('work_hours_per_day', $getRecord->work_hours_per_day ?? '') }}"
+            class="form-control">
+    </div>
+</div>
+
+
                                     <div class="form-group row align-items-center">
                                         <label class="col-sm-2 col-form-label">{{ __('h_employee.free_biometric') }} <span style="color: red;">{{ __('h_employee.required_field') }}</span></label>
                                         <div class="col-sm-10">
@@ -218,5 +264,23 @@
             </div>
         </section>
     </div>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const shiftSelect = document.getElementById("shift_count");
+        const secondShiftFields = document.getElementById("secondShiftFields");
+
+        function toggleSecondShift() {
+            if (shiftSelect.value === "2") {
+                secondShiftFields.style.display = "block";
+            } else {
+                secondShiftFields.style.display = "none";
+            }
+        }
+
+        shiftSelect.addEventListener("change", toggleSecondShift);
+        toggleSecondShift(); // للتشغيل وقت التحميل
+    });
+</script>
+
 <script src="{{ url('dist/js/employee.js?v=2') }}"></script>
 @endsection

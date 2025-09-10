@@ -11,68 +11,90 @@
                     </div><!-- /.col -->
                     <div class="col-sm-6 text-end" style="text-align: right;">
                         <form action="{{ url('admin/jobhistory_export') }}" method="get"> <!-- excel export form -->
-                            <input type="hidden" name="employee_name" value="{{ Request()->employee_name }}">
-                            <input type="hidden" name="job_title" value="{{ Request()->job_title }}">
-                            <input type="hidden" name="start_date" value="{{ Request()->start_date }}">
-                            <input type="hidden" name="end_date" value="{{ Request()->end_date }}">
+    <input type="hidden" name="employee_name" value="{{ Request()->employee_name }}">
+    <input type="hidden" name="job_title" value="{{ Request()->job_title }}">
+    <input type="hidden" name="start_date" value="{{ Request()->start_date }}">
+    <input type="hidden" name="end_date" value="{{ Request()->end_date }}">
+    <!-- 🆕 Add branch filter to export -->
+    <input type="hidden" name="filter_branch_id" value="{{ Request()->filter_branch_id }}">
 
-                            <button type="submit" class="btn btn-success">
-                                <i class="fas fa-file-excel"></i> {{ __('h_job_history.export') }}
-                            </button>
-                        </form>
-                        <br>
+    <button type="submit" class="btn btn-success">
+        <i class="fas fa-file-excel"></i> {{ __('h_job_history.export') }}
+    </button>
+</form>
+<br>
 
-                        <a href="{{ url('admin/job_history/add') }}" class="btn btn-primary rounded-pill">
-                            <i class="fas fa-user-plus"></i> {{ __('h_job_history.add_history_btn') }}
-                        </a>
+<a href="{{ url('admin/job_history/add') }}" class="btn btn-primary rounded-pill">
+    <i class="fas fa-user-plus"></i> {{ __('h_job_history.add_history_btn') }}
+</a>
 
-                    </div><!-- /.col -->
-                </div><!-- /.row -->
-            </div><!-- /.container-fluid -->
-        </div>
-        <!-- /.content-header -->
+</div><!-- /.col -->
+</div><!-- /.row -->
+</div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
 
-        <section class="content">
-            <div class="container-fluid">
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <section class="col-md-12">
+                <div class="card" style="background-color: rgba(255, 255, 255, 0.9); border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                    <div class="card-header">
+                        <h3 class="card-title">{{ __('h_job_history.search_job_history') }}</h3>
+                    </div>
 
-                <div class="row">
-                    <section class="col-md-12">
-                        <div class="card" style="background-color: rgba(255, 255, 255, 0.9); border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-                            <div class="card-header">
-                                <h3 class="card-title">{{ __('h_job_history.search_job_history') }}</h3>
-                            </div>
+                    <form method="get" action="">
+                        <div class="card-body">
+                            <div class="row">
 
-                            <form method="get" action="">
-                                <div class="card-body">
-                                    <div class="row">
-
-                                        <div class="form-group col-md-2">
-                                            <label>{{ __('h_job_history.employee_name') }}</label>
-                                            <input type="text" value="{{ Request()->employee_name }}" name="employee_name" class="form-control" placeholder="{{ __('h_job_history.name_placeholder') }}">
-                                        </div>
-
-                                        <div class="form-group col-md-3">
-                                            <label>{{ __('h_job_history.from_date') }}</label>
-                                            <input type="date" value="{{ Request()->start_date }}" name="start_date" class="form-control">
-                                        </div>
-
-                                        <div class="form-group col-md-2">
-                                            <label>{{ __('h_job_history.job_title') }}</label>
-                                            <input type="text" value="{{ Request()->job_title }}" name="job_title" class="form-control" placeholder="{{ __('h_job_history.job_title_placeholder') }}">
-                                        </div>
-
-                                        <div class="form-group col-md-3 d-flex align-items-end">
-                                            <button class="btn btn-primary rounded-pill" type="submit" style="margin-right: 10px;" title="{{ __('h_job_history.search') }}">
-                                                <i class="fas fa-search"></i>
-                                            </button>
-                                            <a href="{{ url('admin/job_history') }}" class="btn btn-success rounded-pill" title="{{ __('h_job_history.reset') }}">
-                                                <i class="fas fa-sync-alt"></i>
-                                            </a>
-                                        </div>
-
-                                    </div>
+                                <div class="form-group col-md-2">
+                                    <label>{{ __('h_job_history.employee_name') }}</label>
+                                    <input type="text" value="{{ Request()->employee_name }}" name="employee_name" class="form-control" placeholder="{{ __('h_job_history.name_placeholder') }}">
                                 </div>
-                            </form>
+
+                                <div class="form-group col-md-2">
+                                    <label>{{ __('h_job_history.from_date') }}</label>
+                                    <input type="date" value="{{ Request()->start_date }}" name="start_date" class="form-control">
+                                </div>
+
+                                <!-- 🆕 Add End Date -->
+                                <div class="form-group col-md-2">
+                                    <label>{{ __('h_job_history.end_date') }}</label>
+                                    <input type="date" value="{{ Request()->end_date }}" name="end_date" class="form-control">
+                                </div>
+
+                                <div class="form-group col-md-2">
+                                    <label>{{ __('h_job_history.job_title') }}</label>
+                                    <input type="text" value="{{ Request()->job_title }}" name="job_title" class="form-control" placeholder="{{ __('h_job_history.job_title_placeholder') }}">
+                                </div>
+
+                                <!-- 🆕 Branch Filter (Only for Main Branch Users) -->
+                                @if (session('branch_id') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1)
+                                <div class="form-group col-md-2">
+                                    <label>{{ __('Branch') }}</label>
+                                    <select name="filter_branch_id" class="form-control">
+                                        <option value="">{{ __('All Branches') }}</option>
+                                        @foreach($branches as $branch)
+                                            <option value="{{ $branch->id }}" {{ Request()->filter_branch_id == $branch->id ? 'selected' : '' }}>
+                                                {{ $branch->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                @endif
+
+                                <div class="form-group col-md-2 d-flex align-items-end">
+                                    <button class="btn btn-primary rounded-pill" type="submit" style="margin-right: 10px;" title="{{ __('h_job_history.search') }}">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                    <a href="{{ url('admin/job_history') }}" class="btn btn-success rounded-pill" title="{{ __('h_job_history.reset') }}">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
                         </div>
 
                         @include('_message')
@@ -92,6 +114,7 @@
                                                 <th>{{ __('h_job_history.end_date') }}</th>
                                                 <th>{{ __('h_job_history.job_title') }}</th>
                                                 <th>{{ __('h_job_history.department_name') }}</th>
+                                                <th>{{ __('h_employee.branch') }}</th>
                                                 <th>{{ __('h_job_history.action') }}</th>{{-- buttons of crud inside it --}}
                                             </tr>
                                         </thead>
@@ -103,6 +126,7 @@
                                                 <td>{{ $value->end_date }}</td>
                                                 <td>{{ $value->job_title }}</td>
                                                 <td>{{ $value->department_name }}</td>
+                                                <td>{{ $value->branch_name ?? __('h_dashboard.main_branch') }}</td>
                                                 <td>
                                                     <a href="{{ url('admin/job_history/edit/' .$value->id) }}" class="btn btn-primary rounded-pill" title="{{ __('h_job_history.edit') }}">
                                                         <i class="fas fa-edit"></i>

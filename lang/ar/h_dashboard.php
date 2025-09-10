@@ -35,4 +35,5 @@ return [
     'no_recent_news' => 'لا توجد أخبار حديثة',
     'no_recent_news_desc' => 'لا توجد عناصر إخبارية حديثة لعرضها.',
     'add_first_news' => 'إضافة أول خبر',
+
 ];

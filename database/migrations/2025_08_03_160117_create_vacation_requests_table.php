@@ -22,6 +22,7 @@ return new class extends Migration
         $table->string('emergency_contact')->nullable();
         $table->boolean('is_urgent')->default(false);
         $table->string('status')->default('pending'); // pending, approved, rejected
+        $table->boolean('is_seen')->default(false);
         $table->timestamps();
 
         $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

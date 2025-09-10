@@ -1,17 +1,25 @@
 <?php
 namespace App\Http\Controllers;
 use App\Models\AttendanceRule;
+use App\Models\EmployeeWorkHours;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AttendanceRulesController extends Controller
 {
     public function index(Request $request)
-    {
-        $data['header_title'] = "Employee Attendance";
-        $company_id = session('company_id');
-        $data['setting'] = AttendanceRule::where('company_id', $company_id)->first();
-        return view('backend.attendance.attendance-rule', $data);
-    }
+{
+    $data['header_title'] = "Employee Attendance";
+    $company_id = session('company_id');
+    $data['setting'] = AttendanceRule::where('company_id', $company_id)->first();
+
+    // Add employees data
+    $data['employees'] = User::where('company_id', $company_id)
+        ->orderBy('name')
+        ->get();
+
+    return view('backend.attendance.attendance-rule', $data);
+}
 
     public function saveRules(Request $request)
     {
@@ -125,26 +133,72 @@ public function updateHalfDayDeduction(Request $request)
     return response()->json(['message' => 'Half day deduction percentage updated successfully']);
 }
 
-public function updateWorkHoursPerDay(Request $request)
+
+
+// Updated method for updating individual employee work hours - now saves to users table
+public function updateEmployeeWorkHours(Request $request)
 {
     try {
-        $request->validate([
-            'work_hours_per_day' => 'required|numeric|min:1|max:24',
-        ]);
+        $companyId = auth()->user()->company_id;
 
-        $setting = AttendanceRule::firstOrNew(['company_id' => auth()->user()->company_id]);
+        // Check if it's a bulk update
+        if ($request->has('bulk_update') && $request->bulk_update) {
+            $request->validate([
+                'employee_ids' => 'required|array',
+                'employee_ids.*' => 'required|exists:users,id',
+                'work_hours_per_day' => 'required|numeric|min:1|max:24',
+            ]);
 
-        $setting->work_hours_per_day = $request->work_hours_per_day;
-        $setting->save();
+            $updatedCount = 0;
+            foreach ($request->employee_ids as $employeeId) {
+                // Verify employee belongs to the same company and update directly in users table
+                $employee = User::where('id', $employeeId)
+                    ->where('company_id', $companyId)
+                    ->first();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Work hours per day saved successfully.'
-        ]);
+                if ($employee) {
+                    $employee->work_hours_per_day = $request->work_hours_per_day;
+                    $employee->save();
+                    $updatedCount++;
+                }
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => __('rules.work_hours_updated_for', ['count' => $updatedCount])
+            ]);
+        } else {
+            // Single employee update
+            $request->validate([
+                'employee_id' => 'required|exists:users,id',
+                'work_hours_per_day' => 'required|numeric|min:1|max:24',
+            ]);
+
+            // Verify employee belongs to the same company
+            $employee = User::where('id', $request->employee_id)
+                ->where('company_id', $companyId)
+                ->first();
+
+            if (!$employee) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Employee not found or access denied.'
+                ], 403);
+            }
+
+            // Update work hours directly in users table
+            $employee->work_hours_per_day = $request->work_hours_per_day;
+            $employee->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => __('rules.success_message')
+            ]);
+        }
     } catch (\Exception $e) {
         return response()->json([
             'success' => false,
-            'message' => 'Failed to save work hours.',
+            'message' => __('rules.error_message'),
             'error' => $e->getMessage()
         ], 500);
     }
@@ -307,6 +361,30 @@ public function updateBonusPerHour(Request $request)
             'error' => $e->getMessage()
         ], 500);
     }
+}
+
+
+public function policy(Request $request)
+{
+    $data['header_title'] = "Company Attendance Policy";
+    $company_id = session('company_id');
+    $data['setting'] = AttendanceRule::where('company_id', $company_id)->first();
+
+    // If no settings found, create default empty object to prevent errors
+    if (!$data['setting']) {
+        $data['setting'] = (object) [
+            'late_deduction_percentage' => 0,
+            'half_day_deduction_percentage' => 0,
+            'work_hours_per_day' => 8,
+            'bonus_per_hour' => 0,
+            'working_days' => json_encode(['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']),
+            'vacation_balance' => 0,
+            'official_holidays' => json_encode([])
+        ];
+    }
+
+    return view('EmployeeInterface.policy.index', $data);
+
 }
 
 

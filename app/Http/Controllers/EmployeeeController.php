@@ -16,8 +16,33 @@ class EmployeeeController extends Controller
 {
 public function index(Request $request){
     $data['getRecord'] = User::getRecord($request);    //for reterving employees data from database and retrive model logic
+    $data['branches'] = $this->getAvailableBranches(); // Add branches for dropdown
     return view('backend.employees.list',$data);
+}
 
+public function getAvailableBranches()
+{
+    $company_id = session('company_id');
+    $branch_id = session('branch_id');
+
+    $branchesQuery = \DB::table('branches')
+        ->where('company_id', $company_id)
+        ->select('id', 'name', 'is_main');
+
+    // Apply same branch access logic as getRecord method
+    if (!empty($branch_id)) {
+        $currentBranch = \DB::table('branches')
+            ->where('id', $branch_id)
+            ->select('is_main')
+            ->first();
+
+        if (!($currentBranch && $currentBranch->is_main == 1)) {
+            // If current branch is not main, only show current branch
+            $branchesQuery->where('id', $branch_id);
+        }
+    }
+
+    return $branchesQuery->orderBy('name')->get();
 }
 
 public function add(Request $request)
@@ -43,7 +68,7 @@ public function add(Request $request)
 public function add_post(Request $request)
 {
     // Validate the incoming data
-    $user = request()->validate([
+    $validated = $request->validate([
         'name'                  => 'required',
         'email'                 => 'required|unique:users',
         'hire_date'             => 'required',
@@ -53,15 +78,17 @@ public function add_post(Request $request)
         'salary_type'           => 'required',
         'manager_id'            => 'required',
         'department_id'         => 'required',
-        'is_role'               => 'required|in:0,1', // Ensure role is either HR (0) or Employee (1)
-        'is_biometric'          => 'required|in:0,1', // yes biometric-> 1 , No free-> 0
+        'is_role'               => 'required|in:0,1',
+        'is_biometric'          => 'required|in:0,1',
         'work_start_time'       => 'required|date_format:H:i',
         'work_end_time'         => 'required|date_format:H:i',
-        'attachment'            => 'nullable|file|mimes:pdf|max:2048', // max 2MB
+        'work_hours_per_day'    => 'required|numeric|min:1|max:24',
+        'shift_count'           => 'required|in:1,2',
+        'second_work_start_time'=> 'nullable|date_format:H:i',
+        'second_work_end_time'  => 'nullable|date_format:H:i',
+        'attachment'            => 'nullable|file|mimes:pdf|max:2048',
         'macaddress'            => 'nullable|string|max:255',
-
-
-
+        'password'              => 'required|min:6',
     ]);
 
     // Create a new user
@@ -78,44 +105,43 @@ public function add_post(Request $request)
 
     $user->work_start_time      = trim($request->work_start_time);
     $user->work_end_time        = trim($request->work_end_time);
+    $user->work_hours_per_day   = trim($request->work_hours_per_day);
+
+    $user->shift_count          = $request->shift_count;
+    if ($request->shift_count == 2) {
+        $user->second_work_start_time = $request->second_work_start_time;
+        $user->second_work_end_time   = $request->second_work_end_time;
+    }
+
     $user->manager_id           = trim($request->manager_id);
     $user->department_id        = trim($request->department_id);
     $user->is_role              = $request->is_role;
-    $user->is_biometric         = $request->is_biometric; // Save biometric radio value
-    $user->company_id           = session('company_id'); // Ensure the user is linked to the correct company
+    $user->is_biometric         = $request->is_biometric;
+    $user->company_id           = session('company_id');
 
-    // If the role is HR, hash and save the password
-   $request->validate([
-    'password' => 'required|min:6',
-]);
+    // Password
+    $user->password = bcrypt($request->password);
 
-$user->password = bcrypt($request->password);
-
-
-        // Handle company/branch assignment
-    $user->company_id = session('company_id');
+    // Handle company/branch assignment
     if (session()->has('branch_id')) {
         $user->branch_id = session('branch_id');
     }
 
-if ($request->hasFile('attachment')) {
-    $file = $request->file('attachment');
-    $filename = time() . '_' . $file->getClientOriginalName();
-$destinationPath = public_path('../../HR-Uploads/shared_attachments/');
-
-    // احفظ الملف في المجلد
-    $file->move($destinationPath, $filename);
-
-    // خزّن اسم الملف فقط في قاعدة البيانات
-    $user->attachment = $filename;
-}
-
+    // Handle attachment
+    if ($request->hasFile('attachment')) {
+        $file = $request->file('attachment');
+        $filename = time() . '_' . $file->getClientOriginalName();
+        $destinationPath = public_path('../../HR-Uploads/shared_attachments/');
+        $file->move($destinationPath, $filename);
+        $user->attachment = $filename;
+    }
 
     // Save the user to the database
     $user->save();
 
-return redirect('admin/employees')->with('success', __('h_employee.employee_registered'));
+    return redirect('admin/employees')->with('success', __('h_employee.employee_registered'));
 }
+
 
 
 
@@ -188,6 +214,12 @@ public function edit_update($id, Request $request){
 
     $user->work_start_time      = trim($request->work_start_time);
     $user->work_end_time        = trim($request->work_end_time);
+
+    $user->shift_count             = $request->shift_count;
+    $user->second_work_start_time  = $request->second_work_start_time;
+    $user->second_work_end_time    = $request->second_work_end_time;
+    $user->work_hours_per_day      = $request->work_hours_per_day;
+
     $user->is_biometric         = $request->is_biometric;
     $user->manager_id           = trim($request->manager_id);
     $user->department_id        = trim($request->department_id);

@@ -4,6 +4,7 @@ return [
     // Brand
     'employee_panel' => 'Employee Panel',
     'guest_user' => 'Guest User',
+    'performance' => 'My Performance',
 
     // Navigation
     'home' => 'Home',

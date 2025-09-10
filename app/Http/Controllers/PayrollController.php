@@ -13,9 +13,8 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
-use Barryvdh\DomPDF\Facade\Pdf;
 use ZipArchive;
-
+use niklasravnsborg\LaravelPdf\Facades\Pdf;
 
 class PayrollController extends Controller
 {
@@ -267,7 +266,7 @@ return response()->json(['success' => true, 'message' => __('h_payroll.selected_
         $getRecord = Payroll::getRecord($companyId);
 
         // Render the PDF-specific view and pass the filtered records
-        $pdf = Pdf::loadView('backend.payrolls.pdf', compact('getRecord'));
+        $pdf = Pdf::loadView('backend.payrolls.pdf', compact('getRecord'),['format' => 'A4','display_mode'=> 'fullpage'],['tempDir' => storage_path('temp/mpdf'),]);
 
         // Return the PDF for download
         return $pdf->download('payroll-report.pdf');

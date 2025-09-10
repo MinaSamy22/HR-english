@@ -29,23 +29,41 @@
                                 <h3 class="card-title">{{ __('h_manager.search_managers') }}</h3>
                             </div>
                             <form method="get" action="">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="form-group col-md-2 col-sm-6">
-                                            <label>{{ __('h_manager.manager_name') }}</label>
-                                            <input type="text" value="{{ Request()->name }}" name="name" class="form-control" placeholder="{{ __('h_manager.name') }}">
-                                        </div>
-                                        <div class="form-group col-md-3 col-sm-6 d-flex align-items-end">
-                                            <button class="btn btn-primary rounded-pill" type="submit" style="margin-right: 10px;" title="{{ __('h_manager.search') }}">
-                                                <i class="fas fa-search"></i>
-                                            </button>
-                                            <a href="{{ url('admin/manager') }}" class="btn btn-success rounded-pill" title="{{ __('h_manager.reset') }}">
-                                                <i class="fas fa-sync-alt"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
+    <div class="card-body">
+        <div class="row">
+            <div class="form-group col-md-2 col-sm-6">
+                <label>{{ __('h_manager.manager_name') }}</label>
+                <input type="text" value="{{ Request()->name }}" name="name" class="form-control" placeholder="{{ __('h_manager.name') }}">
+            </div>
+
+            <!-- 🆕 NEW: Branch Name Dropdown Filter - Only for main branch users -->
+            @if (session('branch_id') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1)
+            <div class="form-group col-md-2 col-sm-6">
+                <label>{{ __('Branch') }}</label>
+                <select name="filter_branch_id" class="form-control">
+                    <option value="">{{ __('All Branches') }}</option>
+                    @foreach($branches as $branch)
+                        <option value="{{ $branch->id }}"
+                            {{ Request()->filter_branch_id == $branch->id ? 'selected' : '' }}>
+                            {{ $branch->name }}
+                            @if($branch->is_main == 1) ({{ __('Main') }}) @endif
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            @endif
+
+            <div class="form-group col-md-3 col-sm-6 d-flex align-items-end">
+                <button class="btn btn-primary rounded-pill" type="submit" style="margin-right: 10px;" title="{{ __('h_manager.search') }}">
+                    <i class="fas fa-search"></i>
+                </button>
+                <a href="{{ url('admin/manager') }}" class="btn btn-success rounded-pill" title="{{ __('h_manager.reset') }}">
+                    <i class="fas fa-sync-alt"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</form>
                         </div>
 
                         @include('_message')
@@ -64,6 +82,7 @@
                                                 <th>{{ __('h_manager.email') }}</th>
                                                 <th>{{ __('h_manager.phone_number') }}</th>
                                                 <th>{{ __('h_manager.hire_date') }}</th>
+                                                <th>{{ __('h_employee.branch') }}</th>
                                                 <th>{{ __('h_manager.action') }}</th>
                                             </tr>
                                         </thead>
@@ -75,6 +94,7 @@
                                                 <td>{{ $value->email }}</td>
                                                 <td>{{ $value->phone_number }}</td>
                                                 <td>{{ $value->hire_date }}</td>
+                                                <td>{{ $value->branch_name ?? __('h_dashboard.main_branch') }}</td>
                                                 <td>
                                                     <a href="{{ url('admin/manager/view/' .$value->id) }}" class="btn btn-info rounded-pill" title="{{ __('h_manager.view') }}">
                                                         <i class="fas fa-eye"></i>

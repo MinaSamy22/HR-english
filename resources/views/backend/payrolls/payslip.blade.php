@@ -1,6 +1,6 @@
 @extends('backend.layouts.app')
 @section('content')
-    <link rel="stylesheet" href="{{ url('dist/css/payslip.css') }}">
+<link rel="stylesheet" href="{{ url('dist/css/payslip.css') }}?v=2">
 
     <div class="content-wrapper">
         <section class="content-header">
@@ -128,7 +128,7 @@
                                         @endif
                                     </h3>
                                     @if ($getRecord->count() > 0)
-                                        <div class="card-tools">
+                    <div class="col-sm-13 text-end" style="text-align: right;">
                                             <button type="button" class="btn btn-primary" onclick="printAllPayslips()">
                                                 <i class="fas fa-print"></i> {{ __('dashboard.print_all_results') }}
                                             </button>

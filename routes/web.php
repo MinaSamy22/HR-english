@@ -14,6 +14,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeductionController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeesInterface\EmployeeLateRemovalController;
+use App\Http\Controllers\EmployeesInterface\EmployeePerformanceController;
 use App\Http\Controllers\EmployeesInterface\ExtraTimeRequestController;
 use App\Http\Controllers\EmployeesInterface\ResignationController;
 use App\Http\Controllers\EmployeesInterface\EmployeeAttendanceController;
@@ -194,6 +195,8 @@ Route::post('admin/Requests/reject/{type}/{id}', [RequestController::class, 'rej
     Route::post('/attendance-rules/update-half-day', [AttendanceRulesController::class, 'updateHalfDayDeduction'])->name('attendance-rules.update-half-day');
     //edit work hours
     Route::post('/attendance-rules/update-work-hours', [AttendanceRulesController::class, 'updateWorkHoursPerDay'])->name('attendance.update-work-hours');
+Route::post('/attendance/update-employee-work-hours', [AttendanceRulesController::class, 'updateEmployeeWorkHours']) ->name('attendance.update-employee-work-hours');
+
     //vacation balance
     Route::post('/attendance-rules/update-vacation-balance', [AttendanceRulesController::class, 'updateVacationBalance'])->name('attendance.update-vacation-balance');
     //bounas hours
@@ -346,12 +349,13 @@ Route::group(['middleware' => 'SuperAdmin'], function () {
 });
 
 
-//(Employee interface)
+//middlware 3 (Employee interface)
 Route::middleware('employee')->group(function () {
 
 //dashboard   employee/home
 Route::get('employee/home', [EmployeeHomeController::class, 'index'])->name('employee.home');
 Route::get('employee/logout', [EmployeeHomeController::class, 'logout'])->name('employee.logout');
+
 // Route to serve news images
 Route::get('employee/news-image/{filename}', [EmployeeHomeController::class, 'viewNewsImage'])
     ->name('employee.news.image');Route::get('employee/news/{news}', [EmployeeHomeController::class, 'show'])->name('Employeenews.show');
@@ -364,8 +368,17 @@ Route::post('/employee/my_account/update', [EmployeeMyAccountController::class, 
 //payroll
 Route::get('employee/payroll', [EmployeePayrollController::class, 'index'])->name('employee.payroll');
 Route::post('employee/payroll/download-pdf', [EmployeePayrollController::class, 'downloadSinglePayslip'])->name('employee.payslip.download.single');
+
 //attendance
 Route::get('employee/attendance', [EmployeeAttendanceController::class, 'index'])->name('employee.attendance');
+
+//Company Policy
+Route::get('employee/policys', [AttendanceRulesController::class, 'policy'])->name('employee.policy');
+
+//Performance
+Route::get('employee/performance', [EmployeePerformanceController::class, 'index'])->name('employee.performances.index');
+Route::get('employee/performance/{id}', [EmployeePerformanceController::class, 'show'])->name('employee.performances.show');
+
 
 // Vacation Routes
 Route::get('employee/vacation', [EmployeeVacationController::class, 'index'])->name('vacation.index');
@@ -386,7 +399,6 @@ Route::get('employee/extra', [ExtraTimeRequestController::class, 'index'])->name
 Route::post('employee/extra', [ExtraTimeRequestController::class, 'store'])->name('employee.extra.store');
 Route::delete('extra/{id}', [ExtraTimeRequestController::class, 'destroy'])->name('employee.extra.destroy');
 
-//late request
 //late request
 Route::get('employee/late', [EmployeeLateRemovalController::class, 'index'])->name('employee.late.index');
 Route::post('employee/late/request', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.request');

@@ -260,5 +260,28 @@ return [
     'attendance_saved' => 'Attendance Successfully Saved',
     'record_not_found' => 'Record not found ',
     'attendance_imported_success' => ':count attendance record(s) imported successfully.',
+    'taxes_and_insurance' => 'Taxes and Insurance',
 
+
+     'home' => 'Dashboard',
+    'notifications' => 'Notifications',
+    'pending' => 'pending',
+    'no_pending_notifications' => 'No pending notifications',
+    'view_all' => 'View all',
+
+    // Notification messages
+    'vacation_request' => '<strong>:name</strong> requested :type leave',
+    'extra_time_request' => '<strong>:name</strong> requested :hours extra hours',
+    'resignation_request' => '<strong>:name</strong> submitted resignation request',
+    'late_removal_request' => '<strong>:name</strong> requested late removal for :date',
+
+    // Request types
+    'vacation_types' => [
+        'annual' => 'annual',
+        'sick' => 'sick',
+        'emergency' => 'emergency',
+        'maternity' => 'maternity',
+        'paternity' => 'paternity',
+        'personal' => 'personal',
+    ],
 ];

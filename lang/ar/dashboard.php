@@ -70,7 +70,7 @@ return [
 'print_all_results' => 'طباعة كل النتائج',
 'download_all_pdfs' => 'تحميل كل ملفات PDF',
 
-'employee_id' => 'رقم الموظف',
+'employee_id' => 'كود الموظف',
 'department' => 'القسم',
 'job_title' => 'المسمى الوظيفي',
 'pay_period' => 'فترة الدفع',
@@ -224,7 +224,32 @@ return [
 'late-arrival' => 'الحضور متأخر',
     'attendance_saved' => 'تم حفظ الحضور بنجاح',
 'record_not_found' => 'لا يوجد',
+    'taxes_and_insurance' => 'الضرائب و التأمينات',
+
 
     'attendance_imported_success' => 'تم استيراد :count سجل حضور بنجاح.',
 
+
+    'home' => 'لوحة التحكم',
+    'notifications' => 'الإشعارات',
+    'pending' => 'معلق',
+    'no_pending_notifications' => 'لا توجد إشعارات معلقة',
+    'view_all' => 'عرض الكل',
+
+    // Notification messages
+    'vacation_request' => '<strong>:name</strong> طلب إجازة :type',
+    'extra_time_request' => '<strong>:name</strong> طلب :hours ساعات إضافية',
+    'resignation_request' => '<strong>:name</strong> قدم طلب استقالة',
+    'late_removal_request' => '<strong>:name</strong> طلب إزالة التأخير لتاريخ :date',
+
+    // Request types
+    'vacation_types' => [
+        'annual' => 'سنوية',
+        'sick' => 'مرضية',
+        'emergency' => 'طارئة',
+        'maternity' => 'أمومة',
+        'paternity' => 'أبوة',
+        'personal' => 'شخصي',
+
+    ],
 ];

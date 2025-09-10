@@ -44,13 +44,14 @@ class Manager extends Authenticatable
         'password' => 'hashed',
     ];
 
-    static public function getRecord() {
-        // Retrieve the company_id from the session
+static public function getRecord() {
+    // Retrieve the company_id from the session
     $company_id = session('company_id');
     $branch_id = session('branch_id');
 
-        // Start the query for retrieving managers
-        $query = self::select('managers.*'); // Change 'users.*' to 'managers.*' since you're working with the Manager model
+    // Start the query for retrieving managers with branch info
+    $query = self::select('managers.*', 'branches.name as branch_name', 'branches.is_main')
+            ->leftJoin('branches', 'branches.id', '=', 'managers.branch_id');
 
     // 🔍 Filter by branch_id if available, otherwise fallback to company_id or main branch
     if (!empty($branch_id)) {
@@ -72,22 +73,39 @@ class Manager extends Authenticatable
         $query->where('managers.company_id', $company_id);
     }
 
-        // Apply search filters if any
-        if (!empty(Request::get('id'))) {
-            $query = $query->where('id', '=', Request::get('id'));
-        }
-
-        if (!empty(Request::get('name'))) {
-            $query = $query->where('name', 'like', '%' . Request::get('name') . '%');
-        }
-
-        if (!empty(Request::get('email'))) {
-            $query = $query->where('email', 'like', '%' . Request::get('email') . '%');
-        }
-
-        // Retrieve records, order by id, and paginate
-        return $query->orderBy('id', 'desc')->paginate(5);
+    // Apply search filters if any
+    if (!empty(Request::get('id'))) {
+        $query = $query->where('managers.id', '=', Request::get('id'));
     }
+
+    if (!empty(Request::get('name'))) {
+        $query = $query->where('managers.name', 'like', '%' . Request::get('name') . '%');
+    }
+
+    if (!empty(Request::get('email'))) {
+        $query = $query->where('managers.email', 'like', '%' . Request::get('email') . '%');
+    }
+
+    // 🆕 NEW: Branch filter by ID (from dropdown)
+    if (!empty(Request::get('filter_branch_id'))) {
+        $query->where('managers.branch_id', '=', Request::get('filter_branch_id'));
+    }
+
+    // Handle per_page parameter
+    $perPage = Request::get('per_page', 5); // Default to 5
+
+    // Retrieve records, order by id, and paginate/get all
+    $query->orderBy('managers.id', 'desc');
+
+    if ($perPage === 'all') {
+        return $query->get();
+    } else {
+        $paginatedResults = $query->paginate((int)$perPage);
+        // 🔧 FIX: Append all request parameters to pagination links
+        $paginatedResults->appends(Request::all());
+        return $paginatedResults;
+    }
+}
 
 
 

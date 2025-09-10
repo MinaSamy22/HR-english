@@ -20,6 +20,7 @@ return new class extends Migration
             $table->decimal('hours', 5, 2); // e.g., 2.50 hours
             $table->string('reason')->nullable();
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->boolean('is_seen')->default(false);
             $table->timestamps();
         });
     }

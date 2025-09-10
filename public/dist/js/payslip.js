@@ -1,15 +1,63 @@
 function printPayslip(payrollId) {
-    var printContent = document.getElementById('payslip-' + payrollId);
-    var originalContent = document.body.innerHTML;
+    // Add CSS to hide buttons and other payslips during print
+    const style = document.createElement('style');
+    style.innerHTML = `
+        @media print {
+            button, .btn, .no-print, .print-hide,
+            .download-btn, .print-btn, .action-buttons,
+            .card-header, .breadcrumb, .content-header, form, .form-group {
+                display: none !important;
+            }
 
-    document.body.innerHTML = printContent.outerHTML;
+            /* Hide all payslips except the one we want to print */
+            .payslip-container {
+                display: none !important;
+            }
+
+            /* Show only the target payslip */
+            #payslip-${payrollId} {
+                display: block !important;
+            }
+
+            /* Ensure proper styling for single payslip */
+            .col-md-8 {
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+
+    // Print without manipulating the DOM
     window.print();
-    document.body.innerHTML = originalContent;
-    location.reload();
+
+    // Remove the style after printing
+    document.head.removeChild(style);
 }
 
 function printAllPayslips() {
+    // Add CSS to hide buttons and unwanted elements during print
+    const style = document.createElement('style');
+    style.innerHTML = `
+        @media print {
+            button, .btn, .no-print, .print-hide,
+            .download-btn, .print-btn, .action-buttons,
+            .card-header, .breadcrumb, .content-header, form, .form-group {
+                display: none !important;
+            }
+
+            .col-md-8 {
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+
     window.print();
+
+    // Remove the style after printing
+    document.head.removeChild(style);
 }
 
 function downloadPayslip(payrollId) {
@@ -22,14 +70,14 @@ function downloadPayslip(payrollId) {
     // Create a form to submit the download request
     const form = document.createElement('form');
     form.method = 'POST';
-    form.action = window.appConfig.downloadUrl; // Use the config value
+    form.action = window.appConfig.downloadUrl;
     form.style.display = 'none';
 
     // Add CSRF token
     const csrfToken = document.createElement('input');
     csrfToken.type = 'hidden';
     csrfToken.name = '_token';
-    csrfToken.value = window.appConfig.csrfToken; // Use the config value
+    csrfToken.value = window.appConfig.csrfToken;
     form.appendChild(csrfToken);
 
     // Add payroll ID
@@ -67,14 +115,14 @@ function downloadAllPayslips() {
     // Create a form to submit the download request
     const form = document.createElement('form');
     form.method = 'POST';
-    form.action = window.appConfig.downloadAllUrl; // Use the config value
+    form.action = window.appConfig.downloadAllUrl;
     form.style.display = 'none';
 
     // Add CSRF token
     const csrfToken = document.createElement('input');
     csrfToken.type = 'hidden';
     csrfToken.name = '_token';
-    csrfToken.value = window.appConfig.csrfToken; // Use the config value
+    csrfToken.value = window.appConfig.csrfToken;
     form.appendChild(csrfToken);
 
     // Add payroll IDs

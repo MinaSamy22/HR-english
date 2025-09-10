@@ -36,6 +36,21 @@
                                             <label>{{ __('h_adminstration.administration_name') }}</label>
                                             <input type="text" value="{{ Request()->name }}" name="name" class="form-control" placeholder="{{ __('h_adminstration.search_name_placeholder') }}">
                                         </div>
+                                                    <!-- Branch Filter (Only for Main Branch Users) -->
+            @if (session('branch_id') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1)
+            <div class="form-group col-md-2 col-sm-6">
+                <label>{{ __('Branch') }}</label>
+                <select name="filter_branch_id" class="form-control">
+                    <option value="">{{ __('All Branches') }}</option>
+                    @foreach($branches as $branch)
+                        <option value="{{ $branch->id }}"
+                                {{ Request()->filter_branch_id == $branch->id ? 'selected' : '' }}>
+                            {{ $branch->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            @endif
 
                                         <div class="form-group col-md-3 col-sm-6 d-flex align-items-end">
                                             <button class="btn btn-primary rounded-pill" type="submit" style="margin-right: 10px;" title="{{ __('h_adminstration.search') }}">
@@ -65,6 +80,7 @@
                                                 <th>{{ __('h_adminstration.administration_name') }}</th>
                                                 <th>{{ __('h_adminstration.code') }}</th>
                                                 <th>{{ __('h_adminstration.manager_name') }}</th>
+                                                <th>{{ __('h_employee.branch') }}</th>
                                                 <th>{{ __('h_adminstration.action') }}</th>{{-- buttons of crud inside it --}}
                                             </tr>
                                         </thead>
@@ -78,6 +94,8 @@
                                                 <td>
                                                     {{ $value->manager_name ?? __('h_adminstration.na') }}<!-- Display N/A if manager is null -->
                                                 </td>
+                                                <td>{{ $value->branch_name ?? __('h_dashboard.main_branch') }}</td>
+
 
                                                 <td>
                                                         <a href="{{ url('admin/administration/edit/' .$value->id) }}" class="btn btn-primary rounded-pill" title="{{ __('h_adminstration.edit') }}">

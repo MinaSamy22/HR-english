@@ -13,14 +13,12 @@ class PerformanceCriteria extends Model
         'company_id',
         'name',
         'description',
-        'weight',
         'is_active',
         'sort_order'
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
-        'weight' => 'integer',
         'sort_order' => 'integer'
     ];
 

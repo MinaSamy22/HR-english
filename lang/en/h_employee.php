@@ -147,7 +147,7 @@ return [
     'department_id' => 'DepartmentID',
     'role' => 'Role',
     'branch' => 'Branch',
-
+    'All_Branches' => 'All Branches',
 
     // Format notes
     'date_format' => 'dd/mm/yyyy',
@@ -159,6 +159,21 @@ return [
     'monthly' => '1 => Monthly.',
     'weekly' => '2 => Weekly.',
     'daily' => '3 => Daily.',
+
+    'work_hours_per_day'   => 'Work Hours Per Day',
+    'shift_count'          => 'Number of Shifts',
+    'second_work_start_time' => 'Second Shift Start Time',
+    'second_work_end_time'   => 'Second Shift End Time',
+    'hours' => 'Hour',
+    'one_shift'=> 'One Shift',
+    'two_shifts'=> 'Two Shifts',
+
+
+    // Placeholders
+    'enter_work_hours_per_day'   => 'Enter work hours per day',
+    'enter_shift_count'          => 'Enter number of shifts',
+    'enter_second_work_start_time' => 'Enter second shift start time',
+    'enter_second_work_end_time'   => 'Enter second shift end time',
 
     // Success messages (for controller)
     'employee_registered' => 'Employee successfully registered.',

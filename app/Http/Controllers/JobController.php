@@ -10,12 +10,19 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class JobController extends Controller
 {
-    public function index(Request $request)
-    {
-        $getRecord = Job::getRecord($request);
+public function index(Request $request)
+{
+    $getRecord = Job::getRecord($request);
+
+    // Simple way to get branches
+    $branches = \DB::table('branches')
+        ->where('company_id', session('company_id'))
+        ->select('id', 'name', 'is_main')
+        ->orderBy('name')
+        ->get();
 
         // Pass the data to the view using compact
-        return view('backend.jobss.list', compact('getRecord'));
+        return view('backend.jobss.list', compact('getRecord', 'branches'));
     }
 
 

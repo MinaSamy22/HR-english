@@ -45,19 +45,25 @@ class History extends Authenticatable
         'password' => 'hashed',
     ];
 
-    static public function getRecord($request)
-    {
-// Retrieve branch_id or company_id if no branch exist
-    $company_id = session('company_id'); // Or use $request->company_id if passed in the request
+public static function getRecord($request)
+{
+    // Retrieve branch_id or company_id if no branch exist
+    $company_id = session('company_id');
     $branch_id = session('branch_id');
 
-        // Initialize the query with joins to include job and department data
-         $query = self::select('histories.*', 'jobs.job_title', 'departments.department_name')
-                     ->join('jobs', 'jobs.id', '=', 'histories.job_id')
-                     ->join('departments', 'departments.id', '=', 'histories.department_id')
-                     ->orderBy('histories.id', 'desc');
+    // Initialize the query with joins to include job and department data
+    $query = self::select(
+            'histories.*',
+            'jobs.job_title',
+            'departments.department_name',
+            'branches.name as branch_name'
+        )
+        ->join('jobs', 'jobs.id', '=', 'histories.job_id')
+        ->join('departments', 'departments.id', '=', 'histories.department_id')
+        ->leftJoin('branches', 'histories.branch_id', '=', 'branches.id')
+        ->orderBy('histories.id', 'desc');
 
-        // 🔍 Filter by branch_id if available, otherwise fallback to company_id or main branch
+    // 🔍 Filter by branch_id if available, otherwise fallback to company_id or main branch
     if (!empty($branch_id)) {
         // Get the current branch info to check if it's main
         $currentBranch = \DB::table('branches')
@@ -77,23 +83,31 @@ class History extends Authenticatable
         $query->where('histories.company_id', $company_id);
     }
 
-
-        // Apply search filters
-        if (!empty(Request::get('employee_name'))) {
-            $query->where('employee_name', 'like', '%' . Request::get('employee_name') . '%');
-        }
-
-        if (!empty(Request::get('job_title'))) {
-            $query->where('jobs.job_title', 'like', '%' . Request::get('job_title') . '%');
-        }
-
-        if (!empty(Request::get('start_date'))) {
-            $query->where('histories.start_date', '>=', Request::get('start_date'));
-        }
-
-        // Return paginated result
-        return $query->paginate(5);
+    // Apply search filters
+    if (!empty(Request::get('employee_name'))) {
+        $query->where('histories.employee_name', 'like', '%' . Request::get('employee_name') . '%');
     }
+
+    if (!empty(Request::get('job_title'))) {
+        $query->where('jobs.job_title', 'like', '%' . Request::get('job_title') . '%');
+    }
+
+    if (!empty(Request::get('start_date'))) {
+        $query->where('histories.start_date', '>=', Request::get('start_date'));
+    }
+
+    if (!empty(Request::get('end_date'))) {
+        $query->where('histories.start_date', '<=', Request::get('end_date'));
+    }
+
+    // Branch filter for main branch users
+    if (!empty(Request::get('filter_branch_id'))) {
+        $query->where('histories.branch_id', Request::get('filter_branch_id'));
+    }
+
+    // Return paginated result
+    return $query->paginate(5);
+}
 
 public function company()
 {

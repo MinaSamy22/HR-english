@@ -14,6 +14,8 @@ return new class extends Migration
     $table->date('resignation_date');
     $table->string('reason')->nullable();
     $table->string('status')->default('pending'); // pending, approved, rejected
+    $table->boolean('is_seen')->default(false);
+
     $table->timestamps();
 
     $table->foreign('employee_id')->references('id')->on('users')->onDelete('cascade');

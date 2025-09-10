@@ -18,6 +18,8 @@ return new class extends Migration
     $table->date('day');
     $table->string('reason')->nullable();
     $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+    $table->boolean('is_seen')->default(false);
+
     $table->timestamps();
 
     $table->foreign('attendance_id')->references('id')->on('attendances')->onDelete('cascade');

@@ -191,6 +191,53 @@
                                         </div>
                                     </div>
 
+                                  <div class="form-group row">
+    <label class="col-sm-2 col-form-label">{{ __('h_employee.shift_count') }}</label>
+    <div class="col-sm-10">
+        @if ($getRecord->shift_count !== null)
+            {{ $getRecord->shift_count }}
+        @else
+            <span class="text-muted">{{ __('h_employee.not_set') }}</span>
+        @endif
+    </div>
+</div>
+
+@if ($getRecord->shift_count == 2)
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">{{ __('h_employee.second_work_start_time') }}</label>
+        <div class="col-sm-10">
+            @if ($getRecord->second_work_start_time)
+                {{ \Carbon\Carbon::createFromFormat('H:i:s', $getRecord->second_work_start_time)->format('h:i A') }}
+            @else
+                <span class="text-muted">{{ __('h_employee.not_set') }}</span>
+            @endif
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">{{ __('h_employee.second_work_end_time') }}</label>
+        <div class="col-sm-10">
+            @if ($getRecord->second_work_end_time)
+                {{ \Carbon\Carbon::createFromFormat('H:i:s', $getRecord->second_work_end_time)->format('h:i A') }}
+            @else
+                <span class="text-muted">{{ __('h_employee.not_set') }}</span>
+            @endif
+        </div>
+    </div>
+@endif
+
+<div class="form-group row">
+    <label class="col-sm-2 col-form-lable">{{ __('h_employee.work_hours_per_day') }}</label>
+    <div class="col-sm-10">
+        @if ($getRecord->work_hours_per_day)
+            {{ $getRecord->work_hours_per_day }} {{ __('h_employee.hours') }}
+        @else
+            <span class="text-muted">{{ __('h_employee.not_set') }}</span>
+        @endif
+    </div>
+</div>
+
+
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-label"> {{ __('h_employee.free_biometric') }} <span
                                                 style="color: red;">

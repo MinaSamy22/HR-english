@@ -51,11 +51,16 @@ public static function getRecord($request)
     $company_id = session('company_id');
     $branch_id = session('branch_id');
 
-    $query = self::select('administrations.*', 'managers.name as manager_name')
-                 ->leftJoin('managers', 'administrations.manager_id', '=', 'managers.id')
-                 ->orderBy('administrations.id', 'desc');
+    $query = self::select(
+            'administrations.*',
+            'managers.name as manager_name',
+            'branches.name as branch_name'
+        )
+        ->leftJoin('managers', 'administrations.manager_id', '=', 'managers.id')
+        ->leftJoin('branches', 'administrations.branch_id', '=', 'branches.id')
+        ->orderBy('administrations.id', 'desc');
 
-        // 🔍 Filter by branch_id if available, otherwise fallback to company_id or main branch
+    // 🔍 Filter by branch_id if available, otherwise fallback to company_id or main branch
     if (!empty($branch_id)) {
         // Get the current branch info to check if it's main
         $currentBranch = \DB::table('branches')
@@ -75,9 +80,28 @@ public static function getRecord($request)
         $query->where('administrations.company_id', $company_id);
     }
 
-    // فلترة بالاسم إن وُجد
+    // Apply search filters
     if ($request->filled('name')) {
         $query->where('administrations.name', 'like', '%' . $request->input('name') . '%');
+    }
+
+    // Manager filter
+    if ($request->filled('manager_id')) {
+        $query->where('administrations.manager_id', $request->input('manager_id'));
+    }
+
+    // Branch filter for main branch users
+    if ($request->filled('filter_branch_id')) {
+        $query->where('administrations.branch_id', $request->input('filter_branch_id'));
+    }
+
+    // Date filters if needed
+    if ($request->filled('start_date')) {
+        $query->where('administrations.created_at', '>=', $request->input('start_date'));
+    }
+
+    if ($request->filled('end_date')) {
+        $query->where('administrations.created_at', '<=', $request->input('end_date') . ' 23:59:59');
     }
 
     return $query->paginate(5);

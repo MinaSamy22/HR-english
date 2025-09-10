@@ -47,8 +47,53 @@
                     .dropdown-item:hover {
                         background-color: #f5f5f5 !important;
                     }
-                </style>
-                <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'en' ? 'active' : '' }}"
+    /* Always align dropdown to screen edge depending on direction */
+    [dir="ltr"] .notif-dropdown {
+        right: 0 !important;
+        left: auto !important;
+    }
+
+    [dir="rtl"] .notif-dropdown {
+        left: 0 !important;
+        right: auto !important;
+        text-align: right;
+    }
+
+    .notif-dropdown {
+        width: 340px;
+        border-radius: 0.75rem;
+        padding: 0;
+    }
+
+    .notif-dropdown .dropdown-item:hover {
+        background-color: #f8f9fa;
+    }
+
+    .notif-dropdown .icon-wrapper {
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* --- Icon alignment for LTR/RTL --- */
+    [dir="ltr"] .notif-item .icon-wrapper {
+        margin-right: 0.75rem;
+        margin-left: 0;
+    }
+    [dir="ltr"] .notif-item .notif-text {
+        text-align: left;
+    }
+
+    [dir="rtl"] .notif-item .icon-wrapper {
+        margin-left: 0.75rem;
+        margin-right: 0;
+    }
+    [dir="rtl"] .notif-item .notif-text {
+        text-align: right;
+    }
+</style>                <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'en' ? 'active' : '' }}"
                     href="{{ url('lang/en') }}">
                     <span>English</span>
                     @if (app()->getLocale() == 'en')
@@ -66,30 +111,76 @@
             </div>
         </li>
 
-        <!-- Employee Requests Notification -->
-        @php
-            $pendingRequestsCount = getPendingRequestsCount();
-        @endphp
-        <li class="nav-item">
-            <a class="nav-link position-relative p-2" href="{{ url('admin/Requests') }}"
-                title="{{ __('dashboard.requests') }}">
-                <i class="fas fa-bell fa-lg text-secondary"></i>
+@php
+    $pendingRequestsCount = getPendingRequestsCount();
+    $notifications = getPendingNotifications(10); // Get latest 10 notifications
+@endphp
 
-                @if ($pendingRequestsCount > 0)
-                    <span class="badge badge-danger position-absolute"
-                        style="
-                      top: 2px;
-                      right: 2px;
-                      font-size: 0.65rem;
-                      padding: 0.25em 0.5em;
-                      border-radius: 8px;
-                      box-shadow: 0 1px 2px rgba(0,0,0,0.15);
-                  ">
-                        {{ $pendingRequestsCount > 99 ? '99+' : $pendingRequestsCount }}
-                    </span>
-                @endif
+<li class="nav-item dropdown">
+    <a class="nav-link position-relative p-2" href="#" id="notifDropdown" role="button"
+        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-bell fa-lg text-secondary"></i>
+
+        @if ($pendingRequestsCount > 0)
+            <span class="badge badge-danger position-absolute"
+                style="
+                    top: 2px;
+                    right: 2px;
+                    font-size: 0.65rem;
+                    padding: 0.25em 0.5em;
+                    border-radius: 8px;
+                    box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+                ">
+                {{ $pendingRequestsCount > 99 ? '99+' : $pendingRequestsCount }}
+            </span>
+        @endif
+    </a>
+
+    <!-- Dropdown menu -->
+    <div class="dropdown-menu shadow notif-dropdown" aria-labelledby="notifDropdown">
+        <div class="dropdown-header d-flex justify-content-between align-items-center px-3 py-2 border-bottom">
+            <h6 class="mb-0 font-weight-bold">{{ __('dashboard.notifications') }}</h6>
+            @if($pendingRequestsCount > 0)
+                <span class="badge badge-light text-muted">
+                    {{ $pendingRequestsCount }} {{ __('dashboard.pending') }}
+                </span>
+            @endif
+        </div>
+
+        <div style="max-height: 350px; overflow-y: auto;">
+            @forelse ($notifications as $notification)
+                <a class="dropdown-item py-2 border-bottom small" href="{{ $notification['url'] ?? '#' }}"
+                   style="white-space: normal;">
+                    <div class="d-flex align-items-start notif-item">
+                        <div class="icon-wrapper flex-shrink-0">
+                            <i class="{{ $notification['icon'] }} {{ $notification['color'] }}"
+                               style="font-size: 1rem;"></i>
+                        </div>
+                        <div class="flex-grow-1 notif-text">
+                            <div class="font-weight-normal" style="font-size: 0.9rem;">{!! $notification['message'] !!}</div>
+                            <div class="text-muted" style="font-size: 0.75rem;">
+                                {{ $notification['date']->diffForHumans() }}
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            @empty
+                <div class="dropdown-item text-muted small text-center py-3">
+                    <i class="fas fa-bell-slash mb-2 d-block"></i>
+                    {{ __('dashboard.no_pending_notifications') }}
+                </div>
+            @endforelse
+        </div>
+
+        {{-- <div class="dropdown-footer text-center border-top">
+            <a href="{{ url('admin/Requests') }}" class="dropdown-item small text-primary py-2">
+                {{ __('dashboard.view_all') }}
             </a>
-        </li>
+        </div> --}}
+    </div>
+</li>
+
+
 
 
 
