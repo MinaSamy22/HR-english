@@ -282,11 +282,21 @@ return [
     'save' => 'save',
     'error' =>'error',
     'delete_failed' => 'delete failed',
-    
+
     'invalid_polygon'   => 'Invalid polygon data',
     'location_created'  => 'Location created successfully.',
     'location_updated'  => 'Location updated successfully.',
     'location_deleted'  => 'Location deleted successfully.',
     'employees_assigned'=> 'Employees assigned successfully.',
+    'success' => 'successfully',
+    'invalid_location' => 'Invalid location data.',
+    'already_checked_in' => 'You have already checked in.',
+    'not_in_checkin_area' => 'You are not in an allowed check-in area.',
+    'checked_in' => 'You have checked in.',
+    'not_in_checkout_area' => 'You are not in an allowed check-out area.',
+    'not_checked_in_today' => 'You have not checked in today.',
+    'already_checked_out' => 'You have already checked out today.',
+    'checked_out' => 'You have checked out.',
+    
 
 ];

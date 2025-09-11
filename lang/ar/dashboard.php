@@ -254,5 +254,14 @@ return [
     'location_updated'  => 'تم تحديث الموقع بنجاح.',
     'location_deleted'  => 'تم حذف الموقع بنجاح.',
     'employees_assigned'=> 'تم إسناد الموظفين بنجاح.',
+    'success' => 'تم بنجاح',
+    'invalid_location' => 'بيانات الموقع غير صالحة.',
+    'already_checked_in' => 'لقد قمت بتسجيل الحضور بالفعل.',
+    'not_in_checkin_area' => 'أنت لست في منطقة مسموح بها لتسجيل الحضور.',
+    'checked_in' => 'تم تسجيل الحضور.',
+    'not_in_checkout_area' => 'أنت لست في منطقة مسموح بها لتسجيل الانصراف.',
+    'not_checked_in_today' => 'لم تقم بتسجيل الحضور اليوم.',
+    'already_checked_out' => 'لقد قمت بتسجيل الانصراف بالفعل اليوم.',
+    'checked_out' => 'تم تسجيل الانصراف.',
 
 ];

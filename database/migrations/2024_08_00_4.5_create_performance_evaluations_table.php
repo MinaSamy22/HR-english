@@ -48,7 +48,7 @@ return new class extends Migration
             $table->foreign('evaluator_id')->references('id')->on('users')->onDelete('cascade');
 
             // Unique constraint to prevent duplicate evaluations for same period
-            // $table->unique(['company_id', 'employee_id', 'evaluation_period', 'evaluation_year']);
+            $table->unique(['company_id', 'employee_id', 'evaluation_period', 'evaluation_year']);
         });
     }
 

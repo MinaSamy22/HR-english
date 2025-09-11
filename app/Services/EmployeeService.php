@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Services;
+
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Payroll;
@@ -21,7 +22,8 @@ class EmployeeService
         $this->employee = $employee;
     }
 
-    public function getUser(){
+    public function getUser()
+    {
         $totalUsed = $this->getVacations()->sum('total');
         $vacationLimit = $this->employee->company->attendanceSetting->vacation_balance;
         $this->employee->total_used = $totalUsed;
@@ -36,7 +38,7 @@ class EmployeeService
             $from = $from ?? "$year-01-01";
             $to   = $to ?? "$year-12-31";
         }
-        
+
         $vacations = $this->employee->vacations()
             ->when($from && $to, function ($query) use ($from, $to) {
                 $query->whereDate('start_date', '<=', $to)
@@ -58,13 +60,13 @@ class EmployeeService
             ->whereBetween('attendance_date', [$startOfMonth, $endOfMonth])
             ->get();
 
-        return $this->sendResponse('success',[
-            'attend_count' => $attendances->where('attendance_type',1)->count(),
-            'late_count' => $attendances->where('attendance_type',2)->count(),
-            'absent_count' => $attendances->where('attendance_type',3)->count(),
-            'half_day_count' => $attendances->where('attendance_type',4)->count(),
+        return $this->sendResponse(__('dashboard.success'), [
+            'attend_count' => $attendances->where('attendance_type', 1)->count(),
+            'late_count' => $attendances->where('attendance_type', 2)->count(),
+            'absent_count' => $attendances->where('attendance_type', 3)->count(),
+            'half_day_count' => $attendances->where('attendance_type', 4)->count(),
             'attendances' => AttendanceResource::collection($attendances),
-        ],1);
+        ], 1);
     }
 
 
@@ -94,13 +96,14 @@ class EmployeeService
 
 
 
-    public function getVacationRequests($from = null ,$to = null){
+    public function getVacationRequests($from = null, $to = null)
+    {
         if (!$from || !$to) {
             $year = now()->year;
             $from = $from ?? "$year-01-01";
             $to   = $to ?? "$year-12-31";
         }
-        
+
         $requests = $this->employee->vacationRequests()
             ->when($from && $to, function ($query) use ($from, $to) {
                 $query->whereDate('start_date', '<=', $to)
@@ -111,37 +114,43 @@ class EmployeeService
         return $requests;
     }
 
-    
-    public function vacationRequest(array $data){
+
+    public function vacationRequest(array $data)
+    {
         return $this->employee->vacationRequests()->create($data);
     }
-    
-    public function deleteVacationRequest($id){
-        if($vacationRequest = VacationRequest::where('status',VacationType::PENDING->value)->find($id)){
+
+    public function deleteVacationRequest($id)
+    {
+        if ($vacationRequest = VacationRequest::where('status', VacationType::PENDING->value)->find($id)) {
             $vacationRequest->delete();
             return true;
         }
         return false;
     }
-    
-    public function getResignationRequests($from = null ,$to = null){
+
+    public function getResignationRequests($from = null, $to = null)
+    {
         return $this->employee->resignations;
     }
-    
-    public function resignationRequest($data){
+
+    public function resignationRequest($data)
+    {
         return $this->employee->resignations()->create($data);
     }
-    
-    public function deleteResignationRequest($id){
-        if($resignationRequest = Resignation::where('status',VacationType::PENDING->value)->find($id)){
+
+    public function deleteResignationRequest($id)
+    {
+        if ($resignationRequest = Resignation::where('status', VacationType::PENDING->value)->find($id)) {
             $resignationRequest->delete();
             return true;
         }
         return false;
     }
-    public function getNews(){
+    public function getNews()
+    {
         return $this->employee->company->news()->whereDate('news_date', '>=', now()->subDays(30))
-                  ->orderBy('news_date', 'desc')->get();
+            ->orderBy('news_date', 'desc')->get();
     }
 
     public function checkIn()
@@ -155,18 +164,18 @@ class EmployeeService
         ]);
 
         if ($validator->fails()) {
-            return $this->sendResponse('Invalid location data.', $validator->errors(), 0);
+            return $this->sendResponse(__('dashboard.invalid_location'), $validator->errors(), 0);
         }
 
         $lat = request()->lat;
         $lng = request()->lng;
-        
+
         $alreadyCheckedIn = $this->employee->attendances()
             ->where('attendance_date', $now->format('Y-m-d'))
             ->exists();
 
         if ($alreadyCheckedIn) {
-            return $this->sendResponse('You have already checked in.', [], 0);
+            return $this->sendResponse(__('dashboard.already_checked_in'), [], 0);
         }
 
         $attendance_type = 1;
@@ -183,7 +192,7 @@ class EmployeeService
             }
 
             if (! $allowed) {
-                return $this->sendResponse('You are not in an allowed check-in area.', [], 0);
+                return $this->sendResponse(__('dashboard.not_in_checkin_area'), [], 0);
             }
 
             $workStart = Carbon::createFromFormat('H:i:s', $employee->work_start_time);
@@ -197,21 +206,21 @@ class EmployeeService
             'attendance_type' => $attendance_type,
         ]);
 
-        return $this->sendResponse('You have checked in.', AttendanceResource::make($attendance), 1);
+        return $this->sendResponse(__('dashboard.checked_in'), AttendanceResource::make($attendance), 1);
     }
 
     public function checkOut()
     {
         $now = now();
         $employee = $this->employee;
-        
+
         $validator = Validator::make(request()->all(), [
             'lat' => 'required|numeric',
             'lng' => 'required|numeric',
         ]);
 
         if ($validator->fails()) {
-            return $this->sendResponse('Invalid location data.', $validator->errors(), 0);
+            return $this->sendResponse(__('dashboard.invalid_location'), $validator->errors(), 0);
         }
 
         $lat = request()->lat;
@@ -229,7 +238,7 @@ class EmployeeService
             }
 
             if (! $allowed) {
-                return $this->sendResponse('You are not in an allowed check-out area.', [], 0);
+                return $this->sendResponse(__('dashboard.not_in_checkout_area'), [], 0);
             }
         }
 
@@ -239,11 +248,11 @@ class EmployeeService
             ->first();
 
         if (!$attendance) {
-            return $this->sendResponse('You have not checked in today.', [], 0);
+            return $this->sendResponse(__('dashboard.not_checked_in_today'), [], 0);
         }
 
         if ($attendance->check_out) {
-            return $this->sendResponse('You have already checked out today.', [], 0);
+            return $this->sendResponse(__('dashboard.already_checked_out'), [], 0);
         }
 
         // Save checkout with location
@@ -253,16 +262,17 @@ class EmployeeService
             // 'longitude_out' => $lng,
         ]);
 
-        return $this->sendResponse('You have checked out.', AttendanceResource::make($attendance), 1);
+        return $this->sendResponse(__('dashboard.checked_out'), AttendanceResource::make($attendance), 1);
     }
 
 
 
-    public function sendResponse($message,$data,$status=1){
+    public function sendResponse($message, $data, $status = 1)
+    {
         return [
-            'msg' =>$message,
-            'data' =>$data,
-            'status' =>$status,
+            'msg' => $message,
+            'data' => $data,
+            'status' => $status,
         ];
     }
 
@@ -288,6 +298,4 @@ class EmployeeService
 
         return $inside;
     }
-
-
 }
