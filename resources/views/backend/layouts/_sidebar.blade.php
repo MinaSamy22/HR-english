@@ -453,6 +453,14 @@
                     </li>
                 @endif
 
+                <li class="nav-item">
+                    <a href="{{ route('locations.index') }}"
+                        class="nav-link @if (Request::segment(2) == 'locations') active @endif">
+                        <i class="nav-icon fas fa-code-branch text-white"></i>
+                        <p>{{ __('dashboard.locations') }}</p>
+                    </a>
+                </li>
+
 
                 <!-- Company information -->
                         @if (session('branch_id') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1)

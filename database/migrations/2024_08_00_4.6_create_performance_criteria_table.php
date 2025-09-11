@@ -24,10 +24,10 @@ return new class extends Migration
         });
 
         // Add criteria_scores JSON column to performance_evaluations table
-        Schema::table('performance_evaluations', function (Blueprint $table) {
-            $table->json('criteria_scores')->nullable()->after('initiative');
-            $table->boolean('uses_custom_criteria')->default(false)->after('criteria_scores');
-        });
+        // Schema::table('performance_evaluations', function (Blueprint $table) {
+        //     $table->json('criteria_scores')->nullable()->after('initiative');
+        //     $table->boolean('uses_custom_criteria')->default(false)->after('criteria_scores');
+        // });
     }
 
     /**

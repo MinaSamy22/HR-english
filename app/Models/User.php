@@ -196,5 +196,10 @@ $query = self::select('users.*', 'branches.name as branch_name', 'branches.is_ma
         return $this->hasMany(Resignation::class, 'employee_id');
     }
 
+    public function locations()
+    {
+        return $this->belongsToMany(Location::class, 'employee_location');
+    }
+
 
 }

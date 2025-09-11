@@ -9,6 +9,7 @@ use App\Enums\VacationType;
 use App\Models\Resignation;
 use App\Models\VacationRequest;
 use App\Http\Resources\AttendanceResource;
+use Illuminate\Support\Facades\Validator;
 
 
 class EmployeeService
@@ -146,7 +147,20 @@ class EmployeeService
     public function checkIn()
     {
         $now = now();
+        $employee = $this->employee;
 
+        $validator = Validator::make(request()->all(), [
+            'lat' => 'required|numeric',
+            'lng' => 'required|numeric',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendResponse('Invalid location data.', $validator->errors(), 0);
+        }
+
+        $lat = request()->lat;
+        $lng = request()->lng;
+        
         $alreadyCheckedIn = $this->employee->attendances()
             ->where('attendance_date', $now->format('Y-m-d'))
             ->exists();
@@ -155,11 +169,26 @@ class EmployeeService
             return $this->sendResponse('You have already checked in.', [], 0);
         }
 
-        $employee = $this->employee;
         $attendance_type = 1;
-        if ($employee->is_biometric) {
+
+        if ($employee->is_biometric == 0) {
+
+            $locations = $employee->locations;
+            $allowed = false;
+            foreach ($locations as $location) {
+                if ($this->pointInPolygon($lat, $lng, $location->polygon)) {
+                    $allowed = true;
+                    break;
+                }
+            }
+
+            if (! $allowed) {
+                return $this->sendResponse('You are not in an allowed check-in area.', [], 0);
+            }
+
             $workStart = Carbon::createFromFormat('H:i:s', $employee->work_start_time);
             $attendance_type = $now->lessThanOrEqualTo($workStart) ? 1 : 2; // 1 = On time, 2 = Late
+
         }
 
         $attendance = $this->employee->attendances()->create([
@@ -174,25 +203,59 @@ class EmployeeService
     public function checkOut()
     {
         $now = now();
+        $employee = $this->employee;
+        
+        $validator = Validator::make(request()->all(), [
+            'lat' => 'required|numeric',
+            'lng' => 'required|numeric',
+        ]);
 
-        $attendance = $this->employee->attendances()
+        if ($validator->fails()) {
+            return $this->sendResponse('Invalid location data.', $validator->errors(), 0);
+        }
+
+        $lat = request()->lat;
+        $lng = request()->lng;
+
+        if ($employee->is_biometric == 0) {
+
+            // Check if employee is inside any assigned location polygon
+            $allowed = false;
+            foreach ($employee->locations as $location) {
+                if ($this->pointInPolygon($lat, $lng, $location->polygon)) {
+                    $allowed = true;
+                    break;
+                }
+            }
+
+            if (! $allowed) {
+                return $this->sendResponse('You are not in an allowed check-out area.', [], 0);
+            }
+        }
+
+        // Find today's attendance record
+        $attendance = $employee->attendances()
             ->where('attendance_date', $now->format('Y-m-d'))
             ->first();
 
         if (!$attendance) {
-            return $this->sendResponse('You have to check in first.', [], 0);
+            return $this->sendResponse('You have not checked in today.', [], 0);
         }
 
         if ($attendance->check_out) {
-            return $this->sendResponse('You have already checked out.', [], 0);
+            return $this->sendResponse('You have already checked out today.', [], 0);
         }
 
+        // Save checkout with location
         $attendance->update([
-            'check_out' => $now->format('H:i:s'),
+            'check_out'  => $now->toTimeString(),
+            // 'latitude_out'  => $lat,
+            // 'longitude_out' => $lng,
         ]);
 
         return $this->sendResponse('You have checked out.', AttendanceResource::make($attendance), 1);
     }
+
 
 
     public function sendResponse($message,$data,$status=1){
@@ -202,5 +265,29 @@ class EmployeeService
             'status' =>$status,
         ];
     }
+
+    private function pointInPolygon($lat, $lng, $polygon)
+    {
+        $inside = false;
+        $j = count($polygon) - 1;
+
+        for ($i = 0; $i < count($polygon); $i++) {
+            $xi = $polygon[$i]['lng']; // X = lng
+            $yi = $polygon[$i]['lat']; // Y = lat
+            $xj = $polygon[$j]['lng'];
+            $yj = $polygon[$j]['lat'];
+
+            $intersect = (($yi > $lat) != ($yj > $lat)) &&
+                ($lng < ($xj - $xi) * ($lat - $yi) / ($yj - $yi) + $xi);
+
+            if ($intersect) {
+                $inside = !$inside;
+            }
+            $j = $i;
+        }
+
+        return $inside;
+    }
+
 
 }

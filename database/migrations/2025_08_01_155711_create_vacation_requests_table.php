@@ -11,22 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('vacation_requests', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('employee_id');
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->integer('total')->default(0);
-            $table->text('reason')->nullable();
-            $table->string('status')->default('pending'); // pending, approved, rejected
-            $table->string('vacation_type'); 
-            $table->unsignedBigInteger('approved_by')->nullable(); 
-            $table->timestamp('approved_at')->nullable();
-            $table->timestamps();
-
-            $table->foreign('employee_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreignId('company_id')->nullable()->constrained()->onDelete('cascade');
-        });
+//        Schema::create('vacation_requests', function (Blueprint $table) {
+//            $table->id();
+//            $table->unsignedBigInteger('employee_id');
+//            $table->date('start_date');
+//            $table->date('end_date');
+//            $table->integer('total')->default(0);
+//            $table->text('reason')->nullable();
+//            $table->string('status')->default('pending'); // pending, approved, rejected
+//            $table->string('vacation_type'); 
+//            $table->unsignedBigInteger('approved_by')->nullable(); 
+//            $table->timestamp('approved_at')->nullable();
+//            $table->timestamps();
+//
+//            $table->foreign('employee_id')->references('id')->on('users')->onDelete('cascade');
+//            $table->foreignId('company_id')->nullable()->constrained()->onDelete('cascade');
+//        });
 
     }
 
