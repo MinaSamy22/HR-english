@@ -92,6 +92,8 @@
             <tr>
                 <th>{{ __('dashboard.employee_id') }}</th>
                 <th>{{ __('dashboard.employee_name') }}</th>
+                <th>{{ __('h_employee.branch') }}</th>
+
                 <th>{{ __('dashboard.attendance') }}</th>
                 <th>{{ __('dashboard.attendance_date') }}</th>
                 <th>{{ __('dashboard.created_date') }}</th>
@@ -102,6 +104,8 @@
             <tr>
                 <td>{{ $value->employee_id }}</td>
                 <td>{{ $value->employee_name }}</td>
+                <td>{{ $value->branch_name ?? __('h_dashboard.main_branch') }}</td>
+                
                 <td>
                     @switch($value->attendance_type)
                         @case(1) {{ __('dashboard.present') }} @break

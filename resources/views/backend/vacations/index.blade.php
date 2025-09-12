@@ -27,24 +27,39 @@
                         <div class="card" style="background-color: rgba(255, 255, 255, 0.9); border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
 
                             <form method="get" action="">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="form-group col-md-2 col-sm-6">
-                                            <label>{{ __('h_vacation.employee_name') }}</label>
-                                            <input type="text" value="{{ Request()->name }}" name="name" class="form-control" placeholder="{{ __('h_vacation.enter_name') }}">
-                                        </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="form-group col-md-2 col-sm-6">
+                <label>{{ __('h_vacation.employee_name') }}</label>
+                <input type="text" value="{{ Request()->name }}" name="name" class="form-control" placeholder="{{ __('h_vacation.enter_name') }}">
+            </div>
 
-                                        <div class="form-group col-md-3 col-sm-6 d-flex align-items-end">
-                                            <button class="btn btn-primary rounded-pill" type="submit" style="margin-{{ app()->getLocale() == 'ar' ? 'left' : 'right' }}: 10px;" title="{{ __('h_vacation.search') }}">
-                                                <i class="fas fa-search"></i>
-                                            </button>
-                                            <a href="{{ url('admin/vacations') }}" class="btn btn-success rounded-pill" title="{{ __('h_vacation.reset') }}">
-                                                <i class="fas fa-sync-alt"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
+            {{-- 🆕 Add Branch Filter (same as jobs) --}}
+            @if (session('branch_id') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1)
+            <div class="form-group col-md-2 col-sm-6">
+                <label>{{ __('h_employee.branch') }}</label>
+                <select name="filter_branch_id" class="form-control">
+                    <option value="">{{ __('h_employee.all') }}</option>
+                    @foreach($branches as $branch)
+                        <option value="{{ $branch->id }}" {{ Request()->filter_branch_id == $branch->id ? 'selected' : '' }}>
+                            {{ $branch->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            @endif
+
+            <div class="form-group col-md-3 col-sm-6 d-flex align-items-end">
+                <button class="btn btn-primary rounded-pill" type="submit" style="margin-{{ app()->getLocale() == 'ar' ? 'left' : 'right' }}: 10px;" title="{{ __('h_vacation.search') }}">
+                    <i class="fas fa-search"></i>
+                </button>
+                <a href="{{ url('admin/vacations') }}" class="btn btn-success rounded-pill" title="{{ __('h_vacation.reset') }}">
+                    <i class="fas fa-sync-alt"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</form>
                         </div>
 
                         @include('_message')
@@ -65,6 +80,7 @@
                                                 <th><input type="checkbox" id="selectAll"></th>
                                                 <th>{{ __('h_vacation.id') }}</th>
                                                 <th>{{ __('h_vacation.employee_name') }}</th>
+                                                <th>{{ __('h_employee.branch') }}</th>
                                                 <th>{{ __('h_vacation.vacation_type') }}</th>
                                                 <th>{{ __('h_vacation.start_date') }}</th>
                                                 <th>{{ __('h_vacation.end_date') }}</th>
@@ -78,6 +94,7 @@
                                                     <td><input type="checkbox" class="vacationCheckbox" value="{{ $vacation->id }}"></td>
                                                     <td>{{ $vacation->id }}</td>
                                                     <td>{{ $vacation->name }}</td>
+                                                    <td>{{ $vacation->branch_name ?? __('h_dashboard.main_branch') }}</td>
                                                     <td>{{ $vacation->vacation_type }}</td>
                                                     <td>{{ date('d-m-Y', strtotime($vacation->start_date)) }}</td>
                                                     <td>{{ date('d-m-Y', strtotime($vacation->end_date)) }}</td>

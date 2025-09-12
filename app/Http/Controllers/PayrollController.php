@@ -25,15 +25,22 @@ class PayrollController extends Controller
         $this->payrollService = $payrollService;
     }
 
-    public function index(Request $request)
-    {
-        $company_id = session('company_id');
+public function index(Request $request)
+{
+    $company_id = session('company_id');
 
-        // Pass the company_id to the getRecord method for filtering
-        $data['getRecord'] = Payroll::getRecord($company_id);  // Modify getRecord to accept company_id
+    // Pass the company_id to the getRecord method for filtering
+    $data['getRecord'] = Payroll::getRecord($company_id);
+    
+    // Add branches data like in your other controllers
+    $data['branches'] = \DB::table('branches')
+        ->where('company_id', session('company_id'))
+        ->select('id', 'name', 'is_main')
+        ->orderBy('name')
+        ->get();
 
-        return view('backend.payrolls.index', $data);
-    }
+    return view('backend.payrolls.index', $data);
+}
 
 
 

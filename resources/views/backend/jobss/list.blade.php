@@ -59,9 +59,9 @@
             {{-- 🆕 Simple Branch Filter --}}
             @if (session('branch_id') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1)
             <div class="form-group col-md-2">
-                <label>{{ __('Branch') }}</label>
+                <label>{{ __('h_employee.branch') }}</label>
                 <select name="filter_branch_id" class="form-control">
-                    <option value="">{{ __('All Branches') }}</option>
+                    <option value="">{{ __('h_employee.all') }}</option>
                     @foreach($branches as $branch)
                         <option value="{{ $branch->id }}" {{ Request()->filter_branch_id == $branch->id ? 'selected' : '' }}>
                             {{ $branch->name }}
@@ -112,7 +112,7 @@
                                             <tr>
                                                 <td>{{ $value->id }}</td>
                                                 <td>{{ $value->job_title }}</td>
-                                                <td>{{ $value->min_salary }}</td>
+                                                <td>{{ $value->min_salary }}</td> 
                                                 <td>{{ $value->max_salary }}</td>
                                                 <td>{{ $value->department_name ?? __('h_jobs.na') }}</td>
                                                 <td>{{ $value->branch_name ?? __('h_dashboard.main_branch') }}</td>

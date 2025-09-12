@@ -35,7 +35,7 @@ class Attendance extends Model
 
 
 
-    static public function getRecord()
+static public function getRecord()
 {
     $company_id = session('company_id');
     $branch_id = session('branch_id');
@@ -45,34 +45,34 @@ class Attendance extends Model
     $filterBranchId = null;
 
     if (!empty($branch_id)) {
-        // Get the current branch info to check if it's main
         $currentBranch = \DB::table('branches')
             ->where('id', $branch_id)
             ->select('is_main')
             ->first();
 
         if ($currentBranch && $currentBranch->is_main == 1) {
-            // If current branch is main branch, show all attendances in the company
             $showAllCompanyData = true;
         } else {
-            // If current branch is not main, show only attendances of employees from this branch
             $filterBranchId = $branch_id;
         }
     } else {
-        // If no branch_id in session, show all attendances in the company
         $showAllCompanyData = true;
     }
 
-    $query = self::select('attendances.*', 'employee.name as employee_name')
+    // 🆕 Updated query to include branch name
+    $query = self::select(
+            'attendances.*',
+            'employee.name as employee_name',
+            'branches.name as branch_name'  // Add branch name
+        )
         ->join('users as employee', 'employee.id', '=', 'attendances.employee_id')
+        ->leftJoin('branches', 'employee.branch_id', '=', 'branches.id')  // Join with branches table
         ->orderBy('attendances.id', 'desc');
 
     // Apply branch/company filtering through the employee's branch
     if ($showAllCompanyData) {
-        // Show all company attendances
         $query->where('employee.company_id', $company_id);
     } else {
-        // Show only attendances for employees from specific branch
         $query->where('employee.branch_id', $filterBranchId);
     }
 
@@ -98,7 +98,12 @@ class Attendance extends Model
         }
     }
 
-    return $query->get(); // Use ->paginate(5) if you want pagination
+    // Add branch filter
+    if (!empty(Request::get('filter_branch_id'))) {
+        $query->where('employee.branch_id', Request::get('filter_branch_id'));
+    }
+
+    return $query->get();
 }
 
 

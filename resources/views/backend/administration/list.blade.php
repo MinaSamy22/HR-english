@@ -1,7 +1,8 @@
 @extends('backend.layouts.app')
 @section('content')
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper" style="background-image: url('{{ url('/dist/img/generall.png') }}'); background-size: cover; background-position: center;">
+    <div class="content-wrapper"
+        style="background-image: url('{{ url('/dist/img/generall.png') }}'); background-size: cover; background-position: center;">
         <!-- Content Header (Page header) -->
         <div class="content-header">
             <div class="container-fluid">
@@ -20,7 +21,8 @@
             <div class="container-fluid">
                 <div class="row">
                     <section class="col-md-12">
-                        <div class="card" style="background-color: rgba(255, 255, 255, 0.9); border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                        <div class="card"
+                            style="background-color: rgba(255, 255, 255, 0.9); border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
                             <div class="card-header">
                                 <h3 class="card-title">{{ __('h_adminstration.search') }}</h3>
                             </div>
@@ -34,29 +36,34 @@
 
                                         <div class="form-group col-md-2 col-sm-6">
                                             <label>{{ __('h_adminstration.administration_name') }}</label>
-                                            <input type="text" value="{{ Request()->name }}" name="name" class="form-control" placeholder="{{ __('h_adminstration.search_name_placeholder') }}">
+                                            <input type="text" value="{{ Request()->name }}" name="name"
+                                                class="form-control"
+                                                placeholder="{{ __('h_adminstration.search_name_placeholder') }}">
                                         </div>
-                                                    <!-- Branch Filter (Only for Main Branch Users) -->
-            @if (session('branch_id') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1)
-            <div class="form-group col-md-2 col-sm-6">
-                <label>{{ __('Branch') }}</label>
-                <select name="filter_branch_id" class="form-control">
-                    <option value="">{{ __('All Branches') }}</option>
-                    @foreach($branches as $branch)
-                        <option value="{{ $branch->id }}"
-                                {{ Request()->filter_branch_id == $branch->id ? 'selected' : '' }}>
-                            {{ $branch->name }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-            @endif
+                                        <!-- Branch Filter (Only for Main Branch Users) -->
+                                        @if (session('branch_id') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1)
+                                            <div class="form-group col-md-2 col-sm-6">
+                                                <label>{{ __('h_employee.branch') }}</label>
+                                                <select name="filter_branch_id" class="form-control">
+                                                    <option value="">{{ __('h_employee.all') }}</option>
+                                                    @foreach ($branches as $branch)
+                                                        <option value="{{ $branch->id }}"
+                                                            {{ Request()->filter_branch_id == $branch->id ? 'selected' : '' }}>
+                                                            {{ $branch->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        @endif
 
                                         <div class="form-group col-md-3 col-sm-6 d-flex align-items-end">
-                                            <button class="btn btn-primary rounded-pill" type="submit" style="margin-right: 10px;" title="{{ __('h_adminstration.search') }}">
+                                            <button class="btn btn-primary rounded-pill" type="submit"
+                                                style="margin-right: 10px;" title="{{ __('h_adminstration.search') }}">
                                                 <i class="fas fa-search"></i>
                                             </button>
-                                            <a href="{{ url('admin/administration') }}" class="btn btn-success rounded-pill" title="{{ __('h_adminstration.reset') }}">
+                                            <a href="{{ url('admin/administration') }}"
+                                                class="btn btn-success rounded-pill"
+                                                title="{{ __('h_adminstration.reset') }}">
                                                 <i class="fas fa-sync-alt"></i>
                                             </a>
                                         </div>
@@ -67,7 +74,8 @@
 
                         @include('_message')
 
-                        <div class="card" style="background-color: rgba(255, 255, 255, 0.9); border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                        <div class="card"
+                            style="background-color: rgba(255, 255, 255, 0.9); border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
                             <div class="card-header">
                                 <h3 class="card-title">{{ __('h_adminstration.administration_list') }}</h3>
                             </div>
@@ -86,36 +94,43 @@
                                         </thead>
 
                                         <tbody>
-                                            @forelse ($getRecord as $value )  {{-- forelse insted of foreach it found with col spam and empty for writing not found if not found --}}
-                                            <tr>
-                                                <td>{{ $value->name }}</td>
-                                                <td>{{ $value->code }}</td>
+                                            @forelse ($getRecord as $value)
+                                                {{-- forelse insted of foreach it found with col spam and empty for writing not found if not found --}}
+                                                <tr>
+                                                    <td>{{ $value->name }}</td>
+                                                    <td>{{ $value->code }}</td>
 
-                                                <td>
-                                                    {{ $value->manager_name ?? __('h_adminstration.na') }}<!-- Display N/A if manager is null -->
-                                                </td>
-                                                <td>{{ $value->branch_name ?? __('h_dashboard.main_branch') }}</td>
+                                                    <td>
+                                                        {{ $value->manager_name ?? __('h_adminstration.na') }}<!-- Display N/A if manager is null -->
+                                                    </td>
+                                                    <td>{{ $value->branch_name ?? __('h_dashboard.main_branch') }}</td>
 
 
-                                                <td>
-                                                        <a href="{{ url('admin/administration/edit/' .$value->id) }}" class="btn btn-primary rounded-pill" title="{{ __('h_adminstration.edit') }}">
+                                                    <td>
+                                                        <a href="{{ url('admin/administration/edit/' . $value->id) }}"
+                                                            class="btn btn-primary rounded-pill"
+                                                            title="{{ __('h_adminstration.edit') }}">
                                                             <i class="fas fa-edit"></i>
                                                         </a>
-                                                        <a href="{{ url('admin/administration/delete/' .$value->id) }}" onclick="return confirm('{{ __('h_adminstration.delete_confirmation') }}')" class="btn btn-danger rounded-pill" title="{{ __('h_adminstration.delete') }}">
+                                                        <a href="{{ url('admin/administration/delete/' . $value->id) }}"
+                                                            onclick="return confirm('{{ __('h_adminstration.delete_confirmation') }}')"
+                                                            class="btn btn-danger rounded-pill"
+                                                            title="{{ __('h_adminstration.delete') }}">
                                                             <i class="fas fa-trash-alt"></i>
                                                         </a>
-                                                </td>
-                                            </tr>
+                                                    </td>
+                                                </tr>
                                             @empty
-                                            <tr>
-                                                <td colspan="100%" class="text-center">{{ __('h_adminstration.not_found') }}</td>
-                                            </tr>
+                                                <tr>
+                                                    <td colspan="100%" class="text-center">
+                                                        {{ __('h_adminstration.not_found') }}</td>
+                                                </tr>
                                             @endforelse
                                         </tbody>
                                     </table>
                                 </div>
 
-                                <div class="d-flex justify-content-end p-3">   {{-- for pagination --}}
+                                <div class="d-flex justify-content-end p-3"> {{-- for pagination --}}
                                     {!! $getRecord->appends(Illuminate\Support\Facades\Request::except('page'))->links() !!}
                                 </div>
                             </div>

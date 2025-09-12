@@ -87,9 +87,9 @@
         @if($showAllCompanyData ?? false)
         <div class="col-md-2">
             <div class="form-group">
-                <label for="filter_branch_id">{{ __('Branch') }}</label>
+                <label for="filter_branch_id">{{ __('h_employee.branch') }}</label>
                 <select name="filter_branch_id" id="filter_branch_id" class="form-control">
-                    <option value="">{{ __('All Branches') }}</option>
+                    <option value="">{{ __('h_employee.all') }}</option>
                     @foreach($branches as $branch)
                         <option value="{{ $branch->id }}" {{ request('filter_branch_id') == $branch->id ? 'selected' : '' }}>
                             {{ $branch->name }}

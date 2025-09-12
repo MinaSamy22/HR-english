@@ -9,11 +9,19 @@ use Illuminate\Http\Request;
 
 class OverTimeController extends Controller
 {
-    public function index(Request $request){
-        $data['getRecord'] = Time::getRecord($request);    //for reterving  the data from database and retrive model logic
-        return view('backend.bounas.list',$data);
+    public function index(Request $request)
+{
+    $data['getRecord'] = Time::getRecord($request);
 
-    }
+    // Add branches data like in your jobs controller
+    $data['branches'] = \DB::table('branches')
+        ->where('company_id', session('company_id'))
+        ->select('id', 'name', 'is_main')
+        ->orderBy('name')
+        ->get();
+
+    return view('backend.bounas.list', $data);
+}
 
     public function add(Request $request){
     $company_id = session('company_id');

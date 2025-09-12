@@ -46,84 +46,100 @@
             </div><!-- /.container-fluid -->
         </div><!-- /.content-header -->
 
-        <form method="get" action="">
-            <div class="card-body">
-                <div class="row">
+      <form method="get" action="">
+    <div class="card-body">
+        <div class="row">
+            <!-- First row with form fields -->
+            <div class="form-group col-md-2 col-sm-6">
+                <label>{{ __('h_payroll.employee_name') }}</label>
+                <input type="text" value="{{ Request::get('name') }}" name="name" class="form-control"
+                    placeholder="{{ __('h_payroll.enter_name') }}"
+                    style="background-color: rgba(255, 255, 255, 0.5); color: black; border: 1px solid rgba(255, 255, 255, 0.8);">
+            </div>
 
-                    <div class="form-group col-md-2 col-sm-6">
-                        <label>{{ __('h_payroll.employee_name') }}</label>
-                        <input type="text" value="{{ Request::get('name') }}" name="name" class="form-control"
-                            placeholder="{{ __('h_payroll.enter_name') }}"
-                            style="background-color: rgba(255, 255, 255, 0.5); color: black; border: 1px solid rgba(255, 255, 255, 0.8);">
+            {{-- Branch Filter --}}
+            @if (session('branch_id') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1)
+            <div class="form-group col-md-2 col-sm-6">
+                <label>{{ __('h_employee.branch') }}</label>
+                <select name="filter_branch_id" class="form-control"
+                    style="background-color: rgba(255, 255, 255, 0.5); border: 1px solid rgba(255, 255, 255, 0.8);">
+                    <option value="">{{ __('h_employee.all') }}</option>
+                    @foreach($branches as $branch)
+                        <option value="{{ $branch->id }}" {{ Request()->filter_branch_id == $branch->id ? 'selected' : '' }}>
+                            {{ $branch->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            @endif
+
+            <div class="form-group col-md-2 col-sm-6">
+                <label>{{ __('h_payroll.payroll_type') }}</label>
+                <select name="payroll_type" class="form-control"
+                    style="background-color: rgba(255, 255, 255, 0.5); border: 1px solid rgba(255, 255, 255, 0.8);">
+                    <option value="">{{ __('h_payroll.select_payroll_type') }}</option>
+                    <option value="monthly" {{ Request::get('payroll_type') == 'monthly' ? 'selected' : '' }}>{{ __('h_payroll.monthly') }}</option>
+                    <option value="weekly" {{ Request::get('payroll_type') == 'weekly' ? 'selected' : '' }}>{{ __('h_payroll.weekly') }}</option>
+                    <option value="daily" {{ Request::get('payroll_type') == 'daily' ? 'selected' : '' }}>{{ __('h_payroll.daily') }}</option>
+                </select>
+            </div>
+
+            <div class="form-group col-md-2 col-sm-6">
+                <label>{{ __('h_payroll.month') }}</label>
+                <select name="month" class="form-control"
+                    style="background-color: rgba(255, 255, 255, 0.5); border: 1px solid rgba(255, 255, 255, 0.8);">
+                    <option value="">{{ __('h_payroll.select_month') }}</option>
+                    @for ($i = 1; $i <= 12; $i++)
+                        <option value="{{ $i }}" {{ Request::get('month') == $i ? 'selected' : '' }}>
+                            {{ date('F', mktime(0, 0, 0, $i, 1)) }}</option>
+                    @endfor
+                </select>
+            </div>
+
+            <div class="form-group col-md-2 col-sm-6">
+                <label>{{ __('h_payroll.year') }}</label>
+                <select name="year" class="form-control"
+                    style="background-color: rgba(255, 255, 255, 0.5); border: 1px solid rgba(255, 255, 255, 0.8);">
+                    <option value="">{{ __('h_payroll.select_year') }}</option>
+                    @php
+                        $currentYear = date('Y');
+                        $endYear = $currentYear + 6;
+                    @endphp
+                    @for ($i = $currentYear; $i <= $endYear; $i++)
+                        <option value="{{ $i }}" {{ Request::get('year') == $i ? 'selected' : '' }}>
+                            {{ $i }}</option>
+                    @endfor
+                </select>
+            </div>
+
+            <!-- Action buttons in a separate row -->
+            <div class="col-12">
+                <div class="form-group d-flex justify-content-between align-items-center" style="margin-top: 20px;">
+                    <!-- Left side: Search & Reset -->
+                    <div>
+                        <button class="btn btn-primary rounded-pill" type="submit" title="{{ __('h_payroll.search') }}">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        <a href="{{ url('admin/payroll') }}" class="btn btn-success rounded-pill ms-2" title="{{ __('h_payroll.reset') }}">
+                            <i class="fas fa-sync-alt"></i>
+                        </a>
                     </div>
 
-                    <div class="form-group col-md-2 col-sm-6">
-                        <label>{{ __('h_payroll.payroll_type') }}</label>
-                        <select name="payroll_type" class="form-control"
-                            style="background-color: rgba(255, 255, 255, 0.5); border: 1px solid rgba(255, 255, 255, 0.8);">
-                            <option value="">{{ __('h_payroll.select_payroll_type') }}</option>
-                            <option value="monthly" {{ Request::get('payroll_type') == 'monthly' ? 'selected' : '' }}>{{ __('h_payroll.monthly') }}</option>
-                            <option value="weekly" {{ Request::get('payroll_type') == 'weekly' ? 'selected' : '' }}>{{ __('h_payroll.weekly') }}</option>
-                            <option value="daily" {{ Request::get('payroll_type') == 'daily' ? 'selected' : '' }}>{{ __('h_payroll.daily') }}</option>
-                        </select>
+                    <!-- Right side: Excel & PDF -->
+                    <div>
+                        <a class="btn btn-success rounded-pill me-2"
+                            href="{{ url('admin/payroll_export?name=' . Request::get('name') . '&month=' . Request::get('month') . '&year=' . Request::get('year') . '&payroll_type=' . Request::get('payroll_type') . '&filter_branch_id=' . Request::get('filter_branch_id')) }}">
+                            <i class="fas fa-file-excel"></i> {{ __('h_payroll.excel') }}
+                        </a>
+                        <a href="{{ route('payrolls.exportPdf', Request::all()) }}" class="btn btn-danger rounded-pill">
+                            <i class="fas fa-file-pdf"></i> {{ __('h_payroll.pdf') }}
+                        </a>
                     </div>
-
-                    <div class="form-group col-md-2 col-sm-6">
-                        <label>{{ __('h_payroll.month') }}</label>
-                        <select name="month" class="form-control"
-                            style="background-color: rgba(255, 255, 255, 0.5); border: 1px solid rgba(255, 255, 255, 0.8);">
-                            <option value="">{{ __('h_payroll.select_month') }}</option>
-                            @for ($i = 1; $i <= 12; $i++)
-                                <option value="{{ $i }}" {{ Request::get('month') == $i ? 'selected' : '' }}>
-                                    {{ date('F', mktime(0, 0, 0, $i, 1)) }}</option>
-                            @endfor
-                        </select>
-                    </div>
-
-                    <div class="form-group col-md-2 col-sm-6">
-                        <label>{{ __('h_payroll.year') }}</label>
-                        <select name="year" class="form-control"
-                            style="background-color: rgba(255, 255, 255, 0.5); border: 1px solid rgba(255, 255, 255, 0.8);">
-                            <option value="">{{ __('h_payroll.select_year') }}</option>
-                            @php
-                                $currentYear = date('Y');
-                                $endYear = $currentYear + 6; // Show 6 years into the future
-                            @endphp
-                            @for ($i = $currentYear; $i <= $endYear; $i++)
-                                <option value="{{ $i }}" {{ Request::get('year') == $i ? 'selected' : '' }}>
-                                    {{ $i }}</option>
-                            @endfor
-                        </select>
-                    </div>
-
-                    <div class="form-group col-md-4" style="margin-top: 32px">
-                        <div class="d-flex justify-content-between w-100">
-                            <!-- Left side: Search & Reset -->
-                            <div>
-                                <button class="btn btn-primary rounded-pill" type="submit" title="{{ __('h_payroll.search') }}">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                                <a href="{{ url('admin/payroll') }}" class="btn btn-success rounded-pill" title="{{ __('h_payroll.reset') }}">
-                                    <i class="fas fa-sync-alt"></i>
-                                </a>
-                            </div>
-
-                            <!-- Right side: Excel & PDF -->
-                            <div>
-                                <a class="btn btn-success rounded-pill"
-                                    href="{{ url(path: 'admin/payroll_export?name=' . Request::get('name') . '&month=' . Request::get('month') . '&year=' . Request::get('year')  . '&payroll_type=' . Request::get('payroll_type')) }}">
-                                    <i class="fas fa-file-excel"></i> {{ __('h_payroll.excel') }}
-                                </a>
-                                <a href="{{ route('payrolls.exportPdf', Request::all()) }}" class="btn btn-danger rounded-pill ms-2">
-                                    <i class="fas fa-file-pdf"></i> {{ __('h_payroll.pdf') }}
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </div>
-        </form>
+        </div>
+    </div>
+</form>
 
         @include('_message')
 

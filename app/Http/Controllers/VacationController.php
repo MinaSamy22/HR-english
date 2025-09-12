@@ -9,10 +9,19 @@ use Carbon\Carbon;
 class VacationController extends Controller
 {
     // Method to display the list of vacations
-    public function index(Request $request){
-        $data['getRecord'] = Vacation::getRecord($request); // Retrieving vacation data from the database
-        return view('backend.vacations.index', $data);
-    }
+    public function index(Request $request)
+{
+    $data['getRecord'] = Vacation::getRecord($request);
+
+    // Add branches data like in your jobs controller
+    $data['branches'] = \DB::table('branches')
+        ->where('company_id', session('company_id'))
+        ->select('id', 'name', 'is_main')
+        ->orderBy('name')
+        ->get();
+
+    return view('backend.vacations.index', $data);
+}
 
     // Method to show the add vacation form
     public function add(Request $request){

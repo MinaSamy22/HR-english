@@ -42,80 +42,91 @@
                             <div class="card-header">
                                 <h3 class="card-title">{{ __('h_employee.search_employees') }}</h3>
                             </div>
-                           <form method="get" action="">
-    <div class="card-body">
-        <div class="row">
-            <div class="form-group col-md-2 col-sm-6">
-                <label>{{ __('h_employee.id') }}</label>
-                <input type="text" name="id" class="form-control"
-                    value="{{ Request()->id }}" placeholder="{{ __('h_employee.id') }}">
-            </div>
-            <div class="form-group col-md-2 col-sm-6">
-                <label>{{ __('h_employee.employee_name') }}</label>
-                <input type="text" value="{{ Request()->name }}" name="name"
-                    class="form-control" placeholder="{{ __('h_employee.name') }}">
-            </div>
-            <!-- 🆕 NEW: Branch Name Dropdown Filter - Only for main branch users -->
-            @if (session('branch_id') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1)
-            <div class="form-group col-md-2 col-sm-6">
-                <label>{{ __('Branch') }}</label>
-                <select name="filter_branch_id" class="form-control">
-                    <option value="">{{ __('All Branches') }}</option>
-                    @foreach($branches as $branch)
-                        <option value="{{ $branch->id }}"
-                            {{ Request()->filter_branch_id == $branch->id ? 'selected' : '' }}>
-                            {{ $branch->name }}
-                            @if($branch->is_main == 1) ({{ __('Main') }}) @endif
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-            @endif
+                            <form method="get" action="">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="form-group col-md-2 col-sm-6">
+                                            <label>{{ __('h_employee.id') }}</label>
+                                            <input type="text" name="id" class="form-control"
+                                                value="{{ Request()->id }}" placeholder="{{ __('h_employee.id') }}">
+                                        </div>
+                                        <div class="form-group col-md-2 col-sm-6">
+                                            <label>{{ __('h_employee.employee_name') }}</label>
+                                            <input type="text" value="{{ Request()->name }}" name="name"
+                                                class="form-control" placeholder="{{ __('h_employee.name') }}">
+                                        </div>
+                                        <!-- 🆕 NEW: Branch Name Dropdown Filter - Only for main branch users -->
+                                        @if (session('h_employee.branch') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1)
+                                            <div class="form-group col-md-2 col-sm-6">
+                                                <label>{{ __('h_employee.branch') }}</label>
+                                                <select name="filter_branch_id" class="form-control">
+                                                    <option value="">{{ __('h_employee.all') }}</option>
+                                                    @foreach ($branches as $branch)
+                                                        <option value="{{ $branch->id }}"
+                                                            {{ Request()->filter_branch_id == $branch->id ? 'selected' : '' }}>
+                                                            {{ $branch->name }}
+                                                            @if ($branch->is_main == 1)
+                                                                ({{ __('Main') }})
+                                                            @endif
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        @endif
 
-            <div class="form-group col-md-3 col-sm-6 d-flex align-items-end">
-                <button class="btn btn-primary rounded-pill" type="submit"
-                    style="margin-right: 10px;" title="{{ __('h_employee.search') }}">
-                    <i class="fas fa-search"></i>
-                </button>
-                <a href="{{ url('admin/employees') }}" class="btn btn-success rounded-pill"
-                    title="{{ __('h_employee.reset') }}">
-                    <i class="fas fa-sync-alt"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-</form>
-</div>
+                                        <div class="form-group col-md-3 col-sm-6 d-flex align-items-end">
+                                            <button class="btn btn-primary rounded-pill" type="submit"
+                                                style="margin-right: 10px;" title="{{ __('h_employee.search') }}">
+                                                <i class="fas fa-search"></i>
+                                            </button>
+                                            <a href="{{ url('admin/employees') }}" class="btn btn-success rounded-pill"
+                                                title="{{ __('h_employee.reset') }}">
+                                                <i class="fas fa-sync-alt"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
 
-@include('_message')
+                        @include('_message')
 
-<div class="card"
-    style="background-color: rgba(255, 255, 255, 0.9); border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-    <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
-        <div class="d-flex align-items-center">
-            <h3 class="card-title mb-2 mb-md-0 me-3">{{ __('h_employee.employees_list') }}</h3>
-            <form method="get" action="" class="mb-0" style="margin-left: 15px; margin-right: 15px;">
-                <!-- 🔧 FIX: Preserve ALL existing search parameters -->
-                <input type="hidden" name="id" value="{{ Request()->id }}">
-                <input type="hidden" name="name" value="{{ Request()->name }}">
-                <input type="hidden" name="filter_branch_id" value="{{ Request()->filter_branch_id }}">
+                        <div class="card"
+                            style="background-color: rgba(255, 255, 255, 0.9); border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                            <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
+                                <div class="d-flex align-items-center">
+                                    <h3 class="card-title mb-2 mb-md-0 me-3">{{ __('h_employee.employees_list') }}</h3>
+                                    <form method="get" action="" class="mb-0"
+                                        style="margin-left: 15px; margin-right: 15px;">
+                                        <!-- 🔧 FIX: Preserve ALL existing search parameters -->
+                                        <input type="hidden" name="id" value="{{ Request()->id }}">
+                                        <input type="hidden" name="name" value="{{ Request()->name }}">
+                                        <input type="hidden" name="filter_branch_id"
+                                            value="{{ Request()->filter_branch_id }}">
 
-                <select name="per_page" class="form-select" onchange="this.form.submit()" style="min-width: 60px; width: 60px;">
-                    <option value="5" {{ Request()->per_page == 5 ? 'selected' : '' }}>5</option>
-                    <option value="10" {{ Request()->per_page == 10 ? 'selected' : '' }}>10</option>
-                    <option value="25" {{ Request()->per_page == 25 ? 'selected' : '' }}>25</option>
-                    <option value="50" {{ Request()->per_page == 50 ? 'selected' : '' }}>50</option>
-                    <option value="100" {{ Request()->per_page == 100 ? 'selected' : '' }}>100</option>
-                    <option value="all" {{ Request()->per_page == 'all' ? 'selected' : '' }}>{{ __('h_employee.all') }}</option>
-                </select>
-            </form>
-        </div>
-        <div class="ml-auto">
-            <a href="{{ url('admin/employees/import') }}" class="btn btn-success mb-0">
-                <i class="fas fa-file-excel"></i> {{ __('h_employee.import') }}
-            </a>
-        </div>
-    </div>
+                                        <select name="per_page" class="form-select" onchange="this.form.submit()"
+                                            style="min-width: 60px; width: 60px;">
+                                            <option value="5" {{ Request()->per_page == 5 ? 'selected' : '' }}>5
+                                            </option>
+                                            <option value="10" {{ Request()->per_page == 10 ? 'selected' : '' }}>10
+                                            </option>
+                                            <option value="25" {{ Request()->per_page == 25 ? 'selected' : '' }}>25
+                                            </option>
+                                            <option value="50" {{ Request()->per_page == 50 ? 'selected' : '' }}>50
+                                            </option>
+                                            <option value="100" {{ Request()->per_page == 100 ? 'selected' : '' }}>100
+                                            </option>
+                                            <option value="all" {{ Request()->per_page == 'all' ? 'selected' : '' }}>
+                                                {{ __('h_employee.all') }}</option>
+                                        </select>
+                                    </form>
+                                </div>
+                                <div class="ml-auto">
+                                    <a href="{{ url('admin/employees/import') }}" class="btn btn-success mb-0">
+                                        <i class="fas fa-file-excel"></i> {{ __('h_employee.import') }}
+                                    </a>
+                                </div>
+                            </div>
                             <div class="card-body p-0">
                                 <div class="table-responsive">
                                     <table class="table table-striped">
@@ -136,26 +147,31 @@
                                                     <td>{{ $value->name }}</td>
                                                     <td>{{ $value->email }}</td>
                                                     <td>{{ $value->branch_name ?? __('h_dashboard.main_branch') }}</td>
-                                                    <td>{{ !empty($value->is_role) ? __('h_employee.hr') : __('h_employee.employee') }}</td>
+                                                    <td>{{ !empty($value->is_role) ? __('h_employee.hr') : __('h_employee.employee') }}
+                                                    </td>
                                                     <td>
                                                         <a href="{{ url('admin/employees/view/' . $value->id) }}"
-                                                            class="btn btn-info rounded-pill " title="{{ __('h_employee.view') }}">
+                                                            class="btn btn-info rounded-pill "
+                                                            title="{{ __('h_employee.view') }}">
                                                             <i class="fas fa-eye"></i>
                                                         </a>
                                                         <a href="{{ url('admin/employees/edit/' . $value->id) }}"
-                                                            class="btn btn-primary rounded-pill " title="{{ __('h_employee.edit') }}">
+                                                            class="btn btn-primary rounded-pill "
+                                                            title="{{ __('h_employee.edit') }}">
                                                             <i class="fas fa-edit"></i>
                                                         </a>
                                                         <a href="{{ url('admin/employees/delete/' . $value->id) }}"
                                                             onclick="return confirm('{{ __('h_employee.delete_confirmation') }}')"
-                                                            class="btn btn-danger rounded-pill" title="{{ __('h_employee.delete') }}">
+                                                            class="btn btn-danger rounded-pill"
+                                                            title="{{ __('h_employee.delete') }}">
                                                             <i class="fas fa-trash-alt"></i>
                                                         </a>
                                                     </td>
                                                 </tr>
                                             @empty
                                                 <tr>
-                                                    <td colspan="6" class="text-center">{{ __('h_employee.not_found') }}</td>
+                                                    <td colspan="6" class="text-center">
+                                                        {{ __('h_employee.not_found') }}</td>
                                                 </tr>
                                             @endforelse
                                         </tbody>

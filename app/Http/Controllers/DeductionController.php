@@ -8,11 +8,19 @@ use Illuminate\Http\Request;
 
 class DeductionController extends Controller
 {
-    public function index(Request $request){
-        $data['getRecord'] = Deduction::getRecord($request);    //for reterving  data from database and retrive model logic
-        return view('backend.deductions.index',$data);
+public function index(Request $request)
+{
+    $data['getRecord'] = Deduction::getRecord($request);
 
-    }
+    // 🆕 Add branches for filter dropdown
+    $data['branches'] = \DB::table('branches')
+        ->where('company_id', session('company_id'))
+        ->select('id', 'name', 'is_main')
+        ->orderBy('name')
+        ->get();
+
+    return view('backend.deductions.index', $data);
+}
 
     public function add(Request $request)
 {

@@ -33,7 +33,7 @@ if (!function_exists('getPendingRequestsCount')) {
         } else {
             // No branch_id in session - show all company requests
             $showAllCompanyRequests = true;
-        } 
+        }
 
         // Create a closure for the user filtering logic
         $userFilterClosure = function($query) use ($showAllCompanyRequests, $companyId, $filterBranchId) {
@@ -190,7 +190,7 @@ if (!function_exists('getPendingNotifications')) {
 
         foreach ($lateRemovalRequests as $request) {
             $notifications[] = [
-                'type' => 'late_removal',
+                'type' => 'late_removal', 
                 'id' => $request->id,
                 'message' => __('dashboard.late_removal_request', [
                     'name' => $request->user->name,

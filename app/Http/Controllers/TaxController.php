@@ -21,7 +21,14 @@ class TaxController extends Controller
                        ->where('apply_to_payroll', true)
                        ->exists();
 
-    return view('backend.taxes.list', compact('getRecord', 'isTaxApplied'));
+    // Add branches data like in your other controllers
+    $branches = \DB::table('branches')
+        ->where('company_id', session('company_id'))
+        ->select('id', 'name', 'is_main')
+        ->orderBy('name')
+        ->get();
+
+    return view('backend.taxes.list', compact('getRecord', 'isTaxApplied', 'branches'));
 }
 
 

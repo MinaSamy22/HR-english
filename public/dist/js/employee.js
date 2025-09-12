@@ -18,3 +18,19 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const shiftSelect = document.getElementById("shift_count");
+            const secondShiftFields = document.getElementById("secondShiftFields");
+
+            function toggleSecondShift() {
+                if (shiftSelect.value === "2") {
+                    secondShiftFields.style.display = "block";
+                } else {
+                    secondShiftFields.style.display = "none";
+                }
+            }
+
+            shiftSelect.addEventListener("change", toggleSecondShift);
+            toggleSecondShift(); // للتشغيل وقت التحميل
+        });

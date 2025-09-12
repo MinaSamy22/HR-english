@@ -3,7 +3,159 @@
 <!-- CSS Link (add inside <head>) -->
 <link rel="stylesheet" href="{{ asset('dist/css/darkmode.css') }}">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+    .dropdown-item.active,
+    .dropdown-item:active {
+        background-color: #e3f2fd !important;
+        color: #1976d2 !important;
+    }
 
+    .dropdown-item:hover {
+        background-color: #f5f5f5 !important;
+    }
+
+    /* Desktop positioning - Always align dropdown to screen edge depending on direction */
+    [dir="ltr"] .notif-dropdown {
+        right: 0 !important;
+        left: auto !important;
+    }
+
+    [dir="rtl"] .notif-dropdown {
+        left: 0 !important;
+        right: auto !important;
+        text-align: right;
+    }
+
+    .notif-dropdown {
+        width: 340px;
+        border-radius: 0.75rem;
+        padding: 0;
+        border: 1px solid rgba(0,0,0,.15);
+        box-shadow: 0 0.5rem 1rem rgba(0,0,0,.175);
+    }
+
+    .notif-dropdown .dropdown-item:hover {
+        background-color: #f8f9fa;
+    }
+
+    .notif-dropdown .icon-wrapper {
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* --- Icon alignment for LTR/RTL --- */
+    [dir="ltr"] .notif-item .icon-wrapper {
+        margin-right: 0.75rem;
+        margin-left: 0;
+    }
+
+    [dir="ltr"] .notif-item .notif-text {
+        text-align: left;
+    }
+
+    [dir="rtl"] .notif-item .icon-wrapper {
+        margin-left: 0.75rem;
+        margin-right: 0;
+    }
+
+    [dir="rtl"] .notif-item .notif-text {
+        text-align: right;
+    }
+
+    /* Mobile Responsive Styles */
+    @media (max-width: 768px) {
+        .notif-dropdown {
+            /* Center the dropdown on mobile */
+            position: fixed !important;
+            top: 60px !important; /* Adjust based on your navbar height */
+            left: 50% !important;
+            right: auto !important;
+            transform: translateX(-50%) !important;
+            width: calc(100vw - 20px) !important; /* Full width minus padding */
+            max-width: 350px !important;
+            z-index: 1050;
+            margin: 0 10px;
+        }
+
+        /* Override both LTR and RTL positioning for mobile centering */
+        [dir="ltr"] .notif-dropdown {
+            left: 50% !important;
+            right: auto !important;
+            transform: translateX(-50%) !important;
+        }
+
+        [dir="rtl"] .notif-dropdown {
+            left: 50% !important;
+            right: auto !important;
+            transform: translateX(-50%) !important;
+        }
+
+        /* Adjust notification content for mobile */
+        .notif-dropdown .dropdown-header {
+            padding: 0.75rem 1rem;
+        }
+
+        .notif-dropdown .dropdown-item {
+            padding: 0.75rem 1rem;
+        }
+
+        .notif-item .icon-wrapper {
+            width: 24px;
+            height: 24px;
+        }
+
+        .notif-item .notif-text {
+            font-size: 0.875rem;
+        }
+
+        /* Reduce margins on mobile */
+        [dir="ltr"] .notif-item .icon-wrapper {
+            margin-right: 0.5rem;
+        }
+
+        [dir="rtl"] .notif-item .icon-wrapper {
+            margin-left: 0.5rem;
+        }
+    }
+
+    /* Extra small screens */
+    @media (max-width: 576px) {
+        .notif-dropdown {
+            width: calc(100vw - 10px) !important;
+            margin: 0 5px;
+            border-radius: 0.5rem;
+        }
+
+        .notif-dropdown .dropdown-header h6 {
+            font-size: 0.9rem;
+        }
+
+        .notif-item .notif-text div {
+            font-size: 0.8rem !important;
+        }
+
+        .notif-item .notif-text .text-muted {
+            font-size: 0.7rem !important;
+        }
+    }
+
+    /* Ensure dropdown arrow positioning on mobile */
+    @media (max-width: 768px) {
+        .dropdown-menu::before {
+            display: none !important;
+        }
+    }
+
+    /* Optional: Add backdrop for mobile */
+    @media (max-width: 768px) {
+        .dropdown-menu.show {
+            backdrop-filter: blur(2px);
+        }
+    }
+</style>
 
 <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__shake" src="{{ url('/dist/img/hr_logo-.png') }}" alt="AdminLTE Logo" height="60"
@@ -37,63 +189,10 @@
             </a>
 
             <div class="dropdown-menu dropdown-menu-right shadow-sm" aria-labelledby="languageDropdown">
-                <style>
-                    .dropdown-item.active,
-                    .dropdown-item:active {
-                        background-color: #e3f2fd !important;
-                        color: #1976d2 !important;
-                    }
 
-                    .dropdown-item:hover {
-                        background-color: #f5f5f5 !important;
-                    }
-    /* Always align dropdown to screen edge depending on direction */
-    [dir="ltr"] .notif-dropdown {
-        right: 0 !important;
-        left: auto !important;
-    }
 
-    [dir="rtl"] .notif-dropdown {
-        left: 0 !important;
-        right: auto !important;
-        text-align: right;
-    }
 
-    .notif-dropdown {
-        width: 340px;
-        border-radius: 0.75rem;
-        padding: 0;
-    }
-
-    .notif-dropdown .dropdown-item:hover {
-        background-color: #f8f9fa;
-    }
-
-    .notif-dropdown .icon-wrapper {
-        width: 28px;
-        height: 28px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    /* --- Icon alignment for LTR/RTL --- */
-    [dir="ltr"] .notif-item .icon-wrapper {
-        margin-right: 0.75rem;
-        margin-left: 0;
-    }
-    [dir="ltr"] .notif-item .notif-text {
-        text-align: left;
-    }
-
-    [dir="rtl"] .notif-item .icon-wrapper {
-        margin-left: 0.75rem;
-        margin-right: 0;
-    }
-    [dir="rtl"] .notif-item .notif-text {
-        text-align: right;
-    }
-</style>                <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'en' ? 'active' : '' }}"
+                <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'en' ? 'active' : '' }}"
                     href="{{ url('lang/en') }}">
                     <span>English</span>
                     @if (app()->getLocale() == 'en')
@@ -111,19 +210,19 @@
             </div>
         </li>
 
-@php
-    $pendingRequestsCount = getPendingRequestsCount();
-    $notifications = getPendingNotifications(10); // Get latest 10 notifications
-@endphp
+        @php
+            $pendingRequestsCount = getPendingRequestsCount();
+            $notifications = getPendingNotifications(10); // Get latest 10 notifications
+        @endphp
 
-<li class="nav-item dropdown">
-    <a class="nav-link position-relative p-2" href="#" id="notifDropdown" role="button"
-        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fas fa-bell fa-lg text-secondary"></i>
+        <li class="nav-item dropdown">
+            <a class="nav-link position-relative p-2" href="#" id="notifDropdown" role="button"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-bell fa-lg text-secondary"></i>
 
-        @if ($pendingRequestsCount > 0)
-            <span class="badge badge-danger position-absolute"
-                style="
+                @if ($pendingRequestsCount > 0)
+                    <span class="badge badge-danger position-absolute"
+                        style="
                     top: 2px;
                     right: 2px;
                     font-size: 0.65rem;
@@ -131,54 +230,55 @@
                     border-radius: 8px;
                     box-shadow: 0 1px 2px rgba(0,0,0,0.15);
                 ">
-                {{ $pendingRequestsCount > 99 ? '99+' : $pendingRequestsCount }}
-            </span>
-        @endif
-    </a>
+                        {{ $pendingRequestsCount > 99 ? '99+' : $pendingRequestsCount }}
+                    </span>
+                @endif
+            </a>
 
-    <!-- Dropdown menu -->
-    <div class="dropdown-menu shadow notif-dropdown" aria-labelledby="notifDropdown">
-        <div class="dropdown-header d-flex justify-content-between align-items-center px-3 py-2 border-bottom">
-            <h6 class="mb-0 font-weight-bold">{{ __('dashboard.notifications') }}</h6>
-            @if($pendingRequestsCount > 0)
-                <span class="badge badge-light text-muted">
-                    {{ $pendingRequestsCount }} {{ __('dashboard.pending') }}
-                </span>
-            @endif
-        </div>
-
-        <div style="max-height: 350px; overflow-y: auto;">
-            @forelse ($notifications as $notification)
-                <a class="dropdown-item py-2 border-bottom small" href="{{ $notification['url'] ?? '#' }}"
-                   style="white-space: normal;">
-                    <div class="d-flex align-items-start notif-item">
-                        <div class="icon-wrapper flex-shrink-0">
-                            <i class="{{ $notification['icon'] }} {{ $notification['color'] }}"
-                               style="font-size: 1rem;"></i>
-                        </div>
-                        <div class="flex-grow-1 notif-text">
-                            <div class="font-weight-normal" style="font-size: 0.9rem;">{!! $notification['message'] !!}</div>
-                            <div class="text-muted" style="font-size: 0.75rem;">
-                                {{ $notification['date']->diffForHumans() }}
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            @empty
-                <div class="dropdown-item text-muted small text-center py-3">
-                    <i class="fas fa-bell-slash mb-2 d-block"></i>
-                    {{ __('dashboard.no_pending_notifications') }}
+            <!-- Dropdown menu -->
+            <div class="dropdown-menu shadow notif-dropdown" aria-labelledby="notifDropdown">
+                <div class="dropdown-header d-flex justify-content-between align-items-center px-3 py-2 border-bottom">
+                    <h6 class="mb-0 font-weight-bold">{{ __('dashboard.notifications') }}</h6>
+                    @if ($pendingRequestsCount > 0)
+                        <span class="badge badge-light text-muted">
+                            {{ $pendingRequestsCount }} {{ __('dashboard.pending') }}
+                        </span>
+                    @endif
                 </div>
-            @endforelse
-        </div>
 
-        {{-- <div class="dropdown-footer text-center border-top">
+                <div style="max-height: 350px; overflow-y: auto;">
+                    @forelse ($notifications as $notification)
+                        <a class="dropdown-item py-2 border-bottom small" href="{{ $notification['url'] ?? '#' }}"
+                            style="white-space: normal;">
+                            <div class="d-flex align-items-start notif-item">
+                                <div class="icon-wrapper flex-shrink-0">
+                                    <i class="{{ $notification['icon'] }} {{ $notification['color'] }}"
+                                        style="font-size: 1rem;"></i>
+                                </div>
+                                <div class="flex-grow-1 notif-text">
+                                    <div class="font-weight-normal" style="font-size: 0.9rem;">{!! $notification['message'] !!}
+                                    </div>
+                                    <div class="text-muted" style="font-size: 0.75rem;">
+                                        {{ $notification['date']->diffForHumans() }}
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    @empty
+                        <div class="dropdown-item text-muted small text-center py-3">
+                            <i class="fas fa-bell-slash mb-2 d-block"></i>
+                            {{ __('dashboard.no_pending_notifications') }}
+                        </div>
+                    @endforelse
+                </div>
+
+                {{-- <div class="dropdown-footer text-center border-top">
             <a href="{{ url('admin/Requests') }}" class="dropdown-item small text-primary py-2">
                 {{ __('dashboard.view_all') }}
             </a>
         </div> --}}
-    </div>
-</li>
+            </div>
+        </li>
 
 
 
@@ -534,7 +634,7 @@
                 <li class="nav-header">{{ __('dashboard.settings') }}</li>
 
                 <!-- Branches -->
-                        @if (session('branch_id') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1)
+                @if (session('branch_id') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1)
                     <li class="nav-item">
                         <a href="{{ url('admin/branches') }}"
                             class="nav-link @if (Request::segment(2) == 'branches') active @endif">
@@ -546,7 +646,7 @@
 
 
                 <!-- Company information -->
-                        @if (session('branch_id') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1)
+                @if (session('branch_id') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1)
                     <li class="nav-item">
                         <a href="{{ url('admin/company-info') }}"
                             class="nav-link @if (Request::segment(2) == 'company-info') active @endif">
