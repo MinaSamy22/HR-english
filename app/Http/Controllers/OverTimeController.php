@@ -23,19 +23,32 @@ class OverTimeController extends Controller
     return view('backend.bounas.list', $data);
 }
 
-    public function add(Request $request){
+    public function add(Request $request)
+{
     $company_id = session('company_id');
     $branch_id = session('branch_id');
 
-    if (!empty($branch_id)) {
-        $data['getUsers'] = User::where('branch_id', $branch_id)->get();
+    // If branch_id is null, show all users for the company
+    if (empty($branch_id)) {
+        $data['getUsers'] = User::where('company_id', $company_id)->get();
     } else {
-        $data['getUsers'] = User::where('company_id', $company_id)->whereNull('branch_id')->get();
+        // Check if the current branch is the main branch
+        $currentBranch = \DB::table('branches')
+            ->where('id', $branch_id)
+            ->select('is_main')
+            ->first();
+
+        // If it's the main branch (is_main == 1), show all users for the company
+        if ($currentBranch && $currentBranch->is_main == 1) {
+            $data['getUsers'] = User::where('company_id', $company_id)->get();
+        } else {
+            // Otherwise, filter by the specific branch_id
+            $data['getUsers'] = User::where('branch_id', $branch_id)->get();
+        }
     }
 
     return view('backend.bounas.add', $data);
-
-    }
+}
     public function add_post(Request $request){         //for validation logic ///// any post logic must put in it the validation before saving in data base
 
     // dd($request->all());

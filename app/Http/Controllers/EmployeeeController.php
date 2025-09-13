@@ -80,6 +80,7 @@ public function add_post(Request $request)
         'department_id'         => 'required',
         'is_role'               => 'required|in:0,1',
         'is_biometric'          => 'required|in:0,1',
+        'main_salary'           => 'required|in:0,1',
         'work_start_time'       => 'required|date_format:H:i',
         'work_end_time'         => 'required|date_format:H:i',
         'work_hours_per_day'    => 'required|numeric|min:1|max:24',
@@ -117,6 +118,8 @@ public function add_post(Request $request)
     $user->department_id        = trim($request->department_id);
     $user->is_role              = $request->is_role;
     $user->is_biometric         = $request->is_biometric;
+    $user->main_salary          = $request->main_salary;
+
     $user->company_id           = session('company_id');
 
     // Password
@@ -221,6 +224,8 @@ public function edit_update($id, Request $request){
     $user->work_hours_per_day      = $request->work_hours_per_day;
 
     $user->is_biometric         = $request->is_biometric;
+    $user->main_salary          = $request->main_salary;
+
     $user->manager_id           = trim($request->manager_id);
     $user->department_id        = trim($request->department_id);
 

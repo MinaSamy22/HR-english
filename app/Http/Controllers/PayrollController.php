@@ -31,7 +31,7 @@ public function index(Request $request)
 
     // Pass the company_id to the getRecord method for filtering
     $data['getRecord'] = Payroll::getRecord($company_id);
-    
+
     // Add branches data like in your other controllers
     $data['branches'] = \DB::table('branches')
         ->where('company_id', session('company_id'))
@@ -45,19 +45,32 @@ public function index(Request $request)
 
 
     public function add(Request $request)
-    {
+{
     $company_id = session('company_id');
     $branch_id = session('branch_id');
 
-    if (!empty($branch_id)) {
-        $data['getEmployees'] = User::where('branch_id', $branch_id)->get();
+    // If branch_id is null, show all employees for the company
+    if (empty($branch_id)) {
+        $data['getEmployees'] = User::where('company_id', $company_id)->get();
     } else {
-        $data['getEmployees'] = User::where('company_id', $company_id)->whereNull('branch_id')->get();
-    }
-        $data['getPayrolls'] = Payroll::get(); // Optional, depending on your needs
-        return view('backend.payrolls.create', $data);
+        // Check if the current branch is the main branch
+        $currentBranch = \DB::table('branches')
+            ->where('id', $branch_id)
+            ->select('is_main')
+            ->first();
+
+        // If it's the main branch (is_main == 1), show all employees for the company
+        if ($currentBranch && $currentBranch->is_main == 1) {
+            $data['getEmployees'] = User::where('company_id', $company_id)->get();
+        } else {
+            // Otherwise, filter by the specific branch_id
+            $data['getEmployees'] = User::where('branch_id', $branch_id)->get();
+        }
     }
 
+    $data['getPayrolls'] = Payroll::get(); // Optional, depending on your needs
+    return view('backend.payrolls.create', $data);
+}
 
 
 public function add_post(Request $request)
@@ -282,14 +295,21 @@ return response()->json(['success' => true, 'message' => __('h_payroll.selected_
 
 
     public function payslip(Request $request)
-    {
-        $company_id = session('company_id');
+{
+    $company_id = session('company_id');
 
-        // Pass the company_id to the getRecord method for filtering
-        $data['getRecord'] = Payroll::getRecord($company_id);  // Modify getRecord to accept company_id
+    // Pass the company_id to the getRecord method for filtering
+    $data['getRecord'] = Payroll::getRecord($company_id);
 
-        return view('backend.payrolls.payslip', $data);
-    }
+    // Add branches data like in your other controllers
+    $data['branches'] = \DB::table('branches')
+        ->where('company_id', session('company_id'))
+        ->select('id', 'name', 'is_main')
+        ->orderBy('name')
+        ->get();
+
+    return view('backend.payrolls.payslip', $data);
+}
 
 public function downloadSinglePayslip(Request $request)
 {

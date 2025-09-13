@@ -12,17 +12,19 @@
             background-color: #fff;
             margin: 20px;
         }
+
         .header {
-        text-align: center;
-        margin-bottom: 20px;
-        border-bottom: 2px solid #333;
-        padding-bottom: 20px;
-    }
-    .company-logo {
-        max-width: 150px;
-        max-height: 80px;
-        margin-bottom: 5px;
-    }
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #333;
+            padding-bottom: 20px;
+        }
+
+        .company-logo {
+            max-width: 150px;
+            max-height: 80px;
+            margin-bottom: 5px;
+        }
 
         h1,
         h2 {
@@ -68,9 +70,9 @@
 
 <body>
     <div class="header">
-        @if(Auth::user()->company && Auth::user()->company->logo)
+        @if (Auth::user()->company && Auth::user()->company->logo)
             <img src="{{ public_path('../../HR-Uploads/company_logos/' . Auth::user()->company->logo) }}"
-                 alt="Company Logo" class="company-logo">
+                alt="Company Logo" class="company-logo">
         @endif
 
         <div class="report-title">{{ __('h_payroll_report.title') }}</div>
@@ -86,6 +88,7 @@
                 <th>{{ __('h_payroll_report.deductions') }}</th>
                 <th>{{ __('h_payroll_report.attendance_deduction') }}</th>
                 <th>{{ __('h_payroll_report.taxes_insurance') }}</th>
+                <th>{{ __('h_payroll.is_insure') }}</th>
                 <th>{{ __('h_payroll_report.vacation') }}</th>
                 <th>{{ __('h_payroll_report.net_pay') }}</th>
                 <th>{{ __('h_payroll_report.payroll_type') }}</th>
@@ -103,6 +106,13 @@
                     <td>{{ number_format($value->deductions, 2) }}</td>
                     <td>{{ number_format($value->attendance_deduction, 2) }}</td>
                     <td>{{ number_format($value->taxes, 2) }}</td>
+                    <td class="text-center">
+                        @if ($value->is_insured == 1)
+                            <span title="مؤمن عليه" style="color: green">{{ __('h_payroll.yes') }}</span>
+                        @else
+                            <span title="غير مؤمن عليه" style="color: red">{{ __('h_payroll.no') }}</span>
+                        @endif
+                    </td>
                     <td>
                         @if ($value->payroll_type == 'monthly')
                             {{ $value->rest_vacancy }} {{ __('h_payroll_report.day') }}

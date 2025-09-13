@@ -71,4 +71,8 @@ return [
     'payroll_generation_failed_for_following_employees' => 'Payroll generation failed for the following employees:',
     'note_payroll_successfully_generated_for_other_employees' => 'Note: Payroll was successfully generated for other employees.',
     'generated_for' => 'Generated for',
+    'is_insure' =>'Is insured?',
+    'yes'=>'yes',
+    'no'=> 'no'
+
 ];

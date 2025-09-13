@@ -36,7 +36,8 @@ public function map($payroll): array
         $payroll->deductions,
         $payroll->attendance_deduction,
         $payroll->taxes,
-        $payroll->payroll_type == 'monthly' ? $payroll->rest_vacancy : 0, // Conditionally show rest_vacancy
+        $payroll->is_insured,
+
         $payroll->net_pay,
         $payroll->payroll_type,
         $createdAtFormat, // Pay Date
@@ -54,6 +55,7 @@ return [
     'Deductions',
     'Attendance Deductions',
     'Taxes/Insurance',
+    'Is insuranced?',
     'Vacation Balance',
     'Net Pay',
     'Payroll Type',

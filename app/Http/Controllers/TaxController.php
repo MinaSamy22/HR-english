@@ -34,19 +34,32 @@ class TaxController extends Controller
 
 
 
-    public function add()
-    {
-
+public function add()
+{
     $company_id = session('company_id');
     $branch_id = session('branch_id');
 
-    if (!empty($branch_id)) {
-        $data['getEmployees'] = User::where('branch_id', $branch_id)->get();
+    // If branch_id is null, show all employees for the company
+    if (empty($branch_id)) {
+        $data['getEmployees'] = User::where('company_id', $company_id)->get();
     } else {
-        $data['getEmployees'] = User::where('company_id', $company_id)->whereNull('branch_id')->get();
+        // Check if the current branch is the main branch
+        $currentBranch = \DB::table('branches')
+            ->where('id', $branch_id)
+            ->select('is_main')
+            ->first();
+
+        // If it's the main branch (is_main == 1), show all employees for the company
+        if ($currentBranch && $currentBranch->is_main == 1) {
+            $data['getEmployees'] = User::where('company_id', $company_id)->get();
+        } else {
+            // Otherwise, filter by the specific branch_id
+            $data['getEmployees'] = User::where('branch_id', $branch_id)->get();
+        }
     }
-        return view('backend.taxes.add',$data);
-    }
+
+    return view('backend.taxes.add', $data);
+}
 
     public function add_post(Request $request)
 {

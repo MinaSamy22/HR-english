@@ -130,6 +130,29 @@
                                             <span style="color:red">{{ $errors->first('salary') }}</span>
                                         </div>
                                     </div>
+                                    <div class="form-group row align-items-center">
+                                        <label class="col-sm-2 col-form-label">
+                                            {{ __('h_employee.main_salary') }}
+                                            <span style="color: red;">{{ __('h_employee.required_field') }}</span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="main_salary"
+                                                    id="main_salary_yes" value="1"
+                                                    {{ old('main_salary') == '1' ? 'checked' : '' }}>
+                                                <label class="form-check-label"
+                                                    for="main_salary_yes">{{ __('h_employee.yes') }}</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="main_salary"
+                                                    id="main_salary_no" value="0"
+                                                    {{ old('main_salary') == '0' ? 'checked' : '' }}>
+                                                <label class="form-check-label"
+                                                    for="main_salary_no">{{ __('h_employee.no') }}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
 
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-lable"

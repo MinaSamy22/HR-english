@@ -181,6 +181,7 @@ return [
     'employee_updated' => 'تم تحديث الموظف بنجاح.',
     'record_deleted' => 'تم حذف الموظف بنجاح',
     'employees_imported' => 'تم استيراد أو تحديث :count موظف بنجاح.',
-    'all' => 'عرض الكل'
+    'all' => 'عرض الكل',
+    'main_salary'=>'راتب اساسي'
 
 ];

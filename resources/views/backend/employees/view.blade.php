@@ -130,6 +130,21 @@
                                         </div>
                                     </div>
 
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label"> {{ __('h_employee.main_salary') }}
+                                            <span style="color: red;">
+                                            </span></label>
+                                        <div class="col-sm-10">
+                                            @if ($getRecord->main_salary === 1)
+                                                {{ __('h_employee.yes') }}
+                                            @elseif($getRecord->main_salary === 0)
+                                                {{ __('h_employee.no') }}
+                                            @else
+                                                {{ __('h_employee.not_set') }}
+                                            @endif
+                                        </div>
+                                    </div>
+
 
 
                                     @if ($getRecord->attachment)
