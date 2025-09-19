@@ -25,6 +25,7 @@ return[ // data that will take in excel
     $history->end_date,
     $history->job_title,
     $history->department_name,
+    $history->branch_name ,
     $cretedAtFormat
 
 ];
@@ -39,6 +40,7 @@ return [
     'End Date',
     'Job Name',
     'Department Name',
+    'Branch',
     'Create At',
 
 

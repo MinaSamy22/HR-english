@@ -49,8 +49,13 @@ class Deduction extends Model
     $company_id = session('company_id');
     $branch_id = session('branch_id');
 
-    $query = self::select('deductions.*', 'users.name')
+     $query = self::select(
+            'deductions.*',
+            'users.name',
+            'branches.name as branch_name'
+        )
         ->join('users', 'users.id', '=', 'deductions.employee_id')
+        ->leftJoin('branches', 'deductions.branch_id', '=', 'branches.id')
         ->orderBy('deductions.id', 'desc');
 
 
@@ -78,6 +83,10 @@ class Deduction extends Model
     // 🔎 Filter by employee name
     if (!empty(Request::get('name'))) {
         $query->where('users.name', 'like', '%' . Request::get('name') . '%');
+    }
+    // 🔎 Branch filter for main branch users
+    if (!empty(Request::get('filter_branch_id'))) {
+        $query->where('deductions.branch_id', Request::get('filter_branch_id'));
     }
 
     return $query->paginate(10); // Use ->get() if you don't want pagination

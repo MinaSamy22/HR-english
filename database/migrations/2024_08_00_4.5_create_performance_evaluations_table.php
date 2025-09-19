@@ -16,14 +16,6 @@ return new class extends Migration
             $table->string('evaluation_period'); // e.g., "Q1 2024", "January 2024"
             $table->year('evaluation_year');
 
-            // Standard criteria scores (nullable for when using custom criteria)
-            $table->tinyInteger('quality_of_work')->nullable();
-            $table->tinyInteger('productivity')->nullable();
-            $table->tinyInteger('communication')->nullable();
-            $table->tinyInteger('teamwork')->nullable();
-            $table->tinyInteger('punctuality')->nullable();
-            $table->tinyInteger('initiative')->nullable();
-
             // Custom criteria support
             $table->json('criteria_scores')->nullable(); // Store custom criteria scores
             $table->boolean('uses_custom_criteria')->default(false);

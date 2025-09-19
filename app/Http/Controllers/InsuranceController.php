@@ -10,34 +10,53 @@ use App\Models\Tax;
 class InsuranceController extends Controller
 {
 
-    public function index(Request $request)
+public function index(Request $request)
 {
     $companyId = auth()->user()->company_id;
 
     // Use the model's getRecord method and pass the request and company ID
     $getRecord = Insurance::getRecord($request, $companyId);
 
+    // Get branches for the filter dropdown
+    $branches = \DB::table('branches')
+        ->where('company_id', session('company_id'))
+        ->select('id', 'name', 'is_main')
+        ->orderBy('name')
+        ->get();
+
     // Check if insurance is applied to payroll
     $isInsuranceApplied = Insurance::where('company_id', $companyId)
                                    ->where('apply_to_payroll', true)
                                    ->exists();
 
-    return view('backend.insurance.list', compact('getRecord', 'isInsuranceApplied'));
+    return view('backend.insurance.list', compact('getRecord', 'isInsuranceApplied', 'branches'));
 }
     public function add()
-    {
-
- $company_id = session('company_id');
+{
+    $company_id = session('company_id');
     $branch_id = session('branch_id');
 
-    if (!empty($branch_id)) {
-        $data['getEmployees'] = User::where('branch_id', $branch_id)->get();
+    // If branch_id is null, show all employees for the company
+    if (empty($branch_id)) {
+        $data['getEmployees'] = User::where('company_id', $company_id)->get();
     } else {
-        $data['getEmployees'] = User::where('company_id', $company_id)->whereNull('branch_id')->get();
-    }
+        // Check if the current branch is the main branch
+        $currentBranch = \DB::table('branches')
+            ->where('id', $branch_id)
+            ->select('is_main')
+            ->first();
 
-        return view('backend.insurance.add',$data);
-    }
+        // If it's the main branch (is_main == 1), show all employees for the company
+        if ($currentBranch && $currentBranch->is_main == 1) {
+            $data['getEmployees'] = User::where('company_id', $company_id)->get();
+        } else {
+            // Otherwise, filter by the specific branch_id
+            $data['getEmployees'] = User::where('branch_id', $branch_id)->get();
+        }
+    } 
+
+    return view('backend.insurance.add', $data);
+}
 
     public function add_post(Request $request)
 {

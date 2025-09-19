@@ -28,15 +28,16 @@ class Job extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public static function getRecord($request)
-    {
-// Retrieve branch_id or company_id if no branch exist
-    $company_id = session('company_id'); // Or use $request->company_id if passed in the request
+public static function getRecord($request)
+{
+    // Retrieve branch_id or company_id if no branch exist
+    $company_id = session('company_id');
     $branch_id = session('branch_id');
 
-        $query = self::select('jobs.*', 'departments.department_name')
-                     ->leftJoin('departments', 'jobs.department_id', '=', 'departments.id')
-                     ->orderBy('jobs.id', 'desc');
+    $query = self::select('jobs.*', 'departments.department_name', 'branches.name as branch_name')
+                 ->leftJoin('departments', 'jobs.department_id', '=', 'departments.id')
+                 ->leftJoin('branches', 'jobs.branch_id', '=', 'branches.id')
+                 ->orderBy('jobs.id', 'desc');
 
     // 🔍 Filter by branch_id if available, otherwise fallback to company_id or main branch
     if (!empty($branch_id)) {
@@ -58,25 +59,17 @@ class Job extends Authenticatable
         $query->where('jobs.company_id', $company_id);
     }
 
+    // Apply search filters
+if (!empty(Request::get('job_title'))) {
+    $query->where('jobs.job_title', 'like', '%' . Request::get('job_title') . '%');
+}
 
-        if (!empty(Request::get('id'))) {
-            $query->where('jobs.id', Request::get('id'));
-        }
+if (!empty(Request::get('filter_branch_id'))) {
+    $query->where('jobs.branch_id', Request::get('filter_branch_id'));
+}
 
-        if (!empty(Request::get('job_title'))) {
-            $query->where('jobs.job_title', 'like', '%' . Request::get('job_title') . '%');
-        }
-
-        if (!empty(Request::get('min_salary'))) {
-            $query->where('jobs.min_salary', '>=', Request::get('min_salary'));
-        }
-
-        if (!empty(Request::get('max_salary'))) {
-            $query->where('jobs.max_salary', '<=', Request::get('max_salary'));
-        }
-
-        return $query->paginate(5);
-    }
+    return $query->paginate(5);
+}
 
     public function get_department_single()
     {

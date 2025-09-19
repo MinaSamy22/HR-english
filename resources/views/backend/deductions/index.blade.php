@@ -46,6 +46,21 @@
                                             <input type="text" value="{{ Request()->name }}" name="name"
                                                 class="form-control" placeholder="{{ __('h_deduction.enter_name') }}">
                                         </div>
+                                         <!-- Branch Filter (Only for Main Branch Users) -->
+            @if (session('branch_id') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1)
+            <div class="form-group col-md-2">
+                <label>{{ __('h_employee.branch') }}</label>
+                <select name="filter_branch_id" class="form-control">
+                    <option value="">{{ __('h_employee.all') }}</option>
+                    @foreach($branches as $branch)
+                        <option value="{{ $branch->id }}"
+                                {{ Request()->filter_branch_id == $branch->id ? 'selected' : '' }}>
+                            {{ $branch->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            @endif
 
                                         <div class="form-group col-md-3 d-flex align-items-end">
                                             <button class="btn btn-primary rounded-pill" type="submit"
@@ -84,11 +99,12 @@
                                             <tr>
                                                 <th><input type="checkbox" id="selectAll"></th>
                                                 <th>{{ __('h_deduction.employee_name') }}</th>
+                                                <th>{{ __('h_employee.branch') }}</th>
                                                 <th>{{ __('h_deduction.deduction_reason') }}</th>
                                                 <th>{{ __('h_deduction.money') }}</th>
                                                 <th>{{ __('h_deduction.deduction_date') }}</th>
                                                 <th>{{ __('h_deduction.action') }}</th>{{-- buttons of crud inside it --}}
-                                            </tr>
+                                            </tr> 
                                         </thead>
                                         <tbody>
                                             @forelse ($getRecord as $value)
@@ -97,6 +113,7 @@
                                                     <td><input type="checkbox" class="deductionCheckbox"
                                                             value="{{ $value->id }}"></td>
                                                     <td>{{ $value->name }}</td>
+                                                    <td>{{ $value->branch_name ?? __('h_dashboard.main_branch') }}</td>
                                                     <td>{{ $value->deduction_type }}</td>
                                                     <td>{{ $value->money_deduction }} {{ __('h_deduction.currency') }}
                                                     </td>

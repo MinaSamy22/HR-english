@@ -4,6 +4,7 @@ return [
     // Brand
     'employee_panel' => 'صفحة الموظف',
     'guest_user' => 'مستخدم زائر',
+    'performance' => 'الاداء',
 
     // Navigation
     'home' => 'الرئيسية',

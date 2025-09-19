@@ -28,30 +28,39 @@
                         <div class="card" style="background-color: rgba(255, 255, 255, 0.9); border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
 
                             <form method="get" action="">
-                                <div class="card-body">
-                                    <div class="row">
+    <div class="card-body">
+        <div class="row">
+            <div class="form-group col-md-2 col-sm-6">
+                <label>{{ __('h_bounas.employee_name') }}</label>
+                <input type="text" value="{{ Request()->name }}" name="name" class="form-control" placeholder="{{ __('h_bounas.name_placeholder') }}">
+            </div>
 
-                                        {{-- here the searching options --}}
-                                        {{-- name and value I put the name el mktop fl database --}}
-                                        {{-- md3 for the size of the label md2 small --}}
+            {{-- 🆕 Add Branch Filter (same pattern) --}}
+            @if (session('branch_id') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1)
+            <div class="form-group col-md-2 col-sm-6">
+                <label>{{ __('h_employee.branch') }}</label>
+                <select name="filter_branch_id" class="form-control">
+                    <option value="">{{ __('h_employee.all') }}</option>
+                    @foreach($branches as $branch)
+                        <option value="{{ $branch->id }}" {{ Request()->filter_branch_id == $branch->id ? 'selected' : '' }}>
+                            {{ $branch->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            @endif
 
-                                        <div class="form-group col-md-2 col-sm-6">
-                                            <label>{{ __('h_bounas.employee_name') }}</label>
-                                            <input type="text" value="{{ Request()->name }}" name="name" class="form-control" placeholder="{{ __('h_bounas.name_placeholder') }}">
-                                        </div>
-
-                                        <div class="form-group col-md-3 col-sm-6 d-flex align-items-end">
-                                            <button class="btn btn-primary rounded-pill" type="submit" style="margin-right: 10px;" title="{{ __('h_bounas.search_btn') }}">
-                                                <i class="fas fa-search"></i>
-                                            </button>
-                                            <a href="{{ url('admin/bounas') }}" class="btn btn-success rounded-pill" title="{{ __('h_bounas.reset_btn') }}">
-                                                <i class="fas fa-sync-alt"></i>
-                                            </a>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </form>
+            <div class="form-group col-md-3 col-sm-6 d-flex align-items-end">
+                <button class="btn btn-primary rounded-pill" type="submit" style="margin-right: 10px;" title="{{ __('h_bounas.search_btn') }}">
+                    <i class="fas fa-search"></i>
+                </button>
+                <a href="{{ url('admin/bounas') }}" class="btn btn-success rounded-pill" title="{{ __('h_bounas.reset_btn') }}">
+                    <i class="fas fa-sync-alt"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</form>
                         </div>
 
                      @include('_message')
@@ -72,6 +81,7 @@
                                             <th><input type="checkbox" id="selectAll"></th>
                                             <th>{{ __('h_bounas.table_employee_id') }}</th>
                                             <th>{{ __('h_bounas.table_employee_name') }}</th>
+                                            <th>{{ __('h_employee.branch') }}</th>
                                             <th>{{ __('h_bounas.table_hours') }}</th>
                                             <th>{{ __('h_bounas.table_date') }}</th>
                                             <th>{{ __('h_bounas.table_action') }}</th>{{-- buttons of crud inside it --}}
@@ -86,6 +96,7 @@
                                             <td>
                                             {{ $value->name }} {{-- de bta3t employee name hngebha mn colom name bta3 employee b3d ma 3mlna join fe model Bounas --}}
                                             </td>
+                                            <td>{{ $value->branch_name ?? __('h_dashboard.main_branch') }}</td>
                                             <td>{{ $value->hours }}</td>
                                             <td>{{ date('d-m-Y', strtotime($value->created_at)) }}</td>
 

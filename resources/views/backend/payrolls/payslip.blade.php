@@ -1,17 +1,18 @@
 @extends('backend.layouts.app')
 @section('content')
-    <link rel="stylesheet" href="{{ url('dist/css/payslip.css') }}">
+    <link rel="stylesheet" href="{{ url('dist/css/payslip.css') }}?v=2">
 
     <div class="content-wrapper">
         <section class="content-header">
             <div class="container-fluid">
-            <div class=" mb-2 d-flex justify-content-between">
+                <div class=" mb-2 d-flex justify-content-between">
                     <div class="col-sm-6">
                         <h1>{{ __('dashboard.employee_payslips_report') }}</h1>
                     </div>
                     <div class="">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{ url('admin/payroll') }}">{{ __('dashboard.payroll') }}</a></li>
+                            <li class="breadcrumb-item"><a
+                                    href="{{ url('admin/payroll') }}">{{ __('dashboard.payroll') }}</a></li>
                             <li class="breadcrumb-item active">{{ __('dashboard.employee_payslips') }}</li>
                         </ol>
                     </div>
@@ -35,44 +36,76 @@
                                             <div class="form-group">
                                                 <label for="name">{{ __('dashboard.employee_name') }}</label>
                                                 <input type="text" class="form-control" id="name" name="name"
-                                                    placeholder="{{ __('dashboard.enter_employee_name') }}" value="{{ Request::get('name') }}">
+                                                    placeholder="{{ __('dashboard.enter_employee_name') }}"
+                                                    value="{{ Request::get('name') }}">
                                             </div>
                                         </div>
+
+                                        {{-- 🆕 Add Branch Filter --}}
+                                        @if (session('branch_id') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1)
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label for="filter_branch_id">{{ __('h_employee.branch') }}</label>
+                                                    <select name="filter_branch_id" id="filter_branch_id"
+                                                        class="form-control">
+                                                        <option value="">{{ __('h_employee.all') }}</option>
+                                                        @foreach ($branches as $branch)
+                                                            <option value="{{ $branch->id }}"
+                                                                {{ Request()->filter_branch_id == $branch->id ? 'selected' : '' }}>
+                                                                {{ $branch->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        @endif
                                         <div class="col-md-2">
                                             <div class="form-group">
                                                 <label for="month">{{ __('dashboard.month') }}</label>
                                                 <select class="form-control" id="month" name="month">
                                                     <option value="">{{ __('dashboard.select_month') }}</option>
                                                     <option value="1"
-                                                        {{ Request::get('month') == '1' ? 'selected' : '' }}>{{ __('dashboard.january') }}
+                                                        {{ Request::get('month') == '1' ? 'selected' : '' }}>
+                                                        {{ __('dashboard.january') }}
                                                     </option>
                                                     <option value="2"
-                                                        {{ Request::get('month') == '2' ? 'selected' : '' }}>{{ __('dashboard.february') }}
+                                                        {{ Request::get('month') == '2' ? 'selected' : '' }}>
+                                                        {{ __('dashboard.february') }}
                                                     </option>
                                                     <option value="3"
-                                                        {{ Request::get('month') == '3' ? 'selected' : '' }}>{{ __('dashboard.march') }}</option>
+                                                        {{ Request::get('month') == '3' ? 'selected' : '' }}>
+                                                        {{ __('dashboard.march') }}</option>
                                                     <option value="4"
-                                                        {{ Request::get('month') == '4' ? 'selected' : '' }}>{{ __('dashboard.april') }}</option>
+                                                        {{ Request::get('month') == '4' ? 'selected' : '' }}>
+                                                        {{ __('dashboard.april') }}</option>
                                                     <option value="5"
-                                                        {{ Request::get('month') == '5' ? 'selected' : '' }}>{{ __('dashboard.may') }}</option>
+                                                        {{ Request::get('month') == '5' ? 'selected' : '' }}>
+                                                        {{ __('dashboard.may') }}</option>
                                                     <option value="6"
-                                                        {{ Request::get('month') == '6' ? 'selected' : '' }}>{{ __('dashboard.june') }}</option>
+                                                        {{ Request::get('month') == '6' ? 'selected' : '' }}>
+                                                        {{ __('dashboard.june') }}</option>
                                                     <option value="7"
-                                                        {{ Request::get('month') == '7' ? 'selected' : '' }}>{{ __('dashboard.july') }}</option>
+                                                        {{ Request::get('month') == '7' ? 'selected' : '' }}>
+                                                        {{ __('dashboard.july') }}</option>
                                                     <option value="8"
-                                                        {{ Request::get('month') == '8' ? 'selected' : '' }}>{{ __('dashboard.august') }}
+                                                        {{ Request::get('month') == '8' ? 'selected' : '' }}>
+                                                        {{ __('dashboard.august') }}
                                                     </option>
                                                     <option value="9"
-                                                        {{ Request::get('month') == '9' ? 'selected' : '' }}>{{ __('dashboard.september') }}
+                                                        {{ Request::get('month') == '9' ? 'selected' : '' }}>
+                                                        {{ __('dashboard.september') }}
                                                     </option>
                                                     <option value="10"
-                                                        {{ Request::get('month') == '10' ? 'selected' : '' }}>{{ __('dashboard.october') }}
+                                                        {{ Request::get('month') == '10' ? 'selected' : '' }}>
+                                                        {{ __('dashboard.october') }}
                                                     </option>
                                                     <option value="11"
-                                                        {{ Request::get('month') == '11' ? 'selected' : '' }}>{{ __('dashboard.november') }}
+                                                        {{ Request::get('month') == '11' ? 'selected' : '' }}>
+                                                        {{ __('dashboard.november') }}
                                                     </option>
                                                     <option value="12"
-                                                        {{ Request::get('month') == '12' ? 'selected' : '' }}>{{ __('dashboard.december') }}
+                                                        {{ Request::get('month') == '12' ? 'selected' : '' }}>
+                                                        {{ __('dashboard.december') }}
                                                     </option>
                                                 </select>
                                             </div>
@@ -128,7 +161,7 @@
                                         @endif
                                     </h3>
                                     @if ($getRecord->count() > 0)
-                                        <div class="card-tools">
+                                        <div class="col-sm-13 text-end" style="text-align: right;">
                                             <button type="button" class="btn btn-primary" onclick="printAllPayslips()">
                                                 <i class="fas fa-print"></i> {{ __('dashboard.print_all_results') }}
                                             </button>
@@ -202,7 +235,8 @@
                                                                         </tr>
                                                                     @endif
                                                                     <tr class="table-info">
-                                                                        <td><strong>{{ __('dashboard.total_earnings') }}</strong></td>
+                                                                        <td><strong>{{ __('dashboard.total_earnings') }}</strong>
+                                                                        </td>
                                                                         <td class="text-right">
                                                                             <strong>{{ number_format(($payroll->basic_salary ?? 0) + ($payroll->bounas ?? 0), 2) }}</strong>
                                                                         </td>
@@ -213,13 +247,15 @@
 
                                                         <!-- Deductions Section -->
                                                         <div class="deductions-section mt-3">
-                                                            <h5 class="section-title">{{ __('dashboard.deductions') }}</h5>
+                                                            <h5 class="section-title">{{ __('dashboard.deductions') }}
+                                                            </h5>
                                                             <table class="table table-sm table-bordered">
 
                                                                 <tbody>
                                                                     @if ($payroll->taxes > 0)
                                                                         <tr>
-                                                                            <td>{{ __('dashboard.taxes_and_insurance') }}</td>
+                                                                            <td>{{ __('dashboard.taxes_and_insurance') }}
+                                                                            </td>
                                                                             <td class="text-right">
                                                                                 {{ number_format($payroll->taxes, 2) }}
                                                                             </td>
@@ -235,14 +271,16 @@
                                                                     @endif
                                                                     @if ($payroll->attendance_deduction > 0)
                                                                         <tr>
-                                                                            <td>{{ __('dashboard.attendance_deduction') }}</td>
+                                                                            <td>{{ __('dashboard.attendance_deduction') }}
+                                                                            </td>
                                                                             <td class="text-right">
                                                                                 {{ number_format($payroll->attendance_deduction, 2) }}
                                                                             </td>
                                                                         </tr>
                                                                     @endif
                                                                     <tr class="table-warning">
-                                                                        <td><strong>{{ __('dashboard.total_deductions') }}</strong></td>
+                                                                        <td><strong>{{ __('dashboard.total_deductions') }}</strong>
+                                                                        </td>
                                                                         <td class="text-right">
                                                                             <strong>{{ number_format(($payroll->taxes ?? 0) + ($payroll->deductions ?? 0) + ($payroll->attendance_deduction ?? 0), 2) }}</strong>
                                                                         </td>
@@ -253,26 +291,33 @@
 
                                                         <!-- Attendance Information Table -->
                                                         <div class="attendance-section mt-3">
-                                                            <h5 class="section-title">{{ __('dashboard.attendance_details') }}</h5>
+                                                            <h5 class="section-title">
+                                                                {{ __('dashboard.attendance_details') }}</h5>
                                                             <div class="table-responsive">
                                                                 <table class="table table-bordered table-striped">
 
                                                                     <tbody>
                                                                         <tr>
-                                                                            <td><strong>{{ __('dashboard.days_absent') }}</strong></td>
-                                                                            <td>{{ $payroll->days_absent ?? 0 }} {{ __('dashboard.days') }}</td>
+                                                                            <td><strong>{{ __('dashboard.days_absent') }}</strong>
+                                                                            </td>
+                                                                            <td>{{ $payroll->days_absent ?? 0 }}
+                                                                                {{ __('dashboard.days') }}</td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td><strong>{{ __('dashboard.rest_vacation') }}</strong></td>
-                                                                            <td>{{ $payroll->rest_vacancy ?? 0 }} {{ __('dashboard.days') }}</td>
+                                                                            <td><strong>{{ __('dashboard.rest_vacation') }}</strong>
+                                                                            </td>
+                                                                            <td>{{ $payroll->rest_vacancy ?? 0 }}
+                                                                                {{ __('dashboard.days') }}</td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td><strong>{{ __('dashboard.daily_wage') }}</strong></td>
+                                                                            <td><strong>{{ __('dashboard.daily_wage') }}</strong>
+                                                                            </td>
                                                                             <td>${{ number_format($payroll->daily_wage ?? 0, 2) }}
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td><strong>{{ __('dashboard.work_hours') }}</strong></td>
+                                                                            <td><strong>{{ __('dashboard.work_hours') }}</strong>
+                                                                            </td>
                                                                             <td>{{ $payroll->employee->work_start_time ?? 'N/A' }}
                                                                                 -
                                                                                 {{ $payroll->employee->work_end_time ?? 'N/A' }}
@@ -308,11 +353,13 @@
                                                                 <div class="col-6 text-right">
                                                                     <button class="btn btn-sm btn-primary"
                                                                         onclick="printPayslip({{ $payroll->id }})">
-                                                                        <i class="fas fa-print"></i> {{ __('dashboard.print') }}
+                                                                        <i class="fas fa-print"></i>
+                                                                        {{ __('dashboard.print') }}
                                                                     </button>
                                                                     <button class="btn btn-sm btn-info"
                                                                         onclick="downloadPayslip({{ $payroll->id }})">
-                                                                        <i class="fas fa-download"></i> {{ __('dashboard.download') }}
+                                                                        <i class="fas fa-download"></i>
+                                                                        {{ __('dashboard.download') }}
                                                                     </button>
                                                                 </div>
                                                             </div>

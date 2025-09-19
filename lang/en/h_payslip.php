@@ -41,6 +41,7 @@ return [
     'work_hours' => 'Work Hours',
     'days' => 'days',
 
+
     // Net Pay
     'net_pay' => 'NET PAY',
 

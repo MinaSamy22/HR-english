@@ -10,9 +10,24 @@ class AdministrationController extends Controller
 {
 
 
-public function index(Request $request){
-    $data['getRecord'] = Administration::getRecord($request);     //for reterving managers data from database and retrive model logic
-    return view('backend.administration.list',$data);
+public function index(Request $request)
+{
+    $getRecord = Administration::getRecord($request);
+
+    // Get branches for filter dropdown
+    $branches = \DB::table('branches')
+        ->where('company_id', session('company_id'))
+        ->select('id', 'name', 'is_main')
+        ->orderBy('name')
+        ->get();
+
+    // Get managers for filter dropdown
+    $managers = \DB::table('managers')
+        ->where('company_id', session('company_id'))
+        ->select('id', 'name')
+        ->orderBy('name')
+        ->get();     //for reterving managers data from database and retrive model logic
+    return view('backend.administration.list', compact('getRecord', 'branches', 'managers'));
 
 }
 

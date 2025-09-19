@@ -37,9 +37,14 @@ public function index(Request $request)
     }
 
     // Create a closure for the employee filtering logic
-    $employeeFilterClosure = function($query) use ($showAllCompanyData, $companyId, $filterBranchId) {
+    $employeeFilterClosure = function($query) use ($showAllCompanyData, $companyId, $filterBranchId, $request) {
         if ($showAllCompanyData) {
             $query->where('company_id', $companyId);
+
+            // If filter_branch_id is provided by main branch user, apply it
+            if ($request->filled('filter_branch_id')) {
+                $query->where('branch_id', $request->filter_branch_id);
+            }
         } else {
             $query->where('branch_id', $filterBranchId);
         }
@@ -57,23 +62,38 @@ public function index(Request $request)
             // Apply branch filtering to the name search as well
             if ($showAllCompanyData) {
                 $q->where('company_id', $companyId);
+
+                // Apply branch filter if provided
+                if ($request->filled('filter_branch_id')) {
+                    $q->where('branch_id', $request->filter_branch_id);
+                }
             } else {
                 $q->where('branch_id', $filterBranchId);
             }
         });
     }
 
-    // Filter by month and year
-    if ($request->filled('month') && $request->filled('year')) {
-        $query->where('evaluation_year', $request->year)
-              ->where('evaluation_period', 'LIKE', '%' . $request->month . '%');
-    } elseif ($request->filled('year')) {
+    // Filter by evaluation period (month)
+    if ($request->filled('month')) {
+        $query->where('evaluation_period', 'LIKE', '%' . $request->month . '%');
+    }
+
+    // Filter by year
+    if ($request->filled('year')) {
         $query->where('evaluation_year', $request->year);
     }
 
     // Filter by status
     if ($request->filled('status')) {
         $query->where('status', $request->status);
+    }
+
+    // Filter by overall score range
+    if ($request->filled('min_score')) {
+        $query->where('overall_score', '>=', $request->min_score);
+    }
+    if ($request->filled('max_score')) {
+        $query->where('overall_score', '<=', $request->max_score);
     }
 
     $evaluations = $query->orderBy('created_at', 'desc')->paginate(15);
@@ -91,7 +111,16 @@ public function index(Request $request)
     ->orderBy('name')
     ->get();
 
-    return view('backend.performances.index', compact('evaluations', 'employees'));
+    // Get branches for filter dropdown (only for main branch users)
+    $branches = collect();
+    if ($showAllCompanyData) {
+        $branches = Branch::where('company_id', $companyId)
+            ->select('id', 'name', 'is_main')
+            ->orderBy('name')
+            ->get();
+    }
+
+    return view('backend.performances.index', compact('evaluations', 'employees', 'branches', 'showAllCompanyData'));
 }
     public function create()
     {

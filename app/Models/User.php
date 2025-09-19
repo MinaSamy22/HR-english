@@ -16,7 +16,8 @@ class User extends Authenticatable implements JWTSubject
     protected $fillable = [
     'name', 'email', 'phone_number', 'hire_date', 'birth_date',
     'job_id', 'salary_type', 'salary', 'work_start_time', 'work_end_time',
-    'company_id', 'manager_id', 'department_id', 'is_role', 'password' ,'branch_id','macaddress'
+    'company_id', 'manager_id', 'department_id', 'is_role', 'password' ,'branch_id','macaddress','work_hours_per_day', 'shifts','second_start_time','second_end_time','main_salary'
+
 ];
 
     public function getJWTIdentifier() {
@@ -42,8 +43,8 @@ public static function getRecord($request)
     $company_id = session('company_id');
     $branch_id = session('branch_id');
 
-$query = self::select('users.*', 'branches.name as branch_name', 'branches.is_main')
-        ->leftJoin('branches', 'branches.id', '=', 'users.branch_id');
+    $query = self::select('users.*', 'branches.name as branch_name', 'branches.is_main')
+            ->leftJoin('branches', 'branches.id', '=', 'users.branch_id');
 
     // 🔍 filtering logic for branch and main branch handling
     if (!empty($branch_id)) {
@@ -75,13 +76,30 @@ $query = self::select('users.*', 'branches.name as branch_name', 'branches.is_ma
     if (!empty(Request::get('email'))) {
         $query->where('users.email', 'like', '%' . Request::get('email') . '%');
     }
+
+    // 🆕 NEW: Branch filter by ID (from dropdown)
+    if (!empty(Request::get('filter_branch_id'))) {
+        $query->where('users.branch_id', '=', Request::get('filter_branch_id'));
+    }
+
     // Handle per_page parameter
     $perPage = Request::get('per_page', 5); // Default to 5
 
     $query->orderBy('users.id', 'desc');
 
-    return $perPage === 'all' ? $query->get() : $query->paginate((int)$perPage);
+    if ($perPage === 'all') {
+        return $query->get();
+    } else {
+        $paginatedResults = $query->paginate((int)$perPage);
+        // 🔧 FIX: Append all request parameters to pagination links
+        $paginatedResults->appends(Request::all());
+        return $paginatedResults;
+    }
 }
+
+
+
+
 
 
 

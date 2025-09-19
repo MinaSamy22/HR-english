@@ -10,14 +10,14 @@ return [
 
     // Form labels
     'employee_name' => 'اسم الموظف',
-    'insurance_code' => 'رمز التأمين',
-    'code' => 'الرمز',
+    'insurance_code' => 'كود التأمين',
+    'code' => 'الكود',
     'insurance_name' => 'اسم التأمين',
     'name' => 'الاسم',
     'percentage' => 'النسبة المئوية',
 
     // Placeholders
-    'enter_code' => 'أدخل الرمز',
+    'enter_code' => 'أدخل الكود',
     'enter_name' => 'أدخل الاسم',
     'enter_percent' => 'أدخل النسبة المئوية',
     'enter_insurance_name' => 'أدخل اسم التأمين',
@@ -62,7 +62,7 @@ return [
     // Table headers
     'table_headers' => [
         'employee_name' => 'اسم الموظف',
-        'code' => 'الرمز',
+        'code' => 'الكود',
         'insurance_name' => 'اسم التأمين',
         'percentage' => 'النسبة المئوية',
         'action' => 'الإجراء',

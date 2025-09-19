@@ -9,24 +9,47 @@ use Carbon\Carbon;
 class VacationController extends Controller
 {
     // Method to display the list of vacations
-    public function index(Request $request){
-        $data['getRecord'] = Vacation::getRecord($request); // Retrieving vacation data from the database
-        return view('backend.vacations.index', $data);
-    }
+    public function index(Request $request)
+{
+    $data['getRecord'] = Vacation::getRecord($request);
+
+    // Add branches data like in your jobs controller
+    $data['branches'] = \DB::table('branches')
+        ->where('company_id', session('company_id'))
+        ->select('id', 'name', 'is_main')
+        ->orderBy('name')
+        ->get();
+
+    return view('backend.vacations.index', $data);
+}
 
     // Method to show the add vacation form
-    public function add(Request $request){
+    public function add(Request $request)
+{
     $company_id = session('company_id');
     $branch_id = session('branch_id');
 
-    if (!empty($branch_id)) {
-        $data['getUsers'] = User::where('branch_id', $branch_id)->get();
+    // If branch_id is null, show all users for the company
+    if (empty($branch_id)) {
+        $data['getUsers'] = User::where('company_id', $company_id)->get();
     } else {
-        $data['getUsers'] = User::where('company_id', $company_id)->whereNull('branch_id')->get();
+        // Check if the current branch is the main branch
+        $currentBranch = \DB::table('branches')
+            ->where('id', $branch_id)
+            ->select('is_main')
+            ->first();
+
+        // If it's the main branch (is_main == 1), show all users for the company
+        if ($currentBranch && $currentBranch->is_main == 1) {
+            $data['getUsers'] = User::where('company_id', $company_id)->get();
+        } else {
+            // Otherwise, filter by the specific branch_id
+            $data['getUsers'] = User::where('branch_id', $branch_id)->get();
+        }
     }
 
-        return view('backend.vacations.add', $data);
-    }
+    return view('backend.vacations.add', $data);
+}
 
     // Method to handle the submission of the add vacation form
 public function add_post(Request $request)

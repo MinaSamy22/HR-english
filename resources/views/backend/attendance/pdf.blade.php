@@ -10,15 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ __('dashboard.attendance_report') }}</title>
     <style>
-        /* Font setup */
-        /* @font-face {
-            font-family: 'Amiri';
-            src: url("{{ public_path('fonts/Amiri-Regular.ttf') }}") format('truetype');
-        }
-        @font-face {
-            font-family: 'DejaVu Sans';
-            src: url("{{ public_path('fonts/DejaVuSans.ttf') }}") format('truetype');
-        } */
+
 
         body {
             font-family: {{ $isArabic ? "'Amiri'" : "'DejaVu Sans'" }}, sans-serif;
@@ -89,16 +81,19 @@
 
     <div class="header">
         @if(Auth::user()->company && Auth::user()->company->logo)
-            <img src="{{ public_path('uploads/company_logos/' . Auth::user()->company->logo) }}" alt="Company Logo" class="company-logo">
+            <img src="{{ public_path('../../HR-Uploads/company_logos/' . Auth::user()->company->logo) }}"
+                 alt="Company Logo" class="company-logo">
         @endif
         <div class="report-title">{{ __('dashboard.attendance_report') }}</div>
     </div>
-
+ 
     <table>
         <thead>
             <tr>
                 <th>{{ __('dashboard.employee_id') }}</th>
                 <th>{{ __('dashboard.employee_name') }}</th>
+                <th>{{ __('h_employee.branch') }}</th>
+
                 <th>{{ __('dashboard.attendance') }}</th>
                 <th>{{ __('dashboard.attendance_date') }}</th>
                 <th>{{ __('dashboard.created_date') }}</th>
@@ -109,6 +104,8 @@
             <tr>
                 <td>{{ $value->employee_id }}</td>
                 <td>{{ $value->employee_name }}</td>
+                <td>{{ $value->branch_name ?? __('h_dashboard.main_branch') }}</td>
+                
                 <td>
                     @switch($value->attendance_type)
                         @case(1) {{ __('dashboard.present') }} @break

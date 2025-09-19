@@ -70,4 +70,7 @@ return [
     'payroll_generation_failed_for_following_employees' => 'فشل في إنشاء الراتب للموظفين التاليين:',
     'note_payroll_successfully_generated_for_other_employees' => 'ملاحظة: تم إنشاء الراتب بنجاح للموظفين الآخرين.',
     'generated_for' => 'تم الإنشاء لـ',
+    'is_insure' =>'مؤمن علية؟',
+    'yes'=>'نعم',
+    'no'=> 'لا'
 ];

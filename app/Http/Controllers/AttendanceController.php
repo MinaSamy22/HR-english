@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\Branch;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,14 +13,20 @@ use niklasravnsborg\LaravelPdf\Facades\Pdf;
 class AttendanceController extends Controller
 {
 
-    public function index(Request $request)
-    {
+public function index(Request $request)
+{
+    $data['getRecord'] = Attendance::getRecord();
+    $data['header_title'] = "Attendance Report";
 
-        $data['getRecord'] = Attendance::getRecord(); //function getrecord el fl a5r de 3amlha static func fe model
-        $data['header_title'] = "Attendance Report";
-        return view('backend.attendance.report', $data);
+    // Add branches data like in your other controllers
+    $data['branches'] = \DB::table('branches')
+        ->where('company_id', session('company_id'))
+        ->select('id', 'name', 'is_main')
+        ->orderBy('name')
+        ->get();
 
-    }
+    return view('backend.attendance.report', $data);
+}
 
 
     public function AttendanceEmployee(Request $request)

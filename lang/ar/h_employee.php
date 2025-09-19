@@ -148,6 +148,8 @@ return [
     'department_id' => 'معرف القسم',
     'role' => 'الدور',
     'branch' => 'الفرع',
+    'All_Branches' => 'كل الفروع',
+
 
     // Format notes
     'date_format' => 'يوم/شهر/سنة',
@@ -160,11 +162,26 @@ return [
     'weekly' => '2 => أسبوعي.',
     'daily' => '3 => يومي.',
 
+    'work_hours_per_day'   => 'ساعات العمل في اليوم',
+    'shift_count'          => 'عدد الورديات',
+    'second_work_start_time' => 'بداية الوردية الثانية',
+    'second_work_end_time'   => 'نهاية الوردية الثانية',
+
+    // Placeholders
+    'enter_work_hours_per_day'   => 'أدخل عدد ساعات العمل في اليوم',
+    'enter_shift_count'          => 'أدخل عدد الورديات',
+    'enter_second_work_start_time' => 'أدخل وقت بداية الوردية الثانية',
+    'enter_second_work_end_time'   => 'أدخل وقت نهاية الوردية الثانية',
+    'hours' => 'ساعة',
+    'one_shift'=> 'وردية واحدة',
+    'two_shifts'=> 'ورديتين',
+
     // Success messages (for controller)
     'employee_registered' => 'تم تسجيل الموظف بنجاح.',
     'employee_updated' => 'تم تحديث الموظف بنجاح.',
     'record_deleted' => 'تم حذف الموظف بنجاح',
     'employees_imported' => 'تم استيراد أو تحديث :count موظف بنجاح.',
-    'all' => 'عرض الكل'
+    'all' => 'عرض الكل',
+    'main_salary'=>'راتب اساسي'
 
 ];

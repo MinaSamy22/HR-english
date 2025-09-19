@@ -17,7 +17,7 @@
                             <i class="fas fa-random"></i> {{ __('h_branches.transfer_employees') }}
                         </a>
 
-                    </div>
+                    </div> 
                 </div>
             </div>
         </div>
@@ -111,4 +111,3 @@
         </section>
     </div>
 @endsection
-  

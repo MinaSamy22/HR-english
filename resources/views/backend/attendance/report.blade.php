@@ -20,52 +20,69 @@
                 <section class="col-md-12">
                     <div class="card" style="background-color: rgba(255, 255, 255, 0.9); border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
                         <form method="get" action="">
-                            <div class="card-body">
-                                <div class="row align-items-end">
-                                    <div class="form-group col-md-2">
-                                        <label>{{ __('dashboard.employee_name') }}</label>
-                                        <input type="text" value="{{ Request::get('employee_name') }}" name="employee_name" class="form-control" placeholder="{{ __('dashboard.enter_name') }}">
-                                    </div>
-                                    <div class="form-group col-md-2">
-                                        <label>{{ __('dashboard.attendance_type') }}</label>
-                                        <select class="form-control" name="attendance_type">
-                                            <option value="">{{ __('dashboard.select') }}</option>
-                                            <option {{ (Request::get('attendance_type') == 1) ? 'selected' : '' }} value="1">{{ __('dashboard.present') }}</option>
-                                            <option {{ (Request::get('attendance_type') == 2) ? 'selected' : '' }} value="2">{{ __('dashboard.late') }}</option>
-                                            <option {{ (Request::get('attendance_type') == 3) ? 'selected' : '' }} value="3">{{ __('dashboard.absent') }}</option>
-                                            <option {{ (Request::get('attendance_type') == 4) ? 'selected' : '' }} value="4">{{ __('dashboard.half_day') }}</option>
-                                        </select>
-                                    </div>
+    <div class="card-body">
+        <div class="row align-items-end">
+            <div class="form-group col-md-2">
+                <label>{{ __('dashboard.employee_name') }}</label>
+                <input type="text" value="{{ Request::get('employee_name') }}" name="employee_name" class="form-control" placeholder="{{ __('dashboard.enter_name') }}">
+            </div>
 
-                                    <div class="form-group col-md-2">
-                                        <label>{{ __('dashboard.date') }}</label>
-                                        <input type="date" value="{{ Request()->start_date }}" name="start_date" class="form-control">
-                                    </div>
+            <div class="form-group col-md-2">
+                <label>{{ __('dashboard.attendance_type') }}</label>
+                <select class="form-control" name="attendance_type">
+                    <option value="">{{ __('dashboard.select') }}</option>
+                    <option {{ (Request::get('attendance_type') == 1) ? 'selected' : '' }} value="1">{{ __('dashboard.present') }}</option>
+                    <option {{ (Request::get('attendance_type') == 2) ? 'selected' : '' }} value="2">{{ __('dashboard.late') }}</option>
+                    <option {{ (Request::get('attendance_type') == 3) ? 'selected' : '' }} value="3">{{ __('dashboard.absent') }}</option>
+                    <option {{ (Request::get('attendance_type') == 4) ? 'selected' : '' }} value="4">{{ __('dashboard.half_day') }}</option>
+                </select>
+            </div>
 
-                                    <div class="form-group col-md-2">
-                                        <label>{{ __('dashboard.to_date') }}</label>
-                                        <input type="date" value="{{ Request()->end_date }}" name="end_date" class="form-control">
-                                    </div>
+            {{-- 🆕 Branch Filter --}}
+            @if (session('branch_id') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1)
+            <div class="form-group col-md-2">
+                <label>{{ __('h_employee.branch') }}</label>
+                <select name="filter_branch_id" class="form-control">
+                    <option value="">{{ __('h_employee.all') }}</option>
+                    @foreach($branches as $branch)
+                        <option value="{{ $branch->id }}" {{ Request()->filter_branch_id == $branch->id ? 'selected' : '' }}>
+                            {{ $branch->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            @endif
 
-                                    <div class="form-group col-md-4">
-                                        <div class="d-flex justify-content-between w-100">
-                                            <div>
-                                                <button class="btn btn-primary rounded-pill" type="submit" style="margin-right: 10px;" title="Search">
-                                                    <i class="fas fa-search"></i>
-                                                </button>
-                                                <a href="{{ url('admin/reports') }}" class="btn btn-success rounded-pill" title="Reset">
-                                                    <i class="fas fa-sync-alt"></i>
-                                                </a>
-                                            </div>
-                                            <div>
-                                                <a href="{{ route('reports.exportPdf', Request::all()) }}" class="btn btn-danger">
-                                                    <i class="fas fa-file-pdf"></i> {{ __('dashboard.pdf') }}
-                                                </a>
-                                            </div>
-                                        </div>
-                                </div>
-                            </div>
-                        </form>
+            <div class="form-group col-md-2">
+                <label>{{ __('dashboard.date') }}</label>
+                <input type="date" value="{{ Request()->start_date }}" name="start_date" class="form-control">
+            </div>
+
+            <div class="form-group col-md-2">
+                <label>{{ __('dashboard.to_date') }}</label>
+                <input type="date" value="{{ Request()->end_date }}" name="end_date" class="form-control">
+            </div>
+
+            <div class="form-group col-md-2">
+                <div class="d-flex justify-content-between w-100">
+                    <div>
+                        <button class="btn btn-primary rounded-pill" type="submit" style="margin-right: 10px;" title="Search">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        <a href="{{ url('admin/reports') }}" class="btn btn-success rounded-pill" title="Reset">
+                            <i class="fas fa-sync-alt"></i>
+                        </a>
+                    </div>
+                    <div>
+                        <a href="{{ route('reports.exportPdf', Request::all()) }}" class="btn btn-danger">
+                            <i class="fas fa-file-pdf"></i> {{ __('dashboard.pdf') }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
                     </div>
 
                     @include('_message')
@@ -80,6 +97,7 @@
                                     <tr>
                                         <th>{{ __('dashboard.employee_id') }}</th>
                                         <th>{{ __('dashboard.employee_name') }}</th>
+                                        <th>{{ __('h_employee.branch') }}</th>
                                         <th>{{ __('dashboard.attendance') }}</th>
                                         <th>{{ __('dashboard.attendance_date') }}</th>
                                         <th>{{ __('dashboard.created_date') }}</th>
@@ -90,6 +108,7 @@
                                     <tr>
                                         <td>{{ $value->employee_id }}</td>
                                         <td>{{ $value->employee_name }}</td>
+                                        <td>{{ $value->branch_name ?? __('h_dashboard.main_branch') }}</td>
                                         <td>
                                             @if ($value->attendance_type == 1)
                                             {{ __('dashboard.present') }}

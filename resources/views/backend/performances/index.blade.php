@@ -83,6 +83,22 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <!-- Branch Filter (Only for Main Branch Users) -->
+        @if($showAllCompanyData ?? false)
+        <div class="col-md-2">
+            <div class="form-group">
+                <label for="filter_branch_id">{{ __('h_employee.branch') }}</label>
+                <select name="filter_branch_id" id="filter_branch_id" class="form-control">
+                    <option value="">{{ __('h_employee.all') }}</option>
+                    @foreach($branches as $branch)
+                        <option value="{{ $branch->id }}" {{ request('filter_branch_id') == $branch->id ? 'selected' : '' }}>
+                            {{ $branch->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        @endif
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label>&nbsp;</label>
@@ -130,6 +146,7 @@
                                 <thead>
                                     <tr>
                                         <th>{{ __('h_performance.employee') }}</th>
+                                        <th>{{ __('h_employee.branch') }}</th>
                                         <th>{{ __('h_performance.rating') }}</th>
                                         <th>{{ __('h_performance.status') }}</th>
                                         <th>{{ __('h_performance.evaluated_period') }}</th>
@@ -144,6 +161,8 @@
                                                 <strong>{{ $evaluation->employee->name }}</strong><br>
                                                 <small class="text-muted">{{ $evaluation->employee->email }}</small>
                                             </td>
+                                                <td>    {{ $evaluation->employee->branch->name ?? __('h_dashboard.main_branch') }}
+                                        </td>
 
                                             <td>
     <span class="badge badge-{{ $evaluation->getPerformanceRatingClass() }}">

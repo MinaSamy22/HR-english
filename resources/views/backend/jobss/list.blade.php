@@ -11,16 +11,18 @@
                     </div><!-- /.col -->
                     <div class="col-sm-6 text-end" style="text-align: right;">
 
-                        <form action="{{ url('admin/jobs_export') }}" method="get">
-                            <input type="hidden" name="job_title" value="{{ Request()->job_title }}">
-                            <!-- Include other search parameters as hidden fields -->
-                            <input type="hidden" name="start_date" value="{{ Request()->start_date }}">
-                            <input type="hidden" name="end_date" value="{{ Request()->end_date }}">
 
-                            <button type="submit" class="btn btn-success">
-                                <i class="fas fa-file-excel"></i> {{ __('h_jobs.export') }}
-                            </button>
-                        </form>
+<form action="{{ url('admin/jobs_export') }}" method="get">
+    <input type="hidden" name="job_title" value="{{ Request()->job_title }}">
+    <input type="hidden" name="filter_branch_id" value="{{ Request()->filter_branch_id }}">
+    <!-- Include other search parameters as hidden fields -->
+    <input type="hidden" name="start_date" value="{{ Request()->start_date }}">
+    <input type="hidden" name="end_date" value="{{ Request()->end_date }}">
+
+    <button type="submit" class="btn btn-success">
+        <i class="fas fa-file-excel"></i> {{ __('h_jobs.export') }}
+    </button>
+</form>
                     <br>
 
                     <a href="{{ url('admin/jobs/add') }}" class="btn btn-primary rounded-pill">
@@ -42,31 +44,44 @@
                                 <h3 class="card-title">{{ __('h_jobs.search_jobs') }}</h3>
                             </div>
 
-                            <form method="get" action="">
-                                <div class="card-body">
-                                    <div class="row">
+<form method="get" action="">
+    <div class="card-body">
+        <div class="row">
+            {{-- here the searching options --}}
+            {{-- name and value I put the name el mktop fl database --}}
+            {{-- md3 for the size of the label md2 small --}}
 
-                                        {{-- here the searching options --}}
-                                        {{-- name and value I put the name el mktop fl database --}}
-                                        {{-- md3 for the size of the label md2 small --}}
+            <div class="form-group col-md-2">
+                <label>{{ __('h_jobs.job_title') }}</label>
+                <input type="text" value="{{ Request()->job_title }}" name="job_title" class="form-control" placeholder="{{ __('h_jobs.name_placeholder') }}">
+            </div>
 
-                                        <div class="form-group col-md-2">
-                                            <label>{{ __('h_jobs.job_title') }}</label>
-                                            <input type="text" value="{{ Request()->job_title }}" name="job_title" class="form-control" placeholder="{{ __('h_jobs.name_placeholder') }}">
-                                        </div>
+            {{-- 🆕 Simple Branch Filter --}}
+            @if (session('branch_id') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1)
+            <div class="form-group col-md-2">
+                <label>{{ __('h_employee.branch') }}</label>
+                <select name="filter_branch_id" class="form-control">
+                    <option value="">{{ __('h_employee.all') }}</option>
+                    @foreach($branches as $branch)
+                        <option value="{{ $branch->id }}" {{ Request()->filter_branch_id == $branch->id ? 'selected' : '' }}>
+                            {{ $branch->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            @endif
 
-                                        <div class="form-group col-md-3 d-flex align-items-end">
-                                            <button class="btn btn-primary rounded-pill" type="submit" style="margin-right: 10px;" title="{{ __('h_jobs.search') }}">
-                                                <i class="fas fa-search"></i>
-                                            </button>
-                                            <a href="{{ url('admin/jobs') }}" class="btn btn-success rounded-pill" title="{{ __('h_jobs.reset') }}">
-                                                <i class="fas fa-sync-alt"></i>
-                                            </a>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </form>
+            <div class="form-group col-md-3 d-flex align-items-end">
+                <button class="btn btn-primary rounded-pill" type="submit" style="margin-right: 10px;" title="{{ __('h_jobs.search') }}">
+                    <i class="fas fa-search"></i>
+                </button>
+                <a href="{{ url('admin/jobs') }}" class="btn btn-success rounded-pill" title="{{ __('h_jobs.reset') }}">
+                    <i class="fas fa-sync-alt"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</form>
                         </div>
 
                         @include('_message')
@@ -86,6 +101,7 @@
                                                 <th>{{ __('h_jobs.min_salary') }}</th>
                                                 <th>{{ __('h_jobs.max_salary') }}</th>
                                                 <th>{{ __('h_jobs.department_name') }}</th>
+                                                <th>{{ __('h_employee.branch') }}</th>
                                                 <th>{{ __('h_jobs.created_at') }}</th>
                                                 <th>{{ __('h_jobs.action') }}</th>{{-- buttons of crud inside it --}}
                                             </tr>
@@ -96,9 +112,10 @@
                                             <tr>
                                                 <td>{{ $value->id }}</td>
                                                 <td>{{ $value->job_title }}</td>
-                                                <td>{{ $value->min_salary }}</td>
+                                                <td>{{ $value->min_salary }}</td> 
                                                 <td>{{ $value->max_salary }}</td>
                                                 <td>{{ $value->department_name ?? __('h_jobs.na') }}</td>
+                                                <td>{{ $value->branch_name ?? __('h_dashboard.main_branch') }}</td>
                                                 <td>{{ $value->created_at }}</td>
 
                                                 <td>

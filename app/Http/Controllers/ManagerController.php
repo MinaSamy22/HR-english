@@ -11,10 +11,38 @@ use Illuminate\Http\Request;
 
 class ManagerController extends Controller
 {
+
+
+// Updated index method
 public function index(Request $request){
     $data['getRecord'] = Manager::getRecord();     //for reterving managers data from database and retrive model logic
+    $data['branches'] = $this->getAvailableBranches(); // Add branches for dropdown
     return view('backend.managers.list',$data);
+}
 
+public function getAvailableBranches()
+{
+    $company_id = session('company_id');
+    $branch_id = session('branch_id');
+
+    $branchesQuery = \DB::table('branches')
+        ->where('company_id', $company_id)
+        ->select('id', 'name', 'is_main');
+
+    // Apply same branch access logic as getRecord method
+    if (!empty($branch_id)) {
+        $currentBranch = \DB::table('branches')
+            ->where('id', $branch_id)
+            ->select('is_main')
+            ->first();
+
+        if (!($currentBranch && $currentBranch->is_main == 1)) {
+            // If current branch is not main, only show current branch
+            $branchesQuery->where('id', $branch_id);
+        }
+    }
+
+    return $branchesQuery->orderBy('name')->get();
 }
 
 public function add(Request $request){

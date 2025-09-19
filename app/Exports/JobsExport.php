@@ -25,6 +25,7 @@ return[ // data that will take in excel
     $user->min_salary,
     $user->max_salary,
     $user->department_name,
+    $user->branch_name,
     $cretedAtFormat
 
 ];
@@ -38,6 +39,7 @@ return [
     'Min Salary',
     'Max Salary',
     'Department Name',
+    'Branch',
     'Create At',
 
 

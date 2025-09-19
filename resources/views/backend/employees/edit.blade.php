@@ -131,6 +131,29 @@
                                         </div>
                                     </div>
 
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">{{ __('h_employee.main_salary') }} <span
+                                                style="color: red;">{{ __('h_employee.required_field') }}</span></label>
+                                        <div class="col-sm-10">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="main_salary"
+                                                    id="main_salary_yes" value="1"
+                                                    {{ old('main_salary', $getRecord->main_salary) === 1 ? 'checked' : '' }}>
+                                                <label class="form-check-label"
+                                                    for="main_salary_yes">{{ __('h_employee.yes') }}</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="main_salary"
+                                                    id="main_salary_no" value="0"
+                                                    {{ old('main_salary', $getRecord->main_salary) === 0 ? 'checked' : '' }}>
+                                                <label class="form-check-label"
+                                                    for="main_salary_no">{{ __('h_employee.no') }}</label>
+                                            </div>
+                                            <br>
+                                            <span style="color:red">{{ $errors->first('main_salary') }}</span>
+                                        </div>
+                                    </div>
+
                                     <!-- Add file input field -->
                                     <div class="form-group row">
                                         <label
@@ -152,7 +175,7 @@
                                             <span style="color: red;">{{ __('h_employee.required_field') }}</span></label>
                                         <div class="col-sm-10">
                                             <input type="text" value="{{ $getRecord->macaddress }}" name="macaddress"
-                                                class="form-control" required
+                                                class="form-control"
                                                 placeholder="{{ __('h_employee.enter_mac_address') }}">
                                             <span style="color:red">{{ $errors->first('macaddress') }}</span>
                                         </div>
@@ -181,6 +204,74 @@
                                             <span style="color:red">{{ $errors->first('work_end_time') }}</span>
                                         </div>
                                     </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">{{ __('h_employee.shift_count') }}</label>
+                                        <div class="col-sm-10">
+                                            <select name="shift_count" id="shift_count" class="form-control" required>
+                                                <option value="1"
+                                                    {{ old('shift_count', $getRecord->shift_count ?? 1) == 1 ? 'selected' : '' }}>
+                                                    {{ __('h_employee.one_shift') }}
+                                                </option>
+                                                <option value="2"
+                                                    {{ old('shift_count', $getRecord->shift_count ?? 1) == 2 ? 'selected' : '' }}>
+                                                    {{ __('h_employee.two_shifts') }}
+                                                </option>
+                                            </select>
+                                            <span style="color:red">{{ $errors->first('shift_count') }}</span>
+                                        </div>
+                                    </div>
+
+                                    <div id="second-shift-fields"
+                                        style="display: {{ old('shift_count', $getRecord->shift_count ?? 1) == 2 ? 'block' : 'none' }}">
+                                        <div class="form-group row">
+                                            <label
+                                                class="col-sm-2 col-form-label">{{ __('h_employee.second_work_start_time') }}</label>
+                                            <div class="col-sm-10">
+                                                <input type="time" name="second_work_start_time" class="form-control"
+                                                    value="{{ $getRecord->second_work_start_time ? \Carbon\Carbon::createFromFormat('H:i:s', $getRecord->second_work_start_time)->format('H:i') : '' }}">
+                                                <span
+                                                    style="color:red">{{ $errors->first('second_work_start_time') }}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label
+                                                class="col-sm-2 col-form-label">{{ __('h_employee.second_work_end_time') }}</label>
+                                            <div class="col-sm-10">
+                                                <input type="time" name="second_work_end_time" class="form-control"
+                                                    value="{{ $getRecord->second_work_end_time ? \Carbon\Carbon::createFromFormat('H:i:s', $getRecord->second_work_end_time)->format('H:i') : '' }}">
+                                                <span
+                                                    style="color:red">{{ $errors->first('second_work_end_time') }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <script>
+                                        document.getElementById('shift_count').addEventListener('change', function() {
+                                            const secondShiftFields = document.getElementById('second-shift-fields');
+                                            if (this.value == '2') {
+                                                secondShiftFields.style.display = 'block';
+                                            } else {
+                                                secondShiftFields.style.display = 'none';
+                                                // Clear the values when hiding
+                                                document.querySelector('input[name="second_work_start_time"]').value = '';
+                                                document.querySelector('input[name="second_work_end_time"]').value = '';
+                                            }
+                                        });
+                                    </script>
+
+                                    <div class="form-group row">
+                                        <label
+                                            class="col-sm-2 col-form-lable">{{ __('h_employee.work_hours_per_day') }}</label>
+                                        <div class="col-sm-10">
+                                            <input type="number" name="work_hours_per_day" class="form-control"
+                                                value="{{ old('work_hours_per_day', $getRecord->work_hours_per_day) }}"
+                                                placeholder="{{ __('h_employee.enter_work_hours') }}">
+                                            <span style="color:red">{{ $errors->first('work_hours_per_day') }}</span>
+                                        </div>
+                                    </div>
+
 
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-label">{{ __('h_employee.free_biometric') }} <span
@@ -252,5 +343,4 @@
         </section>
     </div>
     <script src="{{ url('dist/js/employee.js?v=2') }}"></script>
-
 @endsection

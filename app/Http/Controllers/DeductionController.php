@@ -8,21 +8,42 @@ use Illuminate\Http\Request;
 
 class DeductionController extends Controller
 {
-    public function index(Request $request){
-        $data['getRecord'] = Deduction::getRecord($request);    //for reterving  data from database and retrive model logic
-        return view('backend.deductions.index',$data);
+public function index(Request $request)
+{
+    $data['getRecord'] = Deduction::getRecord($request);
 
-    }
+    // 🆕 Add branches for filter dropdown
+    $data['branches'] = \DB::table('branches')
+        ->where('company_id', session('company_id'))
+        ->select('id', 'name', 'is_main')
+        ->orderBy('name')
+        ->get();
 
-    public function add(Request $request)
+    return view('backend.deductions.index', $data);
+}
+
+public function add(Request $request)
 {
     $company_id = session('company_id');
     $branch_id = session('branch_id');
 
-    if (!empty($branch_id)) {
-        $data['getUsers'] = User::where('branch_id', $branch_id)->get();
+    // If branch_id is null, show all users for the company
+    if (empty($branch_id)) {
+        $data['getUsers'] = User::where('company_id', $company_id)->get();
     } else {
-        $data['getUsers'] = User::where('company_id', $company_id)->whereNull('branch_id')->get();
+        // Check if the current branch is the main branch
+        $currentBranch = \DB::table('branches')
+            ->where('id', $branch_id)
+            ->select('is_main')
+            ->first();
+
+        // If it's the main branch (is_main == 1), show all users for the company
+        if ($currentBranch && $currentBranch->is_main == 1) {
+            $data['getUsers'] = User::where('company_id', $company_id)->get();
+        } else {
+            // Otherwise, filter by the specific branch_id
+            $data['getUsers'] = User::where('branch_id', $branch_id)->get();
+        }
     }
 
     return view('backend.deductions.add', $data);
