@@ -73,4 +73,8 @@ return [
     'selected_taxes_deleted_success' => 'تم حذف الضرائب المحددة بنجاح.',
     'taxes_applied_to_payroll' => 'يتم الآن تطبيق الضرائب على كشف المرتبات لهذه الشركة.',
     'taxes_not_applied_to_payroll' => 'لن يتم تطبيق الضرائب على كشف المرتبات لهذه الشركة.',
+
+    'apply_to_payroll' =>'تطبيق علي الرواتب',
+    'yes' =>'نعم',
+    'no' => 'لا'
 ];

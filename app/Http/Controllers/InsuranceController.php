@@ -53,29 +53,31 @@ public function index(Request $request)
             // Otherwise, filter by the specific branch_id
             $data['getEmployees'] = User::where('branch_id', $branch_id)->get();
         }
-    } 
+    }
 
     return view('backend.insurance.add', $data);
 }
 
-    public function add_post(Request $request)
+public function add_post(Request $request)
 {
     // Validate the request data
     $validated = $request->validate([
-        'employee_ids'             => 'required|array|min:1',
-        'employee_ids.*'           => 'exists:users,id',
-        'code'                     => 'required',
-        'name'                     => 'required',
-        'percent'                  => 'required|numeric|min:0|max:100',
+        'employee_ids'      => 'required|array|min:1',
+        'employee_ids.*'    => 'exists:users,id',
+        'code'              => 'required',
+        'name'              => 'required',
+        'percent'           => 'required|numeric|min:0|max:100',
+        'apply_to_payroll'  => 'required|in:0,1',
     ]);
 
     foreach ($validated['employee_ids'] as $employeeId) {
-        $insurance                = new Insurance;
-        $insurance->employee_id  = $employeeId;
-        $insurance->code         = trim($request->code);
-        $insurance->name         = trim($request->name);
-        $insurance->percent      = trim($request->percent);
-        $insurance->company_id   = session('company_id'); // Use session company_id
+        $insurance                 = new Insurance;
+        $insurance->employee_id    = $employeeId;
+        $insurance->code           = trim($request->code);
+        $insurance->name           = trim($request->name);
+        $insurance->percent        = trim($request->percent);
+        $insurance->apply_to_payroll = $request->apply_to_payroll; // ✅ Save radio
+        $insurance->company_id     = session('company_id');
 
         if (session()->has('branch_id')) {
             $insurance->branch_id = session('branch_id');
@@ -84,8 +86,9 @@ public function index(Request $request)
         $insurance->save();
     }
 
-        return redirect('admin/insurance')->with('success', __('h_insurance.insurance_added_success'));
+    return redirect('admin/insurance')->with('success', __('h_insurance.insurance_added_success'));
 }
+
 
 
     public function edit($id)
@@ -95,26 +98,30 @@ public function index(Request $request)
     }
 
     public function edit_update($id, Request $request)
-    {
-        $request->validate([
-            'code'             => 'required|unique:insurances,code,' . $id,
-            'name' => 'required',
-            'percent' => 'required|numeric|min:0|max:100',
-        ]);
+{
+    $request->validate([
+        'code'             => 'required|unique:insurances,code,' . $id,
+        'name'             => 'required',
+        'percent'          => 'required|numeric|min:0|max:100',
+        'apply_to_payroll' => 'required|in:0,1',
+    ]);
 
-        $insurance = Insurance::findOrFail($id);
-        $insurance->code = $request->code;
-        $insurance->name = $request->name;
-        $insurance->percent = $request->percent;
-         // Handle company/branch assignment
-    $insurance->company_id = session('company_id');
+    $insurance = Insurance::findOrFail($id);
+    $insurance->code             = $request->code;
+    $insurance->name             = $request->name;
+    $insurance->percent          = $request->percent;
+    $insurance->apply_to_payroll = $request->apply_to_payroll; // ✅ Save radio value
+    $insurance->company_id       = session('company_id');
+
     if (session()->has('branch_id')) {
         $insurance->branch_id = session('branch_id');
     }
-        $insurance->save();
 
-        return redirect()->route('insurance')->with('success', __('h_insurance.insurance_updated_success'));
-    }
+    $insurance->save();
+
+    return redirect()->route('insurance')->with('success', __('h_insurance.insurance_updated_success'));
+}
+
 
     public function delete($id)
     {

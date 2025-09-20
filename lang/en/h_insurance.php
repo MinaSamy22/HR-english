@@ -65,5 +65,9 @@ return [
         'insurance_name' => 'Insurance Name',
         'percentage' => 'Percentage',
         'action' => 'Action'
-    ]
+    ],
+    'apply_to_payroll' =>'Apply To Payroll',
+    'yes' =>'Yes',
+    'no' => 'No'
+
 ];
