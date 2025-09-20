@@ -73,6 +73,19 @@ return [
     'generated_for' => 'Generated for',
     'is_insure' =>'Is insured?',
     'yes'=>'yes',
-    'no'=> 'no'
+    'no'=> 'no',
 
+    // NEW: Message Templates for proper formatting
+    'success_message' => ':payroll_message<br><br>:generated_for:<br>:employee_list',
+    'error_message' => ':failed_message<br><br>:error_list',
+    'mixed_message' => ':payroll_message<br><br>:generated_for:<br>:employee_list<br><br>:failed_message<br><br>:error_list<br>:note_message',
+    'employee_item' => '• :name',
+    'error_item' => '• :error',
+
+    'payroll_types' => [
+        'daily'   => 'Daily',
+        'weekly'  => 'Weekly',
+        'monthly' => 'Monthly',
+        'other'   => 'Other',
+    ],
 ];

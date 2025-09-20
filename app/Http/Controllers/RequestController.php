@@ -14,67 +14,67 @@ use App\Models\Attendance; // Add this import
 
 class RequestController extends Controller
 {
-public function index()
-{
-    // Get current company ID and branch ID from session
-    $companyId = session('company_id');
-    $branchId = session('branch_id');
+    public function index()
+    {
+        // Get current company ID and branch ID from session
+        $companyId = session('company_id');
+        $branchId = session('branch_id');
 
-    // Determine filtering logic based on branch_id and is_main
-    $showAllCompanyRequests = false;
-    $filterBranchId = null;
+        // Determine filtering logic based on branch_id and is_main
+        $showAllCompanyRequests = false;
+        $filterBranchId = null;
 
-    if ($branchId) {
-        $currentBranch = Branch::find($branchId);
-        if ($currentBranch && $currentBranch->is_main == 1) {
-            // Main branch - show all company requests
+        if ($branchId) {
+            $currentBranch = Branch::find($branchId);
+            if ($currentBranch && $currentBranch->is_main == 1) {
+                // Main branch - show all company requests
+                $showAllCompanyRequests = true;
+            } else {
+                // Regular branch - show only this branch's requests
+                $filterBranchId = $branchId;
+            }
+        } else {
+            // No branch_id in session - show all company requests
             $showAllCompanyRequests = true;
-        } else {
-            // Regular branch - show only this branch's requests
-            $filterBranchId = $branchId;
         }
-    } else {
-        // No branch_id in session - show all company requests
-        $showAllCompanyRequests = true;
+
+        // Create a closure for the user filtering logic
+        $userFilterClosure = function($query) use ($showAllCompanyRequests, $companyId, $filterBranchId) {
+            if ($showAllCompanyRequests) {
+                $query->where('company_id', $companyId);
+            } else {
+                $query->where('branch_id', $filterBranchId);
+            }
+        };
+
+        // Get pending requests with consistent filtering
+        $pendingVacations = VacationRequest::where('status', 'pending')
+            ->whereHas('user', $userFilterClosure)
+            ->with('user')
+            ->get();
+
+        $pendingExtraTimes = ExtraTimeRequest::where('status', 'pending')
+            ->whereHas('user', $userFilterClosure)
+            ->with('user')
+            ->get();
+
+        $pendingResignations = Resignation::where('status', 'pending')
+            ->whereHas('user', $userFilterClosure)
+            ->with('user')
+            ->get();
+
+        $pendingLateRemovals = LateRemovalRequest::where('status', 'pending')
+            ->whereHas('user', $userFilterClosure)
+            ->with('user')
+            ->get();
+
+        return view('backend.requests.pending', compact(
+            'pendingVacations',
+            'pendingExtraTimes',
+            'pendingResignations',
+            'pendingLateRemovals'
+        ));
     }
-
-    // Create a closure for the user filtering logic
-    $userFilterClosure = function($query) use ($showAllCompanyRequests, $companyId, $filterBranchId) {
-        if ($showAllCompanyRequests) {
-            $query->where('company_id', $companyId);
-        } else {
-            $query->where('branch_id', $filterBranchId);
-        }
-    };
-
-    // Get pending requests with consistent filtering
-    $pendingVacations = VacationRequest::where('status', 'pending')
-        ->whereHas('user', $userFilterClosure)
-        ->with('user')
-        ->get();
-
-    $pendingExtraTimes = ExtraTimeRequest::where('status', 'pending')
-        ->whereHas('user', $userFilterClosure)
-        ->with('user')
-        ->get();
-
-    $pendingResignations = Resignation::where('status', 'pending')
-        ->whereHas('user', $userFilterClosure)
-        ->with('user')
-        ->get();
-
-    $pendingLateRemovals = LateRemovalRequest::where('status', 'pending')
-        ->whereHas('user', $userFilterClosure)
-        ->with('user')
-        ->get();
-
-    return view('backend.requests.pending', compact(
-        'pendingVacations',
-        'pendingExtraTimes',
-        'pendingResignations',
-        'pendingLateRemovals'
-    ));
-}
 
     public function processed(Request $request)
     {
@@ -189,6 +189,7 @@ public function index()
         }
 
         $model->status = 'accepted';
+        $model->is_seen = 0; // Mark as unseen for notifications
         $model->save();
 
         // If it's a vacation request, save to vacations table
@@ -219,9 +220,107 @@ public function index()
         }
 
         $model->status = 'rejected';
+        $model->is_seen = 0; // Mark as unseen for notifications
         $model->save();
 
         return back()->with('success', __('h_requests.reject message'));
+    }
+
+    /**
+     * Show a processed request and mark it as seen
+     */
+   /**
+ * Show a processed request and mark it as seen
+ */
+public function showProcessedRequest($type, $id)
+{
+    $model = $this->getModelInstance($type, $id);
+
+    // Verify the request belongs to the current company
+    if (!$this->belongsToCurrentCompany($model)) {
+        abort(403, 'Unauthorized access to this request.');
+    }
+
+    // Mark as seen
+    $model->is_seen = 1;
+    $model->save();
+
+    // Redirect to appropriate route based on request type
+    switch ($type) {
+        case 'vacation':
+            return redirect()->route('vacation.index');
+        case 'extra_time':
+            return redirect()->route('employee.extra.index');
+        case 'resignation':
+            return redirect()->route('employee.resignation.index');
+        case 'late_removal':
+            return redirect()->route('employee.late.index');
+        default:
+            // Fallback to the original view if type doesn't match
+            return view('backend.requests.show', compact('model', 'type'));
+    }
+}
+
+
+    /**
+     * Mark all processed notifications as seen (AJAX endpoint)
+     */
+    public function markAllProcessedAsSeen()
+    {
+        // Get current company ID and branch ID from session
+        $companyId = session('company_id');
+        $branchId = session('branch_id');
+
+        if (!$companyId) {
+            return response()->json(['error' => 'No company session'], 400);
+        }
+
+        // Determine filtering logic based on branch_id and is_main
+        $showAllCompanyRequests = false;
+        $filterBranchId = null;
+
+        if ($branchId) {
+            $currentBranch = Branch::find($branchId);
+            if ($currentBranch && $currentBranch->is_main == 1) {
+                $showAllCompanyRequests = true;
+            } else {
+                $filterBranchId = $branchId;
+            }
+        } else {
+            $showAllCompanyRequests = true;
+        }
+
+        // Create a closure for the user filtering logic
+        $userFilterClosure = function($query) use ($showAllCompanyRequests, $companyId, $filterBranchId) {
+            if ($showAllCompanyRequests) {
+                $query->where('company_id', $companyId);
+            } else {
+                $query->where('branch_id', $filterBranchId);
+            }
+        };
+
+        // Mark all unseen processed requests as seen
+        VacationRequest::whereIn('status', ['accepted', 'rejected'])
+            ->where('is_seen', 0)
+            ->whereHas('user', $userFilterClosure)
+            ->update(['is_seen' => 1]);
+
+        ExtraTimeRequest::whereIn('status', ['accepted', 'rejected'])
+            ->where('is_seen', 0)
+            ->whereHas('user', $userFilterClosure)
+            ->update(['is_seen' => 1]);
+
+        Resignation::whereIn('status', ['accepted', 'rejected'])
+            ->where('is_seen', 0)
+            ->whereHas('user', $userFilterClosure)
+            ->update(['is_seen' => 1]);
+
+        LateRemovalRequest::whereIn('status', ['accepted', 'rejected'])
+            ->where('is_seen', 0)
+            ->whereHas('user', $userFilterClosure)
+            ->update(['is_seen' => 1]);
+
+        return response()->json(['success' => true]);
     }
 
     /**

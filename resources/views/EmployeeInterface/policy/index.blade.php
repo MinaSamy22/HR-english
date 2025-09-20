@@ -133,9 +133,14 @@
                             </div>
                             <div class="card-body">
                                 @php
-                                    $workingDays = isset($setting->working_days)
-                                        ? json_decode($setting->working_days, true)
+                                    $emp = auth()->guard('employee')->user() ?? auth()->user();
+
+                                    // Retrieve working days with fallback logic
+                                    $workingDaysJson = $emp->working_days ?? ($setting->working_days ?? null);
+                                    $workingDays = $workingDaysJson
+                                        ? json_decode($workingDaysJson, true)
                                         : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+
                                     $allDays = [
                                         'Sunday',
                                         'Monday',
@@ -146,13 +151,13 @@
                                         'Saturday',
                                     ];
                                     $dayIcons = [
-                                        'Sunday' => 'fas fa-sun',
+                                        'Sunday' => 'fas fa-briefcase',
                                         'Monday' => 'fas fa-briefcase',
                                         'Tuesday' => 'fas fa-briefcase',
                                         'Wednesday' => 'fas fa-briefcase',
                                         'Thursday' => 'fas fa-briefcase',
                                         'Friday' => 'fas fa-briefcase',
-                                        'Saturday' => 'fas fa-moon',
+                                        'Saturday' => 'fas fa-briefcase',
                                     ];
                                 @endphp
                                 <div class="row">

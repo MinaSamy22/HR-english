@@ -109,6 +109,7 @@
                                                 <th>{{ __('h_insurance.table_headers.code') }}</th>
                                                 <th>{{ __('h_insurance.table_headers.insurance_name') }}</th>
                                                 <th>{{ __('h_insurance.table_headers.employee_name') }}</th>
+                                                <th>{{ __('h_tax.apply_to_payroll') }}</th>
                                                 <th>{{ __('h_employee.branch') }}</th>
 
                                                 <th>{{ __('h_insurance.table_headers.percentage') }}</th>
@@ -123,6 +124,12 @@
                                                     <td>{{ $value->code }}</td>
                                                     <td>{{ $value->name }}</td>
                                                     <td>{{ $value->employee_name }}</td>
+                                                     <td>
+                                                        <span
+                                                            class="badge {{ $value->apply_to_payroll == 1 ? 'badge-success' : 'badge-warning' }}">
+                                                            {{ $value->apply_to_payroll == 1 ? __('h_insurance.yes') : __('h_insurance.no') }}
+                                                        </span>
+                                                    </td>
                                                     <td>{{ $value->branch_name ?? __('h_dashboard.main_branch') }}</td>
 
                                                     <td>{{ $value->percent }}%</td>

@@ -114,6 +114,7 @@
                                                 <th>{{ __('h_tax.code') }}</th>
                                                 <th>{{ __('h_tax.tax_name') }}</th>
                                                 <th>{{ __('h_tax.employee_name') }}</th>
+                                                <th>{{ __('h_tax.apply_to_payroll') }}</th>
                                                 <th>{{ __('h_employee.branch') }}</th>
                                                 <th>{{ __('h_tax.percentage') }}</th>
                                                 <th>{{ __('h_tax.action') }}</th>
@@ -127,6 +128,12 @@
                                                     <td>{{ $value->code }}</td>
                                                     <td>{{ $value->name }}</td>
                                                     <td>{{ $value->employee_name }}</td>
+                                                    <td>
+                                                        <span
+                                                            class="badge {{ $value->apply_to_payroll == 1 ? 'badge-success' : 'badge-warning' }}">
+                                                            {{ $value->apply_to_payroll == 1 ? __('h_tax.yes') : __('h_tax.no') }}
+                                                        </span>
+                                                    </td>
                                                     <td>{{ $value->branch_name ?? __('h_dashboard.main_branch') }}</td>
                                                     <td>{{ $value->percent }}%</td>
                                                     <td>

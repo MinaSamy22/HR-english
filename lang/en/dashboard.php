@@ -384,6 +384,7 @@ return [
     'working_days_updated_successfully' => 'Working days updated successfully',
     'failed_to_update_working_days' => 'Failed to update working days',
 
+
     'invalid_end_time' => 'Invalid end time set for your account. Please contact HR.',
     'invalid_start_time' => 'Invalid start time set for your account. Please contact HR.',
 ];

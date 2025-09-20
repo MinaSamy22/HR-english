@@ -72,5 +72,12 @@ return [
     'generated_for' => 'تم الإنشاء لـ',
     'is_insure' =>'مؤمن علية؟',
     'yes'=>'نعم',
-    'no'=> 'لا'
+    'no'=> 'لا',
+
+     'payroll_types' => [
+        'daily'   => 'يومي',
+        'weekly'  => 'أسبوعي',
+        'monthly' => 'شهري',
+        'other'   => 'أخرى',
+    ],
 ];

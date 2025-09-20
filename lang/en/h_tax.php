@@ -73,4 +73,10 @@ return [
     'selected_taxes_deleted_success' => 'Selected taxes deleted successfully.',
     'taxes_applied_to_payroll' => 'Taxes are now applied to payroll for this company.',
     'taxes_not_applied_to_payroll' => 'Taxes will no longer be applied to payroll for this company.',
+
+    'apply_to_payroll' =>'Apply To Payroll',
+    'yes' =>'Yes',
+    'no' => 'No'
+
+
 ];

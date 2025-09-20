@@ -8,57 +8,117 @@ use App\Models\Tax;
 use App\Models\User;
 use App\Models\Vacation;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class PayrollService
 {
+
 public function calculateAttendanceDeductions($employee, $salary, $startDate, $endDate, $companyId, $payrollType = 'monthly')
 {
     if (!$employee || !$employee->company || !$employee->company->attendanceSetting) {
-        return [0, 0, 0];
+        return [0, 0, 0, 0]; // خصم, أجر يومي, غياب, صافي مرتب
     }
 
     $settings = $employee->company->attendanceSetting;
-    $workingDays = json_decode($settings->working_days ?? '[]', true);
 
-    // STEP 1: Base daily wage logic by payroll type
-    if ($payrollType === 'daily') {
-        $dailyWage = $salary; // For daily payroll, salary = wage per day
-    } elseif ($payrollType === 'weekly') {
-        $dailyWage = round($salary / 7, 2); // Temporarily divided; will adjust below
-    } else {
-        $dailyWage = round($salary / 30, 2); // Default monthly logic
+    // 1. تحميل أيام العمل من الموظف أو الشركة
+    $rawWorking = json_decode($employee->working_days ?? '[]', true);
+    if (empty($rawWorking)) {
+        $rawWorking = json_decode($settings->working_days ?? '[]', true);
+    }
+    if (!is_array($rawWorking)) $rawWorking = [];
+
+    $numToName = [0=>'Sunday',1=>'Monday',2=>'Tuesday',3=>'Wednesday',4=>'Thursday',5=>'Friday',6=>'Saturday'];
+    $shortMap = [
+        'Mon'=>'Monday','Tue'=>'Tuesday','Wed'=>'Wednesday','Thu'=>'Thursday','Fri'=>'Friday','Sat'=>'Saturday','Sun'=>'Sunday',
+        'mon'=>'Monday','tue'=>'Tuesday','wed'=>'Wednesday','thu'=>'Thursday','fri'=>'Friday','sat'=>'Saturday','sun'=>'Sunday'
+    ];
+    $arabicMap = [
+        'السبت'=>'Saturday','الأحد'=>'Sunday','الاحد'=>'Sunday','الاثنين'=>'Monday','الإثنين'=>'Monday','الثلاثاء'=>'Tuesday',
+        'الأربعاء'=>'Wednesday','الخميس'=>'Thursday','الجمعة'=>'Friday'
+    ];
+
+    $workingDays = [];
+    foreach ($rawWorking as $wd) {
+        $wd = trim((string)$wd);
+        if ($wd === '') continue;
+
+        if (is_numeric($wd)) {
+            $n = (int)$wd;
+            if ($n >= 0 && $n <= 6) {
+                $workingDays[] = $numToName[$n];
+            } elseif ($n >=1 && $n <=7) {
+                $workingDays[] = $numToName[$n % 7];
+            }
+            continue;
+        }
+
+        $uc = ucfirst(strtolower($wd));
+        if (in_array($uc, array_values($numToName))) {
+            $workingDays[] = $uc;
+            continue;
+        }
+
+        if (isset($shortMap[$wd])) {
+            $workingDays[] = $shortMap[$wd];
+            continue;
+        }
+
+        if (isset($arabicMap[$wd])) {
+            $workingDays[] = $arabicMap[$wd];
+            continue;
+        }
+    }
+    $workingDays = array_values(array_unique($workingDays));
+    if (empty($workingDays)) {
+        $workingDays = ['Monday','Tuesday','Wednesday','Thursday','Friday'];
     }
 
-    $attendanceRecords = $employee->attendances()
+    // 2. حساب الأجر اليومي
+    if ($payrollType === 'daily') {
+        $dailyWage = floatval($salary);
+    } elseif ($payrollType === 'weekly') {
+        $dailyWage = round($salary / 7, 2);
+    } else {
+        $dailyWage = round($salary / 30, 2);
+    }
+
+    // 3. تحميل الحضور
+    $attendanceCollection = $employee->attendances()
         ->whereBetween('attendance_date', [$startDate, $endDate])
         ->get()
-        ->keyBy('attendance_date');
+        ->mapWithKeys(function ($att) {
+            $d = Carbon::parse($att->attendance_date)->format('Y-m-d');
+            return [$d => $att];
+        });
 
+    // 4. العطلات الرسمية
     $officialHolidays = collect(json_decode($settings->official_holidays ?? '[]', true))
-        ->map(fn($date) => is_array($date) ? date('Y-m-d', strtotime($date['date'] ?? '')) : date('Y-m-d', strtotime($date)))
+        ->map(fn($item) => is_array($item) ? ($item['date'] ?? null) : $item)
         ->filter()
+        ->map(fn($d) => Carbon::parse($d)->format('Y-m-d'))
         ->toArray();
 
+    // 5. الإجازات
     $vacations = $employee->vacations()
         ->whereDate('start_date', '<=', $endDate)
         ->whereDate('end_date', '>=', $startDate)
         ->get();
 
     $vacationDates = [];
-    foreach ($vacations as $vacation) {
-        $vacPeriod = new \DatePeriod(
-            new \DateTime($vacation->start_date),
+    foreach ($vacations as $vac) {
+        $period = new \DatePeriod(
+            new \DateTime($vac->start_date),
             new \DateInterval('P1D'),
-            (new \DateTime($vacation->end_date))->modify('+1 day')
+            (new \DateTime($vac->end_date))->modify('+1 day')
         );
-        foreach ($vacPeriod as $vacDate) {
-            $vacationDates[] = $vacDate->format('Y-m-d');
-        }
+        foreach ($period as $d) $vacationDates[] = $d->format('Y-m-d');
     }
 
-    $deduction = 0;
+    // 6. الحساب
+    $deduction = 0.0;
     $daysAbsent = 0;
-    $actualWorkedDays = 0;
+    $attendedDays = 0;
 
     $period = new \DatePeriod(
         new \DateTime($startDate),
@@ -66,48 +126,56 @@ public function calculateAttendanceDeductions($employee, $salary, $startDate, $e
         (new \DateTime($endDate))->modify('+1 day')
     );
 
-    foreach ($period as $date) {
-        $dayName = $date->format('l');
-        $formattedDate = $date->format('Y-m-d');
+    foreach ($period as $dt) {
+        $dayName = $dt->format('l');
+        $formattedDate = $dt->format('Y-m-d');
 
-        if (!in_array($dayName, $workingDays) || in_array($formattedDate, $officialHolidays)) {
-            continue;
-        }
+        if (!in_array($dayName, $workingDays)) continue;
+        if (in_array($formattedDate, $officialHolidays)) continue;
+        if (in_array($formattedDate, $vacationDates)) continue;
 
-        if (in_array($formattedDate, $vacationDates)) {
-            continue;
-        }
+        $record = $attendanceCollection->get($formattedDate);
 
-        $record = $attendanceRecords[$formattedDate] ?? null;
-        $type = $record->attendance_type ?? 3;
+        $rawType = $record->attendance_type ?? null;
+        $type = is_numeric($rawType) ? (int)$rawType : null;
 
-        if (!$record || $type == 3) {
-            $daysAbsent++;
-            $deduction += $dailyWage;
-        } elseif ($type == 2) {
+        if ($type === 1) { // حاضر
+            $attendedDays++;
+        } elseif ($type === 2) { // متأخر
+            $attendedDays++;
             $latePercent = $settings->late_deduction_percentage ?? 0;
             $deduction += $dailyWage * ($latePercent / 100);
-            $actualWorkedDays++;
-        } elseif ($type == 4) {
-            $halfDayPercent = $settings->half_day_deduction_percentage ?? 0;
-            $deduction += $dailyWage * ($halfDayPercent / 100);
-            $actualWorkedDays++;
-        } else {
-            $actualWorkedDays++; // Present (type 1)
+        } elseif ($type === 3) { // غياب
+            $daysAbsent++;
+            $deduction += $dailyWage;
+        } elseif ($type === 4) { // نصف يوم
+            $attendedDays += 0.5;
+            $halfPercent = $settings->half_day_deduction_percentage ?? 0;
+            $deduction += $dailyWage * ($halfPercent / 100);
+        } else { // مفيش سجل → غياب
+            $daysAbsent++;
+            $deduction += $dailyWage;
         }
     }
 
-    // STEP 2: Weekly payroll full salary logic
-    if ($payrollType === 'weekly' && $actualWorkedDays === 7) {
-        $dailyWage = round($salary / 7, 2); // Keep same daily wage
-        $deduction = 0; // No deductions since they attended 7 days
-        $daysAbsent = 0;
+    // تطبيق الشروط الجديدة بناءً على عدد أيام الحضور
+    if ($attendedDays < 15) {
+        // إذا كان الحضور أقل من 15 يوم
+        if ($attendedDays == 0) {
+            // إذا لم يحضر إطلاقاً
+            $netPay = 0;
+            $deduction = $salary; // الخصم يساوي الراتب بالكامل
+        } else {
+            // إذا حضر أقل من 15 يوم
+            $netPay = $attendedDays * $dailyWage;
+            $deduction = $salary - $netPay; // الخصم هو الفرق بين الراتب الأساسي والأجر المستحق
+        }
+    } else {
+        // إذا حضر 15 يوم أو أكثر
+        $netPay = $salary - $deduction;
     }
 
-    // STEP 3: Cap the deduction
-    $deduction = min($deduction, $salary);
-
-    return [$deduction, $dailyWage, $daysAbsent];
+    return [$deduction, $dailyWage, $daysAbsent, $netPay];
 }
 
 

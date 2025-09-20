@@ -80,6 +80,23 @@
                                         </div>
                                     </div>
 
+                                <div class="form-group row">
+    <label class="col-sm-2 col-form-lable">{{ __('h_insurance.apply_to_payroll') }}</label>
+    <div class="col-sm-10">
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="apply_to_payroll" id="apply_yes"
+                value="1" {{ old('apply_to_payroll') == '1' ? 'checked' : '' }}>
+            <label class="form-check-label" for="apply_yes">{{ __('h_insurance.yes') }}</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="apply_to_payroll" id="apply_no"
+                value="0" {{ old('apply_to_payroll', '0') == '0' ? 'checked' : '' }}>
+            <label class="form-check-label" for="apply_no">{{ __('h_insurance.no') }}</label>
+        </div>
+    </div>
+</div>
+
+
                                 </div>
 
                                 <div class="card-footer">

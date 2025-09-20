@@ -66,7 +66,10 @@ return [
         'insurance_name' => 'اسم التأمين',
         'percentage' => 'النسبة المئوية',
         'action' => 'الإجراء',
-    ]
+    ],
 
+    'apply_to_payroll' =>'تطبيق علي الرواتب',
+    'yes' =>'نعم',
+    'no' => 'لا'
 
 ];
