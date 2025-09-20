@@ -322,4 +322,68 @@ return [
         'paternity' => 'paternity',
         'personal' => 'personal',
     ],
+
+    'processed_notifications' => 'Processed Requests',
+    'new' => 'new',
+    'mark_all_seen' => 'Mark All Seen',
+    'accepted' => 'Accepted',
+    'rejected' => 'Rejected',
+    'no_processed_notifications' => 'No processed requests',
+    'view_all_processed' => 'View All Processed',
+    'request_accepted' => 'accepted',
+    'request_rejected' => 'rejected',
+
+    // Request type messages
+    'vacation_request_processed' => 'The <strong>vacation request (:type)</strong> has been :status',
+'extra_time_request_processed' => 'The <strong>overtime request for :hours hours</strong> has been :status',
+'resignation_request_processed' => 'The <strong>resignation request</strong> has been :status',
+'late_removal_request_processed' => 'The <strong>late removal request</strong> on <strong>:date</strong> has been :status',
+
+ // Work Hours and Working Days Assignment
+    'assign_work_hours' => 'Assign Work Hours',
+    'select_work_hours' => 'Select Work Hours (per day)',
+    'assign_hours_to_selected_employees' => 'Assign Hours to Selected Employees',
+
+    // Working Days
+    'assign_working_days' => 'Assign Working Days',
+    'select_working_days' => 'Select Working Days',
+    'assign_working_days_to_selected_employees' => 'Assign Working Days to Selected Employees',
+
+    // Employee Table
+    'employees' => 'Employees',
+    'employee_name' => 'Employee Name',
+    'email' => 'Email',
+    'current_hours' => 'Current Hours',
+    'working_days' => 'Working Days',
+    'hrs' => 'hrs',
+
+    // Days of the week
+    'sunday' => 'Sunday',
+    'monday' => 'Monday',
+    'tuesday' => 'Tuesday',
+    'wednesday' => 'Wednesday',
+    'thursday' => 'Thursday',
+    'friday' => 'Friday',
+    'saturday' => 'Saturday',
+
+    // Day abbreviations
+    'sun' => 'Sun',
+    'mon' => 'Mon',
+    'tue' => 'Tue',
+    'wed' => 'Wed',
+    'thu' => 'Thu',
+    'fri' => 'Fri',
+    'sat' => 'Sat',
+
+    // Additional
+    'select_employees_to_update' => 'Select employees to update their work hours or working days',
+    'not_set' => 'Not Set',
+
+     'working_days_updated_for_employees' => 'Working days updated for :count employees',
+    'employee_not_found_or_access_denied' => 'Employee not found or access denied.',
+    'working_days_updated_successfully' => 'Working days updated successfully',
+    'failed_to_update_working_days' => 'Failed to update working days',
+
+    'invalid_end_time' => 'Invalid end time set for your account. Please contact HR.',
+    'invalid_start_time' => 'Invalid start time set for your account. Please contact HR.',
 ];

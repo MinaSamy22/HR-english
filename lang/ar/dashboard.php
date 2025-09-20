@@ -300,4 +300,69 @@ return [
         'personal' => 'شخصي',
 
     ],
+
+    'processed_notifications' => 'الطلبات المعالجة',
+    'new' => 'جديد',
+    'mark_all_seen' => 'تحديد الكل كمقروء',
+    'accepted' => 'مقبول',
+    'rejected' => 'مرفوض',
+    'no_processed_notifications' => 'لا توجد طلبات معالجة',
+    'view_all_processed' => 'عرض جميع المعالجة',
+    'request_accepted' => 'قبول',
+    'request_rejected' => 'رفض',
+
+   // Request type messages
+'vacation_request_processed' => 'تم :status <strong>طلب إجازة :type</strong>',
+'extra_time_request_processed' => 'تم :status <strong>طلب العمل الإضافي لـ :hours ساعات</strong>',
+'resignation_request_processed' => 'تم :status <strong>طلب الاستقالة</strong>',
+'late_removal_request_processed' => 'تم :status <strong>طلب إزالة التأخير</strong> بتاريخ :date',
+
+
+    // Work Hours and Working Days Assignment
+    'assign_work_hours' => 'تعيين ساعات العمل',
+    'select_work_hours' => 'حدد ساعات العمل (يومياً)',
+    'assign_hours_to_selected_employees' => 'تعيين الساعات للموظفين المحددين',
+
+    // Working Days
+    'assign_working_days' => 'تعيين أيام العمل',
+    'select_working_days' => 'حدد أيام العمل',
+    'assign_working_days_to_selected_employees' => 'تعيين أيام العمل للموظفين المحددين',
+
+    // Employee Table
+    'employees' => 'الموظفون',
+    'employee_name' => 'اسم الموظف',
+    'email' => 'البريد الإلكتروني',
+    'current_hours' => 'الساعات الحالية',
+    'working_days' => 'أيام العمل',
+    'hrs' => 'ساعة',
+
+    // Days of the week
+    'sunday' => 'الأحد',
+    'monday' => 'الاثنين',
+    'tuesday' => 'الثلاثاء',
+    'wednesday' => 'الأربعاء',
+    'thursday' => 'الخميس',
+    'friday' => 'الجمعة',
+    'saturday' => 'السبت',
+
+    // Day abbreviations
+    'sun' => 'أحد',
+    'mon' => 'اثنين',
+    'tue' => 'ثلاثاء',
+    'wed' => 'أربعاء',
+    'thu' => 'خميس',
+    'fri' => 'جمعة',
+    'sat' => 'سبت',
+
+    // Additional
+    'select_employees_to_update' => 'حدد الموظفين لتحديث ساعات العمل أو أيام العمل الخاصة بهم',
+    'not_set' => 'غير محدد',
+
+    'working_days_updated_for_employees' => 'تم تحديث أيام العمل لـ :count موظف',
+    'employee_not_found_or_access_denied' => 'الموظف غير موجود أو تم رفض الوصول.',
+    'working_days_updated_successfully' => 'تم تحديث أيام العمل بنجاح',
+    'failed_to_update_working_days' => 'فشل في تحديث أيام العمل',
+
+    'invalid_end_time' => 'تم تعيين وقت نهاية غير صالح لحسابك. يرجى الاتصال بالموارد البشرية.',
+    'invalid_start_time' => 'تم تعيين وقت بداية غير صالح لحسابك. يرجى الاتصال بالموارد البشرية.',
 ];
