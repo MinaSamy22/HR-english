@@ -73,6 +73,12 @@ return [
     'generated_for' => 'Generated for',
     'is_insure' =>'Is insured?',
     'yes'=>'yes',
-    'no'=> 'no'
+    'no'=> 'no',
+    'payroll_types' => [
+        'daily'   => 'Daily',
+        'weekly'  => 'Weekly',
+        'monthly' => 'Monthly',
+        'other'   => 'Other',
+    ],
 
 ];

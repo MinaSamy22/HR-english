@@ -30,8 +30,8 @@
         width: 340px;
         border-radius: 0.75rem;
         padding: 0;
-        border: 1px solid rgba(0,0,0,.15);
-        box-shadow: 0 0.5rem 1rem rgba(0,0,0,.175);
+        border: 1px solid rgba(0, 0, 0, .15);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, .175);
     }
 
     .notif-dropdown .dropdown-item:hover {
@@ -70,11 +70,13 @@
         .notif-dropdown {
             /* Center the dropdown on mobile */
             position: fixed !important;
-            top: 60px !important; /* Adjust based on your navbar height */
+            top: 60px !important;
+            /* Adjust based on your navbar height */
             left: 50% !important;
             right: auto !important;
             transform: translateX(-50%) !important;
-            width: calc(100vw - 20px) !important; /* Full width minus padding */
+            width: calc(100vw - 20px) !important;
+            /* Full width minus padding */
             max-width: 350px !important;
             z-index: 1050;
             margin: 0 10px;
@@ -325,8 +327,8 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a class="brand-link">
-        <img src="{{ url('/dist/img/hr_logo-.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-            style="opacity: .8">
+        <img src="{{ url('/dist/img/hr_logo-.png') }}" alt="AdminLTE Logo"
+            class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">{{ __('dashboard.human_resource') }}</span>
     </a>
 
@@ -486,6 +488,15 @@
                     </ul>
                 </li>
 
+                <!-- Messages -->
+                <li class="nav-item">
+                    <a href="{{ url('admin/messages') }}"
+                        class="nav-link @if (Request::segment(2) == 'messages') active @endif">
+                        <i class="nav-icon fas fa-paper-plane"></i>
+                        <p>{{ __('h_message.messages') }}</p>
+                    </a>
+                </li>
+
 
 
 
@@ -643,6 +654,14 @@
                         </a>
                     </li>
                 @endif
+
+                <li class="nav-item">
+                    <a href="{{ route('locations.index') }}"
+                        class="nav-link @if (Request::segment(2) == 'locations') active @endif">
+                        <i class="nav-icon fas fa-code-branch text-white"></i>
+                        <p>{{ __('dashboard.locations') }}</p>
+                    </a>
+                </li>
 
 
                 <!-- Company information -->

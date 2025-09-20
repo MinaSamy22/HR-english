@@ -22,7 +22,7 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
 
-         {{-- <li class="nav-item d-flex align-items-center">
+        {{-- <li class="nav-item d-flex align-items-center">
             <a href="{{ url('lang/' . (app()->getLocale() == 'ar' ? 'en' : 'ar')) }}" class="nav-link px-2" role="button"
                 title="Switch to Arabic">
                 <span class="d-inline-flex align-items-center">
@@ -36,50 +36,47 @@
             </a>
         </li> --}}
 
-                <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle d-flex align-items-center"
-       href="#"
-       id="languageDropdown"
-       role="button"
-       data-toggle="dropdown"
-       aria-haspopup="true"
-       aria-expanded="false">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="languageDropdown"
+                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
-        <div class="badge badge-secondary d-flex align-items-center">
-            <i class="fas fa-globe mr-1"></i>
-            <span class="font-weight-bold">
-                {{ app()->getLocale() == 'ar' ? 'عربي' : 'EN' }}
-            </span>
-        </div>
-    </a>
+                <div class="badge badge-secondary d-flex align-items-center">
+                    <i class="fas fa-globe mr-1"></i>
+                    <span class="font-weight-bold">
+                        {{ app()->getLocale() == 'ar' ? 'عربي' : 'EN' }}
+                    </span>
+                </div>
+            </a>
 
-    <div class="dropdown-menu dropdown-menu-right shadow-sm" aria-labelledby="languageDropdown">
-        <style>
-            .dropdown-item.active, .dropdown-item:active {
-                background-color: #e3f2fd !important;
-                color: #1976d2 !important;
-            }
-            .dropdown-item:hover {
-                background-color: #f5f5f5 !important;
-            }
-        </style>
-        <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'en' ? 'active' : '' }}"
-           href="{{ url('lang/en') }}">
-            <span>English</span>
-            @if(app()->getLocale() == 'en')
-                <i class="fas fa-check ml-auto text-success"></i>
-            @endif
-        </a>
+            <div class="dropdown-menu dropdown-menu-right shadow-sm" aria-labelledby="languageDropdown">
+                <style>
+                    .dropdown-item.active,
+                    .dropdown-item:active {
+                        background-color: #e3f2fd !important;
+                        color: #1976d2 !important;
+                    }
 
-        <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'ar' ? 'active' : '' }}"
-           href="{{ url('lang/ar') }}">
-            <span>العربية</span>
-            @if(app()->getLocale() == 'ar')
-                <i class="fas fa-check ml-auto text-success"></i>
-            @endif
-        </a>
-    </div>
-</li>
+                    .dropdown-item:hover {
+                        background-color: #f5f5f5 !important;
+                    }
+                </style>
+                <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'en' ? 'active' : '' }}"
+                    href="{{ url('lang/en') }}">
+                    <span>English</span>
+                    @if (app()->getLocale() == 'en')
+                        <i class="fas fa-check ml-auto text-success"></i>
+                    @endif
+                </a>
+
+                <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'ar' ? 'active' : '' }}"
+                    href="{{ url('lang/ar') }}">
+                    <span>العربية</span>
+                    @if (app()->getLocale() == 'ar')
+                        <i class="fas fa-check ml-auto text-success"></i>
+                    @endif
+                </a>
+            </div>
+        </li>
 
 
 
@@ -89,6 +86,354 @@
                 <i class="nav-icon fa fa-moon" style="color: #908a8a;"></i>
             </a>
         </li> --}}
+
+
+
+        @php
+            $processedRequestsCount = getProcessedRequestsCount();
+            $processedNotifications = getProcessedNotifications(10); // Get latest 10 processed notifications
+        @endphp
+
+        @php
+            // الطلبات المعالجة
+            $processedRequestsCount = getProcessedRequestsCount();
+            $processedNotifications = getProcessedNotifications(10);
+
+            // الرسائل الغير مقروءة
+            $unreadMessagesCount = getUnreadMessagesCount();
+            $unreadMessages = getUnreadMessages(10);
+        @endphp
+
+        {{-- إشعارات الطلبات --}}
+        <li class="nav-item dropdown">
+            <a class="nav-link position-relative p-2" href="#" id="processedNotifDropdown" role="button"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-bell fa-lg text-secondary"></i>
+
+                @if ($processedRequestsCount > 0)
+                    <span class="badge badge-danger position-absolute"
+                        style="top: 2px; right: 2px; font-size: 0.65rem; padding: 0.25em 0.5em; border-radius: 8px;">
+                        {{ $processedRequestsCount > 99 ? '99+' : $processedRequestsCount }}
+                    </span>
+                @endif
+            </a>
+
+            <div class="dropdown-menu shadow notif-dropdown" aria-labelledby="processedNotifDropdown">
+                <div class="dropdown-header d-flex justify-content-between align-items-center px-3 py-2 border-bottom">
+                    <h6 class="mb-0 font-weight-bold">{{ __('dashboard.notifications') }}</h6>
+                    @if ($processedRequestsCount > 0)
+                        <span class="badge badge-light text-muted">
+                            {{ $processedRequestsCount }} {{ __('dashboard.new') }}
+                        </span>
+                    @endif
+                </div>
+
+                <div style="max-height: 350px; overflow-y: auto;">
+                    @forelse ($processedNotifications as $notification)
+                        <a class="dropdown-item py-2 border-bottom small notification-item"
+                            href="{{ $notification['url'] ?? '#' }}" style="white-space: normal;">
+                            <div class="d-flex align-items-start notif-item">
+                                <div class="icon-wrapper flex-shrink-0">
+                                    @php
+                                        $iconColor = 'text-secondary';
+                                        if (isset($notification['type'])) {
+                                            switch ($notification['type']) {
+                                                case 'vacation':
+                                                    $iconColor = 'text-primary';
+                                                    break;
+                                                case 'extra_time':
+                                                    $iconColor = 'text-warning';
+                                                    break;
+                                                case 'resignation':
+                                                    $iconColor = 'text-danger';
+                                                    break;
+                                                case 'late_removal':
+                                                    $iconColor = 'text-secondary';
+                                                    break;
+                                            }
+                                        }
+                                    @endphp
+                                    <i class="{{ $notification['icon'] }} {{ $iconColor }}"
+                                        style="font-size: 1rem;"></i>
+                                </div>
+                                <div class="flex-grow-1 notif-text">
+                                    <div class="font-weight-normal" style="font-size: 0.9rem;">
+                                        {!! $notification['message'] !!}
+                                        @if ($notification['status'] == 'accepted')
+                                            <span
+                                                class="badge badge-success badge-sm ml-1">{{ __('dashboard.accepted') }}</span>
+                                        @else
+                                            <span
+                                                class="badge badge-danger badge-sm ml-1">{{ __('dashboard.rejected') }}</span>
+                                        @endif
+                                    </div>
+                                    <div class="text-muted" style="font-size: 0.75rem;">
+                                        {{ $notification['date']->diffForHumans() }}
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    @empty
+                        <div class="dropdown-item text-muted small text-center py-3">
+                            <i class="fas fa-bell-slash mb-2 d-block text-secondary"></i>
+                            {{ __('dashboard.no_processed_notifications') }}
+                        </div>
+                    @endforelse
+                </div>
+            </div>
+        </li>
+
+        {{-- إشعارات الرسائل --}}
+{{-- إشعارات الرسائل --}}
+<li class="nav-item dropdown">
+    <a class="nav-link position-relative p-2" href="#" id="messagesDropdown" role="button"
+        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-envelope fa-lg text-secondary"></i>
+
+        @if ($unreadMessagesCount > 0)
+            <span class="badge badge-danger position-absolute"
+                style="top: 2px; right: 2px; font-size: 0.65rem; padding: 0.25em 0.5em; border-radius: 8px;">
+                {{ $unreadMessagesCount > 99 ? '99+' : $unreadMessagesCount }}
+            </span>
+        @endif
+    </a>
+
+    <div class="dropdown-menu shadow notif-dropdown" aria-labelledby="messagesDropdown">
+        <div class="dropdown-header d-flex justify-content-between align-items-center px-3 py-2 border-bottom">
+            <h6 class="mb-0 font-weight-bold">{{ __('E_message.messages') }}</h6>
+            @if ($unreadMessagesCount > 0)
+                <span class="badge badge-light text-muted">
+                    {{ $unreadMessagesCount }} {{ __('E_message.new') }}
+                </span>
+            @endif
+        </div>
+
+        <div style="max-height: 350px; overflow-y: auto;">
+            @forelse ($unreadMessages as $message)
+                <a class="dropdown-item py-2 border-bottom small notification-item"
+                    href="{{ $message['url'] }}" style="white-space: normal;">
+                    <div class="d-flex align-items-start notif-item">
+                        <div class="icon-wrapper flex-shrink-0">
+                            <i class="{{ $message['icon'] }} text-primary" style="font-size: 1rem;"></i>
+                        </div>
+                        <div class="flex-grow-1 notif-text">
+                            <div class="font-weight-normal" style="font-size: 0.9rem;">
+                                {{ $message['message'] }}
+                            </div>
+                            <div class="text-muted" style="font-size: 0.75rem;">
+                                {{ $message['date']->diffForHumans() }}
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            @empty
+                <div class="dropdown-item text-muted small text-center py-3">
+                    <i class="fas fa-envelope-open-text mb-2 d-block text-secondary"></i>
+                    {{ __('E_message.no_unread_messages') }}
+                </div>
+            @endforelse
+        </div>
+    </div>
+</li>
+
+
+
+        <script>
+            function markAllProcessedAsSeen() {
+                fetch('{{ route('requests.mark-all-processed-seen') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Hide the badge
+                            document.querySelector('#processedNotifDropdown .badge').style.display = 'none';
+
+                            // Update the header
+                            const header = document.querySelector('#processedNotifDropdown').nextElementSibling
+                                .querySelector('.dropdown-header');
+                            header.innerHTML =
+                                '<h6 class="mb-0 font-weight-bold">{{ __('dashboard.processed_notifications') }}</h6>';
+
+                            // Remove all notification items or reload the page
+                            location.reload();
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error marking notifications as seen:', error);
+                    });
+            }
+
+            // Mark individual notification as seen when clicked
+            document.addEventListener('click', function(e) {
+                const notificationItem = e.target.closest('.notification-item');
+                if (notificationItem) {
+                    const type = notificationItem.getAttribute('data-type');
+                    const id = notificationItem.getAttribute('data-id');
+
+                    // The URL will handle marking as seen via the showProcessedRequest method
+                }
+            });
+        </script>
+        <style>
+            .dropdown-item.active,
+            .dropdown-item:active {
+                background-color: #e3f2fd !important;
+                color: #1976d2 !important;
+            }
+
+            .dropdown-item:hover {
+                background-color: #f5f5f5 !important;
+            }
+
+            /* Desktop positioning - Always align dropdown to screen edge depending on direction */
+            [dir="ltr"] .notif-dropdown {
+                right: 0 !important;
+                left: auto !important;
+            }
+
+            [dir="rtl"] .notif-dropdown {
+                left: 0 !important;
+                right: auto !important;
+                text-align: right;
+            }
+
+            .notif-dropdown {
+                width: 340px;
+                border-radius: 0.75rem;
+                padding: 0;
+                border: 1px solid rgba(0, 0, 0, .15);
+                box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, .175);
+            }
+
+            .notif-dropdown .dropdown-item:hover {
+                background-color: #f8f9fa;
+            }
+
+            .notif-dropdown .icon-wrapper {
+                width: 28px;
+                height: 28px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            /* --- Icon alignment for LTR/RTL --- */
+            [dir="ltr"] .notif-item .icon-wrapper {
+                margin-right: 0.75rem;
+                margin-left: 0;
+            }
+
+            [dir="ltr"] .notif-item .notif-text {
+                text-align: left;
+            }
+
+            [dir="rtl"] .notif-item .icon-wrapper {
+                margin-left: 0.75rem;
+                margin-right: 0;
+            }
+
+            [dir="rtl"] .notif-item .notif-text {
+                text-align: right;
+            }
+
+            /* Mobile Responsive Styles */
+            @media (max-width: 768px) {
+                .notif-dropdown {
+                    /* Center the dropdown on mobile */
+                    position: fixed !important;
+                    top: 60px !important;
+                    /* Adjust based on your navbar height */
+                    left: 50% !important;
+                    right: auto !important;
+                    transform: translateX(-50%) !important;
+                    width: calc(100vw - 20px) !important;
+                    /* Full width minus padding */
+                    max-width: 350px !important;
+                    z-index: 1050;
+                    margin: 0 10px;
+                }
+
+                /* Override both LTR and RTL positioning for mobile centering */
+                [dir="ltr"] .notif-dropdown {
+                    left: 50% !important;
+                    right: auto !important;
+                    transform: translateX(-50%) !important;
+                }
+
+                [dir="rtl"] .notif-dropdown {
+                    left: 50% !important;
+                    right: auto !important;
+                    transform: translateX(-50%) !important;
+                }
+
+                /* Adjust notification content for mobile */
+                .notif-dropdown .dropdown-header {
+                    padding: 0.75rem 1rem;
+                }
+
+                .notif-dropdown .dropdown-item {
+                    padding: 0.75rem 1rem;
+                }
+
+                .notif-item .icon-wrapper {
+                    width: 24px;
+                    height: 24px;
+                }
+
+                .notif-item .notif-text {
+                    font-size: 0.875rem;
+                }
+
+                /* Reduce margins on mobile */
+                [dir="ltr"] .notif-item .icon-wrapper {
+                    margin-right: 0.5rem;
+                }
+
+                [dir="rtl"] .notif-item .icon-wrapper {
+                    margin-left: 0.5rem;
+                }
+            }
+
+            /* Extra small screens */
+            @media (max-width: 576px) {
+                .notif-dropdown {
+                    width: calc(100vw - 10px) !important;
+                    margin: 0 5px;
+                    border-radius: 0.5rem;
+                }
+
+                .notif-dropdown .dropdown-header h6 {
+                    font-size: 0.9rem;
+                }
+
+                .notif-item .notif-text div {
+                    font-size: 0.8rem !important;
+                }
+
+                .notif-item .notif-text .text-muted {
+                    font-size: 0.7rem !important;
+                }
+            }
+
+            /* Ensure dropdown arrow positioning on mobile */
+            @media (max-width: 768px) {
+                .dropdown-menu::before {
+                    display: none !important;
+                }
+            }
+
+            /* Optional: Add backdrop for mobile */
+            @media (max-width: 768px) {
+                .dropdown-menu.show {
+                    backdrop-filter: blur(2px);
+                }
+            }
+        </style>
 
 
         <li class="nav-item">
@@ -115,8 +460,8 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a class="brand-link">
-        <img src="{{ url('/dist/img/hr_logo-.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-            style="opacity: .8">
+        <img src="{{ url('/dist/img/hr_logo-.png') }}" alt="AdminLTE Logo"
+            class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">{{ __('E_dashboard.employee_panel') }}</span>
     </a>
 
@@ -196,9 +541,23 @@
                     </a>
                 </li>
 
+                <!-- messages -->
+                <li class="nav-item">
+                    <a href="{{ url('employee/messages') }}"
+                        class="nav-link @if (Request::segment(2) == 'messages') active @endif">
+                        <i class="nav-icon fas fa-envelope"></i>
+                        <p>
+                            {{ __('h_message.messages') }}
+                            @php $messageCount = getUnreadMessagesCount(); @endphp
+                            @if ($messageCount > 0)
+                                <span class="badge badge-danger right">{{ $messageCount }}</span>
+                            @endif
+                        </p>
+                    </a>
+                </li>
+
                 <!-- Requests -->
                 <li class="nav-header">{{ __('E_dashboard.my_requests') }}</li>
-
 
                 <!--Late Requests -->
                 <li class="nav-item">

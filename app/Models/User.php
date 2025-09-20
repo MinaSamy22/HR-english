@@ -16,7 +16,7 @@ class User extends Authenticatable implements JWTSubject
     protected $fillable = [
     'name', 'email', 'phone_number', 'hire_date', 'birth_date',
     'job_id', 'salary_type', 'salary', 'work_start_time', 'work_end_time',
-    'company_id', 'manager_id', 'department_id', 'is_role', 'password' ,'branch_id','macaddress','work_hours_per_day', 'shifts','second_start_time','second_end_time','main_salary'
+    'company_id', 'manager_id', 'department_id', 'is_role', 'password' ,'branch_id','macaddress','work_hours_per_day', 'working_days', 'shifts','second_start_time','second_end_time','main_salary'
 
 ];
 
@@ -36,6 +36,7 @@ class User extends Authenticatable implements JWTSubject
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+
     ];
 
 public static function getRecord($request)
@@ -212,6 +213,11 @@ public static function getRecord($request)
     public function resignations()
     {
         return $this->hasMany(Resignation::class, 'employee_id');
+    }
+
+    public function locations()
+    {
+        return $this->belongsToMany(Location::class, 'employee_location');
     }
 
 

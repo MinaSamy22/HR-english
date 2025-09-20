@@ -209,12 +209,22 @@
                                     @if ($value->payroll_type == 'monthly')
                                         {{ $value->rest_vacancy }} {{ __('h_payroll.day') }}
                                     @else
-                                        0
+                                        <span style="color: red; font-size: 18px;">❌</span>
                                     @endif
                                 </td>
 
                                 <td>{{ $value->net_pay }}</td>
-                                <td>{{ $value->payroll_type }}</td>
+                                <td>
+                                    <span
+                                        class="badge badge-pill
+                                      @if ($value->payroll_type == 'daily') badge-warning
+                                      @elseif($value->payroll_type == 'weekly') badge-info
+                                      @elseif($value->payroll_type == 'monthly') badge-primary
+                                      @else badge-secondary @endif">
+                                        {{ __('h_payroll.payroll_types.' . strtolower($value->payroll_type)) }}
+                                    </span>
+                                </td>
+
                                 <td>{{ date('d-m-Y', strtotime($value->created_at)) }}</td>
                                 <td>{{ date('m', strtotime($value->start_date)) }}</td>
                                 <td>

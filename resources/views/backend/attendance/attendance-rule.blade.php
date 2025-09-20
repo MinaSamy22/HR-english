@@ -8,12 +8,12 @@
     <meta name="bonus-per-hour-route" content="{{ route('attendance.update-bonus-per-hour') }}">
     <meta name="employees-work-hours-route" content="{{ route('attendance.update-employee-work-hours') }}">
     {{-- Translation meta tags --}}
-<meta name="msg-select-employee" content="{{ __('rules.no_employees_selected') }}">
-<meta name="msg-invalid-hours" content="{{ __('rules.invalid_hours') }}">
-<meta name="msg-updating" content="{{ __('Updating...') }}">
-<meta name="msg-assign-hours" content="{{ __('rules.assign_hours_to_selected_employees') }}">
-<meta name="msg-update-failed" content="{{ __('rules.error_message') }}">
-<meta name="msg-hrs" content="{{ __('rules.hrs') }}">
+    <meta name="msg-select-employee" content="{{ __('rules.no_employees_selected') }}">
+    <meta name="msg-invalid-hours" content="{{ __('rules.invalid_hours') }}">
+    <meta name="msg-updating" content="{{ __('Updating...') }}">
+    <meta name="msg-assign-hours" content="{{ __('rules.assign_hours_to_selected_employees') }}">
+    <meta name="msg-update-failed" content="{{ __('rules.error_message') }}">
+    <meta name="msg-hrs" content="{{ __('rules.hrs') }}">
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
@@ -123,110 +123,166 @@
 
 
 
-
-                                    <!-- Work Hours Assignment -->
-<meta name="employees-work-hours-route"
-    content="{{ route('attendance.update-employee-work-hours') }}">
-
-<div class="row">
-    <!-- Employee Work Hours -->
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">
-                <h5><i class="fas fa-users text-primary mr-2"></i>{{ __('rules.assign_work_hours') }}</h5>
-            </div>
-            <div class="card-body">
-                <div class="form-group">
-                    <label>{{ __('rules.select_work_hours') }}</label>
-                    <input type="number" step="0.5" min="1" max="24"
-                        class="form-control" id="assign_hours" >
-                </div>
-                <button type="button" class="btn btn-success btn-block"
-                    id="assign_hours_btn">
-                    <i class="fas fa-check mr-1"></i>
-                    {{ __('rules.assign_hours_to_selected_employees') }}
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Employees List -->
-<div class="card mt-4">
-    <div class="card-header">
-        <h5 class="mb-0">{{ __('rules.employees') }}</h5>
-    </div>
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-hover">
-                <thead class="thead-light">
-                    <tr>
-                        <th width="50">
-                            <input type="checkbox" id="select_all">
-                        </th>
-                        <th>{{ __('rules.employee_name') }}</th>
-                        <th>{{ __('rules.email') }}</th>
-                        <th width="150">{{ __('rules.current_hours') }}</th>
-                    </tr>
-                </thead>
-                <tbody id="employees_table">
-                    @foreach ($employees as $employee)
-                        <tr>
-                            <td>
-                                <input type="checkbox" class="employee_check"
-                                    value="{{ $employee->id }}">
-                            </td>
-                            <td>
-                                <strong>{{ $employee->name }}</strong>
-                            </td>
-                            <td class="text-muted">{{ $employee->email }}</td>
-                            <td>
-                                <span class="badge badge-info employee-hours"
-                                    data-id="{{ $employee->id }}">
-                                    {{ $employee->work_hours_per_day ?? ($setting->work_hours_per_day ?? 8) }}
-                                    {{ __('rules.hrs') }}
-                                </span>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-<!-- Alert Area -->
-<div id="alert_area"></div>
-
-                                    <!-- Working Days -->
-                                    <div class="form-group">
-                                        <label>
-                                            <i class="fas fa-calendar-week text-success mr-1"></i>
-                                            {{ __('dashboard.working_days_in_week') }}
-                                        </label>
-                                        @php
-                                            $workingDays = isset($setting->working_days)
-                                                ? json_decode($setting->working_days, true)
-                                                : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
-                                        @endphp
-                                        <div class="row">
-                                            @foreach (['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'] as $day)
-                                                <div class="col-md-4">
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input"
-                                                            id="work_day_{{ $day }}" name="working_days[]"
-                                                            value="{{ $day }}"
-                                                            {{ in_array($day, $workingDays) ? 'checked' : '' }}
-                                                            onchange="updatePreview()">
-                                                        <label class="custom-control-label"
-                                                            for="work_day_{{ $day }}">{{ $day }}</label>
-                                                    </div>
+                                    <!-- Work Hours and Working Days Assignment -->
+                                    <div class="row">
+                                        <!-- Employee Work Hours -->
+                                        <div class="col-md-6">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h5><i
+                                                            class="fas fa-users text-primary mr-2"></i>{{ __('dashboard.assign_work_hours') }}
+                                                    </h5>
                                                 </div>
-                                            @endforeach
+                                                <div class="card-body">
+                                                    <div class="form-group">
+                                                        <label>{{ __('dashboard.select_work_hours') }}</label>
+                                                        <input type="number" step="0.5" min="1"
+                                                            max="24" class="form-control" id="assign_hours">
+                                                    </div>
+                                                    <button type="button" class="btn btn-success btn-block"
+                                                        id="assign_hours_btn">
+                                                        <i class="fas fa-check mr-1"></i>
+                                                        {{ __('dashboard.assign_hours_to_selected_employees') }}
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <small
-                                            class="form-text text-muted">{{ __('dashboard.select_the_working_days_in_a_typical_week') }}</small>
+
+                                        <!-- Employee Working Days -->
+                                        <div class="col-md-6">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h5><i
+                                                            class="fas fa-calendar-week text-success mr-2"></i>{{ __('dashboard.assign_working_days') }}
+                                                    </h5>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="form-group">
+                                                        <label>{{ __('dashboard.select_working_days') }}</label>
+                                                        <div class="row" id="working_days_selection">
+                                                            @foreach (['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'] as $day)
+                                                                <div class="col-md-6">
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input type="checkbox"
+                                                                            class="custom-control-input working-day-checkbox"
+                                                                            id="assign_day_{{ $day }}"
+                                                                            value="{{ $day }}">
+                                                                        <label class="custom-control-label"
+                                                                            for="assign_day_{{ $day }}">
+                                                                            {{ __('dashboard.' . strtolower($day)) }}
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
+                                                    <button type="button" class="btn btn-success btn-block"
+                                                        id="assign_working_days_btn">
+                                                        <i class="fas fa-calendar-check mr-1"></i>
+                                                        {{ __('dashboard.assign_working_days_to_selected_employees') }}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+
+                                    <!-- Alert Area -->
+                                    <div id="alert_area"></div>
+
+                                    <!-- Single Consolidated Employees List -->
+                                    <div class="card mt-4">
+                                        <div class="card-header">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <h5 class="mb-0">{{ __('dashboard.employees') }}</h5>
+                                                <small
+                                                    class="text-muted">{{ __('dashboard.select_employees_to_update') }}</small>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-hover">
+                                                    <thead class="thead-light">
+                                                        <tr>
+                                                            <th width="50">
+                                                                <input type="checkbox" id="select_all">
+                                                            </th>
+                                                            <th>{{ __('dashboard.employee_name') }}</th>
+                                                            <th>{{ __('dashboard.email') }}</th>
+                                                            <th width="120">{{ __('dashboard.current_hours') }}</th>
+                                                            <th width="300">{{ __('dashboard.working_days') }}</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="employees_table">
+                                                        @foreach ($employees as $employee)
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="checkbox" class="employee_check"
+                                                                        value="{{ $employee->id }}">
+                                                                </td>
+                                                                <td>
+                                                                    <strong>{{ $employee->name }}</strong>
+                                                                </td>
+                                                                <td class="text-muted">{{ $employee->email }}</td>
+                                                                <td>
+                                                                    <span class="badge badge-info employee-hours"
+                                                                        data-id="{{ $employee->id }}">
+                                                                        {{ $employee->work_hours_per_day ?? ($setting->work_hours_per_day ?? 8) }}
+                                                                        {{ __('dashboard.hrs') }}
+                                                                    </span>
+                                                                </td>
+                                                                <td>
+                                                                    @php
+                                                                        $employeeWorkingDays = isset(
+                                                                            $employee->working_days,
+                                                                        )
+                                                                            ? json_decode($employee->working_days, true)
+                                                                            : (isset($setting->working_days)
+                                                                                ? json_decode(
+                                                                                    $setting->working_days,
+                                                                                    true,
+                                                                                )
+                                                                                : [
+                                                                                    'Monday',
+                                                                                    'Tuesday',
+                                                                                    'Wednesday',
+                                                                                    'Thursday',
+                                                                                    'Friday',
+                                                                                ]);
+
+                                                                        // Convert full day names to abbreviations for display
+                                                                        $dayAbbreviations = [
+                                                                            'Sunday' => __('dashboard.sun'),
+                                                                            'Monday' => __('dashboard.mon'),
+                                                                            'Tuesday' => __('dashboard.tue'),
+                                                                            'Wednesday' => __('dashboard.wed'),
+                                                                            'Thursday' => __('dashboard.thu'),
+                                                                            'Friday' => __('dashboard.fri'),
+                                                                            'Saturday' => __('dashboard.sat'),
+                                                                        ];
+                                                                    @endphp
+                                                                    <div class="employee-working-days"
+                                                                        data-id="{{ $employee->id }}">
+                                                                        @if (is_array($employeeWorkingDays) && count($employeeWorkingDays) > 0)
+                                                                            @foreach ($employeeWorkingDays as $day)
+                                                                                <span class="badge badge-secondary mr-1">
+                                                                                    {{ $dayAbbreviations[$day] ?? $day }}
+                                                                                </span>
+                                                                            @endforeach
+                                                                        @else
+                                                                            <span
+                                                                                class="badge badge-warning">{{ __('dashboard.not_set') }}</span>
+                                                                        @endif
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
 
 
                                     <!-- Meta tags for vacation balance update -->
@@ -365,8 +421,7 @@
                                                             style="width: 100%"></div>
                                                     </div> --}}
 
-
-                                                    <span class="info-box-number">
+                                                    {{-- <span class="info-box-number">
                                                         <strong>{{ __('dashboard.working_days') }}:</strong>
                                                         <span id="working_days_preview">
                                                             {{ $setting && isset($setting->working_days) && $setting->working_days
@@ -377,8 +432,7 @@
                                                     <div class="progress">
                                                         <div class="progress-bar" id="half_day_progress"
                                                             style="width: 100%"></div>
-                                                    </div>
-
+                                                    </div> --}}
 
                                                     <span class="info-box-number">
                                                         <strong>{{ __('dashboard.vacation_balance') }}:</strong>
@@ -464,8 +518,7 @@
         </section>
     </div>
 
-    <script src="{{ url('dist\js\attendance settings\working-days.js') }}"></script>
-    <script src="{{ url('dist\js\attendance settings\work-hours.js') }}"></script>
+    <script src="{{ url('dist/js/attendance settings/workhours-days.js?v=2') }}"></script>
     <script src="{{ url('dist\js\attendance settings\holidays.js') }}"></script>
     <script src="{{ url('dist\js\attendance settings\lateDeduction.js') }}"></script>
     <script src="{{ url('dist\js\attendance settings\half-day.js') }}"></script>

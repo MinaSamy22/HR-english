@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdministrationController;
 use App\Http\Controllers\AttendanceController;
@@ -28,6 +29,7 @@ use App\Http\Controllers\InsuranceController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\JobHistoryController;
 use App\Http\Controllers\ManagerController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\MyAccountController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\OverTimeController;
@@ -39,6 +41,7 @@ use App\Http\Controllers\RequestController;
 use App\Http\Controllers\TaxController;
 use App\Http\Controllers\TodoController;
 use App\Http\Controllers\VacationController;
+use App\Http\Controllers\LocationController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -52,12 +55,13 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
 Route::get('lang/{lang}', function ($lang) {
     session(['locale' => $lang]);
     app()->setLocale($lang);
     return back();
 });
-Route::get('/', [AuthController::class, 'index'])->name('start');//index navigate to auth controller
+Route::get('/', [AuthController::class, 'index'])->name('start'); //index navigate to auth controller
 Route::get('register', [AuthController::class, 'register'])->name('register');
 Route::post('register', [AuthController::class, 'register_post'])->name('register_post');
 Route::post('login_post', [AuthController::class, 'login_post'])->name('login_post');
@@ -106,8 +110,8 @@ Route::group(['middleware' => 'admin'], function () {
         return response()->file($path);
     })->name('view.attachment');
     // employees and department linked by job_title in employee by id after link it convert to string
-// all edits of job title happend in employee
-// edit in code of (update and add) and in code of (view)to convert id to name
+    // all edits of job title happend in employee
+    // edit in code of (update and add) and in code of (view)to convert id to name
 
     //job   admin/jobs
     route::get('admin/jobs', [JobController::class, 'index'])->name('jobs');
@@ -165,13 +169,30 @@ Route::group(['middleware' => 'admin'], function () {
     route::get('admin/department_info', [DepartmentController::class, 'info'])->name('department_info');
 
     //Employee Requests   admin/Requests
-// Replace your existing routes with these:
+    // Replace your existing routes with these:
 
+<<<<<<< HEAD
 Route::get('admin/Requests', [RequestController::class, 'index'])->name('Requests');
 Route::get('admin/Requests/processed', [RequestController::class, 'processed'])->name('Requests.processed');
 Route::post('admin/Requests/accept/{type}/{id}', [RequestController::class, 'accept'])->name('Requests.accept');
 Route::post('admin/Requests/reject/{type}/{id}', [RequestController::class, 'reject'])->name('Requests.reject');
+// Accept/Reject routes for employee interface
+Route::post('/admin/requests/{type}/{id}/accept', [RequestController::class, 'accept'])->name('requests.accept');
+Route::post('/admin/requests/{type}/{id}/reject', [RequestController::class, 'reject'])->name('requests.reject');
+Route::get('/admin/requests/processed', [RequestController::class, 'processed'])->name('requests.processed');
+// New routes for processed notifications
+Route::get('/admin/requests/processed/{type}/{id}', [RequestController::class, 'showProcessedRequest'])->name('processed-requests.show');
+Route::post('/admin/requests/mark-all-processed-seen', [RequestController::class, 'markAllProcessedAsSeen'])->name('requests.mark-all-processed-seen');
+
+
+//Attendance section
+=======
+    Route::get('admin/Requests', [RequestController::class, 'index'])->name('Requests');
+    Route::get('admin/Requests/processed', [RequestController::class, 'processed'])->name('Requests.processed');
+    Route::post('admin/Requests/accept/{type}/{id}', [RequestController::class, 'accept'])->name('Requests.accept');
+    Route::post('admin/Requests/reject/{type}/{id}', [RequestController::class, 'reject'])->name('Requests.reject');
     //Attendance section
+>>>>>>> 2d9c3cd089e9d3ca7b6c25b197d88cf9565674dc
     Route::get('admin/attendance', [AttendanceController::class, 'AttendanceEmployee'])->name('attendance.index');
     Route::post('admin/attendance/save', [AttendanceController::class, 'AttendanceEmployeeSubmit'])->name('attendance.submit');
     //its report
@@ -188,11 +209,14 @@ Route::post('admin/Requests/reject/{type}/{id}', [RequestController::class, 'rej
     Route::delete('admin/attendance-rule/delete-holiday/{index}', [AttendanceRulesController::class, 'deleteHoliday'])->name('attendance-rule.delete-holiday');
     Route::post('/attendance-rules/update-holidays', [AttendanceRulesController::class, 'updateHolidays'])->name('attendance.update-holidays');
     //work days edit
-    Route::post('/attendance-rules/update-working-days', [AttendanceRulesController::class, 'updateWorkingDays']);
-    //edit late
-    Route::post('/attendance-rules/update-late-deduction', [AttendanceRulesController::class, 'updateLateDeduction'])->name('attendance-rules.update-late-deduction');
-    //edit halfday
-    Route::post('/attendance-rules/update-half-day', [AttendanceRulesController::class, 'updateHalfDayDeduction'])->name('attendance-rules.update-half-day');
+Route::post('/attendance/update-employee-working-days', [AttendanceRulesController::class, 'updateEmployeeWorkingDays'])->name('attendance.update-employee-working-days');
+   //edit late - FIXED
+Route::post('/attendance-rules/update-late-deduction', [AttendanceRulesController::class, 'updateLateDeduction'])->name('attendance-rules.update-late-deduction');
+
+//edit halfday - FIXED
+Route::post('/attendance-rules/update-half-day', [AttendanceRulesController::class, 'updateHalfDayDeduction'])->name('attendance-rules.update-half-day');
+
+Route::post('/attendance-rules/update-half-day', [AttendanceRulesController::class, 'updateHalfDayDeduction'])->name('attendance-rules.update-half-day');
     //edit work hours
     Route::post('/attendance-rules/update-work-hours', [AttendanceRulesController::class, 'updateWorkHoursPerDay'])->name('attendance.update-work-hours');
 Route::post('/attendance/update-employee-work-hours', [AttendanceRulesController::class, 'updateEmployeeWorkHours']) ->name('attendance.update-employee-work-hours');
@@ -292,47 +316,62 @@ Route::post('/attendance/update-employee-work-hours', [AttendanceRulesController
     Route::post('admin/news/{news}/toggle-status', [NewsController::class, 'toggleStatus'])->name('news.toggle-status');
     Route::post('admin/news/bulk-delete', [NewsController::class, 'bulkDelete'])->name('news.bulk-delete');
 
-//my account   admin/my_account
-route::get('admin/my_account', [MyAccountController::class, 'my_account'])->name('my_account');
-route::post('admin/my_account/update', [MyAccountController::class, 'edit_update'])->name('my_account_update');
+    //my account   admin/my_account
+    route::get('admin/my_account', [MyAccountController::class, 'my_account'])->name('my_account');
+    route::post('admin/my_account/update', [MyAccountController::class, 'edit_update'])->name('my_account_update');
 
-//Company information  admin/company-info..
-route::get('admin/company-info', [CompanyInfoController::class, 'index'])->name('company-info');
-route::post('admin/company-info/update', [CompanyInfoController::class, 'edit_update'])->name('company_info_update');
-Route::get('/view-logo/{filename}', function ($filename) {
-    $path = public_path('../../HR-Uploads/company_logos/' . $filename);
+    //Company information  admin/company-info..
+    route::get('admin/company-info', [CompanyInfoController::class, 'index'])->name('company-info');
+    route::post('admin/company-info/update', [CompanyInfoController::class, 'edit_update'])->name('company_info_update');
+    Route::get('/view-logo/{filename}', function ($filename) {
+        $path = public_path('../../HR-Uploads/company_logos/' . $filename);
 
-    if (!file_exists($path)) {
-        abort(404);
-    }
+        if (!file_exists($path)) {
+            abort(404);
+        }
 
-    return response()->file($path);
-})->name('view.logo');
+        return response()->file($path);
+    })->name('view.logo');
 
-// Performance Management (your existing routes)
-Route::get('admin/performance', [PerformanceController::class, 'index'])->name('performance.index');
-Route::get('admin/performance/create', [PerformanceController::class, 'create'])->name('performance.create');
-Route::post('admin/performance', [PerformanceController::class, 'store'])->name('performance.store');
-Route::get('admin/performance/{id}', [PerformanceController::class, 'show'])->name('performance.show');
-Route::get('admin/performance/{id}/edit', [PerformanceController::class, 'edit'])->name('performance.edit');
-Route::put('admin/performance/{id}', [PerformanceController::class, 'update'])->name('performance.update');
-Route::delete('admin/performance/{id}', [PerformanceController::class, 'destroy'])->name('performance.destroy');
+    // Performance Management (your existing routes)
+    Route::get('admin/performance', [PerformanceController::class, 'index'])->name('performance.index');
+    Route::get('admin/performance/create', [PerformanceController::class, 'create'])->name('performance.create');
+    Route::post('admin/performance', [PerformanceController::class, 'store'])->name('performance.store');
+    Route::get('admin/performance/{id}', [PerformanceController::class, 'show'])->name('performance.show');
+    Route::get('admin/performance/{id}/edit', [PerformanceController::class, 'edit'])->name('performance.edit');
+    Route::put('admin/performance/{id}', [PerformanceController::class, 'update'])->name('performance.update');
+    Route::delete('admin/performance/{id}', [PerformanceController::class, 'destroy'])->name('performance.destroy');
 
-// Employee Performance Report (your existing route)
-Route::get('admin/performance/employee/{employeeId}/report', [PerformanceController::class, 'employeeReport'])->name('performance.employee-report');
+    // Employee Performance Report (your existing route)
+    Route::get('admin/performance/employee/{employeeId}/report', [PerformanceController::class, 'employeeReport'])->name('performance.employee-report');
 
-// NEW: Performance Criteria Management Routes
-Route::get('admin/performance-criteria', [PerformanceCriteriaController::class, 'index'])->name('performance-criteria.index');
-Route::get('admin/performance-criteria/create', [PerformanceCriteriaController::class, 'create'])->name('performance-criteria.create');
-Route::post('admin/performance-criteria', [PerformanceCriteriaController::class, 'store'])->name('performance-criteria.store');
-Route::get('admin/performance-criteria/{id}/edit', [PerformanceCriteriaController::class, 'edit'])->name('performance-criteria.edit');
-Route::put('admin/performance-criteria/{id}', [PerformanceCriteriaController::class, 'update'])->name('performance-criteria.update');
-Route::delete('admin/performance-criteria/{id}', [PerformanceCriteriaController::class, 'destroy'])->name('performance-criteria.destroy');
-Route::post('admin/performance-criteria/update-order', [PerformanceCriteriaController::class, 'updateOrder'])->name('performance-criteria.update-order');
+    // NEW: Performance Criteria Management Routes
+    Route::get('admin/performance-criteria', [PerformanceCriteriaController::class, 'index'])->name('performance-criteria.index');
+    Route::get('admin/performance-criteria/create', [PerformanceCriteriaController::class, 'create'])->name('performance-criteria.create');
+    Route::post('admin/performance-criteria', [PerformanceCriteriaController::class, 'store'])->name('performance-criteria.store');
+    Route::get('admin/performance-criteria/{id}/edit', [PerformanceCriteriaController::class, 'edit'])->name('performance-criteria.edit');
+    Route::put('admin/performance-criteria/{id}', [PerformanceCriteriaController::class, 'update'])->name('performance-criteria.update');
+    Route::delete('admin/performance-criteria/{id}', [PerformanceCriteriaController::class, 'destroy'])->name('performance-criteria.destroy');
+    Route::post('admin/performance-criteria/update-order', [PerformanceCriteriaController::class, 'updateOrder'])->name('performance-criteria.update-order');
+    Route::resources(['admin/locations' => LocationController::class]);
+    Route::post(('admin/locations/assign-employees'), [LocationController::class,'assignEmployees'])->name('locations.assignEmployees');
+    Route::get('admin/locations/{location}/employees', [LocationController::class, 'getAssignedEmployees'])->name('locations.getAssignedEmployees');
 
-// Make sure to import the controller at the top of your routes file:
 
+<<<<<<< HEAD
+   // Messages routes
+Route::get('admin/messages', [MessageController::class, 'inbox'])->name('messages.inbox');
+Route::get('admin/messages/create', [MessageController::class, 'create'])->name('messages.create');
+Route::post('admin/messages/store', [MessageController::class, 'store'])->name('messages.store');
+Route::get('admin/messages/sent', [MessageController::class, 'sent'])->name('messages.sent');
+Route::get('admin/messages/{message}', [MessageController::class, 'show'])->name('messages.show');
+Route::delete('admin/messages/{message}', [MessageController::class, 'destroy'])->name('messages.destroy');
     });
+=======
+    // Make sure to import the controller at the top of your routes file:
+
+});
+>>>>>>> 2d9c3cd089e9d3ca7b6c25b197d88cf9565674dc
 
 
 //middlware 2 (Admin interface)
@@ -345,7 +384,6 @@ Route::group(['middleware' => 'SuperAdmin'], function () {
     // Admin management
     Route::get('admin/admins/manage', [AdminController::class, 'manage'])->name('admin.admins.manage');
     Route::delete('admin/admins/{admin}', [AdminController::class, 'destroy'])->name('admin.admins.destroy');
-
 });
 
 
@@ -361,9 +399,9 @@ Route::get('employee/news-image/{filename}', [EmployeeHomeController::class, 'vi
     ->name('employee.news.image');Route::get('employee/news/{news}', [EmployeeHomeController::class, 'show'])->name('Employeenews.show');
 Route::get('employee/calendar', [EmployeeCalendarController::class, 'index'])->name('employee.calendar');
 
-//my account   employee/my_account
-Route::get('/employee/my_account', [EmployeeMyAccountController::class, 'my_account'])->name('employee.my_account');
-Route::post('/employee/my_account/update', [EmployeeMyAccountController::class, 'edit_update'])->name('employee.my_account.update');
+    //my account   employee/my_account
+    Route::get('/employee/my_account', [EmployeeMyAccountController::class, 'my_account'])->name('employee.my_account');
+    Route::post('/employee/my_account/update', [EmployeeMyAccountController::class, 'edit_update'])->name('employee.my_account.update');
 
 //payroll
 Route::get('employee/payroll', [EmployeePayrollController::class, 'index'])->name('employee.payroll');
@@ -388,11 +426,11 @@ Route::get('employee/vacation/{id}/edit', [EmployeeVacationController::class, 'e
 Route::put('employee/vacation/{id}', [EmployeeVacationController::class, 'update'])->name('vacation.update');
 Route::delete('employee/vacation/{id}', [EmployeeVacationController::class, 'cancel'])->name('vacation.cancel');
 
-//Resignation
-Route::get('employee/resignation', [ResignationController::class, 'index'])->name('employee.resignation.index');
-Route::get('employee/resignation/create', [ResignationController::class, 'create'])->name('employee.resignation.create');
-Route::post('employee/resignation', [ResignationController::class, 'store'])->name('employee.resignation.store');
-Route::delete('employee/resignation/{id}', [ResignationController::class, 'destroy'])->name('employee.resignation.destroy');
+    //Resignation
+    Route::get('employee/resignation', [ResignationController::class, 'index'])->name('employee.resignation.index');
+    Route::get('employee/resignation/create', [ResignationController::class, 'create'])->name('employee.resignation.create');
+    Route::post('employee/resignation', [ResignationController::class, 'store'])->name('employee.resignation.store');
+    Route::delete('employee/resignation/{id}', [ResignationController::class, 'destroy'])->name('employee.resignation.destroy');
 
 //extratime request
 Route::get('employee/extra', [ExtraTimeRequestController::class, 'index'])->name('employee.extra.index');
@@ -405,8 +443,25 @@ Route::post('employee/late/request', [EmployeeLateRemovalController::class, 'sto
 Route::post('employee/late-removal-request', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.removal.request');
 Route::post('employee/late-removal/store', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.removal.store');
 
+<<<<<<< HEAD
+// this to show each request page from notification
+Route::get('processed-requests/{type}/{id}', [RequestController::class, 'showProcessedRequest'])->name('processed-requests.show');
+
+// Messages routes for employees
+    Route::get('employee/messages', [MessageController::class, 'employeeInbox'])->name('employee.messages.inbox');
+    Route::get('employee/messages/{message}', [MessageController::class, 'employeeShow'])->name('employee.messages.show');
+    Route::post('employee/messages/{message}/mark-read', [MessageController::class, 'markAsRead'])->name('employee.messages.mark-read');
+
+
+=======
+    //late request
+    //late request
+    Route::get('employee/late', [EmployeeLateRemovalController::class, 'index'])->name('employee.late.index');
+    Route::post('employee/late/request', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.request');
+    Route::post('employee/late-removal-request', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.removal.request');
+    Route::post('employee/late-removal/store', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.removal.store');
+>>>>>>> 2d9c3cd089e9d3ca7b6c25b197d88cf9565674dc
 });
 
 
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
-

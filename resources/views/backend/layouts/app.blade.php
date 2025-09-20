@@ -42,6 +42,7 @@
         <!-- Custom style for RTL -->
         <link rel="stylesheet" href="{{url('dist/css/custom.css')}}">
     @endif
+    @stack('style')
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
