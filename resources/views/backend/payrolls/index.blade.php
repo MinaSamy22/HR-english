@@ -213,7 +213,13 @@
                                     @endif
                                 </td>
 
-                                <td>{{ $value->net_pay }}</td>
+                                <td>
+                                    @if ($value->net_pay < 0)
+                                        0
+                                    @else
+                                        {{ $value->net_pay }}
+                                    @endif
+                                </td>
                                 <td>
                                     <span
                                         class="badge badge-pill

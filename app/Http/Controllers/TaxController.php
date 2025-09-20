@@ -70,6 +70,8 @@ public function add()
         'code'                     => 'required',
         'name'                     => 'required',
         'percent'                  => 'required|numeric|min:0|max:100',
+        'apply_to_payroll'         => 'required|in:0,1', // validate radio
+
     ]);
 
     foreach ($validated['employee_ids'] as $employeeId) {
@@ -78,6 +80,8 @@ public function add()
         $tax->code                = trim($request->code);
         $tax->name                = trim($request->name);
         $tax->percent             = trim($request->percent);
+        $tax->apply_to_payroll    = $request->apply_to_payroll; // <--- save here
+
         $tax->company_id          = session('company_id'); // Use session like the previous pattern
 
         if (session()->has('branch_id')) {
@@ -99,26 +103,29 @@ public function add()
     }
 
     public function edit_update($id, Request $request)
-    {
-        $request->validate([
-            'code'             => 'required|unique:taxes,code,' . $id,
-            'name'             => 'required',
-            'percent'          => 'required|numeric|min:0|max:100',
-        ]);
+{
+    $request->validate([
+        'code'             => 'required|unique:taxes,code,' . $id,
+        'name'             => 'required',
+        'percent'          => 'required|numeric|min:0|max:100',
+        'apply_to_payroll' => 'required|in:0,1',
+    ]);
 
-        $tax                   = Tax::findOrFail($id);
-        $tax->code             = $request->code;
-        $tax->name             = $request->name;
-        $tax->percent          = $request->percent;
-        // Handle company/branch assignment
-    $tax->company_id = session('company_id');
+    $tax                   = Tax::findOrFail($id);
+    $tax->code             = $request->code;
+    $tax->name             = $request->name;
+    $tax->percent          = $request->percent;
+    $tax->apply_to_payroll = $request->apply_to_payroll; // ✅ save radio button value
+    $tax->company_id       = session('company_id');
+
     if (session()->has('branch_id')) {
         $tax->branch_id = session('branch_id');
     }
-        $tax->save();
 
-        return redirect()->route('taxes')->with('success', __('h_tax.tax_updated_success'));
-    }
+    $tax->save();
+
+    return redirect()->route('taxes')->with('success', __('h_tax.tax_updated_success'));
+}
 
     public function delete($id)
     {

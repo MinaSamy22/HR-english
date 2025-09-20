@@ -158,14 +158,20 @@ public function calculateAttendanceDeductions($employee, $salary, $startDate, $e
         }
     }
 
-    // إجمالي أيام الفترة
-    $totalDays = Carbon::parse($endDate)->diffInDays(Carbon::parse($startDate)) + 1;
-    $halfMonth = ceil($totalDays / 2);
-
-    // الشرط الجديد: لو الحضور أقل من نص الشهر
-    if ($attendedDays < $halfMonth) {
-        $netPay = $attendedDays * $dailyWage;
+    // تطبيق الشروط الجديدة بناءً على عدد أيام الحضور
+    if ($attendedDays < 15) {
+        // إذا كان الحضور أقل من 15 يوم
+        if ($attendedDays == 0) {
+            // إذا لم يحضر إطلاقاً
+            $netPay = 0;
+            $deduction = $salary; // الخصم يساوي الراتب بالكامل
+        } else {
+            // إذا حضر أقل من 15 يوم
+            $netPay = $attendedDays * $dailyWage;
+            $deduction = $salary - $netPay; // الخصم هو الفرق بين الراتب الأساسي والأجر المستحق
+        }
     } else {
+        // إذا حضر 15 يوم أو أكثر
         $netPay = $salary - $deduction;
     }
 

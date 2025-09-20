@@ -132,21 +132,7 @@ public function add_post(Request $request)
         }
     }
 
-    // If there are validation errors, return with error message
-    if (!empty($validationErrors)) {
-        $errorMessage = __('h_payroll.payroll_generation_failed_for_following_employees') . "\n\n";
-        foreach ($validationErrors as $error) {
-            $errorMessage .= "• " . $error . "\n";
-        }
-
-        if (!empty($processedEmployees)) {
-            $errorMessage .= "\n" . __('h_payroll.note_payroll_successfully_generated_for_other_employees');
-        }
-
-        return redirect('admin/payroll')->with('error', $errorMessage);
-    }
-
-    // Process employees that passed validation
+    // Process employees that passed validation (MOVED THIS BEFORE ERROR HANDLING)
     foreach ($processedEmployees as $employee) {
 
         $salary = $employee->salary;
@@ -187,14 +173,36 @@ public function add_post(Request $request)
         $payroll->save();
     }
 
-    $successMessage = __('h_payroll.payroll_registered');
+    // Build response message based on results
+    $responseMessage = '';
+    $messageType = 'success';
+
+    // If there are processed employees, show success message
     if (count($processedEmployees) > 0) {
-        $successMessage .= "\n\n" . __('h_payroll.generated_for') . ":\n";
+        $responseMessage = __('h_payroll.payroll_registered') . "\n\n" . __('h_payroll.generated_for') . ":\n";
         $employeeNames = array_map(function($emp) { return '• ' . $emp->name; }, $processedEmployees);
-        $successMessage .= implode("\n", $employeeNames);
+        $responseMessage .= implode("\n", $employeeNames);
     }
 
-    return redirect('admin/payroll')->with('success', $successMessage);
+    // If there are validation errors, add them to the message
+    if (!empty($validationErrors)) {
+        if (!empty($responseMessage)) {
+            $responseMessage .= "\n\n" . __('h_payroll.payroll_generation_failed_for_following_employees') . "\n\n";
+        } else {
+            $responseMessage = __('h_payroll.payroll_generation_failed_for_following_employees') . "\n\n";
+            $messageType = 'error';
+        }
+
+        foreach ($validationErrors as $error) {
+            $responseMessage .= "• " . $error . "\n";
+        }
+
+        if (!empty($processedEmployees)) {
+            $responseMessage .= "\n" . __('h_payroll.note_payroll_successfully_generated_for_other_employees');
+        }
+    }
+
+    return redirect('admin/payroll')->with($messageType, $responseMessage);
 }
 
 
