@@ -231,10 +231,12 @@ return [
     'late-arrival' => 'الحضور متأخر',
     'attendance_saved' => 'تم حفظ الحضور بنجاح',
     'record_not_found' => 'لا يوجد',
+    'add' => 'اضافة',
 
     'attendance_imported_success' => 'تم استيراد :count سجل حضور بنجاح.',
 
     'locations' => 'المواقع',
+    'employee-locations' => 'مواقع الموظفين',
     'location' => 'الموقع',
     'add_location' => 'إضافة موقع',
     'search_location' => 'بحث عن موقع',
@@ -242,7 +244,7 @@ return [
     'search' => 'بحث',
     'reset' => 'إعادة تعيين',
     'locations_list' => 'قائمة المواقع',
-    'id' => 'المعرف',
+    'id' => 'الكود',
     'action' => 'الإجراء',
     'view' => 'عرض',
     'edit' => 'تعديل',

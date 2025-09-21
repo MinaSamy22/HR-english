@@ -263,6 +263,7 @@ return [
     'taxes_and_insurance' => 'Taxes and Insurance',
 
     'locations' => 'locations',
+    'employee-locations' => 'Employee Locations',
     'location' => 'location',
     'add_location' => 'add location',
     'search_location' => 'search location',
@@ -298,7 +299,7 @@ return [
     'not_checked_in_today' => 'You have not checked in today.',
     'already_checked_out' => 'You have already checked out today.',
     'checked_out' => 'You have checked out.',
-    
+
 
 
      'home' => 'Dashboard',
@@ -313,6 +314,7 @@ return [
     'resignation_request' => '<strong>:name</strong> submitted resignation request',
     'late_removal_request' => '<strong>:name</strong> requested late removal for :date',
 
+    'add' => 'Add',
     // Request types
     'vacation_types' => [
         'annual' => 'annual',

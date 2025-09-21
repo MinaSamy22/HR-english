@@ -655,11 +655,12 @@
                     </li>
                 @endif
 
+                <!-- Company information -->
                 <li class="nav-item">
                     <a href="{{ route('locations.index') }}"
                         class="nav-link @if (Request::segment(2) == 'locations') active @endif">
-                        <i class="nav-icon fas fa-code-branch text-white"></i>
-                        <p>{{ __('dashboard.locations') }}</p>
+                        <i class="nav-icon fas fa-map-marker-alt"></i>
+                        <p>{{ __('dashboard.employee-locations') }}</p>
                     </a>
                 </li>
 

@@ -125,10 +125,10 @@
                 <div class="modal-body">
                     @foreach($employees as $employee)
                         <div class="form-check">
-                            <input class="form-check-input employee-checkbox" 
-                                    type="checkbox" 
-                                    name="employees[]" 
-                                    value="{{ $employee->id }}" 
+                            <input class="form-check-input employee-checkbox"
+                                    type="checkbox"
+                                    name="employees[]"
+                                    value="{{ $employee->id }}"
                                     id="emp{{ $employee->id }}">
                             <label class="form-check-label" for="emp{{ $employee->id }}">
                                 {{ $employee->name }}
