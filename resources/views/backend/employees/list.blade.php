@@ -160,12 +160,14 @@
                                                             title="{{ __('h_employee.edit') }}">
                                                             <i class="fas fa-edit"></i>
                                                         </a>
-                                                        <a href="{{ url('admin/employees/delete/' . $value->id) }}"
-                                                            onclick="return confirm('{{ __('h_employee.delete_confirmation') }}')"
-                                                            class="btn btn-danger rounded-pill"
-                                                            title="{{ __('h_employee.delete') }}">
-                                                            <i class="fas fa-trash-alt"></i>
-                                                        </a>
+                                                        <button type="button"
+        class="btn btn-danger rounded-pill delete-btn"
+        data-id="{{ $value->id }}"
+        data-url="{{ route('employees_delete', $value->id) }}"
+        title="{{ __('h_employees.delete') }}">
+    <i class="fas fa-trash-alt"></i>
+</button>
+
                                                     </td>
                                                 </tr>
                                             @empty
@@ -187,4 +189,21 @@
             </div>
         </section>
     </div>
+@section('script')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    window.deleteEmployeeTranslations = {
+        title: "{{ __('dashboard.delete') }}?",
+        text: "{{ __('h_employee.delete_confirmation') }}",
+        confirm: "{{ __('dashboard.delete') }}",
+        cancel: "{{ __('dashboard.cancel') }}",
+        deleted: "{{ __('dashboard.deleted') }}!",
+        success: "{{ __('dashboard.delete_success') }}",
+        error: "{{ __('dashboard.error') }}",
+        failed: "{{ __('dashboard.delete_failed') }}"
+    };
+</script>
+<script src="{{ asset('dist/js/employee.js') }}?v=2"></script>
+@endsection
+
 @endsection

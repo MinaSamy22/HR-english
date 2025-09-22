@@ -34,3 +34,45 @@ document.addEventListener("DOMContentLoaded", function () {
             shiftSelect.addEventListener("change", toggleSecondShift);
             toggleSecondShift(); // للتشغيل وقت التحميل
         });
+
+        $(document).on('click', '.delete-btn', function () {
+    let deleteId = $(this).data('id');
+    let deleteUrl = $(this).data('url');
+
+    Swal.fire({
+        title: deleteEmployeeTranslations.title,
+        text: deleteEmployeeTranslations.text,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#6c757d",
+        confirmButtonText: deleteEmployeeTranslations.confirm,
+        cancelButtonText: deleteEmployeeTranslations.cancel
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: deleteUrl,
+                type: 'GET', // ✅ your route uses GET
+                success: function () {
+                    $('button.delete-btn[data-id="' + deleteId + '"]').closest('tr').fadeOut();
+
+                    Swal.fire({
+                        title: deleteEmployeeTranslations.deleted,
+                        text: deleteEmployeeTranslations.success,
+                        icon: "success",
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                },
+                error: function () {
+                    Swal.fire({
+                        title: deleteEmployeeTranslations.error,
+                        text: deleteEmployeeTranslations.failed,
+                        icon: "error",
+                        confirmButtonText: "OK"
+                    });
+                }
+            });
+        }
+    });
+});

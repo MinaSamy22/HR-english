@@ -182,13 +182,13 @@
             let deleteId = $(this).data('id');
 
             Swal.fire({
-                title: "{{ __('h_manager.delete') }}?",
-                text: "{{ __('h_manager.delete_confirmation') }}",
+                title: "{{ __('dashboard.delete') }}?",
+                text: "{{ __('dashboard.delete_confirmation') }}",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#d33",
                 cancelButtonColor: "#6c757d",
-                confirmButtonText: "{{ __('h_manager.delete') }}",
+                confirmButtonText: "{{ __('dashboard.delete') }}",
                 cancelButtonText: "{{ __('dashboard.cancel') }}"
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -203,8 +203,8 @@
                             $('button.delete-btn[data-id="' + deleteId + '"]').closest('tr').fadeOut();
 
                             Swal.fire({
-                                title: "{{ __('h_manager.deleted') }}!",
-                                text: "{{ __('h_manager.delete_success') }}",
+                                title: "{{ __('dashboard.deleted') }}!",
+                                text: "{{ __('dashboard.delete_success') }}",
                                 icon: "success",
                                 timer: 2000,
                                 showConfirmButton: false
@@ -212,8 +212,8 @@
                         },
                         error: function () {
                             Swal.fire({
-                                title: "{{ __('h_manager.error') }}",
-                                text: "{{ __('h_manager.delete_failed') }}",
+                                title: "{{ __('dashboard.error') }}",
+                                text: "{{ __('dashboard.delete_failed') }}",
                                 icon: "error",
                                 confirmButtonText: "OK"
                             });

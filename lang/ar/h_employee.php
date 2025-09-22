@@ -182,6 +182,8 @@ return [
     'record_deleted' => 'تم حذف الموظف بنجاح',
     'employees_imported' => 'تم استيراد أو تحديث :count موظف بنجاح.',
     'all' => 'عرض الكل',
-    'main_salary'=>'راتب اساسي'
+    'main_salary'=>'راتب اساسي',
+    'delete_confirmation' =>'هل أنت متأكد أنك تريد حذف هذا الموظف؟'
+
 
 ];

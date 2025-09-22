@@ -389,4 +389,12 @@ return [
 
     'invalid_end_time' => 'Invalid end time set for your account. Please contact HR.',
     'invalid_start_time' => 'Invalid start time set for your account. Please contact HR.',
+
+    'delete'              => 'Delete',
+    'delete_confirmation' => 'Are you sure you want to delete ?',
+    'cancel'              => 'Cancel',
+    'deleted'             => 'Deleted',
+    'delete_success'      => 'It has been deleted successfully.',
+    'error'               => 'Error',
+    'delete_failed'       => 'Failed to delete . Please try again.',
 ];
