@@ -112,7 +112,7 @@
                                             <tr>
                                                 <td>{{ $value->id }}</td>
                                                 <td>{{ $value->job_title }}</td>
-                                                <td>{{ $value->min_salary }}</td> 
+                                                <td>{{ $value->min_salary }}</td>
                                                 <td>{{ $value->max_salary }}</td>
                                                 <td>{{ $value->department_name ?? __('h_jobs.na') }}</td>
                                                 <td>{{ $value->branch_name ?? __('h_dashboard.main_branch') }}</td>
@@ -125,9 +125,10 @@
                                                     <a href="{{ url('admin/jobs/edit/' .$value->id) }}" class="btn btn-primary rounded-pill" title="{{ __('h_jobs.edit') }}">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
-                                                    <a href="{{ url('admin/jobs/delete/' .$value->id) }}" onclick="return confirm('{{ __('h_jobs.delete_confirm') }}')" class="btn btn-danger rounded-pill" title="{{ __('h_jobs.delete') }}">
+                                                     <button type="button" class="btn btn-danger rounded-pill delete-btn"
+                                                            data-id="{{ $value->id }}" title="{{ __('h_jobs.delete') }}">
                                                         <i class="fas fa-trash-alt"></i>
-                                                    </a>
+                                                    </button>
                                                 </td>
                                             </tr>
                                             @empty
@@ -149,4 +150,24 @@
             </div>
         </section>
     </div>
+@section('script')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    const deleteTranslations = {
+        delete: "{{ __('dashboard.delete') }}",
+        confirmation: "{{ __('dashboard.delete_confirmation') }}",
+        cancel: "{{ __('dashboard.cancel') }}",
+        deleted: "{{ __('dashboard.deleted') }}!",
+        success: "{{ __('dashboard.delete_success') }}",
+        error: "{{ __('dashboard.error') }}",
+        failed: "{{ __('dashboard.delete_failed') }}",
+        deleteUrl: "{{ url('admin/jobs/delete') }}"
+    };
+</script>
+
+<script src="{{ asset('dist/js/jobs.js') }}"></script>
+@endsection
+
+
 @endsection

@@ -114,12 +114,10 @@
                                                             title="{{ __('h_manager.edit') }}">
                                                             <i class="fas fa-edit"></i>
                                                         </a>
-                                                        <a href="{{ url('admin/manager/delete/' . $value->id) }}"
-                                                            onclick="return confirm('{{ __('h_manager.delete_confirmation') }}')"
-                                                            class="btn btn-danger rounded-pill"
-                                                            title="{{ __('h_manager.delete') }}">
+                                                        <button type="button" class="btn btn-danger rounded-pill delete-btn"
+                                                                data-id="{{ $value->id }}" title="{{ __('h_manager.delete') }}">
                                                             <i class="fas fa-trash-alt"></i>
-                                                        </a>
+                                                        </button>
                                                     </td>
                                                 </tr>
                                             @empty
@@ -142,4 +140,27 @@
             </div>
         </section>
     </div>
+
+
+@section('script')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    // Pass Laravel translations & URL to JS file
+    const deleteTranslations = {
+        delete: "{{ __('dashboard.delete') }}",
+        confirmation: "{{ __('dashboard.delete_confirmation') }}",
+        cancel: "{{ __('dashboard.cancel') }}",
+        deleted: "{{ __('dashboard.deleted') }}!",
+        success: "{{ __('dashboard.delete_success') }}",
+        error: "{{ __('dashboard.error') }}",
+        failed: "{{ __('dashboard.delete_failed') }}",
+        deleteUrl: "{{ url('admin/manager/delete') }}"
+    };
+</script>
+
+<script src="{{ asset('dist/js/manager.js') }}"></script>
+@endsection
+
+
 @endsection

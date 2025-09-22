@@ -58,3 +58,103 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
+
+$(function () {
+    // ✅ Single delete
+    $(document).on('click', '.delete-btn', function () {
+        let deleteId = $(this).data('id');
+
+        Swal.fire({
+            title: deleteTranslations.delete + '?',
+            text: deleteTranslations.confirmation,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#6c757d",
+            confirmButtonText: deleteTranslations.delete,
+            cancelButtonText: deleteTranslations.cancel
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: deleteTranslations.deleteUrl + "/" + deleteId,
+                    type: 'GET',
+                    success: function () {
+                        $('button.delete-btn[data-id="' + deleteId + '"]').closest('tr').fadeOut();
+
+                        Swal.fire({
+                            title: deleteTranslations.deleted,
+                            text: deleteTranslations.success,
+                            icon: "success",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    },
+                    error: function () {
+                        Swal.fire({
+                            title: deleteTranslations.error,
+                            text: deleteTranslations.failed,
+                            icon: "error",
+                            confirmButtonText: "OK"
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    // ✅ Select All checkboxes
+    $('#selectAll').on('click', function () {
+        $('.bounasCheckbox').prop('checked', this.checked);
+    });
+
+    // ✅ Bulk delete
+    $('#deleteSelected').on('click', function (e) {
+        e.preventDefault();
+        let selected = $('.bounasCheckbox:checked').map(function () {
+            return $(this).val();
+        }).get();
+
+        if (selected.length === 0) {
+            Swal.fire(deleteTranslations.error, deleteTranslations.noSelection, "warning");
+            return;
+        }
+
+        Swal.fire({
+            title: deleteTranslations.delete + '?',
+            text: deleteTranslations.bulkConfirmation,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#6c757d",
+            confirmButtonText: deleteTranslations.delete,
+            cancelButtonText: deleteTranslations.cancel
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: deleteTranslations.bulkDeleteUrl,
+                    type: 'POST',
+                    data: {
+                        ids: selected,
+                        _token: deleteTranslations.csrf
+                    },
+                    success: function () {
+                        $('.bounasCheckbox:checked').each(function () {
+                            $(this).closest('tr').fadeOut();
+                        });
+
+                        Swal.fire({
+                            title: deleteTranslations.deleted,
+                            text: deleteTranslations.success,
+                            icon: "success",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    },
+                    error: function () {
+                        Swal.fire(deleteTranslations.error, deleteTranslations.failed, "error");
+                    }
+                });
+            }
+        });
+    });
+});

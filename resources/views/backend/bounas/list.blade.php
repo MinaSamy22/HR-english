@@ -101,9 +101,10 @@
                                             <td>{{ date('d-m-Y', strtotime($value->created_at)) }}</td>
 
                                             <td>
-                                                <a href="{{ url('admin/bounas/delete/' .$value->id) }}" onclick="return confirm('{{ __('h_bounas.confirm_delete') }}')" class="btn btn-danger rounded-pill" title="{{ __('h_bounas.delete_btn') }}">
-                                                    <i class="fas fa-trash-alt"></i>
-                                                </a>
+                                                <button type="button" class="btn btn-danger rounded-pill delete-btn"
+                                                            data-id="{{ $value->id }}" title="{{ __('h_bounas.delete_btn') }}">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </button>
                                             </td>
                                         </tr>
                                         @empty
@@ -126,6 +127,29 @@
         </section>
     </div>
 
- <!-- Link to the new JavaScript file -->
- <script src="{{ url('dist/js/bounas.js') }}"></script>
+  <!-- Link to the new JavaScript file -->
+    <script src="{{ url('dist/js/bounas.js') }}"></script>
+@endsection
+
+@section('script')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    const deleteTranslations = {
+        delete: "{{ __('dashboard.delete') }}",
+        confirmation: "{{ __('dashboard.delete_confirmation') }}",
+        bulkConfirmation: "{{ __('dashboard.delete_confirmation') }}",
+        cancel: "{{ __('dashboard.cancel') }}",
+        deleted: "{{ __('dashboard.deleted') }}!",
+        success: "{{ __('dashboard.delete_success') }}",
+        error: "{{ __('dashboard.error') }}",
+        failed: "{{ __('dashboard.delete_failed') }}",
+        noSelection: "{{ __('dashboard.no_selection') ?? 'Please select at least one record.' }}",
+        deleteUrl: "{{ url('admin/bounas/delete') }}",
+        bulkDeleteUrl: "{{ url('admin/bounas/bulk-delete') }}",
+        csrf: "{{ csrf_token() }}"
+    };
+</script>
+
+<script src="{{ asset('dist/js/bounas.js') }}"></script>
 @endsection
