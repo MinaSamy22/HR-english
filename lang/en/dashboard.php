@@ -387,4 +387,6 @@ return [
 
     'invalid_end_time' => 'Invalid end time set for your account. Please contact HR.',
     'invalid_start_time' => 'Invalid start time set for your account. Please contact HR.',
+    'timezone' => 'Timezone',
+    'select_your_company_timezone' => 'Select your company timezone',
 ];
