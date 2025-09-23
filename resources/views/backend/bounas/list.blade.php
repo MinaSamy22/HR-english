@@ -68,9 +68,9 @@
                      <div class="card" style="background-color: rgba(255, 255, 255, 0.9); border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
                         <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
                             <h3 class="card-title mb-2 mb-md-0">{{ __('h_bounas.list_title') }}</h3>
-                            <div class="ml-auto">
-                                <button class="btn btn-danger" id="deleteSelected">{{ __('h_bounas.delete_selection_btn') }}</button>
-                            </div>
+                             <div class="ml-auto">
+                                    <button class="btn btn-danger" id="deleteSelected">{{ __('h_bounas.delete_selection_btn') }}</button>
+                                </div>
                         </div>
 
                         <div class="card-body p-0">
@@ -101,7 +101,7 @@
                                             <td>{{ date('d-m-Y', strtotime($value->created_at)) }}</td>
 
                                             <td>
-                                                <button type="button" class="btn btn-danger rounded-pill delete-btn"
+                                                    <button type="button" class="btn btn-danger rounded-pill delete-btn"
                                                             data-id="{{ $value->id }}" title="{{ __('h_bounas.delete_btn') }}">
                                                         <i class="fas fa-trash-alt"></i>
                                                     </button>
@@ -127,29 +127,132 @@
         </section>
     </div>
 
-  <!-- Link to the new JavaScript file -->
-    <script src="{{ url('dist/js/bounas.js') }}"></script>
 @endsection
 
 @section('script')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-    const deleteTranslations = {
-        delete: "{{ __('dashboard.delete') }}",
-        confirmation: "{{ __('dashboard.delete_confirmation') }}",
-        bulkConfirmation: "{{ __('dashboard.delete_confirmation') }}",
-        cancel: "{{ __('dashboard.cancel') }}",
-        deleted: "{{ __('dashboard.deleted') }}!",
-        success: "{{ __('dashboard.delete_success') }}",
-        error: "{{ __('dashboard.error') }}",
-        failed: "{{ __('dashboard.delete_failed') }}",
-        noSelection: "{{ __('dashboard.no_selection') ?? 'Please select at least one record.' }}",
-        deleteUrl: "{{ url('admin/bounas/delete') }}",
-        bulkDeleteUrl: "{{ url('admin/bounas/bulk-delete') }}",
-        csrf: "{{ csrf_token() }}"
-    };
+    // Individual delete functionality with SweetAlert2
+    $(document).on('click', '.delete-btn', function () {
+        let deleteId = $(this).data('id');
+
+        Swal.fire({
+            title: "{{ __('dashboard.delete') }}",
+            text: "{{ __('dashboard.delete_confirmation') }}",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#6c757d",
+            confirmButtonText: "{{ __('dashboard.delete') }}",
+            cancelButtonText: "{{ __('dashboard.cancel') }}"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "{{ url('admin/bounas/delete') }}/" + deleteId,
+                    type: 'GET',
+                    success: function () {
+                        $('button.delete-btn[data-id="' + deleteId + '"]').closest('tr').fadeOut();
+
+                        Swal.fire({
+                            title: "{{ __('dashboard.deleted') }}!",
+                            text: "{{ __('dashboard.delete_success') }}",
+                            icon: "success",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    },
+                    error: function () {
+                        Swal.fire({
+                            title: "{{ __('dashboard.error') }}",
+                            text: "{{ __('dashboard.delete_failed') }}",
+                            icon: "error",
+                            confirmButtonText: "OK"
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    // Bulk delete functionality with SweetAlert2
+    $('#deleteSelected').click(function() {
+        var selectedIds = [];
+        $('.bounasCheckbox:checked').each(function() {
+            selectedIds.push($(this).val());
+        });
+
+        if (selectedIds.length === 0) {
+            Swal.fire({
+                title: "{{ __('dashboard.no_selection') }}",
+                text: "{{ __('dashboard.select_items_first') }}",
+                icon: "warning",
+                confirmButtonText: "OK"
+            });
+            return;
+        }
+
+        Swal.fire({
+            title: "{{ __('dashboard.delete_selected') }}",
+            text: "{{ __('dashboard.delete_selected_confirm') }}",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#6c757d",
+            confirmButtonText: "{{ __('dashboard.delete') }}",
+            cancelButtonText: "{{ __('dashboard.cancel') }}"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "{{ url('admin/bounas/delete-multiple') }}",
+                    type: 'POST',
+                    data: {
+                        ids: selectedIds,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        // Remove selected rows with fade effect
+                        $('.bounasCheckbox:checked').each(function() {
+                            $(this).closest('tr').fadeOut();
+                        });
+
+                        // Uncheck select all
+                        $('#selectAll').prop('checked', false);
+
+                        Swal.fire({
+                            title: "{{ __('dashboard.deleted') }}!",
+                            text: "{{ __('dashboard.bulk_delete_success') }}",
+                            icon: "success",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    },
+                    error: function() {
+                        Swal.fire({
+                            title: "{{ __('dashboard.error') }}",
+                            text: "{{ __('dashboard.bulk_delete_failed') }}",
+                            icon: "error",
+                            confirmButtonText: "OK"
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    // Select all functionality
+    $('#selectAll').change(function() {
+        $('.bounasCheckbox').prop('checked', this.checked);
+    });
+
+    // Update select all when individual checkboxes change
+    $(document).on('change', '.bounasCheckbox', function() {
+        if ($('.bounasCheckbox:checked').length === $('.bounasCheckbox').length) {
+            $('#selectAll').prop('checked', true);
+        } else {
+            $('#selectAll').prop('checked', false);
+        }
+    });
 </script>
 
-<script src="{{ asset('dist/js/bounas.js') }}"></script>
 @endsection

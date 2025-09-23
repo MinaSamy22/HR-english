@@ -393,8 +393,19 @@ return [
     'delete'              => 'Delete',
     'delete_confirmation' => 'Are you sure you want to delete ?',
     'cancel'              => 'Cancel',
-    'deleted'             => 'Deleted', 
+    'deleted'             => 'Deleted',
     'delete_success'      => 'It has been deleted successfully.',
     'error'               => 'Error',
     'delete_failed'       => 'Failed to delete . Please try again.',
+
+
+
+
+    'no_selection' => 'No items selected',
+    'select_items_first' => 'Please select at least one item first.',
+
+    'delete_selected' => 'Delete Selected',
+    'delete_selected_confirm' => 'Are you sure you want to delete the selected rows?',
+    'bulk_delete_success' => 'The selected rows have been deleted successfully.',
+    'bulk_delete_failed' => 'Failed to delete the selected rows.',
 ];
