@@ -16,6 +16,7 @@ class AttendanceRule extends Model
         'working_days',
         'official_holidays',
         'bonus_per_hour' ,
+        'timezone',
     ];
     protected $casts = [
         'working_days' => 'array',

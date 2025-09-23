@@ -155,7 +155,8 @@ class EmployeeService
 
     public function checkIn()
     {
-        $now = now();
+        $settings = $this->employee->company->attendanceSetting;
+        $now = now($settings->timezone ?? config('app.timezone'));
         $employee = $this->employee;
 
         $validator = Validator::make(request()->all(), [
@@ -215,7 +216,8 @@ class EmployeeService
 
     public function checkOut()
     {
-        $now = now();
+        $settings = $this->employee->company->attendanceSetting;
+        $now = now($settings->timezone ?? config('app.timezone'));
         $employee = $this->employee;
 
         $validator = Validator::make(request()->all(), [

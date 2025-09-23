@@ -408,4 +408,6 @@ return [
     'delete_selected_confirm' => 'Are you sure you want to delete the selected rows?',
     'bulk_delete_success' => 'The selected rows have been deleted successfully.',
     'bulk_delete_failed' => 'Failed to delete the selected rows.',
+    'timezone' => 'Timezone',
+    'select_your_company_timezone' => 'Select your company timezone',
 ];
