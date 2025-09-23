@@ -35,4 +35,5 @@ return [
     'no_recent_news' => 'No Recent News',
     'no_recent_news_desc' => 'There are no recent news items to display.',
     'add_first_news' => 'Add First News',
+
 ];

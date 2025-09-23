@@ -231,10 +231,12 @@ return [
     'late-arrival' => 'الحضور متأخر',
     'attendance_saved' => 'تم حفظ الحضور بنجاح',
     'record_not_found' => 'لا يوجد',
+    'add' => 'اضافة',
 
     'attendance_imported_success' => 'تم استيراد :count سجل حضور بنجاح.',
 
     'locations' => 'المواقع',
+    'employee-locations' => 'مواقع الموظفين',
     'location' => 'الموقع',
     'add_location' => 'إضافة موقع',
     'search_location' => 'بحث عن موقع',
@@ -242,7 +244,7 @@ return [
     'search' => 'بحث',
     'reset' => 'إعادة تعيين',
     'locations_list' => 'قائمة المواقع',
-    'id' => 'المعرف',
+    'id' => 'الكود',
     'action' => 'الإجراء',
     'view' => 'عرض',
     'edit' => 'تعديل',
@@ -366,6 +368,24 @@ return [
 
     'invalid_end_time' => 'تم تعيين وقت نهاية غير صالح لحسابك. يرجى الاتصال بالموارد البشرية.',
     'invalid_start_time' => 'تم تعيين وقت بداية غير صالح لحسابك. يرجى الاتصال بالموارد البشرية.',
+
+    'delete'              => 'حذف',
+    'delete_confirmation' => 'هل أنت متأكد أنك تريد الحذف ؟',
+    'cancel'              => 'إلغاء',
+    'deleted'             => 'تم الحذف',
+    'delete_success'      => 'تم الحذف بنجاح.',
+    'error'               => 'خطأ',
+    'delete_failed'       => 'فشل في الحذف . يرجى المحاولة مرة أخرى.',
+
+
+'no_selection' => 'لم يتم تحديد أي صفوف',
+'select_items_first' => 'يرجى تحديد صف واحد على الأقل أولاً.',
+
+'delete_selected' => 'حذف البيانات المحددة',
+'delete_selected_confirm' => 'هل أنت متأكد أنك تريد حذف البيانات المحددة؟',
+'bulk_delete_success' => 'تم حذف البيانات المحددة بنجاح.',
+'bulk_delete_failed' => 'فشل في حذف البيانات المحددة.',
+
     'timezone' => 'المنطقة الزمنية',
     'select_your_company_timezone' => 'اختر المنطقة الزمنية لشركتك',
 ];

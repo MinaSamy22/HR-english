@@ -14,7 +14,7 @@ class LocationController extends Controller
     {
         $getRecord = Location::with('employees')->when(request()->name,function($q){
             $q->where('name','LIKE %',request()->name . '%');
-        })->paginate(5);
+        })->where('company_id',session('company_id'))->paginate(5);
         $employees = User::getRecord(request()->merge(['per_page' => 'all']));
         return view('backend.locations.index', compact('getRecord','employees'));
     }

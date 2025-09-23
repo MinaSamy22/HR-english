@@ -92,7 +92,7 @@
                                                 placeholder="{{ __('h_job_history.job_title_placeholder') }}">
                                         </div>
 
-                                        
+
 
                                         <div class="form-group col-md-2 d-flex align-items-end">
                                             <button class="btn btn-primary rounded-pill" type="submit"
@@ -148,12 +148,10 @@
                                                             title="{{ __('h_job_history.edit') }}">
                                                             <i class="fas fa-edit"></i>
                                                         </a>
-                                                        <a href="{{ url('admin/job_history/delete/' . $value->id) }}"
-                                                            onclick="return confirm('{{ __('h_job_history.delete_confirm') }}')"
-                                                            class="btn btn-danger rounded-pill"
-                                                            title="{{ __('h_job_history.delete') }}">
+                                                        <button type="button" class="btn btn-danger rounded-pill delete-btn"
+                                                                data-id="{{ $value->id }}" title="{{ __('h_job_history.delete') }}">
                                                             <i class="fas fa-trash-alt"></i>
-                                                        </a>
+                                                        </button>
                                                     </td>
                                                 </tr>
                                             @empty
@@ -176,4 +174,26 @@
             </div>
         </section>
     </div>
+
+@section('script')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    const deleteTranslations = {
+        delete: "{{ __('dashboard.delete') }}",
+        confirmation: "{{ __('dashboard.delete_confirmation') }}",
+        cancel: "{{ __('dashboard.cancel') }}",
+        deleted: "{{ __('dashboard.deleted') }}!",
+        success: "{{ __('dashboard.delete_success') }}",
+        error: "{{ __('dashboard.error') }}",
+        failed: "{{ __('dashboard.delete_failed') }}",
+        deleteUrl: "{{ url('admin/job_history/delete') }}"
+    };
+</script>
+
+<script src="{{ asset('dist/js/job_history.js') }}"></script>
+
+
+@endsection
+
 @endsection

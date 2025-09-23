@@ -181,8 +181,9 @@ return [
     'record_deleted' => 'Record and attachment successfully deleted',
     'employees_imported' => ':count employee(s) imported or updated successfully.',
     'all' => 'Show all ',
-    'main_salary'=>'Main Salary'
+    'main_salary'=>'Main Salary',
 
 
+    'delete_confirmation' =>'Are you sure you want to delete this employee?'
 
 ];

@@ -263,6 +263,7 @@ return [
     'taxes_and_insurance' => 'Taxes and Insurance',
 
     'locations' => 'locations',
+    'employee-locations' => 'Employee Locations',
     'location' => 'location',
     'add_location' => 'add location',
     'search_location' => 'search location',
@@ -298,7 +299,7 @@ return [
     'not_checked_in_today' => 'You have not checked in today.',
     'already_checked_out' => 'You have already checked out today.',
     'checked_out' => 'You have checked out.',
-    
+
 
 
      'home' => 'Dashboard',
@@ -313,6 +314,7 @@ return [
     'resignation_request' => '<strong>:name</strong> submitted resignation request',
     'late_removal_request' => '<strong>:name</strong> requested late removal for :date',
 
+    'add' => 'Add',
     // Request types
     'vacation_types' => [
         'annual' => 'annual',
@@ -387,6 +389,25 @@ return [
 
     'invalid_end_time' => 'Invalid end time set for your account. Please contact HR.',
     'invalid_start_time' => 'Invalid start time set for your account. Please contact HR.',
+
+    'delete'              => 'Delete',
+    'delete_confirmation' => 'Are you sure you want to delete ?',
+    'cancel'              => 'Cancel',
+    'deleted'             => 'Deleted',
+    'delete_success'      => 'It has been deleted successfully.',
+    'error'               => 'Error',
+    'delete_failed'       => 'Failed to delete . Please try again.',
+
+
+
+
+    'no_selection' => 'No items selected',
+    'select_items_first' => 'Please select at least one item first.',
+
+    'delete_selected' => 'Delete Selected',
+    'delete_selected_confirm' => 'Are you sure you want to delete the selected rows?',
+    'bulk_delete_success' => 'The selected rows have been deleted successfully.',
+    'bulk_delete_failed' => 'Failed to delete the selected rows.',
     'timezone' => 'Timezone',
     'select_your_company_timezone' => 'Select your company timezone',
 ];
