@@ -353,6 +353,35 @@
                                             class="form-text text-muted">{{ __('dashboard.add_multiple_holidays_with_titles_and_dates') }}</small>
                                     </div>
 
+
+                                    <!-- Timezone -->
+                                    <div class="form-group">
+                                        <label for="timezone">
+                                            <i class="fas fa-globe text-success mr-1"></i>
+                                            {{ __('dashboard.timezone') }}
+                                        </label>
+                                        <select class="form-control select2" id="timezone" name="timezone"
+                                            style="width: 100%;">
+                                            @php
+                                                $selectedTimezone = old(
+                                                    'timezone',
+                                                    $setting->timezone ?? config('app.timezone'),
+                                                );
+                                                $timezones = \DateTimeZone::listIdentifiers();
+                                            @endphp
+                                            @foreach ($timezones as $tz)
+                                                <option value="{{ $tz }}"
+                                                    {{ $tz == $selectedTimezone ? 'selected' : '' }}>
+                                                    {{ $tz }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        <small
+                                            class="form-text text-muted">{{ __('dashboard.select_your_company_timezone') }}</small>
+                                        <div id="timezone_feedback" class="mt-1"></div>
+                                    </div>
+
+
                                 </div>
                                 <!-- /Form End -->
 

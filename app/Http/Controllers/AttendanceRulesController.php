@@ -60,6 +60,7 @@ class AttendanceRulesController extends Controller
                 'official_holidays'              => json_encode($holidays),
                 'vacation_balance'               => $request->vacation_balance,
                 'bonus_per_hour'                 => $request->bonus_per_hour,
+                'timezone'                       => $request->timezone,
             ]
         );
 

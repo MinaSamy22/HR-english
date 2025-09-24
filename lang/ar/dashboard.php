@@ -386,6 +386,7 @@ return [
 'bulk_delete_success' => 'تم حذف البيانات المحددة بنجاح.',
 'bulk_delete_failed' => 'فشل في حذف البيانات المحددة.',
 
-
+    'timezone' => 'المنطقة الزمنية',
+    'select_your_company_timezone' => 'اختر المنطقة الزمنية لشركتك',
 ];
 
