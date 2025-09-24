@@ -2,7 +2,7 @@ $(document).on('click', '.delete-btn', function () {
     let deleteId = $(this).data('id');
 
     Swal.fire({
-        title: deleteTranslations.delete ,
+        title: deleteTranslations.delete,
         text: deleteTranslations.confirmation,
         icon: "warning",
         showCancelButton: true,
@@ -14,7 +14,11 @@ $(document).on('click', '.delete-btn', function () {
         if (result.isConfirmed) {
             $.ajax({
                 url: deleteTranslations.deleteUrl + "/" + deleteId,
-                type: 'GET',
+                type: 'POST',
+                data: {
+                    _method: 'DELETE',
+                    _token: deleteTranslations.token
+                },
                 success: function () {
                     $('button.delete-btn[data-id="' + deleteId + '"]').closest('tr').fadeOut();
 

@@ -191,7 +191,7 @@
     };
 </script>
 
-<script src="{{ asset('dist/js/job_history.js') }}"></script>
+<script src="{{ asset('dist/js/job_history.js') }}?v=1"></script>
 
 
 @endsection

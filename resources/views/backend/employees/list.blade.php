@@ -164,7 +164,7 @@
         class="btn btn-danger rounded-pill delete-btn"
         data-id="{{ $value->id }}"
         data-url="{{ route('employees_delete', $value->id) }}"
-        title="{{ __('h_employees.delete') }}">
+        title="{{ __('dashboard.delete') }}">
     <i class="fas fa-trash-alt"></i>
 </button>
 
@@ -203,7 +203,7 @@
         failed: "{{ __('dashboard.delete_failed') }}"
     };
 </script>
-<script src="{{ asset('dist/js/employee.js') }}?v=2"></script>
+<script src="{{ asset('dist/js/employee.js') }}?v=4"></script>
 @endsection
 
 @endsection

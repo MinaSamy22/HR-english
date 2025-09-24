@@ -166,7 +166,7 @@
     };
 </script>
 
-<script src="{{ asset('dist/js/jobs.js') }}"></script>
+<script src="{{ asset('dist/js/jobs.js') }}?v=1"></script>
 @endsection
 
 

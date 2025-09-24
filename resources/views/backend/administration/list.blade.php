@@ -156,6 +156,6 @@
     };
 </script>
 
-<script src="{{ asset('dist/js/administration.js') }}"></script>
+<script src="{{ asset('dist/js/administration.js') }}?v=1"></script>
 @endsection
 
