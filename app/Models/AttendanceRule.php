@@ -9,15 +9,18 @@ class AttendanceRule extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'company_id',
-        'late_deduction_percentage',
-        'half_day_deduction_percentage',
-        'work_hours_per_day',
-        'working_days',
-        'official_holidays',
-        'bonus_per_hour' ,
-        'timezone',
-    ];
+    'company_id',
+    'late_deduction_percentage',
+    'half_day_deduction_percentage',
+    'late_threshold_minutes',
+        'half_day_threshold_minutes',
+    'work_hours_per_day',
+    'working_days',
+    'official_holidays',
+    'vacation_balance',
+    'bonus_per_hour',
+    'timezone'
+];
     protected $casts = [
         'working_days' => 'array',
         'official_holidays' => 'array',

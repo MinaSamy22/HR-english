@@ -6,7 +6,8 @@
     <meta name="employees-work-hours-route" content="{{ route('attendance.update-employee-work-hours') }}">
     <meta name="employees-vacation-balance-route" content="{{ route('attendance.update-employee-vacation-balance') }}">
     <meta name="employees-bonus-per-hour-route" content="{{ route('attendance.update-employee-bonus-per-hour') }}">
-
+    <meta name="late-threshold-route" content="{{ route('attendance-rules.update-late-threshold') }}">
+    <meta name="half-day-threshold-route" content="{{ route('attendance-rules.update-half-day-threshold') }}">
     {{-- Translation meta tags --}}
     <meta name="msg-select-employee" content="{{ __('dashboard.no_employees_selected') }}">
     <meta name="msg-invalid-hours" content="{{ __('dashboard.invalid_hours') }}">
@@ -76,6 +77,29 @@
                                 @csrf
 
                                 <div class="card-body">
+                                    <!-- Late Time Threshold -->
+                                    <div class="form-group">
+                                        <label for="late_threshold_minutes">
+                                            <i class="fas fa-clock text-warning mr-1"></i>
+                                            {{ __('dashboard.late_arrival_threshold') }}
+                                        </label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="late_threshold_minutes"
+                                                name="late_threshold_minutes"
+                                                value="{{ old('late_threshold_minutes', $setting->late_threshold_minutes ?? 15) }}"
+                                                min="1" max="120"
+                                                style="max-width: 120px;"
+                                                onchange="updateLateThreshold(this.value)">
+
+                                            <div class="input-group-append">
+                                                <span
+                                                    class="input-group-text">{{ __('dashboard.minutes_after_start_time') }}</span>
+                                            </div>
+                                        </div>
+                                        <small
+                                            class="form-text text-muted">{{ __('dashboard.minutes_after_scheduled_start_time_to_consider_late') }}</small>
+                                        <div id="lateThresholdFeedback" class="mt-2"></div>
+                                    </div>
 
                                     <!-- Late Deduction -->
                                     <div class="form-group">
@@ -97,10 +121,29 @@
                                             class="form-text text-muted">{{ __('dashboard.percentage_deducted_from_daily_wage_when_employee_arrives_late') }}</small>
                                         <div id="lateDeductionFeedback" class="mt-2"></div>
                                     </div>
-                                    <script>
-                                        const updateLateDeductionUrl = '{{ route('attendance-rules.update-late-deduction') }}';
-                                        const csrfToken = '{{ csrf_token() }}';
-                                    </script>
+
+                                    <!-- Half Day Threshold -->
+                                    <div class="form-group">
+                                        <label for="half_day_threshold_minutes">
+                                            <i class="fas fa-calendar-times text-info mr-1"></i>
+                                            {{ __('dashboard.half_day_threshold') }}
+                                        </label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="half_day_threshold_minutes"
+                                                name="half_day_threshold_minutes"
+                                                value="{{ old('half_day_threshold_minutes', $setting->half_day_threshold_minutes ?? 240) }}"
+                                                min="60" max="480"
+                                                style="max-width: 120px;"
+                                                onchange="updateHalfDayThreshold(this.value)">
+                                            <div class="input-group-append">
+                                                <span
+                                                    class="input-group-text">{{ __('dashboard.minutes_of_absence') }}</span>
+                                            </div>
+                                        </div>
+                                        <small
+                                            class="form-text text-muted">{{ __('dashboard.minutes_of_absence_to_consider_half_day') }}</small>
+                                        <div id="halfDayThresholdFeedback" class="mt-2"></div>
+                                    </div>
 
                                     <!-- Half Day Deduction -->
                                     <div class="form-group">
@@ -124,10 +167,7 @@
                                         <div id="half_day_deduction_feedback" class="mt-1"></div>
                                     </div>
 
-                                    <!-- Include the external JavaScript file -->
-                                    <script>
-                                        const halfDayUpdateRoute = '{{ route('attendance-rules.update-half-day') }}';
-                                    </script>
+
 
 
 
@@ -316,7 +356,6 @@
                                                                             'Thursday' => __('dashboard.thu'),
                                                                             'Friday' => __('dashboard.fri'),
                                                                             'Saturday' => __('dashboard.sat'),
-
                                                                         ];
                                                                     @endphp
                                                                     <div class="employee-working-days"
@@ -489,7 +528,14 @@
     <script src="{{ url('dist/js/attendance settings/hours-days-vacation-bounas.js?v=3') }}"></script>
     <script src="{{ url('dist/js/attendance settings/vacation-bounas.js?v=1') }}"></script>
     <script src="{{ url('dist\js\attendance settings\holidays.js') }}"></script>
-    <script src="{{ url('dist\js\attendance settings\lateDeduction.js') }}"></script>
-    <script src="{{ url('dist\js\attendance settings\half-day.js') }}"></script>
+    <script src="{{ url('dist\js\attendance settings\late-halfDeduction.js?v=1') }}"></script>
+    <script>
+        // URL and token configuration
+        const updateLateDeductionUrl = '{{ route('attendance-rules.update-late-deduction') }}';
+        const updateLateThresholdUrl = '{{ route('attendance-rules.update-late-threshold') }}';
+        const updateHalfDayThresholdUrl = '{{ route('attendance-rules.update-half-day-threshold') }}';
+        const halfDayUpdateRoute = '{{ route('attendance-rules.update-half-day') }}';
+        const csrfToken = '{{ csrf_token() }}';
+    </script>
 
 @endsection

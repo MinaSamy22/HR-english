@@ -405,7 +405,7 @@ return [
     'employee_not_found_or_access_denied' => 'الموظف غير موجود أو لا تملك صلاحية الوصول.',
     'working_days_updated_successfully' => 'تم تحديث أيام العمل بنجاح.',
     'failed_to_update_working_days' => 'فشل في تحديث أيام العمل.',
-
+    'min' => 'دقيقة',
     // Vacation Balance
     'vacation_balance_updated_for_employees' => 'تم تحديث رصيد الإجازات للموظفين المحددين.',
     'vacation_balance_updated_successfully' => 'تم تحديث رصيد الإجازات بنجاح.',
@@ -416,6 +416,28 @@ return [
     'bonus_per_hour_updated_successfully' => 'تم تحديث المكافأة لكل ساعة بنجاح.',
     'failed_to_update_bonus_per_hour' => 'فشل في تحديث المكافأة لكل ساعة.',
     'no_employees_selected' => 'لم يتم تحديد أي موظف.',
+
+'late_arrival_threshold' => 'حد التأخير',
+'minutes_after_start_time' => 'دقيقة بعد وقت البداية',
+'minutes_after_scheduled_start_time_to_consider_late' => 'الدقائق بعد وقت البداية المحدد لاعتبار الموظف متأخراً',
+
+'half_day_threshold' => 'حد نصف اليوم',
+'minutes_of_absence' => 'دقيقة غياب',
+'minutes_of_absence_to_consider_half_day' => 'دقائق الغياب المطلوبة لاعتبارها نصف يوم',
+
+'late_arrival_deduction' => 'خصم التأخير',
+'of_daily_wage' => 'من الأجر اليومي',
+'percentage_deducted_from_daily_wage_when_employee_arrives_late' => 'النسبة المئوية المخصومة من الأجر اليومي عند تأخر الموظف',
+
+'half_day_absence_deduction' => 'خصم نصف يوم غياب',
+'percentage_deducted_from_daily_wage_for_half_day_absences' => 'النسبة المئوية المخصومة من الأجر اليومي لغياب نصف يوم',
+
+
+ 'attendance_rules_saved_successfully' => 'تم حفظ قواعد الحضور بنجاح.',
+    'late_arrival_threshold_updated_successfully' => 'تم تحديث حد التأخير بنجاح.',
+    'half_day_threshold_updated_successfully' => 'تم تحديث حد نصف اليوم بنجاح.',
+    'late_deduction_percentage_updated_successfully' => 'تم تحديث نسبة خصم التأخير بنجاح.',
+    'half_day_deduction_percentage_updated_successfully' => 'تم تحديث نسبة خصم نصف اليوم بنجاح.',
 
 
 ];

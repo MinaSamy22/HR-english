@@ -228,6 +228,10 @@ Route::group(['middleware' => 'admin'], function () {
     //bonus per hour assignment to employees
     Route::post('/attendance/update-employee-bonus-per-hour', [AttendanceRulesController::class, 'updateEmployeeBonusPerHour'])->name('attendance.update-employee-bonus-per-hour');
 
+    // Add these routes to your existing attendance rules routes
+    Route::post('/attendance-rules/update-late-threshold', [AttendanceRulesController::class, 'updateLateThreshold'])->name('attendance-rules.update-late-threshold');
+    Route::post('/attendance-rules/update-half-day-threshold', [AttendanceRulesController::class, 'updateHalfDayThreshold'])->name('attendance-rules.update-half-day-threshold');
+
 
 
     //biometric excel

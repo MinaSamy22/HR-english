@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 
 class AttendanceRulesController extends Controller
 {
-    public function index(Request $request)
+
+  public function index(Request $request)
     {
         $data['header_title'] = "Employee Attendance";
         $company_id = session('company_id');
@@ -26,6 +27,8 @@ class AttendanceRulesController extends Controller
         $request->validate([
             'late_deduction_percentage'          => 'required|integer|min:0|max:100',
             'half_day_deduction_percentage'      => 'required|integer|min:0|max:100',
+            'late_threshold_minutes'             => 'required|integer|min:1|max:120',
+            'half_day_threshold_minutes'         => 'required|integer|min:60|max:480',
             'work_hours_per_day'                 => 'required|numeric|min:1|max:24',
             'working_days'                       => 'required|array',
             'holiday_dates'                      => 'array',
@@ -49,11 +52,14 @@ class AttendanceRulesController extends Controller
                 }
             }
         }
+
         AttendanceRule::updateOrCreate(
             ['company_id' => $company_id],
             [
                 'late_deduction_percentage'      => $request->late_deduction_percentage,
                 'half_day_deduction_percentage'  => $request->half_day_deduction_percentage,
+                'late_threshold_minutes'         => $request->late_threshold_minutes,
+                'half_day_threshold_minutes'     => $request->half_day_threshold_minutes,
                 'work_hours_per_day'             => $request->work_hours_per_day,
                 'working_days'                   => json_encode($request->working_days),
                 'official_holidays'              => json_encode($holidays),
@@ -63,10 +69,42 @@ class AttendanceRulesController extends Controller
             ]
         );
 
-        return redirect()->back()->with('success', 'Attendance rules saved successfully.');
+return redirect()->back()->with('success', __('dashboard.attendance_rules_saved_successfully'));
     }
 
-        public function updateLateDeduction(Request $request)
+    public function updateLateThreshold(Request $request)
+    {
+        $request->validate([
+            'late_threshold_minutes' => 'required|integer|min:1|max:120',
+        ]);
+
+        $company_id = session('company_id');
+
+        $rule = AttendanceRule::updateOrCreate(
+            ['company_id' => $company_id],
+            ['late_threshold_minutes' => $request->late_threshold_minutes]
+        );
+
+return response()->json(['message' => __('dashboard.late_arrival_threshold_updated_successfully')]);
+    }
+
+    public function updateHalfDayThreshold(Request $request)
+    {
+        $request->validate([
+            'half_day_threshold_minutes' => 'required|integer|min:60|max:480',
+        ]);
+
+        $company_id = session('company_id');
+
+        $rule = AttendanceRule::updateOrCreate(
+            ['company_id' => $company_id],
+            ['half_day_threshold_minutes' => $request->half_day_threshold_minutes]
+        );
+
+return response()->json(['message' => __('dashboard.half_day_threshold_updated_successfully')]);
+    }
+
+    public function updateLateDeduction(Request $request)
     {
         $request->validate([
             'late_deduction_percentage' => 'required|integer|min:0|max:100',
@@ -80,7 +118,7 @@ class AttendanceRulesController extends Controller
             ['late_deduction_percentage' => $request->late_deduction_percentage]
         );
 
-        return response()->json(['message' => 'Late deduction percentage updated successfully']);
+return response()->json(['message' => __('dashboard.late_deduction_percentage_updated_successfully')]);
     }
 
     public function updateHalfDayDeduction(Request $request)
@@ -97,7 +135,7 @@ class AttendanceRulesController extends Controller
             ['half_day_deduction_percentage' => $request->half_day_deduction_percentage]
         );
 
-        return response()->json(['message' => 'Half day deduction percentage updated successfully']);
+return response()->json(['message' => __('dashboard.half_day_deduction_percentage_updated_successfully')]);
     }
 
 

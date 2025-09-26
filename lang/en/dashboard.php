@@ -439,4 +439,25 @@ return [
     'failed_to_update_bonus_per_hour' => 'Failed to update bonus per hour.',
     'no_employees_selected' => 'No employee selected.',
 
+    'late_arrival_threshold' => 'Late Arrival Threshold',
+'minutes_after_start_time' => 'minutes after start time',
+'minutes_after_scheduled_start_time_to_consider_late' => 'Minutes after scheduled start time to consider employee late',
+
+'half_day_threshold' => 'Half Day Threshold',
+'minutes_of_absence' => 'minutes of absence',
+'minutes_of_absence_to_consider_half_day' => 'Minutes of absence required to consider it a half day',
+'min' => 'Min',
+'late_arrival_deduction' => 'Late Arrival Deduction',
+'of_daily_wage' => 'of daily wage',
+'percentage_deducted_from_daily_wage_when_employee_arrives_late' => 'Percentage deducted from daily wage when employee arrives late',
+
+'half_day_absence_deduction' => 'Half Day Absence Deduction',
+'percentage_deducted_from_daily_wage_for_half_day_absences' => 'Percentage deducted from daily wage for half day absences',
+
+'attendance_rules_saved_successfully' => 'Attendance rules saved successfully.',
+    'late_arrival_threshold_updated_successfully' => 'Late arrival threshold updated successfully.',
+    'half_day_threshold_updated_successfully' => 'Half day threshold updated successfully.',
+    'late_deduction_percentage_updated_successfully' => 'Late deduction percentage updated successfully.',
+    'half_day_deduction_percentage_updated_successfully' => 'Half day deduction percentage updated successfully.',
+
 ];
