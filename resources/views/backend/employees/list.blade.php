@@ -193,7 +193,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     window.deleteEmployeeTranslations = {
-        title: "{{ __('dashboard.delete') }}?",
+        title: "{{ __('dashboard.delete') }}",
         text: "{{ __('h_employee.delete_confirmation') }}",
         confirm: "{{ __('dashboard.delete') }}",
         cancel: "{{ __('dashboard.cancel') }}",

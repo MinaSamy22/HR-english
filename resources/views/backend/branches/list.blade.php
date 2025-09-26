@@ -119,7 +119,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     window.deleteTranslations = {
-        title: "{{ __('dashboard.delete') }}?",
+        title: "{{ __('dashboard.delete') }}",
         text: "{{ __('dashboard.delete_confirmation') }}",
         confirm: "{{ __('dashboard.delete') }}",
         cancel: "{{ __('dashboard.cancel') }}",
