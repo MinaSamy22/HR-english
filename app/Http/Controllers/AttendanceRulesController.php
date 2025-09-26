@@ -49,7 +49,6 @@ class AttendanceRulesController extends Controller
                 }
             }
         }
-
         AttendanceRule::updateOrCreate(
             ['company_id' => $company_id],
             [
@@ -67,78 +66,7 @@ class AttendanceRulesController extends Controller
         return redirect()->back()->with('success', 'Attendance rules saved successfully.');
     }
 
-    // New method to update working days for multiple employees
-    public function updateEmployeeWorkingDays(Request $request)
-    {
-        try {
-            $companyId = auth()->user()->company_id;
-
-            // Check if it's a bulk update
-            if ($request->has('bulk_update') && $request->bulk_update) {
-                $request->validate([
-                    'employee_ids' => 'required|array',
-                    'employee_ids.*' => 'required|exists:users,id',
-                    'working_days' => 'required|array',
-                ]);
-
-                $updatedCount = 0;
-                foreach ($request->employee_ids as $employeeId) {
-                    // Verify employee belongs to the same company and update directly in users table
-                    $employee = User::where('id', $employeeId)
-                        ->where('company_id', $companyId)
-                        ->first();
-
-                    if ($employee) {
-                        $employee->working_days = json_encode($request->working_days);
-                        $employee->save();
-                        $updatedCount++;
-                    }
-                }
-
-                return response()->json([
-                    'success' => true,
-                    'message' => __('dashboard.working_days_updated_for_employees', ['count' => $updatedCount])
-                ]);
-            } else {
-                // Single employee update
-                $request->validate([
-                    'employee_id' => 'required|exists:users,id',
-                    'working_days' => 'required|array',
-                ]);
-
-                // Verify employee belongs to the same company
-                $employee = User::where('id', $request->employee_id)
-                    ->where('company_id', $companyId)
-                    ->first();
-
-                if (!$employee) {
-                    return response()->json([
-                        'success' => false,
-                        'message' => __('dashboard.employee_not_found_or_access_denied')
-                    ], 403);
-                }
-
-                // Update working days directly in users table
-                $employee->working_days = json_encode($request->working_days);
-                $employee->save();
-
-                return response()->json([
-                    'success' => true,
-                    'message' => __('dashboard.working_days_updated_successfully')
-                ]);
-            }
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-            'message' => __('dashboard.failed_to_update_working_days'),
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
-
-
-
-    public function updateLateDeduction(Request $request)
+        public function updateLateDeduction(Request $request)
     {
         $request->validate([
             'late_deduction_percentage' => 'required|integer|min:0|max:100',
@@ -171,6 +99,7 @@ class AttendanceRulesController extends Controller
 
         return response()->json(['message' => 'Half day deduction percentage updated successfully']);
     }
+
 
     // Updated method for updating individual employee work hours - now saves to users table
     public function updateEmployeeWorkHours(Request $request)
@@ -241,33 +170,76 @@ class AttendanceRulesController extends Controller
         }
     }
 
-    public function updateVacationBalance(Request $request)
+
+    // New method to update working days for multiple employees
+    public function updateEmployeeWorkingDays(Request $request)
     {
         try {
-            // Validate the request
-            $request->validate([
-                'vacation_balance' => 'required|numeric|min:0',
-            ]);
+            $companyId = auth()->user()->company_id;
 
-            // Find or create the record
-            $setting = AttendanceRule::firstOrNew(['company_id' => auth()->user()->company_id]);
+            // Check if it's a bulk update
+            if ($request->has('bulk_update') && $request->bulk_update) {
+                $request->validate([
+                    'employee_ids' => 'required|array',
+                    'employee_ids.*' => 'required|exists:users,id',
+                    'working_days' => 'required|array',
+                ]);
 
-            // Update the vacation balance
-            $setting->vacation_balance = $request->vacation_balance;
-            $setting->save();
+                $updatedCount = 0;
+                foreach ($request->employee_ids as $employeeId) {
+                    // Verify employee belongs to the same company and update directly in users table
+                    $employee = User::where('id', $employeeId)
+                        ->where('company_id', $companyId)
+                        ->first();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Vacation balance saved successfully.'
-            ]);
+                    if ($employee) {
+                        $employee->working_days = json_encode($request->working_days);
+                        $employee->save();
+                        $updatedCount++;
+                    }
+                }
+
+                return response()->json([
+                    'success' => true,
+                    'message' => __('dashboard.working_days_updated_for_employees', ['count' => $updatedCount])
+                ]);
+            } else {
+                // Single employee update
+                $request->validate([
+                    'employee_id' => 'required|exists:users,id',
+                    'working_days' => 'required|array',
+                ]);
+
+                // Verify employee belongs to the same company
+                $employee = User::where('id', $request->employee_id)
+                    ->where('company_id', $companyId)
+                    ->first();
+
+                if (!$employee) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => __('dashboard.employee_not_found_or_access_denied')
+                    ], 403);
+                }
+
+                // Update working days directly in users table
+                $employee->working_days = json_encode($request->working_days);
+                $employee->save();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => __('dashboard.working_days_updated_successfully')
+                ]);
+            }
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to update vacation balance.',
+            'message' => __('dashboard.failed_to_update_working_days'),
                 'error' => $e->getMessage()
             ], 500);
         }
     }
+
 
     // New method to add a holiday
     public function addHoliday(Request $request)
@@ -371,30 +343,7 @@ class AttendanceRulesController extends Controller
         }
     }
 
-    public function updateBonusPerHour(Request $request)
-    {
-        try {
-            $request->validate([
-                'bonus_per_hour' => 'required|numeric|min:0',
-            ]);
 
-            $setting = AttendanceRule::firstOrNew(['company_id' => auth()->user()->company_id]);
-
-            $setting->bonus_per_hour = $request->bonus_per_hour;
-            $setting->save();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Bonus per hour saved successfully.'
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to saved bonus per hour.',
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
 
     public function policy(Request $request)
     {
@@ -417,4 +366,143 @@ class AttendanceRulesController extends Controller
 
         return view('EmployeeInterface.policy.index', $data);
     }
+
+    public function updateEmployeeVacationBalance(Request $request)
+{
+    try {
+        $companyId = auth()->user()->company_id;
+
+        // Check if it's a bulk update
+        if ($request->has('bulk_update') && $request->bulk_update) {
+            $request->validate([
+                'employee_ids' => 'required|array',
+                'employee_ids.*' => 'required|exists:users,id',
+                'vacation_balance' => 'required|numeric|min:0',
+            ]);
+
+            $updatedCount = 0;
+            foreach ($request->employee_ids as $employeeId) {
+                // Verify employee belongs to the same company and update directly in users table
+                $employee = User::where('id', $employeeId)
+                    ->where('company_id', $companyId)
+                    ->first();
+
+                if ($employee) {
+                    $employee->vacation_balance = $request->vacation_balance;
+                    $employee->save();
+                    $updatedCount++;
+                }
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => __('dashboard.vacation_balance_updated_for_employees', ['count' => $updatedCount])
+            ]);
+        } else {
+            // Single employee update
+            $request->validate([
+                'employee_id' => 'required|exists:users,id',
+                'vacation_balance' => 'required|numeric|min:0',
+            ]);
+
+            // Verify employee belongs to the same company
+            $employee = User::where('id', $request->employee_id)
+                ->where('company_id', $companyId)
+                ->first();
+
+            if (!$employee) {
+                return response()->json([
+                    'success' => false,
+                    'message' => __('dashboard.employee_not_found_or_access_denied')
+                ], 403);
+            }
+
+            // Update vacation balance directly in users table
+            $employee->vacation_balance = $request->vacation_balance;
+            $employee->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => __('dashboard.vacation_balance_updated_successfully')
+            ]);
+        }
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => __('dashboard.failed_to_update_vacation_balance'),
+            'error' => $e->getMessage()
+        ], 500);
+    }
+}
+
+/**
+ * Update bonus per hour for selected employees
+ */
+public function updateEmployeeBonusPerHour(Request $request)
+{
+    try {
+        $companyId = auth()->user()->company_id;
+
+        // Check if it's a bulk update
+        if ($request->has('bulk_update') && $request->bulk_update) {
+            $request->validate([
+                'employee_ids' => 'required|array',
+                'employee_ids.*' => 'required|exists:users,id',
+                'bonus_per_hour' => 'required|numeric|min:0',
+            ]);
+
+            $updatedCount = 0;
+            foreach ($request->employee_ids as $employeeId) {
+                // Verify employee belongs to the same company and update directly in users table
+                $employee = User::where('id', $employeeId)
+                    ->where('company_id', $companyId)
+                    ->first();
+
+                if ($employee) {
+                    $employee->bonus_per_hour = $request->bonus_per_hour;
+                    $employee->save();
+                    $updatedCount++;
+                }
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => __('dashboard.bonus_per_hour_updated_for_employees', ['count' => $updatedCount])
+            ]);
+        } else {
+            // Single employee update
+            $request->validate([
+                'employee_id' => 'required|exists:users,id',
+                'bonus_per_hour' => 'required|numeric|min:0',
+            ]);
+
+            // Verify employee belongs to the same company
+            $employee = User::where('id', $request->employee_id)
+                ->where('company_id', $companyId)
+                ->first();
+
+            if (!$employee) {
+                return response()->json([
+                    'success' => false,
+                    'message' => __('dashboard.employee_not_found_or_access_denied')
+                ], 403);
+            }
+
+            // Update bonus per hour directly in users table
+            $employee->bonus_per_hour = $request->bonus_per_hour;
+            $employee->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => __('dashboard.bonus_per_hour_updated_successfully')
+            ]);
+        }
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => __('dashboard.failed_to_update_bonus_per_hour'),
+            'error' => $e->getMessage()
+        ], 500);
+    }
+}
 }

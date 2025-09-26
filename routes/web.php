@@ -203,27 +203,31 @@ Route::group(['middleware' => 'admin'], function () {
     // Company policy section
     Route::get('admin/attendance-rule', [AttendanceRulesController::class, 'index'])->name('attendance-rule');
     Route::get('/attendance-rules', [AttendanceRulesController::class, 'index'])->name('attendance-rules.index');
-
     Route::post('admin/attendance-rule/save', [AttendanceRulesController::class, 'saveRules'])->name('attendance-rule.save');
+
     // holiday management
     Route::get('/attendance-rules/get-holidays', [AttendanceRulesController::class, 'getHolidays']);
     Route::post('admin/attendance-rule/add-holiday', [AttendanceRulesController::class, 'addHoliday'])->name('attendance-rule.add-holiday');
     Route::delete('admin/attendance-rule/delete-holiday/{index}', [AttendanceRulesController::class, 'deleteHoliday'])->name('attendance-rule.delete-holiday');
     Route::post('/attendance-rules/update-holidays', [AttendanceRulesController::class, 'updateHolidays'])->name('attendance.update-holidays');
+
+    // edit late - FIXED
+    Route::post('/attendance-rules/update-late-deduction', [AttendanceRulesController::class, 'updateLateDeduction'])->name('attendance-rules.update-late-deduction');
+    // edit halfday - FIXED
+    Route::post('/attendance-rules/update-half-day', [AttendanceRulesController::class, 'updateHalfDayDeduction'])->name('attendance-rules.update-half-day');
+    Route::post('/attendance-rules/update-half-day', [AttendanceRulesController::class, 'updateHalfDayDeduction'])->name('attendance-rules.update-half-day');
+
     // work days edit
     Route::post('/attendance/update-employee-working-days', [AttendanceRulesController::class, 'updateEmployeeWorkingDays'])->name('attendance.update-employee-working-days');
-    //edit late - FIXED
-    Route::post('/attendance-rules/update-late-deduction', [AttendanceRulesController::class, 'updateLateDeduction'])->name('attendance-rules.update-late-deduction');
-    //edit halfday - FIXED
-    Route::post('/attendance-rules/update-half-day', [AttendanceRulesController::class, 'updateHalfDayDeduction'])->name('attendance-rules.update-half-day');
-    Route::post('/attendance-rules/update-half-day', [AttendanceRulesController::class, 'updateHalfDayDeduction'])->name('attendance-rules.update-half-day');
-    //edit work hours
+    // work hours edit
     Route::post('/attendance-rules/update-work-hours', [AttendanceRulesController::class, 'updateWorkHoursPerDay'])->name('attendance.update-work-hours');
     Route::post('/attendance/update-employee-work-hours', [AttendanceRulesController::class, 'updateEmployeeWorkHours'])->name('attendance.update-employee-work-hours');
-    //vacation balance
-    Route::post('/attendance-rules/update-vacation-balance', [AttendanceRulesController::class, 'updateVacationBalance'])->name('attendance.update-vacation-balance');
-    //bounas hours
-    Route::post('/attendance-rules/update-bonus-per-hour', [AttendanceRulesController::class, 'updateBonusPerHour'])->name('attendance.update-bonus-per-hour');
+
+    //vacation balance assignment to employees
+    Route::post('/attendance/update-employee-vacation-balance', [AttendanceRulesController::class, 'updateEmployeeVacationBalance'])->name('attendance.update-employee-vacation-balance');
+    //bonus per hour assignment to employees
+    Route::post('/attendance/update-employee-bonus-per-hour', [AttendanceRulesController::class, 'updateEmployeeBonusPerHour'])->name('attendance.update-employee-bonus-per-hour');
+
 
 
     //biometric excel

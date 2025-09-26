@@ -334,7 +334,7 @@ return [
     'employees' => 'الموظفون',
     'employee_name' => 'اسم الموظف',
     'email' => 'البريد الإلكتروني',
-    'current_hours' => 'الساعات الحالية',
+    'current_hours' => 'ساعات العمل',
     'working_days' => 'أيام العمل',
     'hrs' => 'ساعة',
 
@@ -388,5 +388,35 @@ return [
 
     'timezone' => 'المنطقة الزمنية',
     'select_your_company_timezone' => 'اختر المنطقة الزمنية لشركتك',
+
+        // Vacation Balance Assignment
+    'assign_vacation_balance' => 'تعيين رصيد الإجازات',
+    'vacation_balance' => 'رصيد الإجازات',
+    'enter_vacation_days' => 'أدخل عدد أيام الإجازة',
+    'assign_vacation_to_selected_employees' => 'تعيين رصيد الإجازات للموظفين المحددين',
+
+    // Bonus Per Hour Assignment
+    'assign_bonus_per_hour' => 'تعيين القيمة لكل ساعة',
+    'bonus_per_hour' => 'المكافأة لكل ساعة',
+    'enter_bonus_amount' => 'أدخل قيمة المكافأة لكل ساعة',
+    'assign_bonus_to_selected_employees' => 'تعيين المكافأة للموظفين المحددين',
+
+    'working_days_updated_for_employees' => 'تم تحديث أيام العمل للموظفين المحددين.',
+    'employee_not_found_or_access_denied' => 'الموظف غير موجود أو لا تملك صلاحية الوصول.',
+    'working_days_updated_successfully' => 'تم تحديث أيام العمل بنجاح.',
+    'failed_to_update_working_days' => 'فشل في تحديث أيام العمل.',
+
+    // Vacation Balance
+    'vacation_balance_updated_for_employees' => 'تم تحديث رصيد الإجازات للموظفين المحددين.',
+    'vacation_balance_updated_successfully' => 'تم تحديث رصيد الإجازات بنجاح.',
+    'failed_to_update_vacation_balance' => 'فشل في تحديث رصيد الإجازات.',
+
+    // Bonus Per Hour
+    'bonus_per_hour_updated_for_employees' => 'تم تحديث المكافأة لكل ساعة للموظفين المحددين.',
+    'bonus_per_hour_updated_successfully' => 'تم تحديث المكافأة لكل ساعة بنجاح.',
+    'failed_to_update_bonus_per_hour' => 'فشل في تحديث المكافأة لكل ساعة.',
+    'no_employees_selected' => 'لم يتم تحديد أي موظف.',
+
+
 ];
 

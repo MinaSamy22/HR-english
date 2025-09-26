@@ -410,4 +410,33 @@ return [
     'bulk_delete_failed' => 'Failed to delete the selected rows.',
     'timezone' => 'Timezone',
     'select_your_company_timezone' => 'Select your company timezone',
+
+     'assign_vacation_balance' => 'Assign Vacation Balance',
+    'vacation_balance' => 'Vacation Balance',
+    'enter_vacation_days' => 'Enter number of vacation days',
+    'assign_vacation_to_selected_employees' => 'Assign Vacation Balance to Selected Employees',
+
+    // Bonus Per Hour Assignment
+    'assign_bonus_per_hour' => 'Assign Bonus Per Hour',
+    'bonus_per_hour' => 'Bonus Per Hour',
+    'enter_bonus_amount' => 'Enter bonus amount per hour',
+    'assign_bonus_to_selected_employees' => 'Assign Bonus to Selected Employees',
+
+    // Working Days
+    'working_days_updated_for_employees' => 'Working days have been updated for selected employees.',
+    'employee_not_found_or_access_denied' => 'Employee not found or access denied.',
+    'working_days_updated_successfully' => 'Working days updated successfully.',
+    'failed_to_update_working_days' => 'Failed to update working days.',
+
+    // Vacation Balance
+    'vacation_balance_updated_for_employees' => 'Vacation balance has been updated for selected employees.',
+    'vacation_balance_updated_successfully' => 'Vacation balance updated successfully.',
+    'failed_to_update_vacation_balance' => 'Failed to update vacation balance.',
+
+    // Bonus Per Hour
+    'bonus_per_hour_updated_for_employees' => 'Bonus per hour has been updated for selected employees.',
+    'bonus_per_hour_updated_successfully' => 'Bonus per hour updated successfully.',
+    'failed_to_update_bonus_per_hour' => 'Failed to update bonus per hour.',
+    'no_employees_selected' => 'No employee selected.',
+
 ];
