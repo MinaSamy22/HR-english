@@ -49,23 +49,29 @@
 
 
                     <div class="col-md-3">
-                        <div class="card text-center border-success rounded">
-                            <div class="card-body">
-                                <i class="fas fa-dollar-sign fa-2x text-success mb-2"></i>
-                                <h3 class="text-success">${{ $setting->bonus_per_hour ?? 0 }}</h3>
-                                <p class="text-muted mb-0">{{ __('policy.overtime_bonus') }}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card text-center border-warning rounded">
-                            <div class="card-body">
-                                <i class="fas fa-umbrella-beach fa-2x text-warning mb-2"></i>
-                                <h3 class="text-warning">{{ $setting->vacation_balance ?? 0 }}</h3>
-                                <p class="text-muted mb-0">{{ __('policy.vacation_days_year') }}</p>
-                            </div>
-                        </div>
-                    </div>
+    <div class="card text-center border-success rounded">
+        <div class="card-body">
+            <i class="fas fa-dollar-sign fa-2x text-success mb-2"></i>
+            <h3 class="text-success">
+                ${{ number_format($setting->bonus_per_hour, 2) }}
+            </h3>
+            <p class="text-muted mb-0">{{ __('policy.overtime_bonus') }}</p>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-3">
+    <div class="card text-center border-warning rounded">
+        <div class="card-body">
+            <i class="fas fa-umbrella-beach fa-2x text-warning mb-2"></i>
+            <h3 class="text-warning">
+                {{ number_format($setting->vacation_balance, 2) }}
+            </h3>
+            <p class="text-muted mb-0">{{ __('policy.vacation_days_year') }}</p>
+        </div>
+    </div>
+</div>
+
                     <div class="col-md-3">
                         <div class="card text-center border-danger rounded">
                             <div class="card-body">

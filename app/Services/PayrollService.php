@@ -182,24 +182,26 @@ public function calculateAttendanceDeductions($employee, $salary, $startDate, $e
 
     public function calculateVacationDeductions($employee, $startDate, $endDate)
 {
-
-    if (!$employee || !$employee->company || !$employee->company->attendanceSetting) {
-        return [0, 0]; // default if data is missing
+    if (!$employee) {
+        return [0, 0]; // default if no employee
     }
 
-    $vacationLimit = $employee->company->attendanceSetting->vacation_balance ?? 25;
-    $deductionRate = $employee->company->attendanceSetting->vacation_deduction_rate ?? 200;
+    // ✅ Get vacation balance & deduction rate from users table
+    $vacationLimit   = $employee->vacation_balance ?? 25;
+    $deductionRate   = $employee->vacation_deduction_rate ?? 200;
 
     // Calculate used vacation days up to end date
     $totalUsed = $employee->vacations()
         ->whereDate('end_date', '<=', $endDate)
         ->sum('total');
 
-    $rest = max(0, $vacationLimit - $totalUsed);
+    // Remaining balance and excess
+    $rest   = max(0, $vacationLimit - $totalUsed);
     $excess = max(0, $totalUsed - $vacationLimit);
 
     return [$rest, $excess * $deductionRate];
 }
+
 
 
        public function calculateDeductions($employee, $startDate, $endDate)
@@ -210,22 +212,23 @@ public function calculateAttendanceDeductions($employee, $salary, $startDate, $e
     }
 
 
-    public function calculateBonus($employee, $startDate, $endDate)
-    {
-
-        if (!$employee || !$employee->company || !$employee->company->attendanceSetting) {
-            return 0; // handle missing data safely
-        }
-        $bonusPerHour = $employee->company->attendanceSetting->bonus_per_hour ?? 0;
-
-
-        // Calculate total bonus hours from the 'times' table
-        $bonusHours = $employee->times()
-            ->whereBetween('created_at', [$startDate, $endDate])
-            ->sum('hours');
-
-        return $bonusHours * $bonusPerHour;
+public function calculateBonus($employee, $startDate, $endDate)
+{
+    if (!$employee) {
+        return 0; // handle missing data safely
     }
+
+    // ✅ Get bonus per hour from users table (fallback 0)
+    $bonusPerHour = $employee->bonus_per_hour ?? 0;
+
+    // Calculate total bonus hours from the 'times' table
+    $bonusHours = $employee->times()
+        ->whereBetween('created_at', [$startDate, $endDate])
+        ->sum('hours');
+
+    return $bonusHours * $bonusPerHour;
+}
+
 
 
     public function calculateTaxes($employee, $companyId, $salary)

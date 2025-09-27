@@ -4,6 +4,7 @@ use App\Models\AttendanceRule;
 use App\Models\EmployeeWorkHours;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AttendanceRulesController extends Controller
 {
@@ -382,28 +383,35 @@ return response()->json(['message' => __('dashboard.half_day_deduction_percentag
     }
 
 
-
+//this function for employee interface
     public function policy(Request $request)
-    {
-        $data['header_title'] = "Company Attendance Policy";
-        $company_id = session('company_id');
-        $data['setting'] = AttendanceRule::where('company_id', $company_id)->first();
+{
+    $data['header_title'] = "Company Attendance Policy";
+    $company_id = session('company_id');
 
-        // If no settings found, create default empty object to prevent errors
-        if (!$data['setting']) {
-            $data['setting'] = (object) [
-                'late_deduction_percentage' => 0,
-                'half_day_deduction_percentage' => 0,
-                'work_hours_per_day' => 8,
-                'bonus_per_hour' => 0,
-                'working_days' => json_encode(['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']),
-                'vacation_balance' => 0,
-                'official_holidays' => json_encode([])
-            ];
-        }
+    // Get the logged-in employee from the correct guard
+    $user = Auth::guard('employee')->user();
 
-        return view('EmployeeInterface.policy.index', $data);
+    // Company-wide settings
+    $data['setting'] = AttendanceRule::where('company_id', $company_id)->first();
+
+    if (!$data['setting']) {
+        $data['setting'] = (object) [
+            'late_deduction_percentage' => 0,
+            'half_day_deduction_percentage' => 0,
+            'work_hours_per_day' => 8,
+            'working_days' => json_encode(['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']),
+            'official_holidays' => json_encode([])
+        ];
     }
+
+    // Attach user-specific values (from users table under employee guard)
+    $data['setting']->vacation_balance = $user->vacation_balance ?? 0.00;
+    $data['setting']->bonus_per_hour   = $user->bonus_per_hour ?? 0.00;
+
+    return view('EmployeeInterface.policy.index', $data);
+}
+
 
     public function updateEmployeeVacationBalance(Request $request)
 {

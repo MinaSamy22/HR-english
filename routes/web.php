@@ -435,14 +435,10 @@ Route::middleware('employee')->group(function () {
     Route::get('employee/logout', [EmployeeHomeController::class, 'logout'])->name('employee.logout');
 
     // Route to serve news images
-    Route::get('employee/news-image/{filename}', [EmployeeHomeController::class, 'viewNewsImage'])
-        ->name('employee.news.image');
+    Route::get('employee/news-image/{filename}', [EmployeeHomeController::class, 'viewNewsImage'])->name('employee.news.image');
     Route::get('employee/news/{news}', [EmployeeHomeController::class, 'show'])->name('Employeenews.show');
     Route::get('employee/calendar', [EmployeeCalendarController::class, 'index'])->name('employee.calendar');
 
-    //my account   employee/my_account
-    Route::get('/employee/my_account', [EmployeeMyAccountController::class, 'my_account'])->name('employee.my_account');
-    Route::post('/employee/my_account/update', [EmployeeMyAccountController::class, 'edit_update'])->name('employee.my_account.update');
     //my account   employee/my_account
     Route::get('/employee/my_account', [EmployeeMyAccountController::class, 'my_account'])->name('employee.my_account');
     Route::post('/employee/my_account/update', [EmployeeMyAccountController::class, 'edit_update'])->name('employee.my_account.update');
@@ -475,11 +471,6 @@ Route::middleware('employee')->group(function () {
     Route::get('employee/resignation/create', [ResignationController::class, 'create'])->name('employee.resignation.create');
     Route::post('employee/resignation', [ResignationController::class, 'store'])->name('employee.resignation.store');
     Route::delete('employee/resignation/{id}', [ResignationController::class, 'destroy'])->name('employee.resignation.destroy');
-    //Resignation
-    Route::get('employee/resignation', [ResignationController::class, 'index'])->name('employee.resignation.index');
-    Route::get('employee/resignation/create', [ResignationController::class, 'create'])->name('employee.resignation.create');
-    Route::post('employee/resignation', [ResignationController::class, 'store'])->name('employee.resignation.store');
-    Route::delete('employee/resignation/{id}', [ResignationController::class, 'destroy'])->name('employee.resignation.destroy');
 
     //extratime request
     Route::get('employee/extra', [ExtraTimeRequestController::class, 'index'])->name('employee.extra.index');
@@ -501,34 +492,8 @@ Route::middleware('employee')->group(function () {
     Route::get('employee/messages/{message}', [MessageController::class, 'employeeShow'])->name('employee.messages.show');
     Route::post('employee/messages/{message}/mark-read', [MessageController::class, 'markAsRead'])->name('employee.messages.mark-read');
 
-    //late request
-    //late request
-    Route::get('employee/late', [EmployeeLateRemovalController::class, 'index'])->name('employee.late.index');
-    Route::post('employee/late/request', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.request');
-    Route::post('employee/late-removal-request', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.removal.request');
-    Route::post('employee/late-removal/store', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.removal.store');
-
-    //late request
-    //late request
-    Route::get('employee/late', [EmployeeLateRemovalController::class, 'index'])->name('employee.late.index');
-    Route::post('employee/late/request', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.request');
-    Route::post('employee/late-removal-request', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.removal.request');
-    Route::post('employee/late-removal/store', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.removal.store');
-    // this to show each request page from notification
-    Route::get('processed-requests/{type}/{id}', [RequestController::class, 'showProcessedRequest'])->name('processed-requests.show');
-
-    // Messages routes for employees
-    Route::get('employee/messages', [MessageController::class, 'employeeInbox'])->name('employee.messages.inbox');
-    Route::get('employee/messages/{message}', [MessageController::class, 'employeeShow'])->name('employee.messages.show');
-    Route::post('employee/messages/{message}/mark-read', [MessageController::class, 'markAsRead'])->name('employee.messages.mark-read');
 
 
-    //late request
-    //late request
-    Route::get('employee/late', [EmployeeLateRemovalController::class, 'index'])->name('employee.late.index');
-    Route::post('employee/late/request', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.request');
-    Route::post('employee/late-removal-request', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.removal.request');
-    Route::post('employee/late-removal/store', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.removal.store');
 });
 
 

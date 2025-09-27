@@ -73,18 +73,18 @@ class EmployeeHomeController extends Controller
             ->whereYear('attendance_date', $currentYear)
             ->count();
 
-        // Get vacation balance from attendance_rules table (company-wide rules)
-        $totalVacationAllowed = DB::table('attendance_rules')
-            ->where('company_id', $user->company_id)
-            ->value('vacation_balance') ?? 0;
+// Get vacation balance from users table
+$totalVacationAllowed = DB::table('users')
+    ->where('id', $user->id)
+    ->value('vacation_balance') ?? 0;
 
-        // Get total vacations taken from vacations table
-        $vacationsTaken = DB::table('vacations')
-            ->where('employee_id', $user->id)
-            ->sum('total') ?? 0;
+// Get total vacations taken from vacations table
+$vacationsTaken = DB::table('vacations')
+    ->where('employee_id', $user->id)
+    ->sum('total') ?? 0;
 
-        // Calculate remaining vacation balance
-        $vacationBalance = $totalVacationAllowed - $vacationsTaken;
+// Calculate remaining vacation balance
+$vacationBalance = $totalVacationAllowed - $vacationsTaken;
 
         // Get recent activities from request tables - INLINE LOGIC
         $activities = collect();
