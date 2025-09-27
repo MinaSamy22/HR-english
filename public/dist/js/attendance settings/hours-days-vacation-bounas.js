@@ -243,7 +243,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         highlightUpdatedRows(selected);
 
                         // Clear selections and input
-                        clearSelections();
                         if (assignHoursInput) {
                             assignHoursInput.value = '';
                         }
@@ -362,7 +361,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     highlightUpdatedRows(selected);
 
                     // Clear selections
-                    clearSelections();
                     workingDayCheckboxes.forEach(checkbox => checkbox.checked = false);
                 } else {
                     showAlert('danger', data.message || 'Failed to update working days');
@@ -469,7 +467,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     highlightUpdatedRows(selected);
 
                     // Clear selections and input
-                    clearSelections();
                     if (assignVacationInput) {
                         assignVacationInput.value = '';
                     }
@@ -579,7 +576,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     highlightUpdatedRows(selected);
 
                     // Clear selections and input
-                    clearSelections();
                     if (assignBonusInput) {
                         assignBonusInput.value = '';
                     }
@@ -643,3 +639,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
     console.log('Enhanced WorkHours-Days script loaded successfully with consistent UI feedback and translation support');
 });
+
+
+// ==========================================================================
+// EMPLOYEE SEARCH FILTER
+// ==========================================================================
+const employeeSearch = document.getElementById('employee_search');
+if (employeeSearch) {
+    employeeSearch.addEventListener('keyup', function () {
+        const query = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#employees_table tr');
+
+        rows.forEach(row => {
+            const nameCell = row.querySelector('td:nth-child(2)'); // employee name is in 2nd column
+            if (nameCell) {
+                const name = nameCell.textContent.toLowerCase();
+                row.style.display = name.includes(query) ? '' : 'none';
+            }
+        });
+    });
+}

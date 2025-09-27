@@ -299,6 +299,11 @@
                                         </div>
                                         <div class="card-body">
                                             <div class="table-responsive">
+                                                <div class="form-group mb-3">
+    <input type="text" id="employee_search" class="form-control"
+           placeholder="{{ __('dashboard.search_employee') }}">
+</div>
+
                                                 <table class="table table-hover">
                                                     <thead class="thead-light">
                                                         <tr>

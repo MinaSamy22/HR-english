@@ -460,4 +460,6 @@ return [
     'late_deduction_percentage_updated_successfully' => 'Late deduction percentage updated successfully.',
     'half_day_deduction_percentage_updated_successfully' => 'Half day deduction percentage updated successfully.',
 
+        'search_employee' => 'Search by employee name',
+
 ];

@@ -439,6 +439,7 @@ return [
     'late_deduction_percentage_updated_successfully' => 'تم تحديث نسبة خصم التأخير بنجاح.',
     'half_day_deduction_percentage_updated_successfully' => 'تم تحديث نسبة خصم نصف اليوم بنجاح.',
 
+    'search_employee' => 'البحث باسم الموظف',
 
 ];
 
