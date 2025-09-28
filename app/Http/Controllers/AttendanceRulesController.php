@@ -281,106 +281,104 @@ return response()->json(['message' => __('dashboard.half_day_deduction_percentag
 
 
     // New method to add a holiday
-    public function addHoliday(Request $request)
-    {
-        $request->validate([
-            'date' => 'required|date',
-            'title' => 'required|string|max:255',
-        ]);
+public function addHoliday(Request $request)
+{
+    $request->validate([
+        'date' => 'required|date',
+        'title' => 'required|string|max:255',
+    ]);
 
-        $company_id = session('company_id');
-        $rule = AttendanceRule::where('company_id', $company_id)->first();
+    $company_id = session('company_id');
+    $rule = AttendanceRule::where('company_id', $company_id)->first();
 
-        if (!$rule) {
-            return response()->json(['error' => 'Attendance rule not found'], 404);
-        }
+    if (!$rule) {
+        return response()->json(['error' => __('dashboard.attendance_rule_not_found')], 404);
+    }
 
-        // Get current holidays
-        $holidays = json_decode($rule->official_holidays, true) ?? [];
+    // Get current holidays
+    $holidays = json_decode($rule->official_holidays, true) ?? [];
 
-        // Add new holiday
-        $holidays[] = [
+    // Add new holiday
+    $holidays[] = [
+        'date' => $request->date,
+        'title' => $request->title
+    ];
+
+    // Update holidays
+    $rule->official_holidays = json_encode($holidays);
+    $rule->save();
+
+    return response()->json([
+        'message' => __('dashboard.holiday_added_successfully'),
+        'holiday' => [
             'date' => $request->date,
             'title' => $request->title
-        ];
+        ]
+    ]);
+}
 
-        // Update holidays
-        $rule->official_holidays = json_encode($holidays);
-        $rule->save();
+// New method to delete a holiday
+public function deleteHoliday(Request $request)
+{
+    $request->validate([
+        'date' => 'required|date',
+        'title' => 'required|string',
+    ]);
+
+    $company_id = session('company_id');
+    $rule = AttendanceRule::where('company_id', $company_id)->first();
+
+    if (!$rule) {
+        return response()->json(['error' => __('dashboard.attendance_rule_not_found')], 404);
+    }
+
+    // Get current holidays
+    $holidays = json_decode($rule->official_holidays, true) ?? [];
+
+    // Remove the matching holiday
+    $updatedHolidays = array_filter($holidays, function($holiday) use ($request) {
+        return $holiday['date'] != $request->date || $holiday['title'] != $request->title;
+    });
+
+    // Reset array keys
+    $updatedHolidays = array_values($updatedHolidays);
+
+    // Update holidays
+    $rule->official_holidays = json_encode($updatedHolidays);
+    $rule->save();
+
+    return response()->json([
+        'message' => __('dashboard.holiday_deleted_successfully')
+    ]);
+}
+
+public function updateHolidays(Request $request)
+{
+    try {
+        $validatedData = $request->validate([
+            'official_holidays' => 'required|array',
+            'official_holidays.*.date' => 'required|date',
+            'official_holidays.*.title' => 'required|string|max:255',
+        ]);
+
+        $setting = AttendanceRule::firstOrNew(['company_id' => auth()->user()->company_id]);
+
+        $setting->official_holidays = json_encode($validatedData['official_holidays']);
+        $setting->save();
 
         return response()->json([
-            'message' => 'Holiday added successfully',
-            'holiday' => [
-                'date' => $request->date,
-                'title' => $request->title
-            ]
+            'success' => true,
+            'message' => __('dashboard.holidays_updated_successfully')
         ]);
-    }
-
-    // New method to delete a holiday
-    public function deleteHoliday(Request $request)
-    {
-        $request->validate([
-            'date' => 'required|date',
-            'title' => 'required|string',
-        ]);
-
-        $company_id = session('company_id');
-        $rule = AttendanceRule::where('company_id', $company_id)->first();
-
-        if (!$rule) {
-            return response()->json(['error' => 'Attendance rule not found'], 404);
-        }
-
-        // Get current holidays
-        $holidays = json_decode($rule->official_holidays, true) ?? [];
-
-        // Remove the matching holiday
-        $updatedHolidays = array_filter($holidays, function($holiday) use ($request) {
-            return $holiday['date'] != $request->date || $holiday['title'] != $request->title;
-        });
-
-        // Reset array keys
-        $updatedHolidays = array_values($updatedHolidays);
-
-        // Update holidays
-        $rule->official_holidays = json_encode($updatedHolidays);
-        $rule->save();
-
+    } catch (\Exception $e) {
         return response()->json([
-            'message' => 'Holiday deleted successfully'
-        ]);
+            'success' => false,
+            'message' => __('dashboard.failed_to_update_holidays'),
+            'error' => $e->getMessage()
+        ], 500);
     }
+}
 
-    public function updateHolidays(Request $request)
-    {
-        try {
-            // Validate the incoming request
-            $validatedData = $request->validate([
-                'official_holidays' => 'required|array',
-                'official_holidays.*.date' => 'required|date',
-                'official_holidays.*.title' => 'required|string|max:255',
-            ]);
-
-            // Find or create the settings record
-            $setting = AttendanceRule::firstOrNew(['company_id' => auth()->user()->company_id]);
-
-            // Update the official_holidays field
-            $setting->official_holidays = json_encode($validatedData['official_holidays']);
-            $setting->save();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Holidays updated successfully'
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to update holidays',
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
 
 
 //this function for employee interface

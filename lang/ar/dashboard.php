@@ -441,5 +441,12 @@ return [
 
     'search_employee' => 'البحث باسم الموظف',
 
+     'attendance_rule_not_found' => 'لم يتم العثور على قاعدة الحضور.',
+
+    // Holidays
+    'holiday_added_successfully' => 'تمت إضافة العطلة بنجاح.',
+    'holiday_deleted_successfully' => 'تم حذف العطلة بنجاح.',
+    'holidays_updated_successfully' => 'تم تحديث العطلات بنجاح.',
+    'failed_to_update_holidays' => 'فشل في تحديث العطلات.',
 ];
 

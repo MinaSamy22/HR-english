@@ -461,5 +461,11 @@ return [
     'half_day_deduction_percentage_updated_successfully' => 'Half day deduction percentage updated successfully.',
 
         'search_employee' => 'Search by employee name',
+ 'attendance_rule_not_found' => 'Attendance rule not found.',
 
+    // Holidays
+    'holiday_added_successfully' => 'Holiday added successfully.',
+    'holiday_deleted_successfully' => 'Holiday deleted successfully.',
+    'holidays_updated_successfully' => 'Holidays updated successfully.',
+    'failed_to_update_holidays' => 'Failed to update holidays.',
 ];

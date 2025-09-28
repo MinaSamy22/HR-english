@@ -208,7 +208,7 @@ Route::group(['middleware' => 'admin'], function () {
     // holiday management
     Route::get('/attendance-rules/get-holidays', [AttendanceRulesController::class, 'getHolidays']);
     Route::post('admin/attendance-rule/add-holiday', [AttendanceRulesController::class, 'addHoliday'])->name('attendance-rule.add-holiday');
-    Route::delete('admin/attendance-rule/delete-holiday/{index}', [AttendanceRulesController::class, 'deleteHoliday'])->name('attendance-rule.delete-holiday');
+Route::delete('admin/attendance-rule/delete-holiday', [AttendanceRulesController::class, 'deleteHoliday'])->name('attendance-rule.delete-holiday');
     Route::post('/attendance-rules/update-holidays', [AttendanceRulesController::class, 'updateHolidays'])->name('attendance.update-holidays');
 
     // edit late - FIXED
