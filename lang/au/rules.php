@@ -2,27 +2,27 @@
 
 return [
     // General
-    'home' => 'Home',
+    'home' => 'ہوم',
 
     // Work Hours Assignment
-    'assign_work_hours' => 'Assign Work Hours',
-    'select_work_hours' => 'Select Work Hours',
-    'assign_hours_to_selected_employees' => 'Assign Hours to Selected Employees',
+    'assign_work_hours' => 'کام کے اوقات تفویض کریں',
+    'select_work_hours' => 'کام کے اوقات منتخب کریں',
+    'assign_hours_to_selected_employees' => 'منتخب ملازمین کو اوقات تفویض کریں',
 
     // Employees Table
-    'employees' => 'Employees',
-    'employee_name' => 'Employee Name',
-    'email' => 'Email',
-    'current_hours' => 'Current Hours',
-    'hrs' => 'hrs',
+    'employees' => 'ملازمین',
+    'employee_name' => 'ملازم کا نام',
+    'email' => 'ای میل',
+    'current_hours' => 'موجودہ اوقات',
+    'hrs' => 'گھنٹے',
 
     // Messages
-    'success_message' => 'Work hours successfully assigned!',
-    'error_message' => 'Failed to assign work hours. Please try again.',
-    'no_employees_selected' => 'Please select at least one employee.',
-    'invalid_hours' => 'Please enter valid work hours (1-24).',
-    'employees_updated' => 'employees updated successfully.',
-    'hours_assigned_to' => 'hours assigned to',
-    'updating' => 'Updating...',
-    'work_hours_updated_for' => 'Work hours updated for :count employee(s)',
+    'success_message' => 'کام کے اوقات کامیابی سے تفویض کر دیے گئے!',
+    'error_message' => 'کام کے اوقات تفویض کرنے میں ناکامی۔ براہ کرم دوبارہ کوشش کریں۔',
+    'no_employees_selected' => 'براہ کرم کم از کم ایک ملازم منتخب کریں۔',
+    'invalid_hours' => 'براہ کرم درست اوقات درج کریں (1-24)۔',
+    'employees_updated' => 'ملازمین کامیابی سے اپ ڈیٹ ہو گئے۔',
+    'hours_assigned_to' => 'گھنٹے تفویض کیے گئے',
+    'updating' => 'اپ ڈیٹ ہو رہا ہے...',
+    'work_hours_updated_for' => 'کام کے اوقات :count ملازم(ین) کے لیے اپ ڈیٹ کر دیے گئے',
 ];

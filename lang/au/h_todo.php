@@ -1,12 +1,12 @@
 <?php
 
 return [
-    'home' => 'Home',
-    'reminder' => 'Reminder',
-    'to_do_list' => 'To Do List',
-    'select_all' => 'Select All',
-    'add_new_task' => 'Add new task...',
-    'add_item' => 'Add item',
-    'delete_selected_confirm' => 'Are you sure you want to delete the selected tasks?',
-    'no_tasks_selected' => 'No tasks selected for delete.',
+    'home' => 'ہوم',
+    'reminder' => 'یاد دہانی',
+    'to_do_list' => 'کاموں کی فہرست',
+    'select_all' => 'سب کو منتخب کریں',
+    'add_new_task' => 'نیا کام شامل کریں...',
+    'add_item' => 'آئٹم شامل کریں',
+    'delete_selected_confirm' => 'کیا آپ واقعی منتخب کردہ کام حذف کرنا چاہتے ہیں؟',
+    'no_tasks_selected' => 'حذف کرنے کے لیے کوئی کام منتخب نہیں کیا گیا۔',
 ];

@@ -1,82 +1,80 @@
 <?php
 
 return [
-    // Page titles
-    'taxes' => 'Taxes',
-    'add_tax' => 'Add Tax',
-    'edit_tax' => 'Edit Tax',
-    'taxes_list' => 'Taxes List',
+    // صفحہ کے عنوانات
+    'taxes' => 'ٹیکس',
+    'add_tax' => 'ٹیکس شامل کریں',
+    'edit_tax' => 'ٹیکس میں ترمیم کریں',
+    'taxes_list' => 'ٹیکس کی فہرست',
 
-    // Navigation
-    'add' => 'Add',
-    'edit' => 'Edit',
-    'back' => 'Back',
-    'home' => 'Home',
+    // نیویگیشن
+    'add' => 'شامل کریں',
+    'edit' => 'ترمیم کریں',
+    'back' => 'واپس',
+    'home' => 'ہوم',
 
-    // Form labels
-    'tax_code' => 'Tax Code',
-    'tax_name' => 'Tax Name',
-    'employee_name' => 'Employee Name',
-    'percentage' => 'Percentage',
-    'code' => 'Code',
-    'name' => 'Name',
-    'percent' => 'Percent',
+    // فارم لیبلز
+    'tax_code' => 'ٹیکس کوڈ',
+    'tax_name' => 'ٹیکس کا نام',
+    'employee_name' => 'ملازم کا نام',
+    'percentage' => 'فیصد',
+    'code' => 'کوڈ',
+    'name' => 'نام',
+    'percent' => 'فیصد',
 
-    // Form placeholders
-    'enter_code' => 'Enter Code',
-    'enter_name' => 'Enter Name',
-    'enter_percent' => 'Enter Percent',
-    'enter_tax_name' => 'Enter Tax Name',
-    'enter_tax_code' => 'Enter Tax Code',
-    'code_placeholder' => ' Code',
-    'name_placeholder' => ' Name',
+    // فارم پلیس ہولڈرز
+    'enter_code' => 'کوڈ درج کریں',
+    'enter_name' => 'نام درج کریں',
+    'enter_percent' => 'فیصد درج کریں',
+    'enter_tax_name' => 'ٹیکس کا نام درج کریں',
+    'enter_tax_code' => 'ٹیکس کوڈ درج کریں',
+    'code_placeholder' => ' کوڈ',
+    'name_placeholder' => ' نام',
 
-    // Buttons
-    'submit' => 'Submit',
-    'update' => 'Update',
-    'search' => 'Search',
-    'reset' => 'Reset',
-    'delete_selection' => 'Delete Selection',
-    'select_all' => 'Select All',
+    // بٹن
+    'submit' => 'جمع کروائیں',
+    'update' => 'اپ ڈیٹ کریں',
+    'search' => 'تلاش',
+    'reset' => 'ری سیٹ کریں',
+    'delete_selection' => 'منتخب شدہ حذف کریں',
+    'select_all' => 'سب کو منتخب کریں',
 
-    // Actions
-    'action' => 'Action',
-    'delete' => 'Delete',
+    // ایکشنز
+    'action' => 'عمل',
+    'delete' => 'حذف کریں',
 
-    // Tax application
-    'apply_tax_to_payroll' => 'Apply Tax to Payroll',
-    'dont_apply_tax_to_payroll' => "Don't Apply Tax to Payroll",
+    // ٹیکس اپلائی
+    'apply_tax_to_payroll' => 'پے رول پر ٹیکس لگائیں',
+    'dont_apply_tax_to_payroll' => 'پے رول پر ٹیکس نہ لگائیں',
 
-    // Search
-    'search_tax' => 'Search Tax',
+    // تلاش
+    'search_tax' => 'ٹیکس تلاش کریں',
 
-    // Messages
-    'not_found' => 'Not Found..',
-    'delete_confirmation' => 'Are you sure you want to delete?',
-    'no_row_selected' => 'No row selected.',
-    'delete_selection_confirmation' => 'Are you sure you want to delete the selection?',
-    'error_occurred' => 'An error occurred. Please try again.',
+    // پیغامات
+    'not_found' => 'نہیں ملا..',
+    'delete_confirmation' => 'کیا آپ واقعی حذف کرنا چاہتے ہیں؟',
+    'no_row_selected' => 'کوئی قطار منتخب نہیں کی گئی۔',
+    'delete_selection_confirmation' => 'کیا آپ واقعی منتخب شدہ کو حذف کرنا چاہتے ہیں؟',
+    'error_occurred' => 'کوئی خرابی پیش آگئی۔ براہ کرم دوبارہ کوشش کریں۔',
 
-    // Tooltips
-    'search_tooltip' => 'Search',
-    'reset_tooltip' => 'Reset',
-    'edit_tooltip' => 'Edit',
-    'delete_tooltip' => 'Delete',
+    // ٹول ٹِپس
+    'search_tooltip' => 'تلاش',
+    'reset_tooltip' => 'ری سیٹ',
+    'edit_tooltip' => 'ترمیم',
+    'delete_tooltip' => 'حذف',
 
-    // Required field indicator
+    // ضروری فیلڈ کا اشارہ
     'required' => '*',
 
-    // Controller success/error messages
-    'tax_added_success' => 'Tax added for selected employees.',
-    'tax_updated_success' => 'Tax updated successfully.',
-    'tax_deleted_success' => 'Tax deleted successfully.',
-    'selected_taxes_deleted_success' => 'Selected taxes deleted successfully.',
-    'taxes_applied_to_payroll' => 'Taxes are now applied to payroll for this company.',
-    'taxes_not_applied_to_payroll' => 'Taxes will no longer be applied to payroll for this company.',
+    // کنٹرولر کامیابی/غلطی کے پیغامات
+    'tax_added_success' => 'منتخب ملازمین کے لئے ٹیکس شامل کر دیا گیا۔',
+    'tax_updated_success' => 'ٹیکس کامیابی سے اپ ڈیٹ کر دیا گیا۔',
+    'tax_deleted_success' => 'ٹیکس کامیابی سے حذف کر دیا گیا۔',
+    'selected_taxes_deleted_success' => 'منتخب شدہ ٹیکس کامیابی سے حذف کر دیے گئے۔',
+    'taxes_applied_to_payroll' => 'اب اس کمپنی کے لئے پے رول پر ٹیکس لاگو ہوگا۔',
+    'taxes_not_applied_to_payroll' => 'اب اس کمپنی کے لئے پے رول پر ٹیکس لاگو نہیں ہوگا۔',
 
-    'apply_to_payroll' =>'Apply To Payroll',
-    'yes' =>'Yes',
-    'no' => 'No'
-
-
+    'apply_to_payroll' => 'پے رول پر لاگو کریں',
+    'yes' => 'جی ہاں',
+    'no' => 'نہیں'
 ];

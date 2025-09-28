@@ -2,57 +2,57 @@
 
 return [
     // General
-    'home' => 'Home',
-    'vacation' => 'Vacation',
-    'vacations' => 'Vacations',
+    'home' => 'ہوم',
+    'vacation' => 'چھٹی',
+    'vacations' => 'چھٹیاں',
 
     // Page titles and navigation
-    'add' => 'Add',
-    'add_vacation' => 'Add Vacation',
-    'add_vacation_title' => 'Add Vacation',
-    'vacation_list' => 'Vacation List',
+    'add' => 'شامل کریں',
+    'add_vacation' => 'چھٹی شامل کریں',
+    'add_vacation_title' => 'چھٹی شامل کریں',
+    'vacation_list' => 'چھٹیوں کی فہرست',
 
     // Form labels
-    'employee_name' => 'Employee Name',
-    'vacation_type' => 'Vacation Type',
-    'start_date' => 'Start Date',
-    'end_date' => 'End Date',
-    'total_days' => 'Total Days',
-    'id' => 'ID',
-    'action' => 'Action',
+    'employee_name' => 'ملازم کا نام',
+    'vacation_type' => 'چھٹی کی قسم',
+    'start_date' => 'شروع ہونے کی تاریخ',
+    'end_date' => 'ختم ہونے کی تاریخ',
+    'total_days' => 'کل دن',
+    'id' => 'شناخت',
+    'action' => 'عمل',
 
     // Placeholders and options
-    'enter_name' => 'Enter Name',
-    'select_employee_name' => 'Select Employee Name',
-    'select_vacation_type' => 'Select Vacation Type',
-    'annual_vacation' => 'Annual Vacation',
-    'sick_leave' => 'Sick Leave',
-    'unpaid_leave' => 'Unpaid Leave',
+    'enter_name' => 'نام درج کریں',
+    'select_employee_name' => 'ملازم کا نام منتخب کریں',
+    'select_vacation_type' => 'چھٹی کی قسم منتخب کریں',
+    'annual_vacation' => 'سالانہ چھٹی',
+    'sick_leave' => 'بیماری کی چھٹی',
+    'unpaid_leave' => 'بغیر تنخواہ چھٹی',
 
     // Custom vacation type
-    'add_custom_type' => 'Add Custom Type',
-    'enter_new_vacation_type' => 'Enter new vacation type:',
+    'add_custom_type' => 'حسبِ ضرورت قسم شامل کریں',
+    'enter_new_vacation_type' => 'نئی چھٹی کی قسم درج کریں:',
 
     // Buttons
-    'search' => 'Search',
-    'reset' => 'Reset',
-    'delete_selection' => 'Delete Selection',
-    'delete' => 'Delete',
-    'back' => 'Back',
-    'submit' => 'Submit',
+    'search' => 'تلاش',
+    'reset' => 'ری سیٹ',
+    'delete_selection' => 'منتخب کردہ حذف کریں',
+    'delete' => 'حذف کریں',
+    'back' => 'واپس',
+    'submit' => 'جمع کرائیں',
 
     // Messages
-    'delete_confirm' => 'Are you sure you want to delete?',
-    'no_vacations_found' => 'No vacations found.',
-    'no_row_selected' => 'No row selected.',
-    'delete_selection_confirm' => 'Are you sure you want to delete the selection?',
-    'error_occurred' => 'An error occurred. Please try again.',
-    'success_message' => 'Vacation Successfully Added!',
-    'update_success_message' => 'Vacation Successfully Updated!',
-    'delete_success_message' => 'Vacation Successfully Deleted!',
-    'error_message' => 'Failed to process vacation. Please try again.',
+    'delete_confirm' => 'کیا آپ واقعی حذف کرنا چاہتے ہیں؟',
+    'no_vacations_found' => 'کوئی چھٹی نہیں ملی۔',
+    'no_row_selected' => 'کوئی قطار منتخب نہیں کی گئی۔',
+    'delete_selection_confirm' => 'کیا آپ واقعی منتخب کردہ کو حذف کرنا چاہتے ہیں؟',
+    'error_occurred' => 'ایک خرابی پیش آگئی۔ براہ کرم دوبارہ کوشش کریں۔',
+    'success_message' => 'چھٹی کامیابی سے شامل کی گئی!',
+    'update_success_message' => 'چھٹی کامیابی سے اپ ڈیٹ کی گئی!',
+    'delete_success_message' => 'چھٹی کامیابی سے حذف کی گئی!',
+    'error_message' => 'چھٹی کا عمل ناکام رہا۔ براہ کرم دوبارہ کوشش کریں۔',
 
     // Controller
-    'controller-add-message' => 'Vacation successfully registered.',
-    'controller-delete-message' => 'Record successfully deleted.'
+    'controller-add-message' => 'چھٹی کامیابی سے رجسٹر ہو گئی۔',
+    'controller-delete-message' => 'ریکارڈ کامیابی سے حذف ہو گیا۔'
 ];

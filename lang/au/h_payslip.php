@@ -1,57 +1,56 @@
 <?php
 
-// Create this file as: resources/lang/en/h_payslip.php
+// Create this file as: resources/lang/ur/h_payslip.php
 
 return [
     // Header
-    'payslip_title' => 'Payslip',
-    'company_name' => 'Company Name',
-    'company_address' => 'Company Address',
-    'employee_payslip' => 'EMPLOYEE PAYSLIP',
+    'payslip_title' => 'تنخواہ کی پرچی',
+    'company_name' => 'کمپنی کا نام',
+    'company_address' => 'کمپنی کا پتہ',
+    'employee_payslip' => 'ملازم کی تنخواہ پرچی',
 
     // Employee Information
-    'employee_id' => 'Employee ID',
-    'employee_name' => 'Employee Name',
-    'department' => 'Department',
-    'job_title' => 'Job Title',
-    'pay_period' => 'Pay Period',
-    'hire_date' => 'Hire Date',
-    'phone' => 'Phone',
-    'email' => 'Email',
-    'not_available' => 'N/A',
+    'employee_id' => 'ملازم آئی ڈی',
+    'employee_name' => 'ملازم کا نام',
+    'department' => 'محکمہ',
+    'job_title' => 'عہدہ',
+    'pay_period' => 'تنخواہ کی مدت',
+    'hire_date' => 'بھرتی کی تاریخ',
+    'phone' => 'فون',
+    'email' => 'ای میل',
+    'not_available' => 'دستیاب نہیں',
 
     // Earnings
-    'earnings' => 'EARNINGS',
-    'basic_salary' => 'Basic Salary',
-    'bonus' => 'Bonus',
-    'total_earnings' => 'Total Earnings',
+    'earnings' => 'آمدنی',
+    'basic_salary' => 'بنیادی تنخواہ',
+    'bonus' => 'بونس',
+    'total_earnings' => 'کل آمدنی',
 
     // Deductions
-    'deductions' => 'DEDUCTIONS',
-    'taxes_insurance' => 'Taxes & Insurance',
-    'other_deductions' => 'Other Deductions',
-    'attendance_deduction' => 'Attendance Deduction',
-    'total_deductions' => 'Total Deductions',
+    'deductions' => 'کٹوتیاں',
+    'taxes_insurance' => 'ٹیکس اور انشورنس',
+    'other_deductions' => 'دیگر کٹوتیاں',
+    'attendance_deduction' => 'حاضری کی کٹوتی',
+    'total_deductions' => 'کل کٹوتیاں',
 
     // Attendance
-    'attendance_details' => 'ATTENDANCE DETAILS',
-    'days_absent' => 'Days Absent',
-    'rest_vacation' => 'Rest/Vacation',
-    'daily_wage' => 'Daily Wage',
-    'work_hours' => 'Work Hours',
-    'days' => 'days',
-
+    'attendance_details' => 'حاضری کی تفصیلات',
+    'days_absent' => 'غیر حاضری کے دن',
+    'rest_vacation' => 'آرام/چھٹی',
+    'daily_wage' => 'یومیہ اجرت',
+    'work_hours' => 'کام کے گھنٹے',
+    'days' => 'دن',
 
     // Net Pay
-    'net_pay' => 'NET PAY',
+    'net_pay' => 'خالص تنخواہ',
 
     // Footer
-    'generated_on' => 'Generated on',
-    'pay_date' => 'Pay Date',
-    'computer_generated' => 'This is a computer-generated document.',
-    'no_signature' => 'No signature required.',
-    'confidential_notice' => 'This document contains confidential and proprietary information. Please handle with care.',
+    'generated_on' => 'بنائی گئی تاریخ',
+    'pay_date' => 'ادائیگی کی تاریخ',
+    'computer_generated' => 'یہ ایک کمپیوٹر سے تیار کردہ دستاویز ہے۔',
+    'no_signature' => 'کسی دستخط کی ضرورت نہیں۔',
+    'confidential_notice' => 'یہ دستاویز خفیہ اور کمپنی کی ملکیت ہے۔ براہ کرم احتیاط سے استعمال کریں۔',
 
     // Error messages
-    'payroll_not_found' => 'Payroll record not found.',
+    'payroll_not_found' => 'تنخواہ کا ریکارڈ نہیں ملا۔',
 ];

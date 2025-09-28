@@ -1,91 +1,89 @@
 <?php
 
 return [
-    // Page Titles
-    'pending_requests_title' => 'Pending Employee Requests',
-    'processed_requests_title' => 'Processed Employee Requests',
+    // صفحہ کے عنوانات
+    'pending_requests_title' => 'زیر التواء ملازمین کی درخواستیں',
+    'processed_requests_title' => 'کارروائی شدہ ملازمین کی درخواستیں',
 
-    // Navigation
-    'view_processed_requests' => 'View Requests History',
-    'view_pending_requests' => 'View Pending Requests',
+    // نیویگیشن
+    'view_processed_requests' => 'درخواستوں کی ہسٹری دیکھیں',
+    'view_pending_requests' => 'زیر التواء درخواستیں دیکھیں',
 
-    // Request Types
-    'vacation_requests' => 'Vacation Requests',
-    'extra_time_requests' => 'Extra Time Requests',
-    'late_removal_requests' => 'Late Removal Requests',
-    'resignation_requests' => 'Resignation Requests',
+    // درخواستوں کی اقسام
+    'vacation_requests' => 'چھٹی کی درخواستیں',
+    'extra_time_requests' => 'اضافی وقت کی درخواستیں',
+    'late_removal_requests' => 'دیر ہٹانے کی درخواستیں',
+    'resignation_requests' => 'استعفیٰ کی درخواستیں',
 
-    // Processed Request Types
-    'processed_vacation_requests' => 'Processed Vacation Requests',
-    'processed_extra_time_requests' => 'Processed Extra Time Requests',
-    'processed_late_removal_requests' => 'Processed Late Removal Requests',
-    'processed_resignation_requests' => 'Processed Resignation Requests',
+    // کارروائی شدہ درخواستوں کی اقسام
+    'processed_vacation_requests' => 'کارروائی شدہ چھٹی کی درخواستیں',
+    'processed_extra_time_requests' => 'کارروائی شدہ اضافی وقت کی درخواستیں',
+    'processed_late_removal_requests' => 'کارروائی شدہ دیر ہٹانے کی درخواستیں',
+    'processed_resignation_requests' => 'کارروائی شدہ استعفیٰ کی درخواستیں',
 
-    // Request Details
-    'type' => 'Type',
-    'from' => 'From',
-    'to' => 'to',
-    'days' => 'Days',
-    'reason' => 'Reason',
-    'date' => 'Date',
-    'hours' => 'Hours',
-    'submitted_at' => 'Submitted at',
-    'updated' => 'Updated',
-    'unknown' => 'Unknown',
+    // درخواست کی تفصیلات
+    'type' => 'قسم',
+    'from' => 'سے',
+    'to' => 'تک',
+    'days' => 'دن',
+    'reason' => 'وجہ',
+    'date' => 'تاریخ',
+    'hours' => 'گھنٹے',
+    'submitted_at' => 'جمع کروائی گئی',
+    'updated' => 'اپ ڈیٹ کیا گیا',
+    'unknown' => 'نامعلوم',
 
-    // Actions
-    'accept' => 'Accept',
-    'reject' => 'Reject',
+    // ایکشنز
+    'accept' => 'منظور کریں',
+    'reject' => 'مسترد کریں',
 
-    // Confirmations
-    'confirm_accept_vacation' => 'Are you sure you want to accept this vacation request?',
-    'confirm_reject_vacation' => 'Are you sure you want to reject this vacation request?',
-    'confirm_accept_extra_time' => 'Are you sure you want to accept this extra time request?',
-    'confirm_reject_extra_time' => 'Are you sure you want to reject this extra time request?',
-    'confirm_accept_late_removal' => 'Are you sure you want to accept this late removal request?',
-    'confirm_reject_late_removal' => 'Are you sure you want to reject this late removal request?',
-    'confirm_accept_resignation' => 'Are you sure you want to accept this resignation request?',
-    'confirm_reject_resignation' => 'Are you sure you want to reject this resignation request?',
+    // تصدیقات
+    'confirm_accept_vacation' => 'کیا آپ واقعی اس چھٹی کی درخواست کو منظور کرنا چاہتے ہیں؟',
+    'confirm_reject_vacation' => 'کیا آپ واقعی اس چھٹی کی درخواست کو مسترد کرنا چاہتے ہیں؟',
+    'confirm_accept_extra_time' => 'کیا آپ واقعی اس اضافی وقت کی درخواست کو منظور کرنا چاہتے ہیں؟',
+    'confirm_reject_extra_time' => 'کیا آپ واقعی اس اضافی وقت کی درخواست کو مسترد کرنا چاہتے ہیں؟',
+    'confirm_accept_late_removal' => 'کیا آپ واقعی اس دیر ہٹانے کی درخواست کو منظور کرنا چاہتے ہیں؟',
+    'confirm_reject_late_removal' => 'کیا آپ واقعی اس دیر ہٹانے کی درخواست کو مسترد کرنا چاہتے ہیں؟',
+    'confirm_accept_resignation' => 'کیا آپ واقعی اس استعفیٰ کی درخواست کو منظور کرنا چاہتے ہیں؟',
+    'confirm_reject_resignation' => 'کیا آپ واقعی اس استعفیٰ کی درخواست کو مسترد کرنا چاہتے ہیں؟',
 
-    // Status
-    'accepted' => 'Accepted',
-    'rejected' => 'Rejected',
+    // اسٹیٹس
+    'accepted' => 'منظور شدہ',
+    'rejected' => 'مسترد شدہ',
 
-    // Filter Section
-    'filter_processed_requests' => 'Filter Processed Requests',
-    'filter_by_month' => 'Filter by Month:',
-    'all_months' => 'All Months',
-    'search_by_employee_name' => 'Search by Employee Name:',
-    'enter_employee_name' => 'Enter employee name...',
-    'apply_filters' => 'Apply Filters',
-    'clear' => 'Clear',
-    'clear_filters' => 'Clear Filters',
+    // فلٹر سیکشن
+    'filter_processed_requests' => 'کارروائی شدہ درخواستوں کو فلٹر کریں',
+    'filter_by_month' => 'مہینے کے لحاظ سے فلٹر کریں:',
+    'all_months' => 'تمام مہینے',
+    'search_by_employee_name' => 'ملازم کے نام کے لحاظ سے تلاش کریں:',
+    'enter_employee_name' => 'ملازم کا نام درج کریں...',
+    'apply_filters' => 'فلٹر لگائیں',
+    'clear' => 'صاف کریں',
+    'clear_filters' => 'فلٹر صاف کریں',
 
-    // Empty States
-    'no_pending_requests' => 'No Pending Requests',
-    'no_pending_requests_message' => 'There are currently no pending requests to review.',
-    'no_processed_requests' => 'No Processed Requests',
-    'no_processed_requests_message' => 'There are currently no processed requests to display.',
-    'no_matching_requests' => 'No Matching Requests Found',
-    'no_matching_requests_message' => 'No processed requests match your current filters.',
+    // خالی حالتیں
+    'no_pending_requests' => 'کوئی زیر التواء درخواست نہیں',
+    'no_pending_requests_message' => 'اس وقت کوئی زیر التواء درخواستیں جائزہ کے لئے موجود نہیں۔',
+    'no_processed_requests' => 'کوئی کارروائی شدہ درخواست نہیں',
+    'no_processed_requests_message' => 'اس وقت کوئی کارروائی شدہ درخواستیں دکھانے کے لئے موجود نہیں۔',
+    'no_matching_requests' => 'کوئی مماثل درخواست نہیں ملی',
+    'no_matching_requests_message' => 'آپ کے موجودہ فلٹرز سے کوئی کارروائی شدہ درخواستیں مطابقت نہیں رکھتیں۔',
 
-    // Months
-    'january' => 'January',
-    'february' => 'February',
-    'march' => 'March',
-    'april' => 'April',
-    'may' => 'May',
-    'june' => 'June',
-    'july' => 'July',
-    'august' => 'August',
-    'september' => 'September',
-    'october' => 'October',
-    'november' => 'November',
-    'december' => 'December',
+    // مہینے
+    'january' => 'جنوری',
+    'february' => 'فروری',
+    'march' => 'مارچ',
+    'april' => 'اپریل',
+    'may' => 'مئی',
+    'june' => 'جون',
+    'july' => 'جولائی',
+    'august' => 'اگست',
+    'september' => 'ستمبر',
+    'october' => 'اکتوبر',
+    'november' => 'نومبر',
+    'december' => 'دسمبر',
 
-       //controller
-    'reject message' => 'Request rejected successfully.',
-    'accept message' => 'Request successfully accepted.'
-
-
+    // کنٹرولر کے پیغامات
+    'reject message' => 'درخواست کامیابی سے مسترد کر دی گئی۔',
+    'accept message' => 'درخواست کامیابی سے منظور کر لی گئی۔'
 ];

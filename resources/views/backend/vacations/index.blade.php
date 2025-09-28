@@ -9,7 +9,7 @@
                     <div class="col-sm-6">
                         <h1>{{ __('h_vacation.vacations') }}</h1>
                     </div><!-- /.col -->
-                    <div class="col-sm-6" style="text-align: {{ app()->getLocale() == 'ar' ? 'left' : 'right' }};">
+                    <div class="col-sm-6 text-right">
                         <a href="{{ url('admin/vacations/add') }}" class="btn btn-primary rounded-pill">
                             <i class="fas fa-user-plus"></i> {{ __('h_vacation.add_vacation') }}
                         </a>

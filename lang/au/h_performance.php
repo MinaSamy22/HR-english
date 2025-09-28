@@ -1,137 +1,134 @@
 <?php
 
 return [
-    // Navigation & Headers
-    'home' => 'Home',
-    'dashboard' => 'Dashboard',
-    'performance' => 'Performance',
-    'employee_performance' => 'Employee Performance',
-    'performance_evaluations' => 'Performance Evaluations',
-    'create_performance_evaluation' => 'Create Performance Evaluation',
-    'edit_performance_evaluation' => 'Edit Performance Evaluation',
-    'performance_evaluation_details' => 'Performance Evaluation Details',
-    'performance_evaluation_form' => 'Performance Evaluation Form',
+    // نیویگیشن اور ہیڈرز
+    'home' => 'ہوم',
+    'dashboard' => 'ڈیش بورڈ',
+    'performance' => 'کارکردگی',
+    'employee_performance' => 'ملازم کی کارکردگی',
+    'performance_evaluations' => 'کارکردگی کی جانچ',
+    'create_performance_evaluation' => 'کارکردگی کی جانچ بنائیں',
+    'edit_performance_evaluation' => 'کارکردگی کی جانچ میں ترمیم کریں',
+    'performance_evaluation_details' => 'کارکردگی کی جانچ کی تفصیلات',
+    'performance_evaluation_form' => 'کارکردگی کی جانچ کا فارم',
 
-    // Buttons & Actions
-    'manage_criteria' => 'Manage Criteria',
-    'new_employee_evaluation' => 'New Employee Evaluation',
-    'create_evaluation' => 'Create Evaluation',
-    'update_evaluation' => 'Update Evaluation',
-    'search' => 'Search',
-    'reset' => 'Reset',
-    'edit' => 'Edit',
-    'view' => 'View',
-    'delete' => 'Delete',
-    'cancel' => 'Cancel',
-    'save' => 'Save',
-    'create' => 'Create',
-    'update' => 'Update',
+    // بٹن اور ایکشنز
+    'manage_criteria' => 'معیار کا انتظام کریں',
+    'new_employee_evaluation' => 'نئی ملازم کی جانچ',
+    'create_evaluation' => 'جانچ بنائیں',
+    'update_evaluation' => 'جانچ اپ ڈیٹ کریں',
+    'search' => 'تلاش',
+    'reset' => 'ری سیٹ',
+    'edit' => 'ترمیم',
+    'view' => 'دیکھیں',
+    'delete' => 'حذف کریں',
+    'cancel' => 'منسوخ کریں',
+    'save' => 'محفوظ کریں',
+    'create' => 'بنائیں',
+    'update' => 'اپ ڈیٹ کریں',
 
-    // Form Fields
-    'employee' => 'Employee',
-    'select_employee' => 'Select Employee',
-    'evaluation_period' => 'Evaluation Period',
-    'year' => 'Year',
-    'status' => 'Status',
-    'all_years' => 'All Years',
-    'all_status' => 'All Status',
-    'search_by_employee' => 'Search by Employee',
-    'enter_employee_name' => 'Enter employee name...',
-    'evaluation_period_placeholder' => 'e.g., Q1, January, Annual',
+    // فارم فیلڈز
+    'employee' => 'ملازم',
+    'select_employee' => 'ملازم منتخب کریں',
+    'evaluation_period' => 'جانچ کی مدت',
+    'year' => 'سال',
+    'status' => 'حالت',
+    'all_years' => 'تمام سال',
+    'all_status' => 'تمام حالتیں',
+    'search_by_employee' => 'ملازم کے لحاظ سے تلاش کریں',
+    'enter_employee_name' => 'ملازم کا نام درج کریں...',
+    'evaluation_period_placeholder' => 'مثال: پہلی سہ ماہی، جنوری، سالانہ',
 
-    // Status Options
-    'draft' => 'Draft',
-    'completed' => 'Completed',
-    'reviewed' => 'Reviewed',
+    // اسٹیٹس کے اختیارات
+    'draft' => 'ڈرافٹ',
+    'completed' => 'مکمل',
+    'reviewed' => 'جائزہ لیا گیا',
 
-    // Performance Ratings
-    'poor' => 'Poor',
-    'needs improvement' => 'Needs Improvement',
+    // کارکردگی کی درجہ بندیاں
+    'poor' => 'کمزور',
+    'needs improvement' => 'بہتری کی ضرورت ہے',
+    'satisfactory' => 'تسلی بخش',
+    'good' => 'اچھی',
+    'excellent' => 'شاندار',
+    'select_rating' => 'درجہ بندی منتخب کریں',
 
-    'satisfactory' => 'Satisfactory',
-    'good' => 'Good',
-    'excellent' => 'Excellent',
-    'select_rating' => 'Select Rating',
+    // ٹیبل ہیڈرز
+    'rating' => 'درجہ بندی',
+    'evaluated_period' => 'جانچی گئی مدت',
+    'actions' => 'عمل',
 
-    // Table Headers
-    'rating' => 'Rating',
-    'evaluated_period' => 'Evaluated period',
-    'actions' => 'Actions',
+    // کارکردگی کے میٹرکس
+    'performance_metrics' => 'کارکردگی کے میٹرکس (1-5 درجہ دیں)',
+    'rating_description' => '1 = کمزور، 2 = بہتری کی ضرورت ہے، 3 = تسلی بخش، 4 = اچھی، 5 = شاندار',
+    'overall_score' => 'مجموعی اسکور',
+    'overall_score_calculation' => 'مجموعی اسکور کا حساب',
+    'overall_score_description' => 'مجموعی اسکور اوپر دی گئی تمام درجہ بندیوں کے اوسط کے طور پر شمار کیا جائے گا۔',
+    'current_overall_score' => 'موجودہ مجموعی اسکور',
+    'score_breakdown' => 'اسکور کی تقسیم',
 
-    // Performance Metrics
-    'performance_metrics' => 'Performance Metrics (Rate 1-5)',
-    'rating_description' => '1 = Poor, 2 = Needs Improvement, 3 = Satisfactory, 4 = Good, 5 = Excellent',
-    'overall_score' => 'Overall Score',
-    'overall_score_calculation' => 'Overall Score Calculation',
-    'overall_score_description' => 'The overall score will be calculated as the average of all performance ratings above.',
-    'current_overall_score' => 'Current Overall Score',
-    'score_breakdown' => 'Score Breakdown',
+    // تبصرے کا سیکشن
+    'comments_feedback' => 'تبصرے اور فیڈ بیک',
+    'strengths' => 'طاقتیں',
+    'areas_for_improvement' => 'بہتری کے علاقے',
+    'goals_for_next_period' => 'اگلی مدت کے اہداف',
+    'hr_comments' => 'ایچ آر کے تبصرے',
+    'strengths_placeholder' => 'ملازم کی اہم طاقتوں اور کامیابیوں کو اجاگر کریں...',
+    'areas_improvement_placeholder' => 'وہ علاقے بتائیں جہاں ملازم بہتری کر سکتا ہے...',
+    'goals_next_period_placeholder' => 'اگلی جانچ کی مدت کے لئے اہداف اور توقعات طے کریں...',
+    'hr_comments_placeholder' => 'اضافی ایچ آر تبصرے اور نوٹس...',
 
-    // Comments Section
-    'comments_feedback' => 'Comments & Feedback',
-    'strengths' => 'Strengths',
-    'areas_for_improvement' => 'Areas for Improvement',
-    'goals_for_next_period' => 'Goals for Next Period',
-    'hr_comments' => 'HR Comments',
-    'strengths_placeholder' => 'Highlight the employee\'s key strengths and achievements...',
-    'areas_improvement_placeholder' => 'Identify areas where the employee can improve...',
-    'goals_next_period_placeholder' => 'Set goals and expectations for the next evaluation period...',
-    'hr_comments_placeholder' => 'Additional HR comments and notes...',
+    // پیغامات
+    'no_criteria_found' => 'کوئی کسٹم معیار نہیں ملا!',
+    'create_criteria_first' => 'براہ کرم کارکردگی کی جانچ سے پہلے کسٹم معیار بنائیں۔',
+    'create_criteria' => 'معیار بنائیں',
+    'setup_criteria_first' => 'پہلے معیار سیٹ اپ کریں',
+    'create_employee_evaluation' => 'ملازم کی جانچ بنائیں',
+    'showing_filtered_results' => 'فلٹر شدہ نتائج دکھائے جا رہے ہیں',
+    'for_employee' => 'ملازم کے لئے:',
+    'for_period' => 'مدت کے لئے:',
+    'in_year' => 'سال میں:',
+    'with_status' => 'اسٹیٹس کے ساتھ:',
+    'results' => 'نتائج',
+    'result' => 'نتیجہ',
+    'no_matching_results' => 'کوئی مماثل نتائج نہیں ملے',
+    'adjust_search_criteria' => 'اپنے تلاش کے معیار کو ایڈجسٹ کریں یا',
+    'clear_filters' => 'فلٹر صاف کریں',
+    'no_performance_evaluations' => 'کوئی کارکردگی کی جانچ نہیں ملی',
+    'start_creating' => 'اپنی پہلی ملازم کی جانچ بنا کر شروع کریں۔',
+    'custom_criteria' => 'کسٹم معیار',
+    'standard_criteria' => 'معیاری معیار',
+    'employee_information' => 'ملازم کی معلومات',
+    'evaluating' => 'جانچ کر رہا ہے:',
+    'last_updated' => 'آخری بار اپ ڈیٹ',
+    'by' => 'بذریعہ',
 
-    // Messages
-    'no_criteria_found' => 'No Custom Criteria Found!',
-    'create_criteria_first' => 'Please create custom evaluation criteria first before creating performance evaluations.',
-    'create_criteria' => 'Create Criteria',
-    'setup_criteria_first' => 'Setup Criteria First',
-    'create_employee_evaluation' => 'Create Employee Evaluation',
-    'showing_filtered_results' => 'Showing filtered results',
-    'for_employee' => 'for employee:',
-    'for_period' => 'for period:',
-    'in_year' => 'in year:',
-    'with_status' => 'with status:',
-    'results' => 'results',
-    'result' => 'result',
-    'no_matching_results' => 'No Matching Results Found',
-    'adjust_search_criteria' => 'Try adjusting your search criteria or',
-    'clear_filters' => 'clear filters',
-    'no_performance_evaluations' => 'No Performance Evaluations Found',
-    'start_creating' => 'Start by creating your first employee performance evaluation.',
-    'custom_criteria' => 'Custom Criteria',
-    'standard_criteria' => 'Standard Criteria',
-    'employee_information' => 'Employee Information',
-    'evaluating' => 'Evaluating:',
-    'last_updated' => 'Last Updated',
-    'by' => 'by',
+    // جانچ کی تفصیلات
+    'evaluation_type' => 'جانچ کی قسم:',
+    'evaluation_details' => 'جانچ کی تفصیلات',
+    'evaluated_by' => 'جانچ کرنے والا',
+    'created' => 'بنایا گیا',
+    'not_rated' => 'درجہ نہیں دیا گیا',
+    'no_custom_criteria_scores' => 'کوئی کسٹم معیار اسکور دستیاب نہیں',
+    'no_criteria_configured' => 'اس جانچ کے لئے کوئی معیار ترتیب نہیں دیا گیا۔',
 
-    // Evaluation Details
-    'evaluation_type' => 'Evaluation Type:',
-    'evaluation_details' => 'Evaluation Details',
-    'evaluated_by' => 'Evaluated By',
-    'created' => 'Created',
-    'not_rated' => 'Not Rated',
-    'no_custom_criteria_scores' => 'No Custom Criteria Scores Available',
-    'no_criteria_configured' => 'No performance criteria have been configured for this evaluation.',
+    // تصدیق
+    'confirm_delete' => 'حذف کی تصدیق کریں',
+    'delete_evaluation_confirm' => 'کیا آپ واقعی اس کارکردگی کی جانچ کو حذف کرنا چاہتے ہیں؟',
+    'delete_criteria_confirm' => 'کیا آپ واقعی اس معیار کو حذف کرنا چاہتے ہیں؟ یہ عمل واپس نہیں لیا جا سکتا اور موجودہ جانچ کو متاثر کر سکتا ہے۔',
+    'action_cannot_undone' => 'یہ عمل واپس نہیں لیا جا سکتا۔',
 
-    // Confirmations
-    'confirm_delete' => 'Confirm Delete',
-    'delete_evaluation_confirm' => 'Are you sure you want to delete this performance evaluation?',
-    'delete_criteria_confirm' => 'Are you sure you want to delete this criteria? This action cannot be undone and may affect existing evaluations.',
-    'action_cannot_undone' => 'This action cannot be undone.',
+    // کامیابی کے پیغامات
+    'evaluation_created_success' => 'کارکردگی کی جانچ کامیابی سے بنائی گئی۔',
+    'evaluation_updated_success' => 'کارکردگی کی جانچ کامیابی سے اپ ڈیٹ کی گئی۔',
+    'evaluation_deleted_success' => 'کارکردگی کی جانچ کامیابی سے حذف کی گئی۔',
 
-    // Success Messages
-    'evaluation_created_success' => 'Performance evaluation created successfully.',
-    'evaluation_updated_success' => 'Performance evaluation updated successfully.',
-    'evaluation_deleted_success' => 'Performance evaluation deleted successfully.',
+    // غلطی کے پیغامات
+    'employee_evaluation_exists' => 'اس ملازم کے لئے منتخب مدت اور سال کی جانچ پہلے ہی موجود ہے۔',
 
-    // Error Messages
-    'employee_evaluation_exists' => 'An evaluation for this employee already exists for the selected period and year.',
-
-    // Required Field Indicator
+    // لازمی فیلڈ انڈیکیٹر
     'required' => '*',
 
-    // Badges & Labels
-    'custom_criteria_badge' => 'Custom Criteria',
-    'standard_criteria_badge' => 'Standard Criteria',
-
-
+    // بیجز اور لیبلز
+    'custom_criteria_badge' => 'کسٹم معیار',
+    'standard_criteria_badge' => 'معیاری معیار',
 ];
