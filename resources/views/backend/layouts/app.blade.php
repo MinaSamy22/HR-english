@@ -1,5 +1,10 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
+@php
+    $rtlLanguages = ['ar', 'au']; // لو Aurdo RTL
+@endphp
+
+<html lang="{{ app()->getLocale() }}" dir="{{ in_array(app()->getLocale(), $rtlLanguages) ? 'rtl' : 'ltr' }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -36,12 +41,13 @@
     <link rel="stylesheet" href="{{ url('/plugins/daterangepicker/daterangepicker.css') }}">
     <!-- summernote -->
     <link rel="stylesheet" href="{{ url('/plugins/summernote/summernote-bs4.min.css') }}">
-    @if(app()->getLocale() == 'ar')
-        <!-- Bootstrap 4 RTL -->
-        <link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.2.1/css/bootstrap.min.css">
-        <!-- Custom style for RTL -->
-        <link rel="stylesheet" href="{{url('dist/css/custom.css')}}">
-    @endif
+    @if(in_array(app()->getLocale(), ['ar', 'au']))
+    <!-- Bootstrap 4 RTL -->
+    <link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.2.1/css/bootstrap.min.css">
+    <!-- Custom style for RTL -->
+    <link rel="stylesheet" href="{{url('dist/css/custom.css')}}">
+@endif
+
     @stack('style')
 </head>
 

@@ -179,38 +179,51 @@
 
 
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="languageDropdown"
-                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="languageDropdown"
+        role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
-                <div class="badge badge-secondary d-flex align-items-center">
-                    <i class="fas fa-globe mr-1"></i>
-                    <span class="font-weight-bold">
-                        {{ app()->getLocale() == 'ar' ? 'عربي' : 'EN' }}
-                    </span>
-                </div>
-            </a>
+        <div class="badge badge-secondary d-flex align-items-center">
+            <i class="fas fa-globe mr-1"></i>
+            <span class="font-weight-bold">
+                @if(app()->getLocale() == 'ar')
+                    عربي
+                @elseif(app()->getLocale() == 'au')
+                    اردو
+                @else
+                    EN
+                @endif
+            </span>
+        </div>
+    </a>
 
-            <div class="dropdown-menu dropdown-menu-right shadow-sm" aria-labelledby="languageDropdown">
+    <div class="dropdown-menu dropdown-menu-right shadow-sm" aria-labelledby="languageDropdown">
 
+        <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'en' ? 'active' : '' }}"
+            href="{{ url('lang/en') }}">
+            <span>English</span>
+            @if (app()->getLocale() == 'en')
+                <i class="fas fa-check ml-auto text-success"></i>
+            @endif
+        </a>
 
+        <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'ar' ? 'active' : '' }}"
+            href="{{ url('lang/ar') }}">
+            <span>العربية</span>
+            @if (app()->getLocale() == 'ar')
+                <i class="fas fa-check ml-auto text-success"></i>
+            @endif
+        </a>
 
-                <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'en' ? 'active' : '' }}"
-                    href="{{ url('lang/en') }}">
-                    <span>English</span>
-                    @if (app()->getLocale() == 'en')
-                        <i class="fas fa-check ml-auto text-success"></i>
-                    @endif
-                </a>
+        <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'au' ? 'active' : '' }}"
+            href="{{ url('lang/au') }}">
+            <span>اردو</span>
+            @if (app()->getLocale() == 'au')
+                <i class="fas fa-check ml-auto text-success"></i>
+            @endif
+        </a>
+    </div>
+</li>
 
-                <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'ar' ? 'active' : '' }}"
-                    href="{{ url('lang/ar') }}">
-                    <span>العربية</span>
-                    @if (app()->getLocale() == 'ar')
-                        <i class="fas fa-check ml-auto text-success"></i>
-                    @endif
-                </a>
-            </div>
-        </li>
 
         @php
             $pendingRequestsCount = getPendingRequestsCount();

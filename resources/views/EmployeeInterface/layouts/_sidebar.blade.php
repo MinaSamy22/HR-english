@@ -36,47 +36,51 @@
             </a>
         </li> --}}
 
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="languageDropdown"
-                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="languageDropdown"
+        role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
-                <div class="badge badge-secondary d-flex align-items-center">
-                    <i class="fas fa-globe mr-1"></i>
-                    <span class="font-weight-bold">
-                        {{ app()->getLocale() == 'ar' ? 'عربي' : 'EN' }}
-                    </span>
-                </div>
-            </a>
+        <div class="badge badge-secondary d-flex align-items-center">
+            <i class="fas fa-globe mr-1"></i>
+            <span class="font-weight-bold">
+                @if(app()->getLocale() == 'ar')
+                    عربي
+                @elseif(app()->getLocale() == 'au')
+                    اردو
+                @else
+                    EN
+                @endif
+            </span>
+        </div>
+    </a>
 
-            <div class="dropdown-menu dropdown-menu-right shadow-sm" aria-labelledby="languageDropdown">
-                <style>
-                    .dropdown-item.active,
-                    .dropdown-item:active {
-                        background-color: #e3f2fd !important;
-                        color: #1976d2 !important;
-                    }
+    <div class="dropdown-menu dropdown-menu-right shadow-sm" aria-labelledby="languageDropdown">
 
-                    .dropdown-item:hover {
-                        background-color: #f5f5f5 !important;
-                    }
-                </style>
-                <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'en' ? 'active' : '' }}"
-                    href="{{ url('lang/en') }}">
-                    <span>English</span>
-                    @if (app()->getLocale() == 'en')
-                        <i class="fas fa-check ml-auto text-success"></i>
-                    @endif
-                </a>
+        <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'en' ? 'active' : '' }}"
+            href="{{ url('lang/en') }}">
+            <span>English</span>
+            @if (app()->getLocale() == 'en')
+                <i class="fas fa-check ml-auto text-success"></i>
+            @endif
+        </a>
 
-                <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'ar' ? 'active' : '' }}"
-                    href="{{ url('lang/ar') }}">
-                    <span>العربية</span>
-                    @if (app()->getLocale() == 'ar')
-                        <i class="fas fa-check ml-auto text-success"></i>
-                    @endif
-                </a>
-            </div>
-        </li>
+        <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'ar' ? 'active' : '' }}"
+            href="{{ url('lang/ar') }}">
+            <span>العربية</span>
+            @if (app()->getLocale() == 'ar')
+                <i class="fas fa-check ml-auto text-success"></i>
+            @endif
+        </a>
+
+        <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'au' ? 'active' : '' }}"
+            href="{{ url('lang/au') }}">
+            <span>اردو</span>
+            @if (app()->getLocale() == 'au')
+                <i class="fas fa-check ml-auto text-success"></i>
+            @endif
+        </a>
+    </div>
+</li>
 
 
 

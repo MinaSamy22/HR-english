@@ -59,10 +59,14 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('lang/{lang}', function ($lang) {
-    session(['locale' => $lang]);
-    app()->setLocale($lang);
+    $available = ['en', 'ar', 'au']; // حط كل اللغات هنا
+    if (in_array($lang, $available)) {
+        session(['locale' => $lang]);
+        app()->setLocale($lang);
+    }
     return back();
 });
+
 Route::get('/', [AuthController::class, 'index'])->name('start'); //index navigate to auth controller
 Route::get('/', [AuthController::class, 'index'])->name('start'); //index navigate to auth controller
 Route::get('register', [AuthController::class, 'register'])->name('register');
