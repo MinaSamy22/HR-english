@@ -98,6 +98,3 @@
 <!-- Link to the new JavaScript file -->
 <script src="{{ url('dist/js/attendance.js') }}"></script>
 @endsection
-
-
-
