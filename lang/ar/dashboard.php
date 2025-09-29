@@ -448,5 +448,7 @@ return [
     'holiday_deleted_successfully' => 'تم حذف العطلة بنجاح.',
     'holidays_updated_successfully' => 'تم تحديث العطلات بنجاح.',
     'failed_to_update_holidays' => 'فشل في تحديث العطلات.',
+        'ok' => 'حسناً',
+
 ];
 

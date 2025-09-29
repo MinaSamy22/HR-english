@@ -302,7 +302,7 @@
                             title: "{{ __('dashboard.error') }}",
                             text: "{{ __('dashboard.delete_failed') }}",
                             icon: "error",
-                            confirmButtonText: "OK"
+                                confirmButtonText: "{{ __('dashboard.ok') }}"
                         });
                     }
                 });
@@ -322,7 +322,7 @@
                 title: "{{ __('dashboard.no_selection') }}",
                 text: "{{ __('dashboard.select_items_first') }}",
                 icon: "warning",
-                confirmButtonText: "OK"
+                                confirmButtonText: "{{ __('dashboard.ok') }}"
             });
             return;
         }
@@ -367,7 +367,7 @@
                             title: "{{ __('dashboard.error') }}",
                             text: "{{ __('dashboard.bulk_delete_failed') }}",
                             icon: "error",
-                            confirmButtonText: "OK"
+                                confirmButtonText: "{{ __('dashboard.ok') }}"
                         });
                     }
                 });

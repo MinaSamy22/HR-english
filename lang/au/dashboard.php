@@ -461,4 +461,7 @@ return [
     'holiday_deleted_successfully' => 'چھٹی کامیابی سے ڈیلیٹ ہوئی۔',
     'holidays_updated_successfully' => 'چھٹیاں کامیابی سے اپڈیٹ ہوئیں۔',
     'failed_to_update_holidays' => 'چھٹیاں اپڈیٹ کرنے میں ناکام۔',
+
+        'ok' => 'ٹھیک ہے',
+
 ];
