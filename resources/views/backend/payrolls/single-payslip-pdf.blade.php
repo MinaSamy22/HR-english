@@ -1,21 +1,22 @@
 @php
     $locale = app()->getLocale();
-    $isArabic = ($locale === 'ar');
+    // RTL for Arabic, Urdu, Ardo
+    $isRtl = in_array($locale, ['ar', 'au']);
 @endphp
 
 <!DOCTYPE html>
-<html lang="{{ $locale }}" dir="{{ $isArabic ? 'rtl' : 'ltr' }}">
+<html lang="{{ $locale }}" dir="{{ $isRtl ? 'rtl' : 'ltr' }}">
 <head>
     <meta charset="utf-8">
     <title>{{ __('home.single_pdf.payslip_title') }} - {{ $payrollRecord->employee->name }}</title>
     <style>
         body {
-            font-family: {{ $isArabic ? 'Arial, "Arial Unicode MS", sans-serif' : 'Arial, sans-serif' }};
+            font-family: {{ $isRtl ? '"Amiri", "Noto Nastaliq Urdu", Arial, "Arial Unicode MS", sans-serif' : 'Arial, sans-serif' }};
             font-size: 13px;
             line-height: 1.3;
             margin: 0;
             padding: 5px;
-            direction: {{ $isArabic ? 'rtl' : 'ltr' }};
+            direction: {{ $isRtl ? 'rtl' : 'ltr' }};
         }
         .payslip-container {
             max-width: 800px;
@@ -52,7 +53,7 @@
             display: table-cell;
             width: 50%;
             vertical-align: top;
-            padding-{{ $isArabic ? 'left' : 'right' }}: 10px;
+            padding-{{ $isRtl ? 'left' : 'right' }}: 10px;
         }
         .section-title {
             font-size: 15px;
@@ -84,17 +85,17 @@
         }
         th, td {
             padding: 10px;
-            text-align: {{ $isArabic ? 'right' : 'left' }};
+            text-align: {{ $isRtl ? 'right' : 'left' }};
         }
         th {
             background-color: #f8f9fa;
             font-weight: bold;
         }
         .text-right {
-            text-align: {{ $isArabic ? 'left' : 'right' }};
+            text-align: {{ $isRtl ? 'left' : 'right' }};
         }
         .text-left {
-            text-align: {{ $isArabic ? 'right' : 'left' }};
+            text-align: {{ $isRtl ? 'right' : 'left' }};
         }
         .text-center {
             text-align: center;
@@ -127,7 +128,7 @@
             vertical-align: top;
         }
         .footer-right {
-            text-align: {{ $isArabic ? 'left' : 'right' }};
+            text-align: {{ $isRtl ? 'left' : 'right' }};
         }
         @media print {
             body {
@@ -140,6 +141,7 @@
             }
         }
     </style>
+
 </head>
 <body>
     <div class="payslip-container">
