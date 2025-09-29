@@ -469,5 +469,6 @@ return [
     'holidays_updated_successfully' => 'Holidays updated successfully.',
     'failed_to_update_holidays' => 'Failed to update holidays.',
         'ok' => 'OK',
+    'communication' => 'Communication',
 
 ];

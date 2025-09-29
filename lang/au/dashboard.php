@@ -463,5 +463,6 @@ return [
     'failed_to_update_holidays' => 'چھٹیاں اپڈیٹ کرنے میں ناکام۔',
 
         'ok' => 'ٹھیک ہے',
+    'communication' => 'رابطہ',
 
 ];

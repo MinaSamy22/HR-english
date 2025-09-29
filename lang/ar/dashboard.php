@@ -449,6 +449,7 @@ return [
     'holidays_updated_successfully' => 'تم تحديث العطلات بنجاح.',
     'failed_to_update_holidays' => 'فشل في تحديث العطلات.',
         'ok' => 'حسناً',
+    'communication' => 'التواصل',
 
 ];
 
