@@ -7,6 +7,9 @@ return [
     'edit_department' => 'محکمہ میں ترمیم کریں',
     'department_list' => 'محکموں کی فہرست',
 
+    'department' =>'محکمے',
+
+
     // Form labels
     'id' => 'شناختی نمبر',
     'department_name' => 'محکمے کا نام',

@@ -6,7 +6,7 @@ return [
     'add_department' => 'إضافة قسم',
     'edit_department' => 'تعديل قسم',
     'department_list' => 'قائمة الأقسام',
-
+'department' =>'قسم',
     // Form labels
     'id' => 'الكود',
     'department_name' => 'اسم القسم',

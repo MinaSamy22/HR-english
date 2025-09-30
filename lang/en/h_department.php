@@ -6,6 +6,7 @@ return [
     'add_department' => 'Add Department',
     'edit_department' => 'Edit Department',
     'department_list' => 'Department List',
+'department' =>'Department',
 
     // Form labels
     'id' => 'ID',

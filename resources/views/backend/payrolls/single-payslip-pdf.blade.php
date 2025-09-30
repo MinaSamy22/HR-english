@@ -234,7 +234,7 @@
                 </tr>
                 <tr>
                     <td><strong>{{ __('home.single_pdf.daily_wage') }}</strong></td>
-                    <td>${{ number_format($payrollRecord->daily_wage ?? 0, 2) }}</td>
+                    <td>{{ number_format($payrollRecord->daily_wage ?? 0, 2) }}</td>
                 </tr>
                 <tr>
                     <td><strong>{{ __('home.single_pdf.work_hours') }}</strong></td>

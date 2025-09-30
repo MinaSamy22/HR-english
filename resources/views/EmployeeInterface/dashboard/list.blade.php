@@ -11,16 +11,39 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
-                        <div class="card card-primary card-outline">
-                            <div class="card-body">
-                                <div class="row align-items-center">
-                                    <div class="col-md-8">
-                                        <h4 class="mb-2">{{ __('E_dashboard.welcome') }}, <span id="employee-name">{{ $user->name ?? __('E_dashboard.employee') }}👋</span></h4>
-                                        <p class="text-muted mb-0">{{ __('E_dashboard.welcome_message') }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="card card-primary card-outline" style="background-color: transparent; box-shadow: none;">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- الترحيب -->
+                <h4 class="mb-2">
+                    {{ __('E_dashboard.welcome') }},
+                    <span id="employee-name">{{ $user->name ?? __('E_dashboard.employee') }} 👋</span>
+                </h4>
+
+                <!-- اسم القسم -->
+                @if($user->department)
+                    <p class="text-primary font-weight-bold mb-2">
+                        {{ __('h_department.department') }}: {{ $user->department->department_name }}
+                    </p>
+                @else
+                    <p class="text-muted font-italic mb-2">
+                        {{ __('h_department.no_department') ?? 'القسم: غير محدد' }}
+                    </p>
+                @endif
+
+                <!-- خط فاصل أنيق -->
+                <hr style="border: 0; border-top: 1px solid #ddd; margin: 0.5rem 0;">
+
+                <!-- رسالة الترحيب -->
+                <p class="text-muted mb-0" style="font-size: 0.9rem; font-style: italic;">
+                    {{ __('E_dashboard.welcome_message') }}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
                     </div>
                 </div>
             </div>
