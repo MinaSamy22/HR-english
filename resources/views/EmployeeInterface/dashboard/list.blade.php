@@ -11,7 +11,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
-                        <div class="card card-primary card-outline" style="background-color: transparent; box-shadow: none;">
+                        <div class="card card-primary card-outline">
     <div class="card-body">
         <div class="row">
             <div class="col-md-12">
