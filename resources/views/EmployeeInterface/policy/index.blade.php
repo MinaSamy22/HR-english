@@ -51,9 +51,9 @@
                     <div class="col-md-3">
     <div class="card text-center border-success rounded">
         <div class="card-body">
-            <i class="fas fa-dollar-sign fa-2x text-success mb-2"></i>
+<i class="fas fa-coins fa-2x text-success mb-2"></i>
             <h3 class="text-success">
-                ${{ number_format($setting->bonus_per_hour, 2) }}
+                {{ number_format($setting->bonus_per_hour, 2) }}
             </h3>
             <p class="text-muted mb-0">{{ __('policy.overtime_bonus') }}</p>
         </div>
