@@ -63,7 +63,7 @@ return [
 
     // Roles
     'employee' => 'ملازم',
-    'hr' => 'ایچ آر',
+    'hrs' => 'ایچ آر (انتظامیہ)',
 
     // Options
     'yes' => 'ہاں',

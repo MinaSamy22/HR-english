@@ -63,7 +63,7 @@ return [
 
     // Roles
     'employee' => 'Employee',
-    'hr' => 'HR',
+    'hrs' => 'HR (Management)',
 
     // Options
     'yes' => 'Yes',

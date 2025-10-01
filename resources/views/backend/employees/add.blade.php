@@ -288,7 +288,7 @@
                                             <select class="form-control" name="is_role" id="roleSelect" required>
                                                 <option value="">{{ __('h_employee.select_role') }}</option>
                                                 <option value="0">{{ __('h_employee.employee') }}</option>
-                                                <option value="1">{{ __('h_employee.hr') }}</option>
+                                                <option value="1">{{ __('h_employee.hrs') }}</option>
                                             </select>
                                         </div>
                                     </div>
