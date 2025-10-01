@@ -27,6 +27,11 @@
 
                         <div class="form-group">
                             <label for="employee_selection">{{ __('h_branches.choose_employees') }}</label>
+
+                            {{-- 🔍 Search input --}}
+                            <input type="text" id="employee-search" class="form-control mb-2"
+                                   placeholder="{{ __('dashboard.search_employee') }}">
+
                             <div class="mb-2">
                                 <button type="button" class="btn btn-sm btn-success" onclick="toggleSelectAll()"
                                     id="select-all-btn">
@@ -36,7 +41,7 @@
                             <div id="employee-list"
                                 style="max-height: 300px; overflow-y: auto; border: 1px solid #ddd; border-radius: 5px; padding: 10px;">
                                 @foreach ($employees as $employee)
-                                    <div class="form-check mb-2">
+                                    <div class="form-check mb-2 employee-item">
                                         <input class="form-check-input employee-checkbox" type="checkbox" name="user_ids[]"
                                             value="{{ $employee->id }}" id="employee_{{ $employee->id }}">
                                         <label class="form-check-label" for="employee_{{ $employee->id }}">
@@ -67,7 +72,6 @@
                             </select>
                         </div>
 
-
                         <div class="form-group mt-4">
                             <button type="submit" class="btn btn-primary" id="transfer-btn" disabled>
                                 <i class="fas fa-random"></i> {{ __('h_branches.transfer_selected_employees') }}
@@ -90,6 +94,8 @@
             pleaseSelectEmployee: '{{ __('h_branches.please_select_employee') }}',
             pleaseSelectBranch: '{{ __('h_branches.please_select_branch') }}'
         };
+
     </script>
-    <script src="{{ asset('dist/js/transfere.js') }}"></script>
+
+    <script src="{{ asset('dist/js/transfere.js?v=1') }}"></script>
 @endsection

@@ -79,3 +79,16 @@ document.querySelector('form').addEventListener('submit', function(e) {
         return false;
     }
 });
+ // 🔍 Search filter
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('employee-search');
+            const employeeItems = document.querySelectorAll('.employee-item');
+
+            searchInput.addEventListener('keyup', function () {
+                const filter = searchInput.value.toLowerCase();
+                employeeItems.forEach(item => {
+                    const text = item.textContent.toLowerCase();
+                    item.style.display = text.includes(filter) ? '' : 'none';
+                });
+            });
+        });
