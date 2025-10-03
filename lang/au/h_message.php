@@ -45,6 +45,8 @@ return [
     'read_status' => 'پڑھنے کی حالت',
     'read' => 'پڑھا گیا',
     'delivered' => 'پہنچ گیا',
+    'date' => 'تاریخ',
+    'actions' => 'اعمال',
 
     // Messages and Notifications
     'message_sent_success' => 'پیغام کامیابی سے بھیج دیا گیا!',

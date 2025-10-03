@@ -6,7 +6,7 @@
         <div class="container-fluid">
             <div class=" mb-2 d-flex justify-content-between">
                 <div class="col-sm-6">
-                    <h1 class="m-0">{{ __('h_message.sent_messages') }}</h1>
+                    <h1 class="m-0"><i class="fas fa-paper-plane mr-2"></i>{{ __('h_message.sent_messages') }}</h1>
                 </div>
                 <div class="">
                     <ol class="breadcrumb float-sm-right">
@@ -22,7 +22,7 @@
         <div class="container-fluid">
             @if(session('success'))
                 <div class="alert alert-success alert-dismissible fade show">
-                    {{ session('success') }}
+                    <i class="fas fa-check-circle mr-2"></i>{{ session('success') }}
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -40,10 +40,10 @@
                                 </h3>
                                 <div class="d-flex align-items-center">
                                     <div class="btn-group mr-2">
-                                        <button type="button" class="btn btn-sm btn-outline-secondary" id="view-table">
+                                        <button type="button" class="btn btn-sm btn-secondary" id="view-table">
                                             <i class="fas fa-table"></i> {{ __('h_message.table') }}
                                         </button>
-                                        <button type="button" class="btn btn-sm btn-secondary" id="view-cards">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" id="view-cards">
                                             <i class="fas fa-th-large"></i> {{ __('h_message.cards') }}
                                         </button>
                                     </div>
@@ -58,15 +58,14 @@
                         <div class="card-body p-0">
                             @if($messages->count() > 0)
                                 <!-- Table View -->
-                                <div id="table-view" class="table-responsive mailbox-messages" style="display: none;">
+                                <div id="table-view" class="table-responsive mailbox-messages">
                                     <table class="table table-hover table-striped">
                                         <thead>
                                             <tr>
-                                                <th></th>
-                                                <th>{{ __('h_message.recipients') }}</th>
-                                                <th>{{ __('h_message.subject') }}</th>
-                                                <th>{{ __('Date') }}</th>
-                                                <th>{{ __('Actions') }}</th>
+                                                <th><i class="fas fa-users mr-1"></i>{{ __('h_message.recipients') }}</th>
+                                                <th><i class="fas fa-envelope mr-1"></i>{{ __('h_message.subject') }}</th>
+                                                <th><i class="fas fa-calendar mr-1"></i>{{ __('h_message.date') }}</th>
+                                                <th><i class="fas fa-cog mr-1"></i>{{ __('h_message.actions') }}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -74,12 +73,9 @@
                                                 <tr class="clickable-row"
                                                     data-href="{{ route('messages.show', $message) }}"
                                                     style="cursor: pointer;">
-                                                    <td class="mailbox-star">
-                                                        @if($message->is_urgent)
-                                                            <i class="fas fa-star text-warning" title="{{ __('h_message.urgent') }}"></i>
-                                                        @endif
-                                                    </td>
+
                                                     <td class="mailbox-name">
+                                                        <i class="fas fa-user-circle mr-1 text-primary"></i>
                                                         @php
                                                             $recipientNames = $message->recipient_names ?? [];
                                                             $recipientCount = $message->recipient_count ?? 0;
@@ -90,19 +86,21 @@
                                                     </td>
                                                     <td class="mailbox-subject">
                                                         <span class="text-dark">
+                                                            <i class="fas fa-envelope-open-text mr-1 text-info"></i>
                                                             {{ Str::limit($message->subject, 50) }}
                                                             @if($message->is_urgent)
-                                                                <span class="badge badge-warning ml-1">{{ __('h_message.urgent') }}</span>
+                                                                <span class="badge badge-warning ml-1">
+                                                                    <i class="fas fa-exclamation-triangle"></i> {{ __('h_message.urgent') }}
+                                                                </span>
                                                             @endif
                                                         </span>
                                                     </td>
                                                     <td class="mailbox-date">
-                                                        {{ $message->created_at->format('M d, Y H:i') }}
+                                                        <i class="far fa-clock mr-1 text-secondary"></i>
+                                                        {{ $message->created_at->diffForHumans() }}
                                                     </td>
                                                     <td class="mailbox-actions" onclick="event.stopPropagation();">
-                                                        <a href="{{ route('messages.show', $message) }}" class="btn btn-default btn-sm" title="{{ __('h_message.view') }}">
-                                                            <i class="fas fa-eye"></i>
-                                                        </a>
+
                                                         <form action="{{ route('messages.destroy', $message) }}" method="POST" class="d-inline" onsubmit="return confirm('{{ __('h_message.are_you_sure_delete') }}')">
                                                             @csrf
                                                             @method('DELETE')
@@ -118,7 +116,7 @@
                                 </div>
 
                                 <!-- Cards View -->
-                                <div id="cards-view" class="p-3">
+                                <div id="cards-view" class="p-3" style="display: none;">
                                     <div class="row">
                                         @foreach($messages as $message)
                                             <div class="col-md-6 col-lg-4 mb-3">
@@ -131,6 +129,7 @@
                                                                 @if($message->is_urgent)
                                                                     <i class="fas fa-star text-warning mr-1" title="{{ __('h_message.urgent') }}"></i>
                                                                 @endif
+                                                                <i class="fas fa-user-circle mr-1 text-primary"></i>
                                                                 <small class="font-weight-bold">
                                                                     @php
                                                                         $recipientNames = $message->recipient_names ?? [];
@@ -140,18 +139,23 @@
                                                                 </small>
                                                             </div>
                                                             <div class="d-flex align-items-center">
+                                                                <i class="fas fa-calendar-alt mr-1 text-secondary"></i>
                                                                 <small>{{ $message->created_at->format('M d') }}</small>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="card-body p-3">
                                                         <h6 class="card-title font-weight-bold">
+                                                            <i class="fas fa-envelope mr-1 text-info"></i>
                                                             {{ Str::limit($message->subject, 40) }}
                                                             @if($message->is_urgent)
-                                                                <span class="badge badge-warning badge-sm ml-1">{{ __('h_message.urgent') }}</span>
+                                                                <span class="badge badge-warning badge-sm ml-1">
+                                                                    <i class="fas fa-exclamation-triangle"></i> {{ __('h_message.urgent') }}
+                                                                </span>
                                                             @endif
                                                         </h6>
                                                         <p class="card-text text-muted small">
+                                                            <i class="fas fa-align-left mr-1"></i>
                                                             {{ Str::limit(strip_tags($message->content ?? __('h_message.no_content_preview')), 80) }}
                                                         </p>
                                                         @if($recipientCount > 1)
@@ -164,6 +168,7 @@
                                                         @endif
                                                         <div class="d-flex justify-content-between align-items-center">
                                                             <small class="text-muted">
+                                                                <i class="far fa-clock mr-1"></i>
                                                                 {{ $message->created_at->diffForHumans() }}
                                                             </small>
                                                             <div onclick="event.stopPropagation();">
@@ -237,6 +242,16 @@
 .card-body .btn-group {
     white-space: nowrap;
 }
+
+/* Icon spacing in table */
+.table thead th i {
+    color: #6c757d;
+}
+
+.mailbox-star {
+    width: 40px;
+    text-align: center;
+}
 </style>
 
 <script>
@@ -247,9 +262,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const tableView = document.getElementById('table-view');
     const cardsView = document.getElementById('cards-view');
 
-    // Default to cards view
-    cardsView.style.display = 'block';
-    tableView.style.display = 'none';
+    // Default to table view
+    tableView.style.display = 'block';
+    cardsView.style.display = 'none';
 
     viewTableBtn.addEventListener('click', function() {
         tableView.style.display = 'block';
