@@ -468,7 +468,7 @@ return [
     'holiday_deleted_successfully' => 'Holiday deleted successfully.',
     'holidays_updated_successfully' => 'Holidays updated successfully.',
     'failed_to_update_holidays' => 'Failed to update holidays.',
-        'ok' => 'OK',
+    'ok' => 'OK',
     'communication' => 'Communication',
 
 ];
