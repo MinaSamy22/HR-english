@@ -147,7 +147,7 @@
                                                     <td>{{ $value->name }}</td>
                                                     <td>{{ $value->email }}</td>
                                                     <td>{{ $value->branch_name ?? __('h_dashboard.main_branch') }}</td>
-                                                    <td>{{ !empty($value->is_role) ? __('h_employee.hr') : __('h_employee.employee') }}
+                                                    <td>{{ !empty($value->is_role) ? __('h_employee.hrs') : __('h_employee.employee') }}
                                                     </td>
                                                     <td>
                                                         <a href="{{ url('admin/employees/view/' . $value->id) }}"
