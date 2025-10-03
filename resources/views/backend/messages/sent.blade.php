@@ -104,9 +104,9 @@
                                                         <form action="{{ route('messages.destroy', $message) }}" method="POST" class="d-inline" onsubmit="return confirm('{{ __('h_message.are_you_sure_delete') }}')">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" class="btn btn-danger btn-sm" title="{{ __('h_message.delete') }}">
-                                                                <i class="fas fa-trash"></i>
-                                                            </button>
+                                                           <button type="button" class="btn btn-danger rounded-pill delete-btn" data-id="{{ $message->id }}" title="{{ __('h_message.delete') }}">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
                                                         </form>
                                                     </td>
                                                 </tr>
@@ -306,5 +306,72 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // View toggle code (same as before)...
+
+    // Handle delete with SweetAlert2
+    document.querySelectorAll('.delete-btn').forEach(function(button) {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            let messageId = this.dataset.id;
+
+            Swal.fire({
+                title: "{{ __('dashboard.delete') }}",
+                text: "{{ __('dashboard.delete_confirmation') }}",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#6c757d",
+                confirmButtonText: "{{ __('dashboard.delete') }}",
+                cancelButtonText: "{{ __('dashboard.cancel') }}"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch("{{ url('admin/messages') }}/" + messageId, {
+                        method: "POST",
+                        headers: {
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({_method: "DELETE"})
+                    })
+                    .then(res => {
+                        if(res.ok){
+                            Swal.fire({
+                                title: "{{ __('dashboard.deleted') }}!",
+                                text: "{{ __('dashboard.delete_success') }}",
+                                icon: "success",
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+                            // Remove row or card
+                            let row = this.closest("tr");
+                            let card = this.closest(".col-md-6");
+                            if(row) row.remove();
+                            if(card) card.remove();
+                        } else {
+                            throw new Error();
+                        }
+                    })
+                    .catch(() => {
+                        Swal.fire({
+                            title: "{{ __('dashboard.error') }}",
+                            text: "{{ __('dashboard.delete_failed') }}",
+                            icon: "error",
+                            confirmButtonText: "OK"
+                        });
+                    });
+                }
+            });
+        });
+    });
+});
+</script>
+
 @endsection

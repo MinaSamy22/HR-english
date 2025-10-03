@@ -182,7 +182,7 @@
             let deleteId = $(this).data('id');
 
             Swal.fire({
-                title: "{{ __('dashboard.delete') }}?",
+                title: "{{ __('dashboard.delete') }}",
                 text: "{{ __('dashboard.delete_confirmation') }}",
                 icon: "warning",
                 showCancelButton: true,

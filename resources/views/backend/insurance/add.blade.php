@@ -37,24 +37,38 @@
                                 <div class="card-body">
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">{{ __('h_insurance.employee_name') }} <span style="color: red;">*</span></label>
-                                        <div class="col-sm-6">
-                                            <div class="checkbox-box">
-                                                <div class="checkbox-item">
-                                                    <input type="checkbox" id="select-all">
-                                                    <label for="select-all">{{ __('h_insurance.select_all') }}</label>
-                                                </div>
+    <label class="col-sm-2 col-form-label">
+        {{ __('h_insurance.employee_name') }} <span style="color: red;">*</span>
+    </label>
 
-                                                @foreach ($getEmployees as $employee)
-                                                    <div class="checkbox-item">
-                                                        <input type="checkbox" name="employee_ids[]" value="{{ $employee->id }}"
-                                                            id="employee-{{ $employee->id }}" class="employee-checkbox">
-                                                        <label for="employee-{{ $employee->id }}">{{ $employee->name }}</label>
-                                                    </div>
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                    </div>
+    <div class="col-sm-6">
+        <div id="employee-list"
+             style="max-height: 300px; overflow-y: auto; border: 1px solid #ddd; border-radius: 5px; padding: 10px;">
+
+            <!-- Select All -->
+            <div class="form-check mb-2">
+                <input type="checkbox" id="select-all" class="form-check-input">
+                <label for="select-all" class="form-check-label">
+                    {{ __('h_insurance.select_all') }}
+                </label>
+            </div>
+
+            <!-- Employees -->
+            @foreach ($getEmployees as $employee)
+                <div class="form-check mb-2 employee-item">
+                    <input type="checkbox" name="employee_ids[]"
+                           value="{{ $employee->id }}"
+                           id="employee-{{ $employee->id }}"
+                           class="form-check-input employee-checkbox">
+                    <label for="employee-{{ $employee->id }}" class="form-check-label">
+                        {{ $employee->name }}
+                    </label>
+                </div>
+            @endforeach
+        </div>
+    </div>
+</div>
+
 
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-lable">{{ __('h_insurance.code') }} <span style="color: red;">*</span></label>

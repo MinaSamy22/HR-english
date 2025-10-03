@@ -41,23 +41,32 @@
                                         <label class="col-sm-2 col-form-label">{{ __('h_tax.employee_name') }} <span
                                                 style="color: red;">{{ __('h_tax.required') }}</span></label>
                                         <div class="col-sm-6">
-                                            <div class="checkbox-box">
-                                                <div class="checkbox-item">
-                                                    <input type="checkbox" id="select-all">
-                                                    <label for="select-all">{{ __('h_tax.select_all') }}</label>
-                                                </div>
+    <div id="employee-list"
+         style="max-height: 300px; overflow-y: auto; border: 1px solid #ddd; border-radius: 5px; padding: 10px;">
 
-                                                @foreach ($getEmployees as $employee)
-                                                    <div class="checkbox-item">
-                                                        <input type="checkbox" name="employee_ids[]"
-                                                            value="{{ $employee->id }}" id="employee-{{ $employee->id }}"
-                                                            class="employee-checkbox">
-                                                        <label
-                                                            for="employee-{{ $employee->id }}">{{ $employee->name }}</label>
-                                                    </div>
-                                                @endforeach
-                                            </div>
-                                        </div>
+        <!-- Select All -->
+        <div class="form-check mb-2">
+            <input type="checkbox" id="select-all" class="form-check-input">
+            <label for="select-all" class="form-check-label">
+                {{ __('h_tax.select_all') }}
+            </label>
+        </div>
+
+        <!-- Employees -->
+        @foreach ($getEmployees as $employee)
+            <div class="form-check mb-2 employee-item">
+                <input type="checkbox" name="employee_ids[]"
+                       value="{{ $employee->id }}"
+                       id="employee-{{ $employee->id }}"
+                       class="form-check-input employee-checkbox">
+                <label for="employee-{{ $employee->id }}" class="form-check-label">
+                    {{ $employee->name }}
+                </label>
+            </div>
+        @endforeach
+    </div>
+</div>
+
                                     </div>
 
                                     <div class="form-group row">
