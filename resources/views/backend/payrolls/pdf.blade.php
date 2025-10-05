@@ -1,5 +1,11 @@
+@php
+    $locale = app()->getLocale();
+    // RTL for Arabic, Urdu, Ardo
+    $isRtl = in_array($locale, ['ar', 'au']);
+@endphp
+
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="{{ $locale }}">
 
 <head>
     <meta charset="UTF-8">
@@ -7,8 +13,8 @@
     <title>{{ __('h_payroll_report.title') }}</title>
     <style>
         body {
-            font-family: 'dejavusans';
-            direction: {{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }};
+            font-family: {{ $isRtl ? "'Amiri'" : "'DejaVu Sans'" }}, sans-serif;
+            direction: {{ $isRtl ? 'rtl' : 'ltr' }};
             background-color: #fff;
             margin: 20px;
         }
@@ -42,7 +48,7 @@
         th,
         td {
             padding: 10px;
-            text-align: {{ app()->getLocale() == 'ar' ? 'right' : 'left' }};
+            text-align: {{ $isRtl ? 'right' : 'left' }};
             border: 1px solid #ccc;
             font-weight: normal;
         }
@@ -61,10 +67,11 @@
 
         .signature {
             margin-top: 20px;
-            text-align: {{ app()->getLocale() == 'ar' ? 'right' : 'left' }};
+            text-align: {{ $isRtl ? 'right' : 'left' }};
             font-size: 18px;
         }
     </style>
+
 
 </head>
 

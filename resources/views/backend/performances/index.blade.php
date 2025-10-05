@@ -4,7 +4,7 @@
 @section('title', __('h_performance.employee_performance'))
 
 @section('content')
-<div class="content-wrapper">
+<div class="content-wrapper" style="background-image: url('{{ asset('/dist/img/dashboard.jpg') }}'); background-size: cover; background-position: center;">
     <div class="content-header">
         <div class="container-fluid">
             <div class=" mb-2 d-flex justify-content-between">
@@ -192,12 +192,10 @@
                                                     <form method="POST" action="{{ route('performance.destroy', $evaluation->id) }}" style="display: inline;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit"
-                                                                onclick="return confirm('{{ __('h_performance.delete_criteria_confirm') }}')"
-                                                                class="btn btn-danger rounded-pill"
-                                                                title="{{ __('h_performance.delete') }}">
-                                                            <i class="fas fa-trash"></i>
-                                                        </button>
+                                                         <button type="button" class="btn btn-danger rounded-pill delete-btn"
+                                                                    data-id="{{ $evaluation->id }}" title="{{ __('h_performance.delete') }}">
+                                                                <i class="fas fa-trash-alt"></i>
+                                                            </button>
                                                     </form>
                                                 </div>
                                             </td>
@@ -259,14 +257,25 @@
         </div>
     </div>
 </div>
-
 @endsection
 
-@section('scripts')
+@section('script')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
-function deleteEvaluation(id) {
-    $('#deleteForm').attr('action', '{{ url("admin/performance") }}/' + id);
-    $('#deleteModal').modal('show');
-}
+    const deleteTranslations = {
+        delete: "{{ __('dashboard.delete') }}",
+        confirmation: "{{ __('dashboard.delete_confirmation') }}",
+        cancel: "{{ __('dashboard.cancel') }}",
+        deleted: "{{ __('dashboard.deleted') }}!",
+        success: "{{ __('dashboard.delete_success') }}",
+        error: "{{ __('dashboard.error') }}",
+        failed: "{{ __('dashboard.delete_failed') }}",
+        deleteUrl: "{{ url('admin/performance') }}",
+        token: '{{ csrf_token() }}'
+    };
 </script>
+
+<script src="{{ asset('dist/js/performance.js') }}"></script>
 @endsection
+

@@ -238,11 +238,10 @@
                                         class="btn btn-primary rounded-pill" title="{{ __('h_payroll.edit') }}">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <a href="{{ url('admin/payroll/delete/' . $value->id) }}"
-                                        onclick="return confirm('{{ __('h_payroll.delete_single_confirmation') }}')"
-                                        class="btn btn-danger rounded-pill" title="{{ __('h_payroll.delete') }}">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </a>
+                                    <button type="button" class="btn btn-danger rounded-pill delete-btn"
+                                                data-id="{{ $value->id }}" title="{{ __('h_payroll.delete') }}">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
 
                                 </td>
                             </tr>
@@ -263,6 +262,132 @@
     </section>
     </div>
 
-    <!-- Link to the new JavaScript file -->
-    <script src="{{ url('dist/js/payroll.js') }}"></script>
+ @endsection
+
+@section('script')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    // Individual delete functionality with SweetAlert2
+    $(document).on('click', '.delete-btn', function () {
+        let deleteId = $(this).data('id');
+
+        Swal.fire({
+            title: "{{ __('dashboard.delete') }}",
+            text: "{{ __('dashboard.delete_confirmation') }}",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#6c757d",
+            confirmButtonText: "{{ __('dashboard.delete') }}",
+            cancelButtonText: "{{ __('dashboard.cancel') }}"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "{{ url('admin/payroll/delete') }}/" + deleteId,
+                    type: 'GET',
+                    success: function () {
+                        $('button.delete-btn[data-id="' + deleteId + '"]').closest('tr').fadeOut();
+
+                        Swal.fire({
+                            title: "{{ __('dashboard.deleted') }}!",
+                            text: "{{ __('dashboard.delete_success') }}",
+                            icon: "success",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    },
+                    error: function () {
+                        Swal.fire({
+                            title: "{{ __('dashboard.error') }}",
+                            text: "{{ __('dashboard.delete_failed') }}",
+                            icon: "error",
+                                confirmButtonText: "{{ __('dashboard.ok') }}"
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    // Bulk delete functionality with SweetAlert2
+    $('#deleteSelected').click(function() {
+        var selectedIds = [];
+        $('.payrollCheckbox:checked').each(function() {
+            selectedIds.push($(this).val());
+        });
+
+        if (selectedIds.length === 0) {
+            Swal.fire({
+                title: "{{ __('dashboard.no_selection') }}",
+                text: "{{ __('dashboard.select_items_first') }}",
+                icon: "warning",
+                                confirmButtonText: "{{ __('dashboard.ok') }}"
+            });
+            return;
+        }
+
+        Swal.fire({
+            title: "{{ __('dashboard.delete_selected') }}",
+            text: "{{ __('dashboard.delete_selected_confirm') }}",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#6c757d",
+            confirmButtonText: "{{ __('dashboard.delete') }}",
+            cancelButtonText: "{{ __('dashboard.cancel') }}"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "{{ url('admin/payrolls/delete-multiple') }}",
+                    type: 'POST',
+                    data: {
+                        ids: selectedIds,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        // Remove selected rows with fade effect
+                        $('.payrollCheckbox:checked').each(function() {
+                            $(this).closest('tr').fadeOut();
+                        });
+
+                        // Uncheck select all
+                        $('#selectAll').prop('checked', false);
+
+                        Swal.fire({
+                            title: "{{ __('dashboard.deleted') }}!",
+                            text: "{{ __('dashboard.bulk_delete_success') }}",
+                            icon: "success",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    },
+                    error: function() {
+                        Swal.fire({
+                            title: "{{ __('dashboard.error') }}",
+                            text: "{{ __('dashboard.bulk_delete_failed') }}",
+                            icon: "error",
+                                confirmButtonText: "{{ __('dashboard.ok') }}"
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    // Select all functionality
+    $('#selectAll').change(function() {
+        $('.payrollCheckbox').prop('checked', this.checked);
+    });
+
+    // Update select all when individual checkboxes change
+    $(document).on('change', '.payrollCheckbox', function() {
+        if ($('.payrollCheckbox:checked').length === $('.payrollCheckbox').length) {
+            $('#selectAll').prop('checked', true);
+        } else {
+            $('#selectAll').prop('checked', false);
+        }
+    });
+</script>
+
 @endsection

@@ -312,7 +312,7 @@
                                                                         <tr>
                                                                             <td><strong>{{ __('dashboard.daily_wage') }}</strong>
                                                                             </td>
-                                                                            <td>${{ number_format($payroll->daily_wage ?? 0, 2) }}
+                                                                            <td>{{ number_format($payroll->daily_wage ?? 0, 2) }}
                                                                             </td>
                                                                         </tr>
                                                                         <tr>

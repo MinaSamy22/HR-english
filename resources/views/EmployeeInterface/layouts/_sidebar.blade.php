@@ -3,6 +3,8 @@
 <!-- CSS Link (add inside <head>) -->
 <link rel="stylesheet" href="{{ asset('dist/css/darkmode.css') }}">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css">
+
 
 
 <div class="preloader flex-column justify-content-center align-items-center">
@@ -36,47 +38,54 @@
             </a>
         </li> --}}
 
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="languageDropdown"
-                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="languageDropdown"
+        role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
-                <div class="badge badge-secondary d-flex align-items-center">
-                    <i class="fas fa-globe mr-1"></i>
-                    <span class="font-weight-bold">
-                        {{ app()->getLocale() == 'ar' ? 'عربي' : 'EN' }}
-                    </span>
-                </div>
-            </a>
+        <div class="badge d-flex align-items-center custom-badge">
+    @if(app()->getLocale() == 'ar')
+        <span class="flag-icon flag-icon-sa mr-1"></span>
+        <span class="font-weight-bold">عربي</span>
+    @elseif(app()->getLocale() == 'au')
+        <span class="flag-icon flag-icon-pk mr-1"></span>
+        <span class="font-weight-bold">اردو</span>
+    @else
+        <span class="flag-icon flag-icon-gb mr-1"></span>
+        <span class="font-weight-bold">EN</span>
+    @endif
+</div>
+    </a>
 
-            <div class="dropdown-menu dropdown-menu-right shadow-sm" aria-labelledby="languageDropdown">
-                <style>
-                    .dropdown-item.active,
-                    .dropdown-item:active {
-                        background-color: #e3f2fd !important;
-                        color: #1976d2 !important;
-                    }
+<div class="dropdown-menu dropdown-menu-right shadow-sm" aria-labelledby="languageDropdown">
 
-                    .dropdown-item:hover {
-                        background-color: #f5f5f5 !important;
-                    }
-                </style>
-                <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'en' ? 'active' : '' }}"
-                    href="{{ url('lang/en') }}">
-                    <span>English</span>
-                    @if (app()->getLocale() == 'en')
-                        <i class="fas fa-check ml-auto text-success"></i>
-                    @endif
-                </a>
+    <!-- English -->
+    <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'en' ? 'active' : '' }}"
+        href="{{ url('lang/en') }}">
+        <span class="flag-icon flag-icon-gb mr-2"></span> English
+        @if (app()->getLocale() == 'en')
+            <i class="fas fa-check ml-auto text-success"></i>
+        @endif
+    </a>
 
-                <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'ar' ? 'active' : '' }}"
-                    href="{{ url('lang/ar') }}">
-                    <span>العربية</span>
-                    @if (app()->getLocale() == 'ar')
-                        <i class="fas fa-check ml-auto text-success"></i>
-                    @endif
-                </a>
-            </div>
-        </li>
+    <!-- Arabic -->
+    <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'ar' ? 'active' : '' }}"
+        href="{{ url('lang/ar') }}">
+        <span class="flag-icon flag-icon-sa mr-2"></span> العربية
+        @if (app()->getLocale() == 'ar')
+            <i class="fas fa-check ml-auto text-success"></i>
+        @endif
+    </a>
+
+    <!-- Urdu -->
+    <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'ur' ? 'active' : '' }}"
+        href="{{ url('lang/au') }}">
+        <span class="flag-icon flag-icon-pk mr-2"></span> اردو
+        @if (app()->getLocale() == 'au')
+            <i class="fas fa-check ml-auto text-success"></i>
+        @endif
+    </a>
+</div>
+</li>
 
 
 

@@ -7,7 +7,9 @@ document.addEventListener('DOMContentLoaded', function () {
     // Localized labels
     var labels = {
         en: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        ar: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر']
+        ar: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'],
+        au: ['جنوری', 'فروری', 'مارچ', 'اپریل', 'مئی', 'جون', 'جولائی', 'اگست', 'ستمبر', 'اکتوبر', 'نومبر', 'دسمبر']
+
     };
 
     // Localized dataset labels
@@ -21,6 +23,11 @@ document.addEventListener('DOMContentLoaded', function () {
             present: 'الحضور الأسبوعي',
             absent: 'الغياب',
             vacations: 'الإجازات'
+        },
+         au: {
+        present: 'ہفتہ وار حاضری',
+        absent: 'غیر حاضر',
+        vacations: 'چھٹیاں'
         }
     };
 

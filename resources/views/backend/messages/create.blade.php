@@ -1,7 +1,7 @@
 @extends('backend.layouts.app')
 
 @section('content')
-<div class="content-wrapper">
+<div class="content-wrapper" style="background-image: url('{{ asset('/dist/img/dashboard.jpg') }}'); background-size: cover; background-position: center;">
     <div class="content-header">
         <div class="container-fluid">
             <div class=" mb-2 d-flex justify-content-between">
@@ -36,28 +36,45 @@
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">{{ __('h_message.recipients') }} <span style="color: red;">{{ __('h_message.required_field') }}</span></label>
                                     <div class="col-sm-6">
-                                        <div class="checkbox-box">
-                                            <div class="checkbox-item">
-                                                <input type="checkbox" id="select-all">
-                                                <label for="select-all">{{ __('h_message.select_all') }}</label>
-                                            </div>
+    <div id="employee-list"
+         style="max-height: 300px; overflow-y: auto; border: 1px solid #ddd; border-radius: 5px; padding: 10px;">
 
-                                            @foreach($employees as $employee)
-                                                <div class="checkbox-item">
-                                                    <input type="checkbox" name="recipient_ids[]" value="{{ $employee->id }}"
-                                                        id="employee-{{ $employee->id }}" class="employee-checkbox"
-                                                        {{ in_array($employee->id, old('recipient_ids', [])) ? 'checked' : '' }}>
-                                                    <label for="employee-{{ $employee->id }}">{{ $employee->name }}</label>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                        <div class="mt-2">
-                                            <small class="text-muted" id="selection-count">0 {{ __('h_message.selected') }}</small>
-                                        </div>
-                                        @error('recipient_ids')
-                                            <small class="text-danger">{{ $message }}</small>
-                                        @enderror
-                                    </div>
+        <!-- Select All -->
+        <div class="form-check mb-2">
+            <input type="checkbox" id="select-all" class="form-check-input">
+            <label for="select-all" class="form-check-label">
+                {{ __('h_message.select_all') }}
+            </label>
+        </div>
+
+        <!-- Employees -->
+        @foreach($employees as $employee)
+            <div class="form-check mb-2 employee-item">
+                <input type="checkbox" name="recipient_ids[]"
+                       value="{{ $employee->id }}"
+                       id="employee-{{ $employee->id }}"
+                       class="form-check-input employee-checkbox"
+                       {{ in_array($employee->id, old('recipient_ids', [])) ? 'checked' : '' }}>
+                <label for="employee-{{ $employee->id }}" class="form-check-label">
+                    {{ $employee->name }}
+                </label>
+            </div>
+        @endforeach
+    </div>
+
+    <!-- Counter -->
+    <div class="mt-2">
+        <small class="text-muted" id="selection-count">
+            0 {{ __('h_message.selected') }}
+        </small>
+    </div>
+
+    <!-- Validation error -->
+    @error('recipient_ids')
+        <small class="text-danger">{{ $message }}</small>
+    @enderror
+</div>
+
                                 </div>
 
                                 <!-- Subject -->

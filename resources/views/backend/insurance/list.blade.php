@@ -124,7 +124,7 @@
                                                     <td>{{ $value->code }}</td>
                                                     <td>{{ $value->name }}</td>
                                                     <td>{{ $value->employee_name }}</td>
-                                                     <td>
+                                                    <td>
                                                         <span
                                                             class="badge {{ $value->apply_to_payroll == 1 ? 'badge-success' : 'badge-warning' }}">
                                                             {{ $value->apply_to_payroll == 1 ? __('h_insurance.yes') : __('h_insurance.no') }}
@@ -139,12 +139,12 @@
                                                             title="{{ __('h_insurance.edit') }}">
                                                             <i class="fas fa-edit"></i>
                                                         </a>
-                                                        <a href="{{ url('admin/insurance/delete/' . $value->id) }}"
-                                                            onclick="return confirm('{{ __('h_insurance.delete_confirmation') }}')"
-                                                            class="btn btn-danger rounded-pill"
+                                                        <button type="button"
+                                                            class="btn btn-danger rounded-pill delete-btn"
+                                                            data-id="{{ $value->id }}"
                                                             title="{{ __('h_insurance.delete') }}">
                                                             <i class="fas fa-trash-alt"></i>
-                                                        </a>
+                                                        </button>
                                                     </td>
                                                 </tr>
                                             @empty
@@ -168,7 +168,133 @@
         </section>
     </div>
 
-    <!-- Link to the new JavaScript file -->
-    <script src="{{ url('dist/js/insurance.js') }}"></script>
 
+@endsection
+
+@section('script')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        // Individual delete functionality with SweetAlert2
+        $(document).on('click', '.delete-btn', function() {
+            let deleteId = $(this).data('id');
+
+            Swal.fire({
+                title: "{{ __('dashboard.delete') }}",
+                text: "{{ __('dashboard.delete_confirmation') }}",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#6c757d",
+                confirmButtonText: "{{ __('dashboard.delete') }}",
+                cancelButtonText: "{{ __('dashboard.cancel') }}"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ url('admin/insurance/delete') }}/" + deleteId,
+                        type: 'GET',
+                        success: function() {
+                            $('button.delete-btn[data-id="' + deleteId + '"]').closest('tr')
+                                .fadeOut();
+
+                            Swal.fire({
+                                title: "{{ __('dashboard.deleted') }}!",
+                                text: "{{ __('dashboard.delete_success') }}",
+                                icon: "success",
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+                        },
+                        error: function() {
+                            Swal.fire({
+                                title: "{{ __('dashboard.error') }}",
+                                text: "{{ __('dashboard.delete_failed') }}",
+                                icon: "error",
+                                confirmButtonText: "{{ __('dashboard.ok') }}"
+                            });
+                        }
+                    });
+                }
+            });
+        });
+
+        // Bulk delete functionality with SweetAlert2
+        $('#deleteSelected').click(function() {
+            var selectedIds = [];
+            $('.insuranceCheckbox:checked').each(function() {
+                selectedIds.push($(this).val());
+            });
+
+            if (selectedIds.length === 0) {
+                Swal.fire({
+                    title: "{{ __('dashboard.no_selection') }}",
+                    text: "{{ __('dashboard.select_items_first') }}",
+                    icon: "warning",
+                    confirmButtonText: "{{ __('dashboard.ok') }}"
+                });
+                return;
+            }
+
+            Swal.fire({
+                title: "{{ __('dashboard.delete_selected') }}",
+                text: "{{ __('dashboard.delete_selected_confirm') }}",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#6c757d",
+                confirmButtonText: "{{ __('dashboard.delete') }}",
+                cancelButtonText: "{{ __('dashboard.cancel') }}"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ url('admin/insurance/delete-multiple') }}",
+                        type: 'POST',
+                        data: {
+                            ids: selectedIds,
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            // Remove selected rows with fade effect
+                            $('.insuranceCheckbox:checked').each(function() {
+                                $(this).closest('tr').fadeOut();
+                            });
+
+                            // Uncheck select all
+                            $('#selectAll').prop('checked', false);
+
+                            Swal.fire({
+                                title: "{{ __('dashboard.deleted') }}!",
+                                text: "{{ __('dashboard.bulk_delete_success') }}",
+                                icon: "success",
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+                        },
+                        error: function() {
+                            Swal.fire({
+                                title: "{{ __('dashboard.error') }}",
+                                text: "{{ __('dashboard.bulk_delete_failed') }}",
+                                icon: "error",
+                                confirmButtonText: "OK"
+                            });
+                        }
+                    });
+                }
+            });
+        });
+
+        // Select all functionality
+        $('#selectAll').change(function() {
+            $('.insuranceCheckbox').prop('checked', this.checked);
+        });
+
+        // Update select all when individual checkboxes change
+        $(document).on('change', '.insuranceCheckbox', function() {
+            if ($('.insuranceCheckbox:checked').length === $('.insuranceCheckbox').length) {
+                $('#selectAll').prop('checked', true);
+            } else {
+                $('#selectAll').prop('checked', false);
+            }
+        });
+    </script>
 @endsection

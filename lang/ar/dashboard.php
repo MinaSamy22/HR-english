@@ -334,7 +334,7 @@ return [
     'employees' => 'الموظفون',
     'employee_name' => 'اسم الموظف',
     'email' => 'البريد الإلكتروني',
-    'current_hours' => 'الساعات الحالية',
+    'current_hours' => 'ساعات العمل',
     'working_days' => 'أيام العمل',
     'hrs' => 'ساعة',
 
@@ -388,5 +388,68 @@ return [
 
     'timezone' => 'المنطقة الزمنية',
     'select_your_company_timezone' => 'اختر المنطقة الزمنية لشركتك',
+
+        // Vacation Balance Assignment
+    'assign_vacation_balance' => 'تعيين رصيد الإجازات',
+    'vacation_balance' => 'رصيد الإجازات',
+    'enter_vacation_days' => 'أدخل عدد أيام الإجازة',
+    'assign_vacation_to_selected_employees' => 'تعيين رصيد الإجازات للموظفين المحددين',
+
+    // Bonus Per Hour Assignment
+    'assign_bonus_per_hour' => 'تعيين القيمة لكل ساعة',
+    'bonus_per_hour' => 'المكافأة لكل ساعة',
+    'enter_bonus_amount' => 'أدخل قيمة المكافأة لكل ساعة',
+    'assign_bonus_to_selected_employees' => 'تعيين المكافأة للموظفين المحددين',
+
+    'working_days_updated_for_employees' => 'تم تحديث أيام العمل للموظفين المحددين.',
+    'employee_not_found_or_access_denied' => 'الموظف غير موجود أو لا تملك صلاحية الوصول.',
+    'working_days_updated_successfully' => 'تم تحديث أيام العمل بنجاح.',
+    'failed_to_update_working_days' => 'فشل في تحديث أيام العمل.',
+    'min' => 'دقيقة',
+    // Vacation Balance
+    'vacation_balance_updated_for_employees' => 'تم تحديث رصيد الإجازات للموظفين المحددين.',
+    'vacation_balance_updated_successfully' => 'تم تحديث رصيد الإجازات بنجاح.',
+    'failed_to_update_vacation_balance' => 'فشل في تحديث رصيد الإجازات.',
+
+    // Bonus Per Hour
+    'bonus_per_hour_updated_for_employees' => 'تم تحديث المكافأة لكل ساعة للموظفين المحددين.',
+    'bonus_per_hour_updated_successfully' => 'تم تحديث المكافأة لكل ساعة بنجاح.',
+    'failed_to_update_bonus_per_hour' => 'فشل في تحديث المكافأة لكل ساعة.',
+    'no_employees_selected' => 'لم يتم تحديد أي موظف.',
+
+'late_arrival_threshold' => 'حد التأخير',
+'minutes_after_start_time' => 'دقيقة بعد وقت البداية',
+'minutes_after_scheduled_start_time_to_consider_late' => 'الدقائق بعد وقت البداية المحدد لاعتبار الموظف متأخراً',
+
+'half_day_threshold' => 'حد نصف اليوم',
+'minutes_of_absence' => 'دقيقة غياب',
+'minutes_of_absence_to_consider_half_day' => 'دقائق الغياب المطلوبة لاعتبارها نصف يوم',
+
+'late_arrival_deduction' => 'خصم التأخير',
+'of_daily_wage' => 'من الأجر اليومي',
+'percentage_deducted_from_daily_wage_when_employee_arrives_late' => 'النسبة المئوية المخصومة من الأجر اليومي عند تأخر الموظف',
+
+'half_day_absence_deduction' => 'خصم نصف يوم غياب',
+'percentage_deducted_from_daily_wage_for_half_day_absences' => 'النسبة المئوية المخصومة من الأجر اليومي لغياب نصف يوم',
+
+
+ 'attendance_rules_saved_successfully' => 'تم حفظ قواعد الحضور بنجاح.',
+    'late_arrival_threshold_updated_successfully' => 'تم تحديث حد التأخير بنجاح.',
+    'half_day_threshold_updated_successfully' => 'تم تحديث حد نصف اليوم بنجاح.',
+    'late_deduction_percentage_updated_successfully' => 'تم تحديث نسبة خصم التأخير بنجاح.',
+    'half_day_deduction_percentage_updated_successfully' => 'تم تحديث نسبة خصم نصف اليوم بنجاح.',
+
+    'search_employee' => 'البحث باسم الموظف',
+
+     'attendance_rule_not_found' => 'لم يتم العثور على قاعدة الحضور.',
+
+    // Holidays
+    'holiday_added_successfully' => 'تمت إضافة العطلة بنجاح.',
+    'holiday_deleted_successfully' => 'تم حذف العطلة بنجاح.',
+    'holidays_updated_successfully' => 'تم تحديث العطلات بنجاح.',
+    'failed_to_update_holidays' => 'فشل في تحديث العطلات.',
+        'ok' => 'حسناً',
+    'communication' => 'التواصل',
+
 ];
 

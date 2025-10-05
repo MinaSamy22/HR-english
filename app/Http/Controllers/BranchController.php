@@ -67,19 +67,19 @@ class BranchController extends Controller
         return redirect()->back()->with('success', __('h_branches.branch_deleted_success'));
     }
 
-    public function assignEmployee(Request $request)
+public function assignEmployee(Request $request)
 {
     $request->validate([
         'user_ids' => 'required|array|min:1',
         'user_ids.*' => 'exists:users,id',
-        'branch_id' => 'required|exists:branches,id',
+        'branch_id' => 'required',
     ]);
 
     $company_id = session('company_id');
     $userIds = $request->user_ids;
     $branchId = $request->branch_id;
 
-    // Verify that all users belong to the same company for security
+    // Verify users belong to same company
     $users = User::whereIn('id', $userIds)
                  ->where('company_id', $company_id)
                  ->get();
@@ -88,25 +88,40 @@ class BranchController extends Controller
         return redirect()->back()->with('error', 'One or more employees not found or do not belong to your company.');
     }
 
-    // Update all selected employees
-    User::whereIn('id', $userIds)
-        ->where('company_id', $company_id)
-        ->update(['branch_id' => $branchId]);
+    // If main branch selected => set branch_id = null
+    if ($branchId === 'main') {
+        User::whereIn('id', $userIds)
+            ->where('company_id', $company_id)
+            ->update(['branch_id' => null]);
 
-    $branchName = Branch::find($branchId)->name;
-    $employeeCount = count($userIds);
-
-  if ($employeeCount === 1) {
-            $message = __('h_branches.employee_transferred_success', ['branch' => $branchName]);
-        } else {
-            $message = __('h_branches.employees_transferred_success', [
-                'count' => $employeeCount,
-                'branch' => $branchName
-            ]);
+        $branchName = __('h_branches.main_branch');
+    } else {
+        // validate that branch exists in company
+        if (!Branch::where('id', $branchId)->where('company_id', $company_id)->exists()) {
+            return redirect()->back()->with('error', 'Invalid branch selection.');
         }
 
-        return redirect()->back()->with('success', $message);
+        User::whereIn('id', $userIds)
+            ->where('company_id', $company_id)
+            ->update(['branch_id' => $branchId]);
+
+        $branchName = Branch::find($branchId)->name;
     }
+
+    $employeeCount = count($userIds);
+
+    if ($employeeCount === 1) {
+        $message = __('h_branches.employee_transferred_success', ['branch' => $branchName]);
+    } else {
+        $message = __('h_branches.employees_transferred_success', [
+            'count' => $employeeCount,
+            'branch' => $branchName
+        ]);
+    }
+
+    return redirect()->back()->with('success', $message);
+}
+
 
 public function showTransferForm()
 {

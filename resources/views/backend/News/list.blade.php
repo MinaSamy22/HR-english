@@ -1,8 +1,8 @@
 @extends('backend.layouts.app')
 
 
-@section('content') 
-<div class="content-wrapper">
+@section('content')
+<div class="content-wrapper" style="background-image: url('{{ asset('/dist/img/dashboard.jpg') }}'); background-size: cover; background-position: center;">
     <div class="content-header">
         <div class="container-fluid">
             <div class=" mb-2 d-flex justify-content-between">
@@ -89,10 +89,9 @@
                                                               onsubmit="return confirm('{{ __('h_news.delete_confirm') }}')">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit"
-                                                                    class="btn btn-danger rounded-pill"
-                                                                    title="{{ __('h_news.delete_btn') }}">
-                                                                <i class="fas fa-trash"></i>
+                                                             <button type="button" class="btn btn-danger rounded-pill delete-btn"
+                                                                    data-id="{{ $item->id }}" title="{{ __('h_news.delete_btn') }}">
+                                                                <i class="fas fa-trash-alt"></i>
                                                             </button>
                                                         </form>
                                                     </div>
@@ -119,4 +118,23 @@
         </div>
     </section>
 </div>
+@endsection
+@section('script')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    const deleteTranslations = {
+        delete: "{{ __('dashboard.delete') }}",
+        confirmation: "{{ __('dashboard.delete_confirmation') }}",
+        cancel: "{{ __('dashboard.cancel') }}",
+        deleted: "{{ __('dashboard.deleted') }}!",
+        success: "{{ __('dashboard.delete_success') }}",
+        error: "{{ __('dashboard.error') }}",
+        failed: "{{ __('dashboard.delete_failed') }}",
+        deleteUrl: "{{ url('admin/news') }}",
+        token: '{{ csrf_token() }}'
+    };
+</script>
+
+<script src="{{ asset('dist/js/news.js') }}?v=1"></script>
 @endsection

@@ -1,23 +1,22 @@
 @php
     $locale = app()->getLocale();
-    $isArabic = ($locale === 'ar');
+    // Treat Arabic, Urdu, and Ardo as RTL
+    $isRtl = in_array($locale, ['ar', 'au']);
 @endphp
 
 <!DOCTYPE html>
-<html lang="{{ $locale }}" dir="{{ $isArabic ? 'rtl' : 'ltr' }}">
+<html lang="{{ $locale }}" dir="{{ $isRtl ? 'rtl' : 'ltr' }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ __('dashboard.attendance_report') }}</title>
     <style>
-
-
         body {
-            font-family: {{ $isArabic ? "'Amiri'" : "'DejaVu Sans'" }}, sans-serif;
+            font-family: {{ $isRtl ? "'Amiri'" : "'DejaVu Sans'" }}, sans-serif;
             margin: 20px;
-            direction: {{ $isArabic ? 'rtl' : 'ltr' }};
-            unicode-bidi: {{ $isArabic ? 'embed' : 'normal' }};
-            text-align: {{ $isArabic ? 'right' : 'left' }};
+            direction: {{ $isRtl ? 'rtl' : 'ltr' }};
+            unicode-bidi: {{ $isRtl ? 'embed' : 'normal' }};
+            text-align: {{ $isRtl ? 'right' : 'left' }};
             font-size: 14px;
             line-height: 1.5;
         }
@@ -49,7 +48,7 @@
         th, td {
             padding: 8px 6px;
             border: 1px solid #ddd;
-            text-align: {{ $isArabic ? 'right' : 'left' }};
+            text-align: {{ $isRtl ? 'right' : 'left' }};
         }
         th {
             background-color: #f4f4f4;
@@ -67,15 +66,16 @@
         /* Signature */
         .signature-section {
             margin-top: 50px;
-            text-align: {{ $isArabic ? 'right' : 'left' }};
+            text-align: {{ $isRtl ? 'right' : 'left' }};
         }
         .signature-line {
             border-bottom: 2px solid #333;
             width: 200px;
             display: inline-block;
-            margin-{{ $isArabic ? 'right' : 'left' }}: 10px;
+            margin-{{ $isRtl ? 'right' : 'left' }}: 10px;
         }
     </style>
+
 </head>
 <body>
 
@@ -86,7 +86,7 @@
         @endif
         <div class="report-title">{{ __('dashboard.attendance_report') }}</div>
     </div>
- 
+
     <table>
         <thead>
             <tr>
@@ -105,7 +105,7 @@
                 <td>{{ $value->employee_id }}</td>
                 <td>{{ $value->employee_name }}</td>
                 <td>{{ $value->branch_name ?? __('h_dashboard.main_branch') }}</td>
-                
+
                 <td>
                     @switch($value->attendance_type)
                         @case(1) {{ __('dashboard.present') }} @break

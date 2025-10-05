@@ -408,5 +408,5 @@
         var chartDataAbsent = @json($absences ?? []);
         var chartDataVacations = @json($vacations ?? []);
     </script>
-    <script src="{{ asset('dist/js/dashboardlist.js') }}"></script>
+    <script src="{{ asset('dist/js/dashboardlist.js?v=4') }}"></script>
 @endsection

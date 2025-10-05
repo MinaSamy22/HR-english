@@ -46,6 +46,9 @@ return [
     'read' => 'Read',
     'delivered' => 'Delivered',
 
+    'date' => 'Date',
+    'actions' => 'Actions',
+
     // Messages and Notifications
     'message_sent_success' => 'Message sent successfully!',
     'message_deleted_success' => 'Message deleted successfully!',

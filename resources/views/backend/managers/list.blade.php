@@ -159,7 +159,7 @@
     };
 </script>
 
-<script src="{{ asset('dist/js/manager.js') }}"></script>
+<script src="{{ asset('dist/js/manager.js') }}?v=1"></script>
 @endsection
 
 

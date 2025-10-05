@@ -45,7 +45,8 @@ return [
     'read_status' => 'حالة القراءة',
     'read' => 'مقروءة',
     'delivered' => 'تم التسليم',
-
+    'date' => 'التاريخ',
+    'actions' => 'الإجراء',
     // Messages and Notifications
     'message_sent_success' => 'تم إرسال الرسالة بنجاح!',
     'message_deleted_success' => 'تم حذف الرسالة بنجاح!',

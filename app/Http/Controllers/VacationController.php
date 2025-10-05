@@ -51,7 +51,7 @@ class VacationController extends Controller
     return view('backend.vacations.add', $data);
 }
 
-    // Method to handle the submission of the add vacation form
+// Method to handle the submission of the add vacation form
 public function add_post(Request $request)
 {
     $validatedData = $request->validate([
@@ -62,31 +62,35 @@ public function add_post(Request $request)
     ]);
 
     $startDate = Carbon::parse($request->start_date);
-    $endDate = Carbon::parse($request->end_date);
+    $endDate   = Carbon::parse($request->end_date);
 
     $totalDays = $endDate->diffInDays($startDate) + 1;
 
-    $employee = User::with('company.attendanceSetting')->find($request->employee_id);
+    // Get employee
+    $employee = User::find($request->employee_id);
 
-    if (!$employee || !$employee->company || !$employee->company->attendanceSetting) {
-        return back()->withErrors(['error' => 'Invalid employee or company settings not found.']);
+    if (!$employee) {
+        return back()->withErrors(['error' => 'Invalid employee.']);
     }
 
-    $vacationLimit = $employee->company->attendanceSetting->vacation_balance ?? 25;
+    // ✅ Get vacation balance from users table (default 25 if null)
+    $vacationLimit = $employee->vacation_balance ?? 25;
 
-    $totalUsed = Vacation::where('employee_id', $employee->id)
-        ->sum('total');
+    // Calculate already used days
+    $totalUsed = Vacation::where('employee_id', $employee->id)->sum('total');
 
+    // Remaining balance
     $remainingBalance = max(0, $vacationLimit - $totalUsed);
 
     if ($remainingBalance <= 0) {
-        return back()->withErrors(['error' => 'You have exhausted your allowed vacation balance. ']);
+        return back()->withErrors(['error' => 'You have exhausted your allowed vacation balance.']);
     }
 
     if ($totalDays > $remainingBalance) {
         return back()->withErrors(['error' => "You are trying to request $totalDays days, but the remaining balance is only $remainingBalance days. Vacation request denied."]);
     }
 
+    // Save vacation request
     $vacation = new Vacation();
     $vacation->employee_id   = trim($request->employee_id);
     $vacation->vacation_type = trim($request->vacation_type);
@@ -95,11 +99,10 @@ public function add_post(Request $request)
     $vacation->total         = $totalDays;
     $vacation->company_id    = session('company_id');
 
-// Handle company/branch assignment
-    $vacation->company_id = session('company_id');
     if (session()->has('branch_id')) {
         $vacation->branch_id = session('branch_id');
     }
+
     $vacation->save();
 
     return redirect('admin/vacations')->with('success', __('h_vacation.controller-add-message'));

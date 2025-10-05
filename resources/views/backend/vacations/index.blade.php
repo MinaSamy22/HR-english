@@ -9,7 +9,7 @@
                     <div class="col-sm-6">
                         <h1>{{ __('h_vacation.vacations') }}</h1>
                     </div><!-- /.col -->
-                    <div class="col-sm-6" style="text-align: {{ app()->getLocale() == 'ar' ? 'left' : 'right' }};">
+                    <div class="col-sm-6 text-right">
                         <a href="{{ url('admin/vacations/add') }}" class="btn btn-primary rounded-pill">
                             <i class="fas fa-user-plus"></i> {{ __('h_vacation.add_vacation') }}
                         </a>
@@ -199,7 +199,7 @@
                             title: "{{ __('dashboard.error') }}",
                             text: "{{ __('dashboard.delete_failed') }}",
                             icon: "error",
-                            confirmButtonText: "OK"
+                                confirmButtonText: "{{ __('dashboard.ok') }}"
                         });
                     }
                 });
@@ -219,7 +219,7 @@
                 title: "{{ __('dashboard.no_selection') }}",
                 text: "{{ __('dashboard.select_items_first') }}",
                 icon: "warning",
-                confirmButtonText: "OK"
+                                confirmButtonText: "{{ __('dashboard.ok') }}"
             });
             return;
         }
@@ -264,7 +264,7 @@
                             title: "{{ __('dashboard.error') }}",
                             text: "{{ __('dashboard.bulk_delete_failed') }}",
                             icon: "error",
-                            confirmButtonText: "OK"
+                                confirmButtonText: "{{ __('dashboard.ok') }}"
                         });
                     }
                 });

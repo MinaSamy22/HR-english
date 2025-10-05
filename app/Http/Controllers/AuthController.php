@@ -174,7 +174,7 @@ public function login_post(Request $request)
                 ];
             })
             ->toArray();
-        return view('admin_home', $data);
+        return view('admins.home.admin_home', $data);
     }
 
 

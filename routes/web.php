@@ -59,10 +59,14 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('lang/{lang}', function ($lang) {
-    session(['locale' => $lang]);
-    app()->setLocale($lang);
+    $available = ['en', 'ar', 'au']; // حط كل اللغات هنا
+    if (in_array($lang, $available)) {
+        session(['locale' => $lang]);
+        app()->setLocale($lang);
+    }
     return back();
 });
+
 Route::get('/', [AuthController::class, 'index'])->name('start'); //index navigate to auth controller
 Route::get('/', [AuthController::class, 'index'])->name('start'); //index navigate to auth controller
 Route::get('register', [AuthController::class, 'register'])->name('register');
@@ -203,27 +207,35 @@ Route::group(['middleware' => 'admin'], function () {
     // Company policy section
     Route::get('admin/attendance-rule', [AttendanceRulesController::class, 'index'])->name('attendance-rule');
     Route::get('/attendance-rules', [AttendanceRulesController::class, 'index'])->name('attendance-rules.index');
-
     Route::post('admin/attendance-rule/save', [AttendanceRulesController::class, 'saveRules'])->name('attendance-rule.save');
+
     // holiday management
     Route::get('/attendance-rules/get-holidays', [AttendanceRulesController::class, 'getHolidays']);
     Route::post('admin/attendance-rule/add-holiday', [AttendanceRulesController::class, 'addHoliday'])->name('attendance-rule.add-holiday');
-    Route::delete('admin/attendance-rule/delete-holiday/{index}', [AttendanceRulesController::class, 'deleteHoliday'])->name('attendance-rule.delete-holiday');
+Route::delete('admin/attendance-rule/delete-holiday', [AttendanceRulesController::class, 'deleteHoliday'])->name('attendance-rule.delete-holiday');
     Route::post('/attendance-rules/update-holidays', [AttendanceRulesController::class, 'updateHolidays'])->name('attendance.update-holidays');
+
+    // edit late - FIXED
+    Route::post('/attendance-rules/update-late-deduction', [AttendanceRulesController::class, 'updateLateDeduction'])->name('attendance-rules.update-late-deduction');
+    // edit halfday - FIXED
+    Route::post('/attendance-rules/update-half-day', [AttendanceRulesController::class, 'updateHalfDayDeduction'])->name('attendance-rules.update-half-day');
+    Route::post('/attendance-rules/update-half-day', [AttendanceRulesController::class, 'updateHalfDayDeduction'])->name('attendance-rules.update-half-day');
+
     // work days edit
     Route::post('/attendance/update-employee-working-days', [AttendanceRulesController::class, 'updateEmployeeWorkingDays'])->name('attendance.update-employee-working-days');
-    //edit late - FIXED
-    Route::post('/attendance-rules/update-late-deduction', [AttendanceRulesController::class, 'updateLateDeduction'])->name('attendance-rules.update-late-deduction');
-    //edit halfday - FIXED
-    Route::post('/attendance-rules/update-half-day', [AttendanceRulesController::class, 'updateHalfDayDeduction'])->name('attendance-rules.update-half-day');
-    Route::post('/attendance-rules/update-half-day', [AttendanceRulesController::class, 'updateHalfDayDeduction'])->name('attendance-rules.update-half-day');
-    //edit work hours
+    // work hours edit
     Route::post('/attendance-rules/update-work-hours', [AttendanceRulesController::class, 'updateWorkHoursPerDay'])->name('attendance.update-work-hours');
     Route::post('/attendance/update-employee-work-hours', [AttendanceRulesController::class, 'updateEmployeeWorkHours'])->name('attendance.update-employee-work-hours');
-    //vacation balance
-    Route::post('/attendance-rules/update-vacation-balance', [AttendanceRulesController::class, 'updateVacationBalance'])->name('attendance.update-vacation-balance');
-    //bounas hours
-    Route::post('/attendance-rules/update-bonus-per-hour', [AttendanceRulesController::class, 'updateBonusPerHour'])->name('attendance.update-bonus-per-hour');
+
+    //vacation balance assignment to employees
+    Route::post('/attendance/update-employee-vacation-balance', [AttendanceRulesController::class, 'updateEmployeeVacationBalance'])->name('attendance.update-employee-vacation-balance');
+    //bonus per hour assignment to employees
+    Route::post('/attendance/update-employee-bonus-per-hour', [AttendanceRulesController::class, 'updateEmployeeBonusPerHour'])->name('attendance.update-employee-bonus-per-hour');
+
+    // Add these routes to your existing attendance rules routes
+    Route::post('/attendance-rules/update-late-threshold', [AttendanceRulesController::class, 'updateLateThreshold'])->name('attendance-rules.update-late-threshold');
+    Route::post('/attendance-rules/update-half-day-threshold', [AttendanceRulesController::class, 'updateHalfDayThreshold'])->name('attendance-rules.update-half-day-threshold');
+
 
 
     //biometric excel
@@ -427,14 +439,10 @@ Route::middleware('employee')->group(function () {
     Route::get('employee/logout', [EmployeeHomeController::class, 'logout'])->name('employee.logout');
 
     // Route to serve news images
-    Route::get('employee/news-image/{filename}', [EmployeeHomeController::class, 'viewNewsImage'])
-        ->name('employee.news.image');
+    Route::get('employee/news-image/{filename}', [EmployeeHomeController::class, 'viewNewsImage'])->name('employee.news.image');
     Route::get('employee/news/{news}', [EmployeeHomeController::class, 'show'])->name('Employeenews.show');
     Route::get('employee/calendar', [EmployeeCalendarController::class, 'index'])->name('employee.calendar');
 
-    //my account   employee/my_account
-    Route::get('/employee/my_account', [EmployeeMyAccountController::class, 'my_account'])->name('employee.my_account');
-    Route::post('/employee/my_account/update', [EmployeeMyAccountController::class, 'edit_update'])->name('employee.my_account.update');
     //my account   employee/my_account
     Route::get('/employee/my_account', [EmployeeMyAccountController::class, 'my_account'])->name('employee.my_account');
     Route::post('/employee/my_account/update', [EmployeeMyAccountController::class, 'edit_update'])->name('employee.my_account.update');
@@ -467,11 +475,6 @@ Route::middleware('employee')->group(function () {
     Route::get('employee/resignation/create', [ResignationController::class, 'create'])->name('employee.resignation.create');
     Route::post('employee/resignation', [ResignationController::class, 'store'])->name('employee.resignation.store');
     Route::delete('employee/resignation/{id}', [ResignationController::class, 'destroy'])->name('employee.resignation.destroy');
-    //Resignation
-    Route::get('employee/resignation', [ResignationController::class, 'index'])->name('employee.resignation.index');
-    Route::get('employee/resignation/create', [ResignationController::class, 'create'])->name('employee.resignation.create');
-    Route::post('employee/resignation', [ResignationController::class, 'store'])->name('employee.resignation.store');
-    Route::delete('employee/resignation/{id}', [ResignationController::class, 'destroy'])->name('employee.resignation.destroy');
 
     //extratime request
     Route::get('employee/extra', [ExtraTimeRequestController::class, 'index'])->name('employee.extra.index');
@@ -493,34 +496,8 @@ Route::middleware('employee')->group(function () {
     Route::get('employee/messages/{message}', [MessageController::class, 'employeeShow'])->name('employee.messages.show');
     Route::post('employee/messages/{message}/mark-read', [MessageController::class, 'markAsRead'])->name('employee.messages.mark-read');
 
-    //late request
-    //late request
-    Route::get('employee/late', [EmployeeLateRemovalController::class, 'index'])->name('employee.late.index');
-    Route::post('employee/late/request', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.request');
-    Route::post('employee/late-removal-request', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.removal.request');
-    Route::post('employee/late-removal/store', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.removal.store');
-
-    //late request
-    //late request
-    Route::get('employee/late', [EmployeeLateRemovalController::class, 'index'])->name('employee.late.index');
-    Route::post('employee/late/request', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.request');
-    Route::post('employee/late-removal-request', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.removal.request');
-    Route::post('employee/late-removal/store', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.removal.store');
-    // this to show each request page from notification
-    Route::get('processed-requests/{type}/{id}', [RequestController::class, 'showProcessedRequest'])->name('processed-requests.show');
-
-    // Messages routes for employees
-    Route::get('employee/messages', [MessageController::class, 'employeeInbox'])->name('employee.messages.inbox');
-    Route::get('employee/messages/{message}', [MessageController::class, 'employeeShow'])->name('employee.messages.show');
-    Route::post('employee/messages/{message}/mark-read', [MessageController::class, 'markAsRead'])->name('employee.messages.mark-read');
 
 
-    //late request
-    //late request
-    Route::get('employee/late', [EmployeeLateRemovalController::class, 'index'])->name('employee.late.index');
-    Route::post('employee/late/request', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.request');
-    Route::post('employee/late-removal-request', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.removal.request');
-    Route::post('employee/late-removal/store', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.removal.store');
 });
 
 

@@ -410,4 +410,65 @@ return [
     'bulk_delete_failed' => 'Failed to delete the selected rows.',
     'timezone' => 'Timezone',
     'select_your_company_timezone' => 'Select your company timezone',
+
+     'assign_vacation_balance' => 'Assign Vacation Balance',
+    'vacation_balance' => 'Vacation Balance',
+    'enter_vacation_days' => 'Enter number of vacation days',
+    'assign_vacation_to_selected_employees' => 'Assign Vacation Balance to Selected Employees',
+
+    // Bonus Per Hour Assignment
+    'assign_bonus_per_hour' => 'Assign Bonus Per Hour',
+    'bonus_per_hour' => 'Bonus Per Hour',
+    'enter_bonus_amount' => 'Enter bonus amount per hour',
+    'assign_bonus_to_selected_employees' => 'Assign Bonus to Selected Employees',
+
+    // Working Days
+    'working_days_updated_for_employees' => 'Working days have been updated for selected employees.',
+    'employee_not_found_or_access_denied' => 'Employee not found or access denied.',
+    'working_days_updated_successfully' => 'Working days updated successfully.',
+    'failed_to_update_working_days' => 'Failed to update working days.',
+
+    // Vacation Balance
+    'vacation_balance_updated_for_employees' => 'Vacation balance has been updated for selected employees.',
+    'vacation_balance_updated_successfully' => 'Vacation balance updated successfully.',
+    'failed_to_update_vacation_balance' => 'Failed to update vacation balance.',
+
+    // Bonus Per Hour
+    'bonus_per_hour_updated_for_employees' => 'Bonus per hour has been updated for selected employees.',
+    'bonus_per_hour_updated_successfully' => 'Bonus per hour updated successfully.',
+    'failed_to_update_bonus_per_hour' => 'Failed to update bonus per hour.',
+    'no_employees_selected' => 'No employee selected.',
+
+    'late_arrival_threshold' => 'Late Arrival Threshold',
+'minutes_after_start_time' => 'minutes after start time',
+'minutes_after_scheduled_start_time_to_consider_late' => 'Minutes after scheduled start time to consider employee late',
+
+'half_day_threshold' => 'Half Day Threshold',
+'minutes_of_absence' => 'minutes of absence',
+'minutes_of_absence_to_consider_half_day' => 'Minutes of absence required to consider it a half day',
+'min' => 'Min',
+'late_arrival_deduction' => 'Late Arrival Deduction',
+'of_daily_wage' => 'of daily wage',
+'percentage_deducted_from_daily_wage_when_employee_arrives_late' => 'Percentage deducted from daily wage when employee arrives late',
+
+'half_day_absence_deduction' => 'Half Day Absence Deduction',
+'percentage_deducted_from_daily_wage_for_half_day_absences' => 'Percentage deducted from daily wage for half day absences',
+
+'attendance_rules_saved_successfully' => 'Attendance rules saved successfully.',
+    'late_arrival_threshold_updated_successfully' => 'Late arrival threshold updated successfully.',
+    'half_day_threshold_updated_successfully' => 'Half day threshold updated successfully.',
+    'late_deduction_percentage_updated_successfully' => 'Late deduction percentage updated successfully.',
+    'half_day_deduction_percentage_updated_successfully' => 'Half day deduction percentage updated successfully.',
+
+        'search_employee' => 'Search by employee name',
+ 'attendance_rule_not_found' => 'Attendance rule not found.',
+
+    // Holidays
+    'holiday_added_successfully' => 'Holiday added successfully.',
+    'holiday_deleted_successfully' => 'Holiday deleted successfully.',
+    'holidays_updated_successfully' => 'Holidays updated successfully.',
+    'failed_to_update_holidays' => 'Failed to update holidays.',
+    'ok' => 'OK',
+    'communication' => 'Communication',
+
 ];

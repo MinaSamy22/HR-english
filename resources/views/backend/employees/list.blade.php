@@ -147,7 +147,7 @@
                                                     <td>{{ $value->name }}</td>
                                                     <td>{{ $value->email }}</td>
                                                     <td>{{ $value->branch_name ?? __('h_dashboard.main_branch') }}</td>
-                                                    <td>{{ !empty($value->is_role) ? __('h_employee.hr') : __('h_employee.employee') }}
+                                                    <td>{{ !empty($value->is_role) ? __('h_employee.hrs') : __('h_employee.employee') }}
                                                     </td>
                                                     <td>
                                                         <a href="{{ url('admin/employees/view/' . $value->id) }}"
@@ -164,7 +164,7 @@
         class="btn btn-danger rounded-pill delete-btn"
         data-id="{{ $value->id }}"
         data-url="{{ route('employees_delete', $value->id) }}"
-        title="{{ __('h_employees.delete') }}">
+        title="{{ __('dashboard.delete') }}">
     <i class="fas fa-trash-alt"></i>
 </button>
 
@@ -193,7 +193,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     window.deleteEmployeeTranslations = {
-        title: "{{ __('dashboard.delete') }}?",
+        title: "{{ __('dashboard.delete') }}",
         text: "{{ __('h_employee.delete_confirmation') }}",
         confirm: "{{ __('dashboard.delete') }}",
         cancel: "{{ __('dashboard.cancel') }}",
@@ -203,7 +203,7 @@
         failed: "{{ __('dashboard.delete_failed') }}"
     };
 </script>
-<script src="{{ asset('dist/js/employee.js') }}?v=2"></script>
+<script src="{{ asset('dist/js/employee.js') }}?v=4"></script>
 @endsection
 
 @endsection

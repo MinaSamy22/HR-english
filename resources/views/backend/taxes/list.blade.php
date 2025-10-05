@@ -142,12 +142,10 @@
                                                             title="{{ __('h_tax.edit_tooltip') }}">
                                                             <i class="fas fa-edit"></i>
                                                         </a>
-                                                        <a href="{{ url('admin/taxes/delete/' . $value->id) }}"
-                                                            onclick="return confirm('{{ __('h_tax.delete_confirmation') }}')"
-                                                            class="btn btn-danger rounded-pill"
-                                                            title="{{ __('h_tax.delete_tooltip') }}">
+                                                         <button type="button" class="btn btn-danger rounded-pill delete-btn"
+                                                                data-id="{{ $value->id }}" title="{{ __('h_tax.delete_tooltip') }}">
                                                             <i class="fas fa-trash-alt"></i>
-                                                        </a>
+                                                        </button>
                                                     </td>
                                                 </tr>
                                             @empty
@@ -172,6 +170,134 @@
     </div>
 
     <!-- Link to the new JavaScript file -->
-    <script src="{{ url('dist/js/tax.js') }}"></script>
+    {{-- <script src="{{ url('dist/js/tax.js') }}"></script> --}}
+
+@endsection
+
+@section('script')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    // Individual delete functionality with SweetAlert2
+    $(document).on('click', '.delete-btn', function () {
+        let deleteId = $(this).data('id');
+
+        Swal.fire({
+            title: "{{ __('dashboard.delete') }}",
+            text: "{{ __('dashboard.delete_confirmation') }}",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#6c757d",
+            confirmButtonText: "{{ __('dashboard.delete') }}",
+            cancelButtonText: "{{ __('dashboard.cancel') }}"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "{{ url('admin/taxes/delete') }}/" + deleteId,
+                    type: 'GET',
+                    success: function () {
+                        $('button.delete-btn[data-id="' + deleteId + '"]').closest('tr').fadeOut();
+
+                        Swal.fire({
+                            title: "{{ __('dashboard.deleted') }}!",
+                            text: "{{ __('dashboard.delete_success') }}",
+                            icon: "success",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    },
+                    error: function () {
+                        Swal.fire({
+                            title: "{{ __('dashboard.error') }}",
+                            text: "{{ __('dashboard.delete_failed') }}",
+                            icon: "error",
+                                confirmButtonText: "{{ __('dashboard.ok') }}"
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    // Bulk delete functionality with SweetAlert2
+    $('#deleteSelected').click(function() {
+        var selectedIds = [];
+        $('.taxCheckbox:checked').each(function() {
+            selectedIds.push($(this).val());
+        });
+
+        if (selectedIds.length === 0) {
+            Swal.fire({
+                title: "{{ __('dashboard.no_selection') }}",
+                text: "{{ __('dashboard.select_items_first') }}",
+                icon: "warning",
+                    confirmButtonText: "{{ __('dashboard.ok') }}"
+            });
+            return;
+        }
+
+        Swal.fire({
+            title: "{{ __('dashboard.delete_selected') }}",
+            text: "{{ __('dashboard.delete_selected_confirm') }}",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#6c757d",
+            confirmButtonText: "{{ __('dashboard.delete') }}",
+            cancelButtonText: "{{ __('dashboard.cancel') }}"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "{{ url('admin/taxes/delete-multiple') }}",
+                    type: 'POST',
+                    data: {
+                        ids: selectedIds,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        // Remove selected rows with fade effect
+                        $('.taxCheckbox:checked').each(function() {
+                            $(this).closest('tr').fadeOut();
+                        });
+
+                        // Uncheck select all
+                        $('#selectAll').prop('checked', false);
+
+                        Swal.fire({
+                            title: "{{ __('dashboard.deleted') }}!",
+                            text: "{{ __('dashboard.bulk_delete_success') }}",
+                            icon: "success",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    },
+                    error: function() {
+                        Swal.fire({
+                            title: "{{ __('dashboard.error') }}",
+                            text: "{{ __('dashboard.bulk_delete_failed') }}",
+                            icon: "error",
+                                confirmButtonText: "{{ __('dashboard.ok') }}"
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    // Select all functionality
+    $('#selectAll').change(function() {
+        $('.taxCheckbox').prop('checked', this.checked);
+    });
+
+    // Update select all when individual checkboxes change
+    $(document).on('change', '.taxCheckbox', function() {
+        if ($('.taxCheckbox:checked').length === $('.taxCheckbox').length) {
+            $('#selectAll').prop('checked', true);
+        } else {
+            $('#selectAll').prop('checked', false);
+        }
+    });
+</script>
 
 @endsection

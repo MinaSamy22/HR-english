@@ -12,6 +12,11 @@
                             id="late_deduction_preview">{{ $setting->late_deduction_percentage ?? 0 }}</span>%
                         {{ __('dashboard.deduction') }}
                     </span>
+                    <span class="info-box-number">
+                        {{ __('dashboard.late_arrival_threshold') }}: <span
+                            id="late_deduction_preview">{{ $setting->late_threshold_minutes ?? 0 }}</span>
+                        {{ __('dashboard.min') }}
+                    </span>
 
                     <div class="progress">
                         <div class="progress-bar" id="late_progress" style="width: 100%">
@@ -22,6 +27,11 @@
                             id="half_day_deduction_preview">{{ $setting->half_day_deduction_percentage ?? 0 }}</span>%
                         {{ __('dashboard.deduction') }}
                     </span>
+                      <span class="info-box-number">
+                        {{ __('dashboard.half_day_threshold') }}: <span
+                            id="half_day_threshold_minutes">{{ $setting->half_day_threshold_minutes ?? 0 }}</span>
+                        {{ __('dashboard.min') }}
+                    </span>
                     <div class="progress">
                         <div class="progress-bar" id="half_day_progress"
                             style="width: 100%"></div>
@@ -29,25 +39,10 @@
 
                     <!-- New Summary Items -->
                     <hr class="mt-3 mb-2">
-                    <span class="info-box-number">
-                        {{ __('dashboard.bonus_per_hour') }}: <span
-                            id="work_hours_preview">{{ $setting->bonus_per_hour ?? 0 }}</span>
-                    </span>
-                    <div class="progress">
-                        <div class="progress-bar" id="half_day_progress"
-                            style="width: 100%"></div>
-                    </div>
 
-                    <span class="info-box-number">
-                        <strong>{{ __('dashboard.vacation_balance') }}:</strong>
-                        <span
-                            id="vacation_balance_preview">{{ $setting->vacation_balance ?? 0 }}</span>
-                        {{ __('dashboard.days') }}
-                    </span>
-                    <div class="progress">
-                        <div class="progress-bar" id="half_day_progress"
-                            style="width: 100%"></div>
-                    </div>
+
+
+
 
                     <span class="info-box-number">
                         {{ __('dashboard.official_holidays') }}:

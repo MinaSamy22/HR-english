@@ -2,7 +2,7 @@ $(document).on('click', '.delete-btn', function () {
     let deleteId = $(this).data('id');
 
     Swal.fire({
-        title: deleteTranslations.delete + '?',
+        title: deleteTranslations.delete ,
         text: deleteTranslations.confirmation,
         icon: "warning",
         showCancelButton: true,
