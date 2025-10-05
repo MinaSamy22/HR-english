@@ -549,4 +549,21 @@ public function updateEmployeeBonusPerHour(Request $request)
         ], 500);
     }
 }
+
+    public function updateTimezone(Request $request)
+    {
+
+        $company_id = session('company_id');
+        AttendanceRule::updateOrCreate(
+            ['company_id' => $company_id],
+            [
+                'timezone' => $request->timezone,
+            ]
+        );
+
+        return response()->json([
+            'success' => true,
+            'message' => __('dashboard.attendance_rules_saved_successfully'),
+        ], 200);
+    }
 }
