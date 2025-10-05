@@ -413,6 +413,7 @@ Route::delete('admin/attendance-rule/delete-holiday', [AttendanceRulesController
     Route::get('admin/messages/sent', [MessageController::class, 'sent'])->name('messages.sent');
     Route::get('admin/messages/{message}', [MessageController::class, 'show'])->name('messages.show');
     Route::delete('admin/messages/{message}', [MessageController::class, 'destroy'])->name('messages.destroy');
+    Route::post('timezone/update',[AttendanceRulesController::class,'updateTimezone'])->name('timezone.update');
 });
 // Make sure to import the controller at the top of your routes file:
 
