@@ -476,7 +476,7 @@
                                             @foreach ($timezones as $tz)
                                                 <option value="{{ $tz }}"
                                                     {{ $tz == $selectedTimezone ? 'selected' : '' }}>
-                                                    {{ $tz }}
+                                                    {{ __('timezones.'.$tz) }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -543,4 +543,26 @@
         const csrfToken = '{{ csrf_token() }}';
     </script>
 
+
+@endsection
+
+@section('script')
+    <script>
+        $('#timezone').on('change',function(){
+            $.ajax({
+                url: `{{ route('timezone.update') }}`,
+                type: 'POST',
+                data: {
+                    timezone: $(this).val(),
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    $('#timezone_feedback').html('<span class="text-success">{{ __("dashboard.success") }}</span>');
+                },
+                error: function(xhr) {
+                    $('#timezone_feedback').html('<span class="text-danger">{{ __("dashboard.error_message") }}</span>');
+                }
+            });
+        });
+    </script>
 @endsection
