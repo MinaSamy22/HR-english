@@ -2,36 +2,44 @@
 <html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() == 'ar' || app()->getLocale() == 'au' ? 'rtl' : 'ltr' }}">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ __('auth.sign_in') }}</title>
-    {{-- for the tiny logo in top bar --}}
-    <link rel="icon" type="image/x-icon" href="{{ url('dist/img/hr_logo-.png') }}" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Admin dashboard for company management">
+    <title>@yield('title', __('Admin-Interface.page_title'))</title>
 
-    <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ url('dist/img/hr_logo-.png') }}">
 
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     @if(app()->getLocale() == 'ar' || app()->getLocale() == 'au')
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     @endif
 
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <!-- Flag Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css">
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="{{ url('plugins/fontawesome-free/css/all.min.css') }}">
-    <!-- icheck bootstrap -->
-    <link rel="stylesheet" href="{{ url('plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="{{ url('dist/css/adminlte.min.css') }}">
+    <!-- Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 
-    {{-- mina css --}}
-    <link rel="stylesheet" href="{{ asset('dist/css/mina.css') }}">
+    {{-- my css --}}
+    <link rel="stylesheet" href="{{ url('../dist/css/admin-home.css') }}">
 
     <style>
+        /* RTL/LTR Support */
         body {
-            font-family: {{ app()->getLocale() == 'ar' || app()->getLocale() == 'au' ? "'Cairo', sans-serif" : "'Source Sans Pro', sans-serif" }};
+            font-family: {{ app()->getLocale() == 'ar' || app()->getLocale() == 'au' ? "'Cairo', sans-serif" : "'Inter', sans-serif" }};
+        }
+
+        [dir="rtl"] .header h1 i,
+        [dir="rtl"] .quick-actions h2 i,
+        [dir="rtl"] .chart-container h2 i,
+        [dir="rtl"] .action-group h3 i {
+            margin-right: 0;
+            margin-left: 8px;
         }
 
         /* Language Switcher Styles */
@@ -39,11 +47,10 @@
             position: relative;
             display: inline-block;
             z-index: 9999;
-            margin-bottom: 20px;
         }
 
         .lang-dropdown-btn {
-            background: white;
+            background: transparent;
             color: #4a5568;
             padding: 0;
             border: none;
@@ -54,28 +61,24 @@
             align-items: center;
             transition: all 0.3s ease;
             white-space: nowrap;
-            width: 100%;
         }
 
         .custom-badge {
-            background: #f8f9fa;
+            background: white;
             color: #4a5568;
-            padding: 10px 16px;
+            padding: 8px 14px;
             border-radius: 8px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 8px;
+            gap: 6px;
             border: 1px solid #e2e8f0;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
-            width: 100%;
         }
 
         .lang-dropdown-btn:hover .custom-badge {
             border-color: #cbd5e0;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-            background: #e9ecef;
         }
 
         [dir="ltr"] .custom-badge .flag-icon {
@@ -90,15 +93,22 @@
             display: none;
             position: absolute;
             top: calc(100% + 8px);
-            left: 0;
-            right: 0;
             background-color: white;
+            min-width: 200px;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
             border-radius: 12px;
             z-index: 10000;
             overflow: hidden;
             animation: slideDown 0.3s ease;
             border: 1px solid rgba(0, 0, 0, .15);
+        }
+
+        [dir="ltr"] .lang-dropdown-content {
+            left: 0;
+        }
+
+        [dir="rtl"] .lang-dropdown-content {
+            right: 0;
         }
 
         @keyframes slideDown {
@@ -129,7 +139,6 @@
             border: none;
             width: 100%;
             background: white;
-            cursor: pointer;
         }
 
         .lang-option:hover {
@@ -158,46 +167,45 @@
             margin-left: 0;
         }
 
-        /* RTL Support for form elements */
-        [dir="rtl"] .input-group-append {
-            margin-left: 0;
-            margin-right: -1px;
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: nowrap;
         }
 
-        [dir="rtl"] .input-group-text {
-            border-radius: 0.25rem 0 0 0.25rem;
+        /* Prevent layout shift */
+        .header {
+            position: relative;
+            z-index: 1;
         }
 
-        [dir="rtl"] .form-control {
-            border-radius: 0 0.25rem 0.25rem 0;
+        .stats-grid {
+            position: relative;
+            z-index: 0;
         }
 
-        [dir="rtl"] .position-absolute {
-            right: auto !important;
-            left: 15px !important;
-        }
-
-        .login-box-msg {
-            margin-bottom: 20px;
-        }
+        @yield('styles')
     </style>
 </head>
 
-<body class="hold-transition login-page">
-    <div class="login-box">
-        <div class="login-logo">
-            <a href=""><b>{{ __('auth.human') }}</b>{{ __('auth.resource') }}</a>
-        </div>
-        <!-- /.login-logo -->
-        <div class="card">
-            @include('_message')
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <div class="header">
+            <h1>
+                <i class="fas fa-tachometer-alt" style="margin-right: 8px; color: #667eea;"></i>
+                @yield('page_title', __('Admin-Interface.control_panel'))
+            </h1>
+            <div class="user-info">
+                <!-- 1. Welcome Message -->
+                <span style="color: #4a5568; font-weight: 500; font-size: 14px;">
+                    {{ __('Admin-Interface.welcome') }}, {{ Auth::guard('admin')->user()->name ?? __('admin.administrator') }}
+                </span>
 
-            <div class="card-body login-card-body">
-                <p class="login-box-msg">{{ __('auth.sign_in_message') }}</p>
-
-                <!-- Language Switcher -->
+                <!-- 2. Language Switcher -->
                 <div class="language-switcher">
-                    <button class="lang-dropdown-btn" onclick="toggleLangDropdown(event)" type="button">
+                    <button class="lang-dropdown-btn" onclick="toggleLangDropdown(event)">
                         <div class="custom-badge">
                             @if(app()->getLocale() == 'ar')
                                 <span class="flag-icon flag-icon-sa"></span>
@@ -207,9 +215,8 @@
                                 <span class="font-weight-bold">اردو</span>
                             @else
                                 <span class="flag-icon flag-icon-gb"></span>
-                                <span class="font-weight-bold">English</span>
+                                <span class="font-weight-bold">EN</span>
                             @endif
-                            <i class="fas fa-chevron-down" style="font-size: 12px; margin-left: auto;"></i>
                         </div>
                     </button>
                     <div class="lang-dropdown-content" id="langDropdown">
@@ -237,62 +244,17 @@
                     </div>
                 </div>
 
-                <form action="{{ url('login_post') }}" method="post">
-                    @csrf
-
-                    <div class="input-group mb-3">
-                        <input type="email" name="email" class="form-control" placeholder="{{ __('auth.email') }}">
-                        {{-- name="email" l2n esmo kda in data base --}}
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-envelope"></span>
-                            </div>
-                        </div>
-                    </div>
-                    {{-- <span style="color: red;"> {{$errors->first('email')}} </span> --}}
-
-                    <div class="form-group position-relative">
-                        <input type="password" id="password" name="password" class="form-control"
-                            placeholder="{{ __('auth.password') }}" required>
-
-                        <!-- Eye icon (toggle password visibility) -->
-                        <span class="position-absolute" onclick="togglePassword('password', 'eyeIcon')"
-                            style="top: 10px; right: 15px; cursor: pointer;">
-                            <i id="eyeIcon" class="fa fa-eye"></i>
-                        </span>
-                    </div>
-
-                    {{-- <span style="color: red;"> {{$errors->first('password')}} </span> --}}
-
-                    <div class="row">
-                        <div class="col-8">
-                            <div class="icheck-primary">
-                            </div>
-                        </div>
-                        <!-- /.col -->
-<div class="row justify-content-center">
-                            <button type="submit" class="btn btn-primary btn-block">{{ __('auth.sign_in') }}</button>
-                        </div>
-                        <!-- /.col -->
-                    </div>
-                </form>
-
-
-
+                <!-- 3. Logout Button -->
+                <a href="{{ route('logout') }}" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    {{ __('Admin-Interface.logout') }}
+                </a>
             </div>
-            <!-- /.login-card-body -->
         </div>
-    </div>
-    <!-- /.login-box -->
 
-    <!-- jQuery -->
-    <script src="{{ url('plugins/jquery/jquery.min.js') }}"></script>
-    <!-- Bootstrap 4 -->
-    <script src="{{ url('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <!-- AdminLTE App -->
-    <script src="{{ url('dist/js/adminlte.min.js') }}"></script>
-    <!-- for eye toggle -->
-    <script src="{{ url('dist/js/eye.js') }}"></script>
+        <!-- Page Content -->
+        @yield('content')
+    </div>
 
     <script>
         // Language Dropdown Toggle
@@ -317,6 +279,8 @@
             event.stopPropagation();
         });
     </script>
+
+    @yield('scripts')
 </body>
 
 </html>
