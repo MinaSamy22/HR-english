@@ -5,28 +5,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ __('auth.sign_in') }}</title>
-    {{-- for the tiny logo in top bar --}}
     <link rel="icon" type="image/x-icon" href="{{ url('dist/img/hr_logo-.png') }}" />
 
-    <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
 
     @if(app()->getLocale() == 'ar' || app()->getLocale() == 'au')
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     @endif
 
-    <!-- Flag Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css">
-
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ url('plugins/fontawesome-free/css/all.min.css') }}">
-    <!-- icheck bootstrap -->
     <link rel="stylesheet" href="{{ url('plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
-    <!-- Theme style -->
     <link rel="stylesheet" href="{{ url('dist/css/adminlte.min.css') }}">
-
-    {{-- mina css --}}
     <link rel="stylesheet" href="{{ asset('dist/css/mina.css') }}">
 
     <style>
@@ -34,12 +24,99 @@
             font-family: {{ app()->getLocale() == 'ar' || app()->getLocale() == 'au' ? "'Cairo', sans-serif" : "'Source Sans Pro', sans-serif" }};
         }
 
-        /* Language Switcher Styles */
+        .login-logo {
+            margin-bottom: 10px;
+        }
+
+        .login-logo img {
+            max-width: 120px;
+            height: auto;
+        }
+
+        .card {
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .login-card-body {
+            padding: 35px;
+        }
+
+        .login-box-msg {
+            font-size: 16px;
+            font-weight: 500;
+            color: #495057;
+            margin-bottom: 30px;
+        }
+
+        .form-control {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 12px 45px 12px 15px;
+            height: auto;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+
+        [dir="rtl"] .form-control {
+            padding: 12px 15px 12px 45px;
+        }
+
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .input-icon {
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            color: #6c757d;
+            font-size: 16px;
+        }
+
+        [dir="rtl"] .input-icon {
+            right: auto;
+            left: 15px;
+        }
+
+        .password-toggle {
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0084ff 0%, #0091ff 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
         .language-switcher {
             position: relative;
-            display: inline-block;
+            display: flex;
+            justify-content: center;
             z-index: 9999;
             margin-bottom: 20px;
+        }
+
+        .lang-dropdown-wrapper {
+            position: relative;
+            display: inline-block;
+            width: auto;
+            min-width: 150px;
         }
 
         .lang-dropdown-btn {
@@ -76,14 +153,6 @@
             border-color: #cbd5e0;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
             background: #e9ecef;
-        }
-
-        [dir="ltr"] .custom-badge .flag-icon {
-            margin-right: 4px;
-        }
-
-        [dir="rtl"] .custom-badge .flag-icon {
-            margin-left: 4px;
         }
 
         .lang-dropdown-content {
@@ -143,42 +212,9 @@
             font-weight: 600;
         }
 
-        .lang-option .flag-icon {
-            font-size: 20px;
-            width: 24px;
-        }
-
-        .lang-option .fa-check {
-            margin-left: auto;
-            font-size: 14px;
-        }
-
-        [dir="rtl"] .lang-option .fa-check {
-            margin-right: auto;
-            margin-left: 0;
-        }
-
-        /* RTL Support for form elements */
         [dir="rtl"] .input-group-append {
             margin-left: 0;
             margin-right: -1px;
-        }
-
-        [dir="rtl"] .input-group-text {
-            border-radius: 0.25rem 0 0 0.25rem;
-        }
-
-        [dir="rtl"] .form-control {
-            border-radius: 0 0.25rem 0.25rem 0;
-        }
-
-        [dir="rtl"] .position-absolute {
-            right: auto !important;
-            left: 15px !important;
-        }
-
-        .login-box-msg {
-            margin-bottom: 20px;
         }
     </style>
 </head>
@@ -186,133 +222,100 @@
 <body class="hold-transition login-page">
     <div class="login-box">
         <div class="login-logo">
-            <a href=""><b>{{ __('auth.human') }}</b>{{ __('auth.resource') }}</a>
+            <img src="{{ url('dist/img/hr_logo-.png') }}" alt="HR Logo">
         </div>
-        <!-- /.login-logo -->
+
         <div class="card">
             @include('_message')
 
             <div class="card-body login-card-body">
                 <p class="login-box-msg">{{ __('auth.sign_in_message') }}</p>
 
-                <!-- Language Switcher -->
                 <div class="language-switcher">
-                    <button class="lang-dropdown-btn" onclick="toggleLangDropdown(event)" type="button">
-                        <div class="custom-badge">
-                            @if(app()->getLocale() == 'ar')
-                                <span class="flag-icon flag-icon-sa"></span>
-                                <span class="font-weight-bold">عربي</span>
-                            @elseif(app()->getLocale() == 'au')
-                                <span class="flag-icon flag-icon-pk"></span>
-                                <span class="font-weight-bold">اردو</span>
-                            @else
+                    <div class="lang-dropdown-wrapper">
+                        <button class="lang-dropdown-btn" onclick="toggleLangDropdown(event)" type="button">
+                            <div class="custom-badge">
+                                @if(app()->getLocale() == 'ar')
+                                    <span class="flag-icon flag-icon-sa"></span>
+                                    <span class="font-weight-bold">عربي</span>
+                                @elseif(app()->getLocale() == 'au')
+                                    <span class="flag-icon flag-icon-pk"></span>
+                                    <span class="font-weight-bold">اردو</span>
+                                @else
+                                    <span class="flag-icon flag-icon-gb"></span>
+                                    <span class="font-weight-bold">English</span>
+                                @endif
+                                <i class="fas fa-chevron-down" style="font-size: 12px; margin-left: auto;"></i>
+                            </div>
+                        </button>
+                        <div class="lang-dropdown-content" id="langDropdown">
+                            <a href="{{ url('lang/en') }}" class="lang-option {{ app()->getLocale() == 'en' ? 'active' : '' }}">
                                 <span class="flag-icon flag-icon-gb"></span>
-                                <span class="font-weight-bold">English</span>
-                            @endif
-                            <i class="fas fa-chevron-down" style="font-size: 12px; margin-left: auto;"></i>
+                                <span>English</span>
+                                @if(app()->getLocale() == 'en')
+                                    <i class="fas fa-check text-success" style="margin-left: auto;"></i>
+                                @endif
+                            </a>
+                            <a href="{{ url('lang/ar') }}" class="lang-option {{ app()->getLocale() == 'ar' ? 'active' : '' }}">
+                                <span class="flag-icon flag-icon-sa"></span>
+                                <span>العربية</span>
+                                @if(app()->getLocale() == 'ar')
+                                    <i class="fas fa-check text-success" style="margin-left: auto;"></i>
+                                @endif
+                            </a>
+                            <a href="{{ url('lang/au') }}" class="lang-option {{ app()->getLocale() == 'au' ? 'active' : '' }}">
+                                <span class="flag-icon flag-icon-pk"></span>
+                                <span>اردو</span>
+                                @if(app()->getLocale() == 'au')
+                                    <i class="fas fa-check text-success" style="margin-left: auto;"></i>
+                                @endif
+                            </a>
                         </div>
-                    </button>
-                    <div class="lang-dropdown-content" id="langDropdown">
-                        <a href="{{ url('lang/en') }}" class="lang-option {{ app()->getLocale() == 'en' ? 'active' : '' }}">
-                            <span class="flag-icon flag-icon-gb"></span>
-                            <span>English</span>
-                            @if(app()->getLocale() == 'en')
-                                <i class="fas fa-check text-success"></i>
-                            @endif
-                        </a>
-                        <a href="{{ url('lang/ar') }}" class="lang-option {{ app()->getLocale() == 'ar' ? 'active' : '' }}">
-                            <span class="flag-icon flag-icon-sa"></span>
-                            <span>العربية</span>
-                            @if(app()->getLocale() == 'ar')
-                                <i class="fas fa-check text-success"></i>
-                            @endif
-                        </a>
-                        <a href="{{ url('lang/au') }}" class="lang-option {{ app()->getLocale() == 'au' ? 'active' : '' }}">
-                            <span class="flag-icon flag-icon-pk"></span>
-                            <span>اردو</span>
-                            @if(app()->getLocale() == 'au')
-                                <i class="fas fa-check text-success"></i>
-                            @endif
-                        </a>
                     </div>
                 </div>
 
                 <form action="{{ url('login_post') }}" method="post">
                     @csrf
 
-                    <div class="input-group mb-3">
-                        <input type="email" name="email" class="form-control" placeholder="{{ __('auth.email') }}">
-                        {{-- name="email" l2n esmo kda in data base --}}
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-envelope"></span>
-                            </div>
-                        </div>
+                    <div class="form-group position-relative mb-3">
+                        <input type="email" name="email" class="form-control" placeholder="{{ __('auth.email') }}" required>
+                        <span class="input-icon">
+                            <i class="fas fa-envelope"></i>
+                        </span>
                     </div>
-                    {{-- <span style="color: red;"> {{$errors->first('email')}} </span> --}}
 
-                    <div class="form-group position-relative">
-                        <input type="password" id="password" name="password" class="form-control"
-                            placeholder="{{ __('auth.password') }}" required>
-
-                        <!-- Eye icon (toggle password visibility) -->
-                        <span class="position-absolute" onclick="togglePassword('password', 'eyeIcon')"
-                            style="top: 10px; right: 15px; cursor: pointer;">
+                    <div class="form-group position-relative mb-4">
+                        <input type="password" id="password" name="password" class="form-control" placeholder="{{ __('auth.password') }}" required>
+                        <span class="input-icon password-toggle" onclick="togglePassword('password', 'eyeIcon')">
                             <i id="eyeIcon" class="fa fa-eye"></i>
                         </span>
                     </div>
 
-                    {{-- <span style="color: red;"> {{$errors->first('password')}} </span> --}}
-
-                    <div class="row">
-                        <div class="col-8">
-                            <div class="icheck-primary">
-                            </div>
-                        </div>
-                        <!-- /.col -->
-<div class="row justify-content-center">
-                            <button type="submit" class="btn btn-primary btn-block">{{ __('auth.sign_in') }}</button>
-                        </div>
-                        <!-- /.col -->
-                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">{{ __('auth.sign_in') }}</button>
                 </form>
-
-
-
             </div>
-            <!-- /.login-card-body -->
         </div>
     </div>
-    <!-- /.login-box -->
 
-    <!-- jQuery -->
     <script src="{{ url('plugins/jquery/jquery.min.js') }}"></script>
-    <!-- Bootstrap 4 -->
     <script src="{{ url('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <!-- AdminLTE App -->
     <script src="{{ url('dist/js/adminlte.min.js') }}"></script>
-    <!-- for eye toggle -->
     <script src="{{ url('dist/js/eye.js') }}"></script>
 
     <script>
-        // Language Dropdown Toggle
         function toggleLangDropdown(event) {
             event.stopPropagation();
-            const dropdown = document.getElementById('langDropdown');
-            dropdown.classList.toggle('show');
+            document.getElementById('langDropdown').classList.toggle('show');
         }
 
-        // Close dropdown when clicking outside
         document.addEventListener('click', function(event) {
             const dropdown = document.getElementById('langDropdown');
             const switcher = document.querySelector('.language-switcher');
-
             if (!switcher.contains(event.target)) {
                 dropdown.classList.remove('show');
             }
         });
 
-        // Prevent dropdown from closing when clicking inside it
         document.getElementById('langDropdown').addEventListener('click', function(event) {
             event.stopPropagation();
         });
