@@ -28,5 +28,12 @@ return [
 
     'sign_in_message' => 'قم بتسجيل الدخول للبدء ',
 
+        'logged_out_successfully' => 'تم تسجيل الخروج بنجاح.',
+'register-company' =>'تسجيل شركة جديدة',
+ 'admin_registered_successfully' => 'تم تسجيل الادمن بنجاح.',
+    'registered_successfully' => 'تم التسجيل بنجاح.',
+
+        'confirm_delete_company' => 'هل أنت متأكد أنك تريد حذف هذه الشركة؟',
+
 
 ];

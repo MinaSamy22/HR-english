@@ -64,7 +64,13 @@ class AuthController extends Controller
 
         $user->save();
 
-        return redirect('/')->with('success', 'Register successfully..');
+return redirect('/')->with('success', __('auth.registered_successfully'));
+
+
+
+
+
+
 
     }
 
@@ -154,7 +160,7 @@ public function login_post(Request $request)
         $admin->save();
 
         // Redirect to login page with success message
-        return redirect('/')->with('success', 'Admin registered successfully.');
+return redirect('/')->with('success', __('auth.admin_registered_successfully'));
     }
 
     public function adminLanding()
@@ -191,7 +197,7 @@ public function login_post(Request $request)
         session()->invalidate();
         session()->regenerateToken();
 
-        return redirect('/')->with('success', 'Logged out successfully.');
+return redirect('/')->with('success', __('auth.logged_out_successfully'));
 }
 
 

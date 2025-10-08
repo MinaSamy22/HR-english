@@ -255,7 +255,7 @@
                                         <form action="{{ route('admin.admins.destroy', $admin->id) }}" method="POST" style="display:inline;">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn-delete" onclick="return confirm('{{ __('Admin-Interface.confirm_delete_admin') ?? 'Are you sure you want to delete this admin?' }}');">
+                                            <button type="submit" class="btn-delete" onclick="return confirm('{{ __('auth.confirm_delete_admin') ?? 'Are you sure you want to delete this admin?' }}');">
                                                 <i class="fas fa-user-slash"></i>
                                                 {{ __('Admin-Interface.delete') ?? 'Delete' }}
                                             </button>

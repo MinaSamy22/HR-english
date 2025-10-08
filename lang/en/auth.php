@@ -26,5 +26,11 @@ return [
     'register' => 'Register',
     'sign_in' => 'Sign In',
 'sign_in_message' => 'Sign in to start your session',
+    'logged_out_successfully' => 'Logged out successfully.',
+'register-company' =>'Register New Company',
+    'admin_registered_successfully' => 'Admin registered successfully.',
+    'registered_successfully' => 'Registered successfully.',
+
+        'confirm_delete_company' => 'Are you sure you want to delete this company?',
 
 ];
