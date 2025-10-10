@@ -471,4 +471,17 @@ return [
     'ok' => 'OK',
     'communication' => 'Communication',
 
+    'toast_success_title' => 'Success!',
+'toast_error_title' => 'Error!',
+'toast_warning_title' => 'Warning!',
+'toast_info_title' => 'Info',
+'invalid_hours' => 'Please enter valid work hours (between 1 and 24)',
+'invalid_vacation_balance' => 'Please enter a valid vacation balance (0 or more days)',
+'invalid_bonus_amount' => 'Please enter a valid bonus amount (0 or more)',
+
+'error_updating_late_threshold' => 'Error updating late threshold',
+'error_updating_half_day_threshold' => 'Error updating half day threshold',
+'error_updating_late_deduction' => 'Error updating late deduction',
+'error_updating_half_day_deduction' => 'Error updating half day deduction',
+'updated_successfully' => 'Updated successfully!',
 ];

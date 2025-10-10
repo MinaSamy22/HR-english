@@ -451,5 +451,19 @@ return [
         'ok' => 'حسناً',
     'communication' => 'التواصل',
 
+    'toast_success_title' => 'تم بنجاح!',
+'toast_error_title' => 'خطأ!',
+'toast_warning_title' => 'تحذير!',
+'toast_info_title' => 'معلومات',
+'invalid_hours' => 'الرجاء إدخال ساعات عمل صالحة (بين 1 و 24)',
+'invalid_vacation_balance' => 'الرجاء إدخال رصيد إجازة صالح (0 أيام أو أكثر)',
+'invalid_bonus_amount' => 'الرجاء إدخال مبلغ مكافأة صالح (0 أو أكثر)',
+
+'error_updating_late_threshold' => 'خطأ في تحديث حد التأخير',
+'error_updating_half_day_threshold' => 'خطأ في تحديث حد نصف اليوم',
+'error_updating_late_deduction' => 'خطأ في تحديث خصم التأخير',
+'error_updating_half_day_deduction' => 'خطأ في تحديث خصم نصف اليوم',
+'updated_successfully' => 'تم التحديث بنجاح!',
+
 ];
 

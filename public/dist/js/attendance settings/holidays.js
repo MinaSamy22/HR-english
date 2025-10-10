@@ -21,15 +21,43 @@ const translations = {
         confirm_delete_with_date: 'هل أنت متأكد من حذف "{title}" في {date}؟',
         confirm_delete_generic: 'هل أنت متأكد من حذف هذه العطلة؟',
         holiday_title_placeholder: 'عنوان العطلة'
+    },
+    au: {
+        saving_changes: 'تبدیلیاں محفوظ کی جا رہی ہیں...',
+        holidays_saved: 'چھٹیاں کامیابی سے محفوظ ہو گئیں',
+        failed_to_save: 'چھٹیاں محفوظ کرنے میں ناکامی',
+        deleting_holiday: 'چھٹی حذف کی جا رہی ہے...',
+        holiday_deleted: 'چھٹی کامیابی سے حذف ہو گئی',
+        failed_to_delete: 'چھٹی حذف کرنے میں ناکامی',
+        confirm_delete_with_date: 'کیا آپ واقعی "{title}" کو {date} پر حذف کرنا چاہتے ہیں؟',
+        confirm_delete_generic: 'کیا آپ واقعی اس چھٹی کو حذف کرنا چاہتے ہیں؟',
+        holiday_title_placeholder: 'چھٹی کا عنوان'
     }
 };
 
-// Get current language (you can set this based on your app's language detection)
-const currentLanguage = document.documentElement.lang || 'en'; // Default to English
+// Get current language from meta tag or HTML lang attribute
+function getCurrentLanguage() {
+    // First, try to get from meta tag
+    const metaLocale = document.querySelector('meta[name="current-locale"]');
+    if (metaLocale) {
+        return metaLocale.getAttribute('content');
+    }
+
+    // Fallback to HTML lang attribute
+    const htmlLang = document.documentElement.lang;
+    if (htmlLang) {
+        return htmlLang;
+    }
+
+    // Default to English
+    return 'en';
+}
+
+const currentLanguage = getCurrentLanguage();
 
 // Translation helper function
 function t(key, replacements = {}) {
-    let text = translations[currentLanguage][key] || translations.en[key] || key;
+    let text = translations[currentLanguage]?.[key] || translations.en[key] || key;
 
     // Replace placeholders
     Object.keys(replacements).forEach(placeholder => {
@@ -182,7 +210,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Format the date for better readability if available
             const formattedDate = holidayDate ?
-                new Date(holidayDate).toLocaleDateString() : '';
+                new Date(holidayDate).toLocaleDateString(currentLanguage) : '';
 
             const confirmMessage = formattedDate ?
                 t('confirm_delete_with_date', { title: holidayTitle, date: formattedDate }) :

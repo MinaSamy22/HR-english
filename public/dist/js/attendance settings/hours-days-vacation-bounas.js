@@ -118,45 +118,103 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Show alert function
-    function showAlert(type, message) {
-        const alertArea = document.getElementById('alert_area');
-        if (!alertArea) {
-            console.warn('Alert area not found');
-            return;
-        }
+// Get translations from meta tags
+function getTranslation(key) {
+    const meta = document.querySelector(`meta[name="${key}"]`);
+    return meta ? meta.getAttribute('content') : key;
+}
 
-        // Ensure message is a string
-        if (typeof message !== 'string') {
-            console.error('Invalid message format:', message);
-            message = 'An error occurred';
-        }
+// Get current locale
+function getCurrentLocale() {
+    const meta = document.querySelector('meta[name="current-locale"]');
+    return meta ? meta.getAttribute('content') : 'en';
+}
 
-        const alertHtml = `
-            <div class="alert alert-${type} alert-dismissible fade show mt-3" role="alert">
-                ${message}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+// Check if current language is RTL
+function isRTL() {
+    const locale = getCurrentLocale();
+    return ['ar', 'ur', 'fa', 'he'].includes(locale);
+}
+
+// Show toast notification function
+function showAlert(type, message, title = null) {
+    // Ensure message is a string
+    if (typeof message !== 'string') {
+        console.error('Invalid message format:', message);
+        message = 'An error occurred';
+    }
+
+    // Map alert types to toast types and icons
+    const typeConfig = {
+        'success': {
+            class: 'toast-success',
+            icon: 'fas fa-check-circle',
+            title: title || getTranslation('toast-success-title')
+        },
+        'danger': {
+            class: 'toast-danger',
+            icon: 'fas fa-exclamation-circle',
+            title: title || getTranslation('toast-error-title')
+        },
+        'warning': {
+            class: 'toast-warning',
+            icon: 'fas fa-exclamation-triangle',
+            title: title || getTranslation('toast-warning-title')
+        },
+        'info': {
+            class: 'toast-info',
+            icon: 'fas fa-info-circle',
+            title: title || getTranslation('toast-info-title')
+        }
+    };
+
+    const config = typeConfig[type] || typeConfig['info'];
+
+    // Create toast element
+    const toastId = 'toast_' + Date.now();
+    const rtlAttr = isRTL() ? 'dir="rtl"' : 'dir="ltr"';
+
+    const toastHtml = `
+        <div class="toast-item ${config.class}" id="${toastId}" ${rtlAttr}>
+            <div class="toast-icon">
+                <i class="${config.icon}"></i>
             </div>
-        `;
+            <div class="toast-content">
+                <div class="toast-title">${config.title}</div>
+                <p class="toast-message">${message}</p>
+            </div>
+            <button class="toast-close" onclick="closeToast('${toastId}')">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    `;
 
-        alertArea.innerHTML = alertHtml;
+    // Add toast to notification area
+    const toastContainer = document.getElementById('toast_notification');
+    if (toastContainer) {
+        toastContainer.insertAdjacentHTML('beforeend', toastHtml);
 
         // Auto dismiss after 5 seconds
         setTimeout(() => {
-            const alert = alertArea.querySelector('.alert');
-            if (alert) {
-                alert.style.transition = 'opacity 0.3s';
-                alert.style.opacity = '0';
-                setTimeout(() => {
-                    if (alert.parentNode) {
-                        alert.remove();
-                    }
-                }, 300);
-            }
+            closeToast(toastId);
         }, 5000);
+    } else {
+        console.warn('Toast notification area not found');
     }
+}
+
+// Close toast function
+function closeToast(toastId) {
+    const toast = document.getElementById(toastId);
+    if (toast) {
+        toast.classList.add('fade-out');
+        setTimeout(() => {
+            if (toast.parentNode) {
+                toast.remove();
+            }
+        }, 300);
+    }
+}
 
     // ==========================================================================
     // WORK HOURS ASSIGNMENT

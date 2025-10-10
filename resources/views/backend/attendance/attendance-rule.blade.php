@@ -8,6 +8,13 @@
     <meta name="employees-bonus-per-hour-route" content="{{ route('attendance.update-employee-bonus-per-hour') }}">
     <meta name="late-threshold-route" content="{{ route('attendance-rules.update-late-threshold') }}">
     <meta name="half-day-threshold-route" content="{{ route('attendance-rules.update-half-day-threshold') }}">
+    {{-- Late and Half Day error translations --}}
+    <meta name="msg-error-updating-late-threshold" content="{{ __('dashboard.error_updating_late_threshold') }}">
+    <meta name="msg-error-updating-half-day-threshold" content="{{ __('dashboard.error_updating_half_day_threshold') }}">
+    <meta name="msg-error-updating-late-deduction" content="{{ __('dashboard.error_updating_late_deduction') }}">
+    <meta name="msg-error-updating-half-day-deduction" content="{{ __('dashboard.error_updating_half_day_deduction') }}">
+    <meta name="msg-updated-successfully" content="{{ __('dashboard.updated_successfully') }}">
+
     {{-- Translation meta tags --}}
     <meta name="msg-select-employee" content="{{ __('dashboard.no_employees_selected') }}">
     <meta name="msg-invalid-hours" content="{{ __('dashboard.invalid_hours') }}">
@@ -30,7 +37,6 @@
     <meta name="msg-invalid-bonus" content="{{ __('dashboard.invalid_bonus') }}">
     <meta name="msg-assign-vacation" content="{{ __('dashboard.assign_vacation') }}">
     <meta name="msg-assign-bonus" content="{{ __('dashboard.assign_bonus') }}">
-
     <!-- Day abbreviations -->
     <meta name="msg-sun" content="{{ __('dashboard.sun') }}">
     <meta name="msg-mon" content="{{ __('dashboard.mon') }}">
@@ -39,8 +45,18 @@
     <meta name="msg-thu" content="{{ __('dashboard.thu') }}">
     <meta name="msg-fri" content="{{ __('dashboard.fri') }}">
     <meta name="msg-sat" content="{{ __('dashboard.sat') }}">
+    {{-- Toast Notification Translations --}}
+    <meta name="toast-success-title" content="{{ __('dashboard.toast_success_title') }}">
+    <meta name="toast-error-title" content="{{ __('dashboard.toast_error_title') }}">
+    <meta name="toast-warning-title" content="{{ __('dashboard.toast_warning_title') }}">
+    <meta name="toast-info-title" content="{{ __('dashboard.toast_info_title') }}">
+    <meta name="current-locale" content="{{ app()->getLocale() }}">
+    <link rel="stylesheet" href="{{ url('dist/css/attendance-rules.css') }}"> {{-- for notification css --}}
+
 
     <div class="content-wrapper">
+            <div id="toast_notification" class="toast-notification"></div>
+
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <div class="container-fluid">
@@ -170,7 +186,8 @@
 
 
 
-
+                                    <!-- Alert Area -->
+                                    <div id="alert_area_top"></div>
                                     <!-- Work Hours and Working Days Assignment -->
                                     <div class="row">
                                         <!-- Employee Work Hours -->
@@ -300,9 +317,9 @@
                                         <div class="card-body">
                                             <div class="table-responsive">
                                                 <div class="form-group mb-3">
-    <input type="text" id="employee_search" class="form-control"
-           placeholder="{{ __('dashboard.search_employee') }}">
-</div>
+                                                  <input type="text" id="employee_search" class="form-control"
+                                                    placeholder="{{ __('dashboard.search_employee') }}">
+                                                </div>
 
                                                 <table class="table table-hover">
                                                     <thead class="thead-light">
@@ -530,8 +547,7 @@
         </section>
     </div>
 
-    <script src="{{ url('dist/js/attendance settings/hours-days-vacation-bounas.js?v=3') }}"></script>
-    <script src="{{ url('dist/js/attendance settings/vacation-bounas.js?v=1') }}"></script>
+    <script src="{{ url('dist/js/attendance settings/hours-days-vacation-bounas.js?v=4') }}"></script>
     <script src="{{ url('dist\js\attendance settings\holidays.js') }}"></script>
     <script src="{{ url('dist\js\attendance settings\late-halfDeduction.js?v=1') }}"></script>
     <script>

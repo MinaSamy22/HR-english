@@ -465,4 +465,17 @@ return [
         'ok' => 'ٹھیک ہے',
     'communication' => 'رابطہ',
 
+    'toast_success_title' => 'کامیابی!',
+'toast_error_title' => 'خرابی!',
+'toast_warning_title' => 'انتباہ!',
+'toast_info_title' => 'معلومات',
+'invalid_hours' => 'براہ کرم درست کام کے اوقات درج کریں (1 سے 24 کے درمیان)',
+'invalid_vacation_balance' => 'براہ کرم درست چھٹیوں کا بیلنس درج کریں (0 یا زیادہ دن)',
+'invalid_bonus_amount' => 'براہ کرم درست بونس کی رقم درج کریں (0 یا زیادہ)',
+
+'error_updating_late_threshold' => 'تاخیر کی حد کو اپ ڈیٹ کرنے میں خرابی',
+'error_updating_half_day_threshold' => 'آدھے دن کی حد کو اپ ڈیٹ کرنے میں خرابی',
+'error_updating_late_deduction' => 'تاخیر کی کٹوتی کو اپ ڈیٹ کرنے میں خرابی',
+'error_updating_half_day_deduction' => 'آدھے دن کی کٹوتی کو اپ ڈیٹ کرنے میں خرابی',
+'updated_successfully' => 'کامیابی سے اپ ڈیٹ ہو گیا!',
 ];
