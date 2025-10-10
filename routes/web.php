@@ -68,21 +68,13 @@ Route::get('lang/{lang}', function ($lang) {
 });
 
 Route::get('/', [AuthController::class, 'index'])->name('start'); //index navigate to auth controller
-Route::get('/', [AuthController::class, 'index'])->name('start'); //index navigate to auth controller
-Route::get('register', [AuthController::class, 'register'])->name('register');
-Route::post('register', [AuthController::class, 'register_post'])->name('register_post');
 Route::post('login_post', [AuthController::class, 'login_post'])->name('login_post');
-// Display the admin registration page
-Route::get('admin/register', [AuthController::class, 'adminRegister'])->name('admin.register');
-// Handle the registration form submission
-Route::post('admin/register', [AuthController::class, 'adminRegisterPost'])->name('admin.register.post');
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //middlware 1 (HR interface)
-Route::group(['middleware' => 'admin'], function () {
-
+Route::middleware('admin')->group(function () {
 
     //Navbar icons
     route::get('admin/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
@@ -212,7 +204,7 @@ Route::group(['middleware' => 'admin'], function () {
     // holiday management
     Route::get('/attendance-rules/get-holidays', [AttendanceRulesController::class, 'getHolidays']);
     Route::post('admin/attendance-rule/add-holiday', [AttendanceRulesController::class, 'addHoliday'])->name('attendance-rule.add-holiday');
-Route::delete('admin/attendance-rule/delete-holiday', [AttendanceRulesController::class, 'deleteHoliday'])->name('attendance-rule.delete-holiday');
+    Route::delete('admin/attendance-rule/delete-holiday', [AttendanceRulesController::class, 'deleteHoliday'])->name('attendance-rule.delete-holiday');
     Route::post('/attendance-rules/update-holidays', [AttendanceRulesController::class, 'updateHolidays'])->name('attendance.update-holidays');
 
     // edit late - FIXED
@@ -235,7 +227,6 @@ Route::delete('admin/attendance-rule/delete-holiday', [AttendanceRulesController
     // Add these routes to your existing attendance rules routes
     Route::post('/attendance-rules/update-late-threshold', [AttendanceRulesController::class, 'updateLateThreshold'])->name('attendance-rules.update-late-threshold');
     Route::post('/attendance-rules/update-half-day-threshold', [AttendanceRulesController::class, 'updateHalfDayThreshold'])->name('attendance-rules.update-half-day-threshold');
-
 
 
     //biometric excel
@@ -415,12 +406,11 @@ Route::delete('admin/attendance-rule/delete-holiday', [AttendanceRulesController
     Route::delete('admin/messages/{message}', [MessageController::class, 'destroy'])->name('messages.destroy');
     Route::post('timezone/update',[AttendanceRulesController::class,'updateTimezone'])->name('timezone.update');
 });
-// Make sure to import the controller at the top of your routes file:
 
 
 
 //middlware 2 (Admin interface)
-Route::group(['middleware' => 'SuperAdmin'], function () {
+Route::middleware('SuperAdmin')->group(function () {
 
     Route::get('admin/landing', [AuthController::class, 'adminLanding'])->name('admin.landing');
     // Company management
@@ -429,6 +419,12 @@ Route::group(['middleware' => 'SuperAdmin'], function () {
     // Admin management
     Route::get('admin/admins/manage', [AdminController::class, 'manage'])->name('admin.admins.manage');
     Route::delete('admin/admins/{admin}', [AdminController::class, 'destroy'])->name('admin.admins.destroy');
+    // Display the admin registration page
+    Route::get('admin/register', [AuthController::class, 'adminRegister'])->name('admin.register');
+    Route::post('admin/register', [AuthController::class, 'adminRegisterPost'])->name('admin.register.post');
+    // register new company
+    Route::get('register', [AuthController::class, 'register'])->name('register');
+    Route::post('register', [AuthController::class, 'register_post'])->name('register_post');
 });
 
 
