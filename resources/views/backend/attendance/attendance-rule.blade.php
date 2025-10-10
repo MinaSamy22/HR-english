@@ -548,8 +548,8 @@
     </div>
 
     <script src="{{ url('dist/js/attendance settings/hours-days-vacation-bounas.js?v=4') }}"></script>
-    <script src="{{ url('dist\js\attendance settings\holidays.js') }}"></script>
-    <script src="{{ url('dist\js\attendance settings\late-halfDeduction.js?v=1') }}"></script>
+    <script src="{{ url('dist\js\attendance settings\holidays.js?v=1') }}"></script>
+    <script src="{{ url('dist\js\attendance settings\late-halfDeduction.js?v=2') }}"></script>
     <script>
         // URL and token configuration
         const updateLateDeductionUrl = '{{ route('attendance-rules.update-late-deduction') }}';
