@@ -700,20 +700,39 @@ function closeToast(toastId) {
 
 
 // ==========================================================================
-// EMPLOYEE SEARCH FILTER
+// EMPLOYEE SEARCH AND DEPARTMENT FILTER
 // ==========================================================================
+
+// Combined filter function
+function filterEmployees() {
+    const searchValue = document.getElementById('employee_search')?.value.toLowerCase() || '';
+    const departmentId = document.getElementById('department_filter')?.value || '';
+    const rows = document.querySelectorAll('#employees_table tr');
+
+    rows.forEach(row => {
+        const nameCell = row.querySelector('td:nth-child(2)'); // employee name is in 2nd column
+        const checkbox = row.querySelector('.employee_check');
+
+        if (nameCell && checkbox) {
+            const name = nameCell.textContent.toLowerCase();
+            const employeeDepartmentId = checkbox.getAttribute('data-department-id') || '';
+
+            const matchesSearch = name.includes(searchValue);
+            const matchesDepartment = !departmentId || employeeDepartmentId === departmentId;
+
+            row.style.display = (matchesSearch && matchesDepartment) ? '' : 'none';
+        }
+    });
+}
+
+// Employee search filter
 const employeeSearch = document.getElementById('employee_search');
 if (employeeSearch) {
-    employeeSearch.addEventListener('keyup', function () {
-        const query = this.value.toLowerCase();
-        const rows = document.querySelectorAll('#employees_table tr');
+    employeeSearch.addEventListener('keyup', filterEmployees);
+}
 
-        rows.forEach(row => {
-            const nameCell = row.querySelector('td:nth-child(2)'); // employee name is in 2nd column
-            if (nameCell) {
-                const name = nameCell.textContent.toLowerCase();
-                row.style.display = name.includes(query) ? '' : 'none';
-            }
-        });
-    });
+// Department filter
+const departmentFilter = document.getElementById('department_filter');
+if (departmentFilter) {
+    departmentFilter.addEventListener('change', filterEmployees);
 }

@@ -465,5 +465,8 @@ return [
 'error_updating_half_day_deduction' => 'خطأ في تحديث خصم نصف اليوم',
 'updated_successfully' => 'تم التحديث بنجاح!',
 
+'all_departments' => 'جميع الأقسام',
+'filter_by_department' => 'تصفية حسب القسم',
+'search_employee' => 'بحث عن موظف',
 ];
 

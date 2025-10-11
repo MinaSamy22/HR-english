@@ -484,4 +484,8 @@ return [
 'error_updating_late_deduction' => 'Error updating late deduction',
 'error_updating_half_day_deduction' => 'Error updating half day deduction',
 'updated_successfully' => 'Updated successfully!',
+
+'all_departments' => 'All Departments',
+'filter_by_department' => 'Filter by Department',
+'search_employee' => 'Search Employee',
 ];

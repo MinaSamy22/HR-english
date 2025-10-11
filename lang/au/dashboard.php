@@ -478,4 +478,7 @@ return [
 'error_updating_late_deduction' => 'تاخیر کی کٹوتی کو اپ ڈیٹ کرنے میں خرابی',
 'error_updating_half_day_deduction' => 'آدھے دن کی کٹوتی کو اپ ڈیٹ کرنے میں خرابی',
 'updated_successfully' => 'کامیابی سے اپ ڈیٹ ہو گیا!',
+'all_departments' => 'تمام محکمے',
+'filter_by_department' => 'محکمے کے مطابق فلٹر کریں',
+'search_employee' => 'ملازم تلاش کریں',
 ];
