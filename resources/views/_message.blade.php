@@ -43,7 +43,15 @@
             </svg>
         </div>
         <div class="alert-text">
-            <div class="alert-title">Error!</div>
+            <div class="alert-title">
+                @if(app()->getLocale() == 'ar')
+                    خطأ!
+                @elseif(app()->getLocale() == 'ur')
+                    خرابی!
+                @else
+                    Error!
+                @endif
+            </div>
             <div class="alert-message">{{ session('error') }}</div>
         </div>
         <button type="button" class="alert-close" onclick="this.closest('.custom-alert').remove()">
@@ -245,12 +253,22 @@ html[dir="rtl"] @keyframes slideOutUpRTL {
     }
 }
 
-@media (max-width: 480px) {
+/* Mobile responsive */
+@media (max-width: 576px) {
     .custom-alert {
-        min-width: 90%;
-        max-width: 90%;
-        top: 20px;
-        left: 5% !important;
+        min-width: auto;
+        max-width: calc(100% - 20px);
+        top: 100px !important;
+    }
+
+    html[dir="ltr"] .custom-alert,
+    html:not([dir]) .custom-alert {
+        right: 10px !important;
+        left: auto !important;
+    }
+
+    html[dir="rtl"] .custom-alert {
+        left: 10px !important;
         right: auto !important;
     }
 }
