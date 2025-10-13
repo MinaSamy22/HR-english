@@ -258,7 +258,7 @@ html[dir="rtl"] @keyframes slideOutUpRTL {
     .custom-alert {
         min-width: auto;
         max-width: calc(100% - 20px);
-        top: 100px !important;
+        top: 80px !important;
     }
 
     html[dir="ltr"] .custom-alert,
