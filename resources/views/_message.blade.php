@@ -263,13 +263,13 @@ html[dir="rtl"] @keyframes slideOutUpRTL {
 
     html[dir="ltr"] .custom-alert,
     html:not([dir]) .custom-alert {
-        right: 10px !important;
-        left: auto !important;
+        left: 10px !important;
+        right: auto !important;
     }
 
     html[dir="rtl"] .custom-alert {
-        left: 10px !important;
-        right: auto !important;
+        right: 10px !important;
+        left: auto !important;
     }
 }
 </style>
