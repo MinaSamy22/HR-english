@@ -2,19 +2,38 @@
 
 return [
 
-    /*
-    |--------------------------------------------------------------------------
-    | Authentication Language Lines
-    |--------------------------------------------------------------------------
-    |
-    | The following language lines are used during authentication for various
-    | messages that we need to display to the user. You are free to modify
-    | these language lines according to your application's requirements.
-    |
-    */
+    'page_title' => 'شركة | تسجيل',
+    'human' => 'الموارد',
+    'resource' => 'البشرية',
+    'register_new_company' => 'تسجيل شركة جديدة',
+    'hr_name' => 'اسم الموارد البشرية',
+    'email' => 'البريد الإلكتروني',
+    'password' => 'كلمة المرور',
+    'confirm_password' => 'تأكيد كلمة المرور',
+    'company_name' => 'اسم الشركة',
+    'country' => 'الدولة',
+    'address' => 'العنوان',
+    'register' => 'تسجيل',
+    'sign_in' => 'تسجيل الدخول',
+     'page_title' => 'مسؤول | تسجيل',
+    'human' => 'الموارد',
+    'resource' => 'البشرية',
+    'register_new_admin' => 'تسجيل مسؤول جديد',
+    'name' => 'الاسم',
+    'email' => 'البريد الإلكتروني',
+    'password' => 'كلمة المرور',
+    'confirm_password' => 'تأكيد كلمة المرور',
+    'register' => 'تسجيل',
+    'sign_in' => 'تسجيل الدخول',
 
-    'failed' => 'These credentials do not match our records.',
-    'password' => 'The provided password is incorrect.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'sign_in_message' => 'قم بتسجيل الدخول للبدء ',
+
+        'logged_out_successfully' => 'تم تسجيل الخروج بنجاح.',
+'register-company' =>'تسجيل شركة جديدة',
+ 'admin_registered_successfully' => 'تم تسجيل الادمن بنجاح.',
+    'registered_successfully' => 'تم التسجيل بنجاح.',
+
+        'confirm_delete_company' => 'هل أنت متأكد أنك تريد حذف هذه الشركة؟',
+
 
 ];

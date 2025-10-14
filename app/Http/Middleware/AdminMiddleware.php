@@ -22,12 +22,12 @@ class AdminMiddleware
                 return $next($request);
             }else{
                 Auth::logout();
-                return redirect(url('/'));
+            return redirect('/')->with('error', 'Access denied.');
             }
 
         }else{
             Auth::logout();
-            return redirect(url('/'));
+            return redirect('/')->with('error', 'Access denied.');
 
         }
 

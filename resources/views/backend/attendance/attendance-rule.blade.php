@@ -8,6 +8,12 @@
     <meta name="employees-bonus-per-hour-route" content="{{ route('attendance.update-employee-bonus-per-hour') }}">
     <meta name="late-threshold-route" content="{{ route('attendance-rules.update-late-threshold') }}">
     <meta name="half-day-threshold-route" content="{{ route('attendance-rules.update-half-day-threshold') }}">
+    {{-- Late and Half Day error translations --}}
+    <meta name="msg-error-updating-late-threshold" content="{{ __('dashboard.error_updating_late_threshold') }}">
+    <meta name="msg-error-updating-half-day-threshold" content="{{ __('dashboard.error_updating_half_day_threshold') }}">
+    <meta name="msg-error-updating-late-deduction" content="{{ __('dashboard.error_updating_late_deduction') }}">
+    <meta name="msg-error-updating-half-day-deduction" content="{{ __('dashboard.error_updating_half_day_deduction') }}">
+    <meta name="msg-updated-successfully" content="{{ __('dashboard.updated_successfully') }}">
     {{-- Translation meta tags --}}
     <meta name="msg-select-employee" content="{{ __('dashboard.no_employees_selected') }}">
     <meta name="msg-invalid-hours" content="{{ __('dashboard.invalid_hours') }}">
@@ -30,7 +36,6 @@
     <meta name="msg-invalid-bonus" content="{{ __('dashboard.invalid_bonus') }}">
     <meta name="msg-assign-vacation" content="{{ __('dashboard.assign_vacation') }}">
     <meta name="msg-assign-bonus" content="{{ __('dashboard.assign_bonus') }}">
-
     <!-- Day abbreviations -->
     <meta name="msg-sun" content="{{ __('dashboard.sun') }}">
     <meta name="msg-mon" content="{{ __('dashboard.mon') }}">
@@ -39,8 +44,18 @@
     <meta name="msg-thu" content="{{ __('dashboard.thu') }}">
     <meta name="msg-fri" content="{{ __('dashboard.fri') }}">
     <meta name="msg-sat" content="{{ __('dashboard.sat') }}">
+    {{-- Toast Notification Translations --}}
+    <meta name="toast-success-title" content="{{ __('dashboard.toast_success_title') }}">
+    <meta name="toast-error-title" content="{{ __('dashboard.toast_error_title') }}">
+    <meta name="toast-warning-title" content="{{ __('dashboard.toast_warning_title') }}">
+    <meta name="toast-info-title" content="{{ __('dashboard.toast_info_title') }}">
+    <meta name="current-locale" content="{{ app()->getLocale() }}">
+    <link rel="stylesheet" href="{{ url('dist/css/attendance-rules.css') }}"> {{-- for notification css --}}
+
 
     <div class="content-wrapper">
+        <div id="toast_notification" class="toast-notification"></div>
+
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <div class="container-fluid">
@@ -87,8 +102,7 @@
                                             <input type="number" class="form-control" id="late_threshold_minutes"
                                                 name="late_threshold_minutes"
                                                 value="{{ old('late_threshold_minutes', $setting->late_threshold_minutes ?? 15) }}"
-                                                min="1" max="120"
-                                                style="max-width: 120px;"
+                                                min="1" max="120" style="max-width: 120px;"
                                                 onchange="updateLateThreshold(this.value)">
 
                                             <div class="input-group-append">
@@ -132,8 +146,7 @@
                                             <input type="number" class="form-control" id="half_day_threshold_minutes"
                                                 name="half_day_threshold_minutes"
                                                 value="{{ old('half_day_threshold_minutes', $setting->half_day_threshold_minutes ?? 240) }}"
-                                                min="60" max="480"
-                                                style="max-width: 120px;"
+                                                min="60" max="480" style="max-width: 120px;"
                                                 onchange="updateHalfDayThreshold(this.value)">
                                             <div class="input-group-append">
                                                 <span
@@ -170,7 +183,8 @@
 
 
 
-
+                                    <!-- Alert Area -->
+                                    <div id="alert_area_top"></div>
                                     <!-- Work Hours and Working Days Assignment -->
                                     <div class="row">
                                         <!-- Employee Work Hours -->
@@ -299,10 +313,22 @@
                                         </div>
                                         <div class="card-body">
                                             <div class="table-responsive">
-                                                <div class="form-group mb-3">
-    <input type="text" id="employee_search" class="form-control"
-           placeholder="{{ __('dashboard.search_employee') }}">
-</div>
+                                                <div class="row mb-3">
+                                                    <div class="col-md-7">
+                                                        <input type="text" id="employee_search" class="form-control"
+                                                            placeholder="{{ __('dashboard.search_employee') }}">
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        <select id="department_filter" class="form-control">
+                                                            <option value="">{{ __('dashboard.all_departments') }}
+                                                            </option>
+                                                            @foreach ($departments as $department)
+                                                                <option value="{{ $department->id }}">
+                                                                    {{ $department->department_name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
 
                                                 <table class="table table-hover">
                                                     <thead class="thead-light">
@@ -322,7 +348,8 @@
                                                             <tr>
                                                                 <td>
                                                                     <input type="checkbox" class="employee_check"
-                                                                        value="{{ $employee->id }}">
+                                                                        value="{{ $employee->id }}"
+                                                                        data-department-id="{{ $employee->department_id }}">
                                                                 </td>
                                                                 <td>
                                                                     <strong>{{ $employee->name }}</strong>
@@ -476,7 +503,7 @@
                                             @foreach ($timezones as $tz)
                                                 <option value="{{ $tz }}"
                                                     {{ $tz == $selectedTimezone ? 'selected' : '' }}>
-                                                    {{ __('timezones.'.$tz) }}
+                                                    {{ __('timezones.' . $tz) }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -530,10 +557,9 @@
         </section>
     </div>
 
-    <script src="{{ url('dist/js/attendance settings/hours-days-vacation-bounas.js?v=3') }}"></script>
-    <script src="{{ url('dist/js/attendance settings/vacation-bounas.js?v=1') }}"></script>
-    <script src="{{ url('dist\js\attendance settings\holidays.js') }}"></script>
-    <script src="{{ url('dist\js\attendance settings\late-halfDeduction.js?v=1') }}"></script>
+    <script src="{{ url('dist/js/attendance settings/hours-days-vacation-bounas.js?v=6') }}"></script>
+    <script src="{{ url('dist\js\attendance settings\holidays.js?v=1') }}"></script>
+    <script src="{{ url('dist\js\attendance settings\late-halfDeduction.js?v=3') }}"></script>
     <script>
         // URL and token configuration
         const updateLateDeductionUrl = '{{ route('attendance-rules.update-late-deduction') }}';
@@ -548,7 +574,7 @@
 
 @section('script')
     <script>
-        $('#timezone').on('change',function(){
+        $('#timezone').on('change', function() {
             $.ajax({
                 url: `{{ route('timezone.update') }}`,
                 type: 'POST',
@@ -557,10 +583,12 @@
                     _token: '{{ csrf_token() }}'
                 },
                 success: function(response) {
-                    $('#timezone_feedback').html('<span class="text-success">{{ __("dashboard.success") }}</span>');
+                    $('#timezone_feedback').html(
+                        '<span class="text-success">{{ __('dashboard.success') }}</span>');
                 },
                 error: function(xhr) {
-                    $('#timezone_feedback').html('<span class="text-danger">{{ __("dashboard.error_message") }}</span>');
+                    $('#timezone_feedback').html(
+                        '<span class="text-danger">{{ __('dashboard.error_message') }}</span>');
                 }
             });
         });

@@ -2,19 +2,35 @@
 
 return [
 
-    /*
-    |--------------------------------------------------------------------------
-    | Authentication Language Lines
-    |--------------------------------------------------------------------------
-    |
-    | The following language lines are used during authentication for various
-    | messages that we need to display to the user. You are free to modify
-    | these language lines according to your application's requirements.
-    |
-    */
+  'page_title' => 'Company | Register',
+    'human' => 'Human',
+    'resource' => 'Resource',
+    'register_new_company' => 'Register a new Company',
+    'hr_name' => 'HR Name',
+    'email' => 'Email',
+    'password' => 'Password',
+    'confirm_password' => 'Confirm Password',
+    'company_name' => 'Company Name',
+    'country' => 'Country',
+    'address' => 'Address',
+    'register' => 'Register',
+    'sign_in' => 'Sign In',
+    'page_title' => 'Admin | Register',
+    'human' => 'Human',
+    'resource' => 'Resource',
+    'register_new_admin' => 'Register a new Admin',
+    'name' => 'Name',
+    'email' => 'Email',
+    'password' => 'Password',
+    'confirm_password' => 'Confirm Password',
+    'register' => 'Register',
+    'sign_in' => 'Sign In',
+'sign_in_message' => 'Sign in to start your session',
+    'logged_out_successfully' => 'Logged out successfully.',
+'register-company' =>'Register New Company',
+    'admin_registered_successfully' => 'Admin registered successfully.',
+    'registered_successfully' => 'Registered successfully.',
 
-    'failed' => 'These credentials do not match our records.',
-    'password' => 'The provided password is incorrect.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+        'confirm_delete_company' => 'Are you sure you want to delete this company?',
 
 ];

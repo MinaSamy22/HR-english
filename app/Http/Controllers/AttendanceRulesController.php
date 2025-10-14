@@ -5,23 +5,30 @@ use App\Models\EmployeeWorkHours;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AttendanceRulesController extends Controller
 {
 
-  public function index(Request $request)
-    {
-        $data['header_title'] = "Employee Attendance";
-        $company_id = session('company_id');
-        $data['setting'] = AttendanceRule::where('company_id', $company_id)->first();
+public function index(Request $request)
+{
+    $data['header_title'] = "Employee Attendance";
+    $company_id = session('company_id');
+    $data['setting'] = AttendanceRule::where('company_id', $company_id)->first();
 
-        // Add employees data
-        $data['employees'] = User::where('company_id', $company_id)
-            ->orderBy('name')
-            ->get();
+    // Add employees data
+    $data['employees'] = User::where('company_id', $company_id)
+        ->orderBy('name')
+        ->get();
 
-        return view('backend.attendance.attendance-rule', $data);
-    }
+    // Add departments data
+    $data['departments'] = DB::table('departments')
+        ->where('company_id', $company_id)
+        ->orderBy('department_name')
+        ->get();
+
+    return view('backend.attendance.attendance-rule', $data);
+}
 
     public function saveRules(Request $request)
     {

@@ -159,6 +159,35 @@
             backdrop-filter: blur(2px);
         }
     }
+    /* Fix sidebar height on mobile */
+@media (max-width: 768px) {
+    .main-sidebar {
+        min-height: 100vh !important;
+        height: 100% !important;
+    }
+
+    .sidebar {
+        min-height: calc(100vh - 57px) !important; /* 57px is typical navbar height */
+        padding-bottom: 20px;
+    }
+
+    /* Ensure the sidebar wrapper fills the space */
+    .sidebar-wrapper,
+    .os-host,
+    .os-host-overflow {
+        min-height: 100% !important;
+    }
+
+    /* Fix for pushmenu animation leaving space */
+    body.sidebar-open .main-sidebar {
+        margin-left: 0 !important;
+    }
+
+    [dir="ltr"] body.sidebar-open .main-sidebar {
+        transform: translateX(0) !important;
+    }
+}
+
 </style>
 
 <div class="preloader flex-column justify-content-center align-items-center">

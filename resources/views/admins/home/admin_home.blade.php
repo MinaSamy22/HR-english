@@ -1,91 +1,103 @@
-@extends('admins.layouts.app')
+@extends('admins/layouts.admin-layout')
+
+@section('title', __('Admin-Interface.page_title'))
+
+@section('page_title', __('Admin-Interface.control_panel'))
 
 @section('content')
-
-        <!-- Statistics Cards -->
-        <div class="stats-grid">
-            <div class="stat-card companies">
-                <div class="icon">
-                    <i class="fas fa-building"></i>
-                </div>
-                <h3>Total Companies</h3>
-                <div class="number" id="companiesCount">{{ $totalCompanies }}</div>
+    <!-- Statistics Cards -->
+    <div class="stats-grid">
+        <div class="stat-card companies">
+            <div class="icon">
+                <i class="fas fa-building"></i>
             </div>
-
-            <div class="stat-card employees">
-                <div class="icon">
-                    <i class="fas fa-users"></i>
-                </div>
-                <h3>Total Employees</h3>
-                <div class="number" id="employeesCount">{{ $getEmployeeCount }}</div>
-            </div>
-
-            <div class="stat-card admins">
-                <div class="icon">
-                    <i class="fas fa-user-shield"></i>
-                </div>
-                <h3>Total Admins</h3>
-                <div class="number" id="adminsCount">{{ $totalAdmins }}</div>
-            </div>
-
-            <div class="stat-card hr">
-                <div class="icon" style="background-color: #4a5568;">
-                    <i class="fas fa-user-tie" style="color: #ffffff;"></i> <!-- dark gray icon -->
-                </div>
-                <h3>Total HRs</h3>
-                <div class="number" id="hrsCount">{{ $totalHRs }}</div>
-            </div>
-
-
+            <h3>{{ __('Admin-Interface.total_companies') }}</h3>
+            <div class="number" id="companiesCount">{{ $totalCompanies }}</div>
         </div>
 
+        <div class="stat-card employees">
+            <div class="icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <h3>{{ __('Admin-Interface.total_employees') }}</h3>
+            <div class="number" id="employeesCount">{{ $getEmployeeCount }}</div>
+        </div>
 
-        <!-- Content Grid -->
-        <div class="content-grid">
-            <!-- Chart Container -->
-            <div class="chart-container">
-                <h2><i class="fas fa-chart-pie" style="margin-right: 6px; color: #667eea;"></i>Employees Distribution by
-                    Company</h2>
-                <div class="chart-wrapper">
-                    <canvas id="employeeChart"></canvas>
+        <div class="stat-card admins">
+            <div class="icon">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            <h3>{{ __('Admin-Interface.total_admins') }}</h3>
+            <div class="number" id="adminsCount">{{ $totalAdmins }}</div>
+        </div>
+
+        <div class="stat-card hr">
+            <div class="icon" style="background-color: #4a5568;">
+                <i class="fas fa-user-tie" style="color: #ffffff;"></i>
+            </div>
+            <h3>{{ __('Admin-Interface.total_hrs') }}</h3>
+            <div class="number" id="hrsCount">{{ $totalHRs }}</div>
+        </div>
+    </div>
+
+    <!-- Content Grid -->
+    <div class="content-grid">
+        <!-- Chart Container -->
+        <div class="chart-container">
+            <h2>
+                <i class="fas fa-chart-pie" style="margin-right: 6px; color: #667eea;"></i>
+                {{ __('Admin-Interface.employees_distribution') }}
+            </h2>
+            <div class="chart-wrapper">
+                <canvas id="employeeChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <h2>
+                <i class="fas fa-bolt" style="margin-right: 6px; color: #667eea;"></i>
+                {{ __('Admin-Interface.quick_actions') }}
+            </h2>
+
+            <div class="action-group">
+                <h3>
+                    <i class="fas fa-plus-circle" style="margin-right: 4px;"></i>
+                    {{ __('Admin-Interface.create_new') }}
+                </h3>
+                <div class="action-buttons">
+                    <a href="{{ route('register') }}" class="btn btn-primary">
+                        <i class="fas fa-building"></i>
+                        {{ __('Admin-Interface.add_company') }}
+                    </a>
+                    <a href="{{ route('admin.register') }}" class="btn btn-success">
+                        <i class="fas fa-user-shield"></i>
+                        {{ __('Admin-Interface.add_admin') }}
+                    </a>
                 </div>
             </div>
 
-            <!-- Quick Actions -->
-            <div class="quick-actions">
-                <h2><i class="fas fa-bolt" style="margin-right: 6px; color: #667eea;"></i>Quick Actions</h2>
-
-                <div class="action-group">
-                    <h3><i class="fas fa-plus-circle" style="margin-right: 4px;"></i>Create New</h3>
-                    <div class="action-buttons">
-                        <a href="{{ route('register') }}" class="btn btn-primary">
-                            <i class="fas fa-building"></i>
-                            Add New Company
-                        </a>
-                        <a href="{{ route('admin.register') }}" class="btn btn-success">
-                            <i class="fas fa-user-shield"></i>
-                            Add New Admin
-                        </a>
-                    </div>
-                </div>
-
-                <div class="action-group">
-                    <h3><i class="fas fa-cogs" style="margin-right: 4px;"></i>Management</h3>
-                    <div class="action-buttons">
-                        <a href="{{ route('admin.companies') }}" class="btn btn-danger">
-                            <i class="fas fa-building"></i>
-                            Manage Companies
-                        </a>
-                        <a href="{{ route('admin.admins.manage') }}" class="btn btn-danger">
-                            <i class="fas fa-user-cog"></i>
-                            Manage Admins
-                        </a>
-                    </div>
+            <div class="action-group">
+                <h3>
+                    <i class="fas fa-cogs" style="margin-right: 4px;"></i>
+                    {{ __('Admin-Interface.management') }}
+                </h3>
+                <div class="action-buttons">
+                    <a href="{{ route('admin.companies') }}" class="btn btn-danger">
+                        <i class="fas fa-building"></i>
+                        {{ __('Admin-Interface.manage_companies') }}
+                    </a>
+                    <a href="{{ route('admin.admins.manage') }}" class="btn btn-danger">
+                        <i class="fas fa-user-cog"></i>
+                        {{ __('Admin-Interface.manage_admins') }}
+                    </a>
                 </div>
             </div>
         </div>
     </div>
+@endsection
 
+@section('scripts')
     <script>
         // Load data from Blade (Laravel backend)
         const dashboardData = {
@@ -96,7 +108,6 @@
             employeesByCompany: @json($employeesByCompany ?? [])
         };
 
-
         // Update statistics
         function updateStats() {
             document.getElementById('companiesCount').textContent = dashboardData.companies;
@@ -105,82 +116,95 @@
             document.getElementById('hrsCount').textContent = dashboardData.hrs;
         }
 
-        // Create pie chart
-function createChart() {
-    const ctx = document.getElementById('employeeChart').getContext('2d');
+        // Create bar chart
+        function createChart() {
+            const ctx = document.getElementById('employeeChart').getContext('2d');
+            const isRTL = document.documentElement.dir === 'rtl';
 
-    const colors = [
-        '#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe', '#43e97b',
-        '#f9ca24', '#c0392b', '#6ab04c', '#30336b' // add more if needed
-    ];
+            const colors = [
+                '#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe', '#43e97b',
+                '#f9ca24', '#c0392b', '#6ab04c', '#30336b'
+            ];
 
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: dashboardData.employeesByCompany.map(item => item.company),
-            datasets: [{
-                label: 'Employees',
-                data: dashboardData.employeesByCompany.map(item => item.employees),
-                backgroundColor: colors,
-                borderRadius: 5,
-                barThickness: 30
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: dashboardData.employeesByCompany.map(item => item.company),
+                    datasets: [{
+                        label: '{{ __("Admin-Interface.employees") }}',
+                        data: dashboardData.employeesByCompany.map(item => item.employees),
+                        backgroundColor: colors,
+                        borderRadius: 5,
+                        barThickness: 30
+                    }]
                 },
-                tooltip: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                    titleFont: {
-                        family: 'Inter',
-                        size: 14
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false,
+                            rtl: isRTL,
+                            textDirection: isRTL ? 'rtl' : 'ltr'
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleFont: {
+                                family: isRTL ? 'Cairo' : 'Inter',
+                                size: 14
+                            },
+                            bodyFont: {
+                                family: isRTL ? 'Cairo' : 'Inter',
+                                size: 12
+                            },
+                            rtl: isRTL,
+                            textDirection: isRTL ? 'rtl' : 'ltr',
+                            callbacks: {
+                                label: function(context) {
+                                    const value = context.parsed.y;
+                                    const percentage = ((value / dashboardData.employees) * 100).toFixed(1);
+                                    return `${value} {{ __("Admin-Interface.employees_text") }} (${percentage}%)`;
+                                }
+                            }
+                        }
                     },
-                    bodyFont: {
-                        family: 'Inter',
-                        size: 12
-                    },
-                    callbacks: {
-                        label: function(context) {
-                            const value = context.parsed.y;
-                            const percentage = ((value / dashboardData.employees) * 100).toFixed(1);
-                            return `${value} employees (${percentage}%)`;
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: '{{ __("Admin-Interface.number_of_employees") }}',
+                                font: {
+                                    family: isRTL ? 'Cairo' : 'Inter',
+                                    size: 13
+                                }
+                            },
+                            ticks: {
+                                font: {
+                                    family: isRTL ? 'Cairo' : 'Inter'
+                                }
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: '{{ __("Admin-Interface.company") }}',
+                                font: {
+                                    family: isRTL ? 'Cairo' : 'Inter',
+                                    size: 13
+                                }
+                            },
+                            ticks: {
+                                font: {
+                                    family: isRTL ? 'Cairo' : 'Inter',
+                                    size: 12
+                                }
+                            }
                         }
                     }
                 }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Number of Employees',
-                        font: {
-                            size: 13
-                        }
-                    }
-                },
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Company',
-                        font: {
-                            size: 13
-                        }
-                    },
-                    ticks: {
-                        font: {
-                            size: 12
-                        }
-                    }
-                }
-            }
+            });
         }
-    });
-}
 
         // Initialize dashboard
         document.addEventListener('DOMContentLoaded', function() {
@@ -199,6 +223,4 @@ function createChart() {
             });
         });
     </script>
-
-
 @endsection

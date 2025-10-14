@@ -1,3 +1,10 @@
+/**
+ * Get translation from meta tags
+ */
+function getTranslation(key) {
+    const meta = document.querySelector(`meta[name="${key}"]`);
+    return meta ? meta.getAttribute('content') : key;
+}
 
 /**
  * Late Threshold Handler
@@ -30,7 +37,8 @@ function updateLateThreshold(minutes) {
         }, 3000);
     })
     .catch(error => {
-        feedbackEl.innerHTML = '<div class="text-danger">Error updating late threshold</div>';
+        const errorMsg = getTranslation('msg-error-updating-late-threshold');
+        feedbackEl.innerHTML = '<div class="text-danger">' + errorMsg + '</div>';
         setTimeout(() => {
             feedbackEl.innerHTML = '';
         }, 3000);
@@ -68,7 +76,8 @@ function updateHalfDayThreshold(minutes) {
         }, 3000);
     })
     .catch(error => {
-        feedbackEl.innerHTML = '<div class="text-danger">Error updating half day threshold</div>';
+        const errorMsg = getTranslation('msg-error-updating-half-day-threshold');
+        feedbackEl.innerHTML = '<div class="text-danger">' + errorMsg + '</div>';
         setTimeout(() => {
             feedbackEl.innerHTML = '';
         }, 3000);
@@ -106,7 +115,8 @@ function updateLateDeduction(value) {
         }, 3000);
     })
     .catch(error => {
-        feedbackEl.innerHTML = '<div class="text-danger">Error updating late deduction</div>';
+        const errorMsg = getTranslation('msg-error-updating-late-deduction');
+        feedbackEl.innerHTML = '<div class="text-danger">' + errorMsg + '</div>';
         setTimeout(() => {
             feedbackEl.innerHTML = '';
         }, 3000);
@@ -141,13 +151,15 @@ function updateHalfDayDeduction(value) {
         return response.json();
     })
     .then(data => {
-        feedbackEl.innerHTML = '<div class="text-success">' + (data.message || 'Updated successfully!') + '</div>';
+        const successMsg = data.message || getTranslation('msg-updated-successfully');
+        feedbackEl.innerHTML = '<div class="text-success">' + successMsg + '</div>';
         setTimeout(() => {
             feedbackEl.innerHTML = '';
         }, 3000);
     })
     .catch(error => {
-        feedbackEl.innerHTML = '<div class="text-danger">Error updating half day deduction</div>';
+        const errorMsg = getTranslation('msg-error-updating-half-day-deduction');
+        feedbackEl.innerHTML = '<div class="text-danger">' + errorMsg + '</div>';
         setTimeout(() => {
             feedbackEl.innerHTML = '';
         }, 3000);
