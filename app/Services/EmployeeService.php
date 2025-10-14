@@ -25,7 +25,7 @@ class EmployeeService
     public function getUser()
     {
         $totalUsed = $this->getVacations()->sum('total');
-        $vacationLimit = $this->employee->company->attendanceSetting->vacation_balance;
+        $vacationLimit = $this->employee->vacation_balance;
         $this->employee->total_used = $totalUsed;
         $this->employee->remaing = $vacationLimit - $totalUsed;
         return $this->employee;
