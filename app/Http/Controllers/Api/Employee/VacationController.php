@@ -71,7 +71,7 @@ class VacationController extends Controller
         $totalDays = $endDate->diffInDays($startDate) + 1;
         $employee = $this->employeeService->getUser();
 
-        $vacationLimit = $employee->company->attendanceSetting->vacation_balance ?? 0;
+        $vacationLimit = $employee->vacation_balance ?? 0;
 
         $totalUsed = $this->employeeService->getVacations()->sum('total');
 
