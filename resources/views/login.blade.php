@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() == 'ar' || app()->getLocale() == 'au' ? 'rtl' : 'ltr' }}">
+<html lang="{{ app()->getLocale() }}"
+    dir="{{ app()->getLocale() == 'ar' || app()->getLocale() == 'au' ? 'rtl' : 'ltr' }}">
 
 <head>
     <meta charset="utf-8">
@@ -7,10 +8,12 @@
     <title>{{ __('auth.sign_in') }}</title>
     <link rel="icon" type="image/x-icon" href="{{ url('dist/img/hr_logo-.png') }}" />
 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
 
-    @if(app()->getLocale() == 'ar' || app()->getLocale() == 'au')
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    @if (app()->getLocale() == 'ar' || app()->getLocale() == 'au')
+        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet">
     @endif
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css">
@@ -175,6 +178,7 @@
                 opacity: 0;
                 transform: translateY(-10px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -226,7 +230,11 @@
         </div>
 
         <div class="card">
-            @include('_message')
+            @if (!empty(session('success')))
+                <div class="alert alert-success" role="alert">
+                    {{ session('success') }}
+                </div>
+            @endif
 
             <div class="card-body login-card-body">
                 <p class="login-box-msg">{{ __('auth.sign_in_message') }}</p>
@@ -235,7 +243,7 @@
                     <div class="lang-dropdown-wrapper">
                         <button class="lang-dropdown-btn" onclick="toggleLangDropdown(event)" type="button">
                             <div class="custom-badge">
-                                @if(app()->getLocale() == 'ar')
+                                @if (app()->getLocale() == 'ar')
                                     <span class="flag-icon flag-icon-sa"></span>
                                     <span class="font-weight-bold">عربي</span>
                                 @elseif(app()->getLocale() == 'au')
@@ -249,24 +257,27 @@
                             </div>
                         </button>
                         <div class="lang-dropdown-content" id="langDropdown">
-                            <a href="{{ url('lang/en') }}" class="lang-option {{ app()->getLocale() == 'en' ? 'active' : '' }}">
+                            <a href="{{ url('lang/en') }}"
+                                class="lang-option {{ app()->getLocale() == 'en' ? 'active' : '' }}">
                                 <span class="flag-icon flag-icon-gb"></span>
                                 <span>English</span>
-                                @if(app()->getLocale() == 'en')
+                                @if (app()->getLocale() == 'en')
                                     <i class="fas fa-check text-success" style="margin-left: auto;"></i>
                                 @endif
                             </a>
-                            <a href="{{ url('lang/ar') }}" class="lang-option {{ app()->getLocale() == 'ar' ? 'active' : '' }}">
+                            <a href="{{ url('lang/ar') }}"
+                                class="lang-option {{ app()->getLocale() == 'ar' ? 'active' : '' }}">
                                 <span class="flag-icon flag-icon-sa"></span>
                                 <span>العربية</span>
-                                @if(app()->getLocale() == 'ar')
+                                @if (app()->getLocale() == 'ar')
                                     <i class="fas fa-check text-success" style="margin-left: auto;"></i>
                                 @endif
                             </a>
-                            <a href="{{ url('lang/au') }}" class="lang-option {{ app()->getLocale() == 'au' ? 'active' : '' }}">
+                            <a href="{{ url('lang/au') }}"
+                                class="lang-option {{ app()->getLocale() == 'au' ? 'active' : '' }}">
                                 <span class="flag-icon flag-icon-pk"></span>
                                 <span>اردو</span>
-                                @if(app()->getLocale() == 'au')
+                                @if (app()->getLocale() == 'au')
                                     <i class="fas fa-check text-success" style="margin-left: auto;"></i>
                                 @endif
                             </a>
@@ -278,14 +289,16 @@
                     @csrf
 
                     <div class="form-group position-relative mb-3">
-                        <input type="email" name="email" class="form-control" placeholder="{{ __('auth.email') }}" required>
+                        <input type="email" name="email" class="form-control" placeholder="{{ __('auth.email') }}"
+                            required>
                         <span class="input-icon">
                             <i class="fas fa-envelope"></i>
                         </span>
                     </div>
 
                     <div class="form-group position-relative mb-4">
-                        <input type="password" id="password" name="password" class="form-control" placeholder="{{ __('auth.password') }}" required>
+                        <input type="password" id="password" name="password" class="form-control"
+                            placeholder="{{ __('auth.password') }}" required>
                         <span class="input-icon password-toggle" onclick="togglePassword('password', 'eyeIcon')">
                             <i id="eyeIcon" class="fa fa-eye"></i>
                         </span>
