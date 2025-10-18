@@ -668,6 +668,15 @@
 
                 <li class="nav-header">{{ __('dashboard.settings') }}</li>
 
+                <!-- payroll report -->
+                    {{-- <li class="nav-item">
+                        <a href="{{ url('admin/financial-analysis') }}"
+                            class="nav-link @if (Request::segment(2) == 'financial-analysis') active @endif">
+                            <i class="nav-icon fas fa-chart-area text-white"></i>
+                            <p>{{ __('dashboard.branches') }}</p>
+                        </a>
+                    </li> --}}
+
                 <!-- Branches -->
                 @if (session('branch_id') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1)
                     <li class="nav-item">

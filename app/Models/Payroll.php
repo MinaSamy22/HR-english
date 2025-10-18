@@ -66,13 +66,13 @@ class Payroll extends Model
             $return = $return->where('users.name', 'like', '%' . Request::get('name') . '%');
         }
 
-        if (!empty(Request::get('month'))) {
-            $return = $return->whereMonth('payrolls.created_at', Request::get('month'));
-        }
+       if (!empty(Request::get('month'))) {
+    $return = $return->whereMonth('payrolls.start_date', Request::get('month'));
+}
 
-        if (!empty(Request::get('year'))) {
-            $return = $return->whereYear('payrolls.created_at', Request::get('year'));
-        }
+if (!empty(Request::get('year'))) {
+    $return = $return->whereYear('payrolls.start_date', Request::get('year'));
+}
 
         if (!empty(Request::get('payroll_type'))) {
             $return = $return->where('payrolls.payroll_type', Request::get('payroll_type'));
@@ -116,5 +116,9 @@ class Payroll extends Model
         return $this->belongsTo(Company::class);
     }
 
+     public function branch()
+    {
+        return $this->belongsTo(Branch::class);
+    }
+
 }
- 

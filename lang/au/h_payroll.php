@@ -88,4 +88,6 @@ return [
         'monthly' => 'ماہانہ',
         'other'   => 'دیگر',
     ],
+
+    'please_fix_errors_before_proceeding' => 'آگے بڑھنے سے پہلے براہ کرم مذکورہ بالا غلطیوں کو درست کریں۔',
 ];
