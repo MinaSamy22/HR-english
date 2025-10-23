@@ -201,7 +201,14 @@ class EmployeeService
             }
 
             $workStart = Carbon::createFromFormat('H:i:s', $employee->work_start_time);
-            $attendance_type = $now->lessThanOrEqualTo($workStart) ? 1 : 2; // 1 = On time, 2 = Late
+            $timeDifference = $now->diffInMinutes($workStart, false);
+            if ($timeDifference > $settings->half_day_threshold_minutes) {
+                $attendance_type = 3; // Absent
+            } elseif ($timeDifference > $settings->late_threshold_minutes) {
+                $attendance_type = 2; // Late
+            } else {
+                $attendance_type = 1; // On time
+            }
 
         }
 
