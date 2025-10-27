@@ -116,23 +116,56 @@
                                                             value="{{ $check_out }}">
                                                     </td>
                                                     <td>
-                                                        <select class="form-control attendance-select"
-                                                            data-employee="{{ $value->id }}">
-                                                            <option value="">{{ __('dashboard.select_status') }}
-                                                            </option>
-                                                            <option value="1"
-                                                                {{ $attendance_type == '1' ? 'selected' : '' }}>
-                                                                {{ __('dashboard.present') }}</option>
-                                                            <option value="2"
-                                                                {{ $attendance_type == '2' ? 'selected' : '' }}>
-                                                                {{ __('dashboard.late') }}</option>
-                                                            <option value="3"
-                                                                {{ $attendance_type == '3' ? 'selected' : '' }}>
-                                                                {{ __('dashboard.absent') }}</option>
-                                                            <option value="4"
-                                                                {{ $attendance_type == '4' ? 'selected' : '' }}>
-                                                                {{ __('dashboard.half_day') }}</option>
-                                                        </select>
+                                                        <div class="attendance-radio-group" data-employee="{{ $value->id }}">
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input attendance-radio"
+                                                                    type="radio"
+                                                                    name="attendance_{{ $value->id }}"
+                                                                    id="present_{{ $value->id }}"
+                                                                    value="1"
+                                                                    data-employee="{{ $value->id }}"
+                                                                    {{ $attendance_type == '1' ? 'checked' : '' }}>
+                                                                <label class="form-check-label" for="present_{{ $value->id }}">
+                                                                    {{ __('dashboard.present') }}
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input attendance-radio"
+                                                                    type="radio"
+                                                                    name="attendance_{{ $value->id }}"
+                                                                    id="late_{{ $value->id }}"
+                                                                    value="2"
+                                                                    data-employee="{{ $value->id }}"
+                                                                    {{ $attendance_type == '2' ? 'checked' : '' }}>
+                                                                <label class="form-check-label" for="late_{{ $value->id }}">
+                                                                    {{ __('dashboard.late') }}
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input attendance-radio"
+                                                                    type="radio"
+                                                                    name="attendance_{{ $value->id }}"
+                                                                    id="absent_{{ $value->id }}"
+                                                                    value="3"
+                                                                    data-employee="{{ $value->id }}"
+                                                                    {{ $attendance_type == '3' ? 'checked' : '' }}>
+                                                                <label class="form-check-label" for="absent_{{ $value->id }}">
+                                                                    {{ __('dashboard.absent') }}
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input attendance-radio"
+                                                                    type="radio"
+                                                                    name="attendance_{{ $value->id }}"
+                                                                    id="halfday_{{ $value->id }}"
+                                                                    value="4"
+                                                                    data-employee="{{ $value->id }}"
+                                                                    {{ $attendance_type == '4' ? 'checked' : '' }}>
+                                                                <label class="form-check-label" for="halfday_{{ $value->id }}">
+                                                                    {{ __('dashboard.half_day') }}
+                                                                </label>
+                                                            </div>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -148,23 +181,41 @@
     </div>
     </section>
     </div>
-    <!-- Link to the new JavaScript file -->
 
     <style>
-        .attendance-select {
-            transition: all 0.3s ease;
+        .attendance-radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
         }
 
-        .attendance-select:focus {
-            outline: none;
-            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+        .form-check-inline {
+            margin-right: 15px;
         }
 
-        /* Success state */
-        .save-success {
-            border: 2px solid #28a745 !important;
-            background-color: #d4edda !important;
-            box-shadow: 0 0 8px rgba(40, 167, 69, 0.4) !important;
+        .form-check-input {
+            cursor: pointer;
+        }
+
+        .form-check-label {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        /* Success state for radio buttons */
+        .save-success-radio {
+            animation: successPulse 1.2s ease;
+        }
+
+        @keyframes successPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .attendance-radio:checked + label {
+            font-weight: 600;
+            color: #28a745;
         }
 
         /* Error state */
@@ -173,7 +224,14 @@
             background-color: #f8d7da !important;
             box-shadow: 0 0 8px rgba(220, 53, 69, 0.4) !important;
         }
+
+        /* Success state for time inputs */
+        .save-success {
+            border: 2px solid #28a745 !important;
+            background-color: #d4edda !important;
+            box-shadow: 0 0 8px rgba(40, 167, 69, 0.4) !important;
+        }
     </style>
 
-    <script src="{{ url('dist/js/attendance.js') }}?v=9"></script>
+    <script src="{{ url('dist/js/attendance.js') }}?v=20"></script>
 @endsection

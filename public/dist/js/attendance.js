@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const checkInInputs = document.querySelectorAll('.check-in-input');
     const checkOutInputs = document.querySelectorAll('.check-out-input');
     const attendanceDateInput = document.getElementById('getAttendanceDate');
-    const attendanceSelects = document.querySelectorAll('.attendance-select');
+    const attendanceRadios = document.querySelectorAll('.attendance-radio');
 
     // Bulk controls
     const selectAllCheckbox = document.getElementById('selectAll');
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Individual input listeners
     checkInInputs.forEach(input => input.addEventListener('change', saveCheckTime));
     checkOutInputs.forEach(input => input.addEventListener('change', saveCheckTime));
-    attendanceSelects.forEach(select => select.addEventListener('change', saveAttendance));
+    attendanceRadios.forEach(radio => radio.addEventListener('change', saveAttendance));
 
     // Select all
     if (selectAllCheckbox) {
@@ -55,8 +55,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 await saveData(empId, {
                     attendance_date: date,
-                    check_in: inTime ? `${inTime}:00` : null,
-                    check_out: outTime ? `${outTime}:00` : null
+                    check_in: inTime ? `${inTime.length === 5 ? inTime + ':00' : inTime}` : null,
+check_out: outTime ? `${outTime.length === 5 ? outTime + ':00' : outTime}` : null,
+
                 });
             }
 
@@ -68,12 +69,19 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Save attendance type
+    // Save attendance type from radio button
     function saveAttendance(event) {
         const empId = event.target.dataset.employee;
-        const attendanceType = event.target.value || null;
+        const attendanceType = event.target.value;
         const date = attendanceDateInput.value;
-        saveData(empId, { attendance_date: date, attendance_type: attendanceType }, event.target);
+
+        // Get the parent radio group for visual feedback
+        const radioGroup = event.target.closest('.attendance-radio-group');
+
+        saveData(empId, {
+            attendance_date: date,
+            attendance_type: attendanceType
+        }, radioGroup);
     }
 
     // Save check-in/out
@@ -82,6 +90,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const date = attendanceDateInput.value;
         const inTime = document.querySelector(`.check-in-input[data-employee='${empId}']`).value;
         const outTime = document.querySelector(`.check-out-input[data-employee='${empId}']`).value;
+
         saveData(empId, {
             attendance_date: date,
             check_in: inTime ? `${inTime}:00` : null,
@@ -106,8 +115,14 @@ document.addEventListener('DOMContentLoaded', function () {
             const result = await res.json();
 
             if (result.success && element) {
-                element.classList.add('save-success');
-                setTimeout(() => element.classList.remove('save-success'), 1200);
+                // Different visual feedback for radio groups vs inputs
+                if (element.classList.contains('attendance-radio-group')) {
+                    element.classList.add('save-success-radio');
+                    setTimeout(() => element.classList.remove('save-success-radio'), 1200);
+                } else {
+                    element.classList.add('save-success');
+                    setTimeout(() => element.classList.remove('save-success'), 1200);
+                }
             } else if (!result.success) {
                 console.error(result.message || 'Save failed.');
             }
