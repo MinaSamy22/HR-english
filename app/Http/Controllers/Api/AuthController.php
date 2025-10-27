@@ -34,7 +34,7 @@ class AuthController extends Controller
         if (!Auth::guard('api')->check()) {
             return sendResponse([], 'unauthenticated', 0);
         }
-        $employeeService = new EmployeeService(auth('api')->user()->load('company.attendanceSetting'));
+        $employeeService = new EmployeeService(auth('api')->user()->load('company.attendanceSetting','get_department_single'));
         $user = $employeeService->getUser();
         return sendResponse($user, 'user data retrieved successfully', 1);
     }
