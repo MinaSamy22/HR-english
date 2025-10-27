@@ -481,4 +481,25 @@ return [
 'all_departments' => 'تمام محکمے',
 'filter_by_department' => 'محکمے کے مطابق فلٹر کریں',
 'search_employee' => 'ملازم تلاش کریں',
+
+'check_in' => 'چیک ان',
+'check_out' => 'چیک آؤٹ',
+ 'global_check_in' => ' چیک اِن',
+    'global_check_out' => ' چیک آؤٹ',
+    'apply_time' => 'وقت لاگو کریں',
+      'please_select_employee' => 'براہ کرم کم از کم ایک ملازم منتخب کریں۔',
+    'times_applied_success' => 'منتخب ملازمین پر اوقات کامیابی سے لاگو کر دیے گئے۔',
+    'error_saving_attendance' => 'حاضری محفوظ کرنے کے دوران ایک غلطی پیش آگئی۔',
+      'please_select_employee' => 'براہ کرم کم از کم ایک ملازم منتخب کریں۔',
+    'times_applied_success' => 'منتخب ملازمین پر اوقات کامیابی سے لاگو کر دیے گئے۔',
+    'error_saving_attendance' => 'حاضری محفوظ کرنے کے دوران ایک غلطی پیش آگئی۔',
+
+'select_status' => 'حالت منتخب کریں',
+
+
+
+
+
+
+
 ];

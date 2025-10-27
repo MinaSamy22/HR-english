@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const checkInInputs = document.querySelectorAll('.check-in-input');
     const checkOutInputs = document.querySelectorAll('.check-out-input');
     const attendanceDateInput = document.getElementById('getAttendanceDate');
-    const attendanceSelects = document.querySelectorAll('.attendance-select');
+    const attendanceRadios = document.querySelectorAll('.attendance-radio');
 
     // Bulk controls
     const selectAllCheckbox = document.getElementById('selectAll');
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Individual input listeners
     checkInInputs.forEach(input => input.addEventListener('change', saveCheckTime));
     checkOutInputs.forEach(input => input.addEventListener('change', saveCheckTime));
-    attendanceSelects.forEach(select => select.addEventListener('change', saveAttendance));
+    attendanceRadios.forEach(radio => radio.addEventListener('change', saveAttendance));
 
     // Select all
     if (selectAllCheckbox) {
@@ -68,12 +68,13 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Save attendance type
+    // Save attendance type (from radio button)
     function saveAttendance(event) {
         const empId = event.target.dataset.employee;
         const attendanceType = event.target.value || null;
         const date = attendanceDateInput.value;
-        saveData(empId, { attendance_date: date, attendance_type: attendanceType }, event.target);
+        const radioGroup = event.target.closest('.attendance-radio-group');
+        saveData(empId, { attendance_date: date, attendance_type: attendanceType }, radioGroup);
     }
 
     // Save check-in/out
