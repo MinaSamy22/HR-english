@@ -72,6 +72,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="table-responsive">
                                 <table class="table table-striped">
                                     <thead>
                                         <tr>
@@ -172,6 +173,7 @@
                                         @endif
                                     </tbody>
                                 </table>
+                                </div>
 
                             </div>
                 </div>
