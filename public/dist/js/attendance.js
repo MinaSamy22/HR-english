@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const globalCheckIn = document.getElementById('globalCheckIn');
     const globalCheckOut = document.getElementById('globalCheckOut');
 
-    // Individual input listeners
+    // Event listeners
     checkInInputs.forEach(input => input.addEventListener('change', saveCheckTime));
     checkOutInputs.forEach(input => input.addEventListener('change', saveCheckTime));
     attendanceRadios.forEach(radio => radio.addEventListener('change', saveAttendance));
@@ -23,82 +23,95 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Apply global times with spinner
-    if (applyGlobalBtn) {
-        applyGlobalBtn.addEventListener('click', async function (e) {
-            e.preventDefault();
+    // Apply global times
+// Apply global times
+if (applyGlobalBtn) {
+    applyGlobalBtn.addEventListener('click', async function (e) {
+        e.preventDefault();
 
-            const inTime = globalCheckIn.value.trim();
-            const outTime = globalCheckOut.value.trim();
-            const date = attendanceDateInput.value;
-
-            const selected = Array.from(employeeCheckboxes).filter(chk => chk.checked);
-            if (selected.length === 0) {
-                alert('Please select at least one employee.');
-                return;
-            }
-
-            // Show loading spinner on button
-            const originalHtml = applyGlobalBtn.innerHTML;
-            applyGlobalBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Saving...`;
-            applyGlobalBtn.disabled = true;
-
-            // Save each selected employee
-            for (const chk of selected) {
-                const empId = chk.value;
-                const inField = document.querySelector(`.check-in-input[data-employee='${empId}']`);
-                const outField = document.querySelector(`.check-out-input[data-employee='${empId}']`);
-
-                // Update UI
-                inField.value = inTime || '';
-                outField.value = outTime || '';
-
-                await saveData(empId, {
-                    attendance_date: date,
-                    check_in: inTime ? `${inTime.length === 5 ? inTime + ':00' : inTime}` : null,
-check_out: outTime ? `${outTime.length === 5 ? outTime + ':00' : outTime}` : null,
-
-                });
-            }
-
-            // Restore button
-            applyGlobalBtn.innerHTML = originalHtml;
-            applyGlobalBtn.disabled = false;
-
-            alert('All selected employees updated successfully!');
-        });
-    }
-
-    // Save attendance type from radio button
-    function saveAttendance(event) {
-        const empId = event.target.dataset.employee;
-        const attendanceType = event.target.value;
+        const inTime = globalCheckIn.value.trim();
+        const outTime = globalCheckOut.value.trim();
         const date = attendanceDateInput.value;
 
-        // Get the parent radio group for visual feedback
-        const radioGroup = event.target.closest('.attendance-radio-group');
+        const selected = Array.from(employeeCheckboxes).filter(chk => chk.checked);
+        if (selected.length === 0) {
+            alert('Please select at least one employee.');
+            return;
+        }
+
+        const originalHtml = applyGlobalBtn.innerHTML;
+        applyGlobalBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Saving...`;
+        applyGlobalBtn.disabled = true;
+
+        for (const chk of selected) {
+            const empId = chk.value;
+            const inField = document.querySelector(`.check-in-input[data-employee='${empId}']`);
+            const outField = document.querySelector(`.check-out-input[data-employee='${empId}']`);
+
+            // Update UI
+            inField.value = inTime || '';
+            outField.value = outTime || '';
+
+            // Get selected attendance type for this employee
+            const selectedRadio = document.querySelector(`.attendance-radio[data-employee='${empId}']:checked`);
+            const attendanceType = selectedRadio ? selectedRadio.value : null;
+
+            // Save with all values (to avoid overwriting)
+            await saveData(empId, {
+                attendance_date: date,
+                check_in: inTime ? `${inTime.length === 5 ? inTime + ':00' : inTime}` : null,
+                check_out: outTime ? `${outTime.length === 5 ? outTime + ':00' : outTime}` : null,
+                attendance_type: attendanceType
+            });
+        }
+
+        applyGlobalBtn.innerHTML = originalHtml;
+        applyGlobalBtn.disabled = false;
+        alert('All selected employees updated successfully!');
+    });
+}
+
+
+    // Save attendance type (radio)
+    function saveAttendance(event) {
+        const empId = event.target.dataset.employee;
+        const date = attendanceDateInput.value;
+        const attendanceType = event.target.value;
+
+        // Read existing time values
+        const inTime = document.querySelector(`.check-in-input[data-employee='${empId}']`)?.value || null;
+        const outTime = document.querySelector(`.check-out-input[data-employee='${empId}']`)?.value || null;
 
         saveData(empId, {
             attendance_date: date,
-            attendance_type: attendanceType
-        }, radioGroup);
+            attendance_type: attendanceType,
+            check_in: inTime || null,
+            check_out: outTime || null
+        }, event.target.closest('.attendance-radio-group'));
     }
 
-    // Save check-in/out
+    // Save check-in / check-out
     function saveCheckTime(event) {
         const empId = event.target.dataset.employee;
         const date = attendanceDateInput.value;
-        const inTime = document.querySelector(`.check-in-input[data-employee='${empId}']`).value;
-        const outTime = document.querySelector(`.check-out-input[data-employee='${empId}']`).value;
+
+        // Read both times
+        const inTime = document.querySelector(`.check-in-input[data-employee='${empId}']`)?.value || null;
+        const outTime = document.querySelector(`.check-out-input[data-employee='${empId}']`)?.value || null;
+
+        // Read selected attendance type (if any)
+        const selectedRadio = document.querySelector(`.attendance-radio[data-employee='${empId}']:checked`);
+        const attendanceType = selectedRadio ? selectedRadio.value : null;
 
         saveData(empId, {
             attendance_date: date,
-            check_in: inTime ? `${inTime}:00` : null,
-            check_out: outTime ? `${outTime}:00` : null
+            check_in: inTime ? `${inTime.length === 5 ? inTime + ':00' : inTime}` : null,
+            check_out: outTime ? `${outTime.length === 5 ? outTime + ':00' : outTime}` : null,
+            attendance_type: attendanceType
         }, event.target);
     }
 
-    // Save to server
+    // Shared save function
     async function saveData(employeeId, data, element = null) {
         data.employee_id = employeeId;
 
@@ -115,7 +128,6 @@ check_out: outTime ? `${outTime.length === 5 ? outTime + ':00' : outTime}` : nul
             const result = await res.json();
 
             if (result.success && element) {
-                // Different visual feedback for radio groups vs inputs
                 if (element.classList.contains('attendance-radio-group')) {
                     element.classList.add('save-success-radio');
                     setTimeout(() => element.classList.remove('save-success-radio'), 1200);
