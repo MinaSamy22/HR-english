@@ -326,6 +326,25 @@
                                         </div>
                                     </div>
 
+
+                                    <div class="form-group row">
+    <label class="col-sm-2 col-form-label">
+        {{ __('h_employee.role') }}
+        <span style="color: red;">{{ __('h_employee.required_field') }}</span>
+    </label>
+    <div class="col-sm-10">
+        <select class="form-control" name="is_role" required>
+            <option value="0" {{ $getRecord->is_role == 0 ? 'selected' : '' }}>
+                {{ __('h_employee.employee') }}
+            </option>
+            <option value="1" {{ $getRecord->is_role == 1 ? 'selected' : '' }}>
+                {{ __('h_employee.hrs') }}
+            </option>
+        </select>
+    </div>
+</div>
+
+
                                 </div>
 
                                 <div class="card-footer">

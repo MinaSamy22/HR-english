@@ -301,7 +301,7 @@
                                                 style="color: red;">
                                             </span></label>
                                         <div class="col-sm-10">
-                                            {{ !empty($getRecord->is_role) ? __('h_employee.hr') : __('h_employee.employee') }}
+                                            {{ !empty($getRecord->is_role) ? __('h_employee.hrs') : __('h_employee.employee') }}
                                         </div>
                                     </div>
 

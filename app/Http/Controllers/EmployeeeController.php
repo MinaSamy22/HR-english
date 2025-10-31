@@ -228,6 +228,7 @@ public function edit_update($id, Request $request){
 
     $user->manager_id           = trim($request->manager_id);
     $user->department_id        = trim($request->department_id);
+    $user->is_role              = $request->is_role;
 
     $user->save();
 
