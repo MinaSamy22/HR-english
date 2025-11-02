@@ -154,15 +154,10 @@ public function edit($id)
 
     $data['getRecord'] = User::find($id);
 
-    if ($branch_id !== null) {
-        $data['getJobs']        = Job::where('branch_id', $branch_id)->get();
-        $data['getDepartments'] = Department::where('branch_id', $branch_id)->get();
-        $data['getManagers'] = Manager::getRecord();
-    } else {
-        $data['getJobs']        = Job::where('company_id', $company_id)->whereNull('branch_id')->get();
-        $data['getDepartments'] = Department::where('company_id', $company_id)->whereNull('branch_id')->get();
-        $data['getManagers']    = Manager::where('company_id', $company_id)->whereNull('branch_id')->get();
-    }
+    // ✅ Always show all company data (no branch restriction)
+    $data['getJobs']        = Job::where('company_id', $company_id)->get();
+    $data['getDepartments'] = Department::where('company_id', $company_id)->get();
+    $data['getManagers']    = Manager::getRecord();
 
     return view('backend.employees.edit', $data);
 }
