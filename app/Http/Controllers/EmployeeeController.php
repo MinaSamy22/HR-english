@@ -53,7 +53,7 @@ public function add(Request $request)
    // ✅ Always show all company data (no branch restriction)
     $data['getJobs']        = Job::where('company_id', $company_id)->get();
     $data['getDepartments'] = Department::where('company_id', $company_id)->get();
-    $data['getManagers']    = Manager::getRecord();
+    $data['getManagers'] = Manager::where('company_id', $company_id)->get();
 
     return view('backend.employees.add', $data);
 }
@@ -157,7 +157,7 @@ public function edit($id)
     // ✅ Always show all company data (no branch restriction)
     $data['getJobs']        = Job::where('company_id', $company_id)->get();
     $data['getDepartments'] = Department::where('company_id', $company_id)->get();
-    $data['getManagers']    = Manager::getRecord();
+    $data['getManagers'] = Manager::where('company_id', $company_id)->get();
 
     return view('backend.employees.edit', $data);
 }

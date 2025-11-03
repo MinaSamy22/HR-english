@@ -55,13 +55,16 @@ public function add(Request $request)
     $company_id = session('company_id');
     $branch_id = session('branch_id');
 
-    if ($branch_id !== null) {
-        $data['getManagers'] = Manager::where('branch_id', $branch_id)->get();
-        $data['getAdministration'] = Administration::where('branch_id', $branch_id)->get();
-    } else {
-        $data['getManagers'] = Manager::where('company_id', $company_id)->whereNull('branch_id')->get();
-        $data['getAdministration'] = Administration::where('company_id', $company_id)->whereNull('branch_id')->get();
-    }
+    // if ($branch_id !== null) {
+    //     $data['getManagers'] = Manager::where('branch_id', $branch_id)->get();
+    //     $data['getAdministration'] = Administration::where('branch_id', $branch_id)->get();
+    // } else {
+    //     $data['getManagers'] = Manager::where('company_id', $company_id)->whereNull('branch_id')->get();
+    //     $data['getAdministration'] = Administration::where('company_id', $company_id)->whereNull('branch_id')->get();
+    // }
+  // ✅ Always show all company data (no branch restriction)
+    $data['getManagers'] = Manager::where('company_id', $company_id)->get();
+    $data['getAdministration'] = Administration::where('company_id', $company_id)->get();
 
     return view('backend.departments.add', $data);
 }
@@ -109,13 +112,17 @@ public function edit($id)
 
     $data['getRecord'] = Department::find($id);
 
-    if ($branch_id !== null) {
-        $data['getManagers'] = Manager::where('branch_id', $branch_id)->get();
-        $data['getAdministration'] = Administration::where('branch_id', $branch_id)->get();
-    } else {
-        $data['getManagers'] = Manager::where('company_id', $company_id)->whereNull('branch_id')->get();
-        $data['getAdministration'] = Administration::where('company_id', $company_id)->whereNull('branch_id')->get();
-    }
+    // if ($branch_id !== null) {
+    //     $data['getManagers'] = Manager::where('branch_id', $branch_id)->get();
+    //     $data['getAdministration'] = Administration::where('branch_id', $branch_id)->get();
+    // } else {
+    //     $data['getManagers'] = Manager::where('company_id', $company_id)->whereNull('branch_id')->get();
+    //     $data['getAdministration'] = Administration::where('company_id', $company_id)->whereNull('branch_id')->get();
+    // }
+    // ✅ Always show all company data (no branch restriction)
+    $data['getManagers'] = Manager::where('company_id', $company_id)->get();
+    $data['getAdministration'] = Administration::where('company_id', $company_id)->get();
+
 
     return view('backend.departments.edit', $data);
 }
