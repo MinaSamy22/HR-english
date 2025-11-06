@@ -196,9 +196,10 @@ class EmployeeService
                 return $this->sendResponse(__('dashboard.not_in_checkin_area'), [], 0);
             }
 
-            if (! $employee->work_start_time) {
-                return $this->sendResponse(__('dashboard.invalid_start_time'), [], 0);
-            }
+        }
+        if (! $employee->work_start_time) {
+            return $this->sendResponse(__('dashboard.invalid_start_time'), [], 0);
+        }
 
             $workStart = Carbon::createFromFormat('H:i:s', $employee->work_start_time);
             $timeDifference = $workStart->diffInMinutes($now, false);
@@ -210,7 +211,6 @@ class EmployeeService
                 $attendance_type = 1; // On time
             }
 
-        }
 
         $attendance = $this->employee->attendances()->create([
             'attendance_date' => $now->toDateString(),
