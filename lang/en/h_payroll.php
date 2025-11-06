@@ -88,4 +88,6 @@ return [
         'monthly' => 'Monthly',
         'other'   => 'Other',
     ],
+
+    'please_fix_errors_before_proceeding' => 'Please fix the above errors before proceeding.',
 ];

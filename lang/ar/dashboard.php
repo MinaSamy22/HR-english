@@ -468,5 +468,18 @@ return [
 'all_departments' => 'جميع الأقسام',
 'filter_by_department' => 'تصفية حسب القسم',
 'search_employee' => 'بحث عن موظف',
+
+ 'check_in' => 'تسجيل الدخول',
+ 'check_out' => 'تسجيل الخروج',
+ 'global_check_in' => 'تسجيل الدخول ',
+    'global_check_out' => 'تسجيل الخروج ',
+    'apply_time' => 'تطبيق الوقت',
+     'please_select_employee' => 'يرجى اختيار موظف واحد على الأقل.',
+    'times_applied_success' => 'تم تطبيق الأوقات بنجاح على الموظفين المحددين.',
+    'error_saving_attendance' => 'حدث خطأ أثناء حفظ الحضور.',
+    'please_select_time' => 'يرجى اختيار وقت واحد على الأقل (دخول أو خروج).',
+
+    'select_status' => 'اختر الحالة',
+
 ];
 

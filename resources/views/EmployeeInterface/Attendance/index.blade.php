@@ -166,9 +166,9 @@
                                                 <th>
                                                     <i class="fas fa-clock mr-1"></i>{{ __('E_attendance.time_out') }}
                                                 </th>
-                                                <th>
+                                                {{-- <th>
                                                     <i class="fas fa-hourglass-half mr-1"></i>{{ __('E_attendance.hours') }}
-                                                </th>
+                                                </th> --}}
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -219,26 +219,26 @@
                                                         </span>
                                                     </td>
                                                     <td>
-                                                        @if($record->time_in)
+                                                        @if($record->check_in)
                                                             <span class="text-success">
                                                                 <i class="fas fa-sign-in-alt mr-1"></i>
-                                                                {{ date('h:i A', strtotime($record->time_in)) }}
+                                                                {{ date('h:i A', strtotime($record->check_in)) }}
                                                             </span>
                                                         @else
                                                             <span class="text-muted">--</span>
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        @if($record->time_out)
+                                                        @if($record->check_out)
                                                             <span class="text-danger">
                                                                 <i class="fas fa-sign-out-alt mr-1"></i>
-                                                                {{ date('h:i A', strtotime($record->time_out)) }}
+                                                                {{ date('h:i A', strtotime($record->check_out)) }}
                                                             </span>
                                                         @else
                                                             <span class="text-muted">--</span>
                                                         @endif
                                                     </td>
-                                                    <td>
+                                                    {{-- <td>
                                                         @if($record->time_in && $record->time_out)
                                                             @php
                                                                 $timeIn = \Carbon\Carbon::parse($record->time_in);
@@ -252,7 +252,7 @@
                                                         @else
                                                             <span class="text-muted">--</span>
                                                         @endif
-                                                    </td>
+                                                    </td> --}}
                                                 </tr>
                                             @endforeach
                                         </tbody>

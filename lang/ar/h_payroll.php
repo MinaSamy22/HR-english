@@ -80,4 +80,5 @@ return [
         'monthly' => 'شهري',
         'other'   => 'أخرى',
     ],
+    'please_fix_errors_before_proceeding' => 'يرجى إصلاح الأخطاء أعلاه قبل المتابعة.',
 ];

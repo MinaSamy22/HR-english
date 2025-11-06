@@ -17,6 +17,34 @@
                 </div>
             </div>
 
+            {{-- Display Error Message --}}
+            @if(session('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <strong>{{ __('dashboard.error') }}!</strong>
+                    <div style="white-space: pre-line; margin-top: 8px;">{!! session('error') !!}</div>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
+
+            {{-- Display Validation Errors --}}
+            @if($errors->any())
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <strong>{{ __('dashboard.validation_errors') }}!</strong>
+                    <ul class="mb-0 mt-2">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
+
             <form class="form-horizontal" method="post" action="{{ url('admin/payroll/add') }}"
                 enctype="multipart/form-data">
                 {{ csrf_field() }}
@@ -26,17 +54,17 @@
                         <div class="col-sm-9 d-flex align-items-center gap-3 flex-wrap">
                             <div class="form-check form-check-inline mb-0">
                                 <input class="form-check-input" type="radio" name="payroll_type" id="type_monthly"
-                                    value="monthly">
+                                    value="monthly" {{ old('payroll_type') == 'monthly' ? 'checked' : '' }}>
                                 <label class="form-check-label" for="type_monthly">{{ __('dashboard.monthly') }}</label>
                             </div>
                             <div class="form-check form-check-inline mb-0">
                                 <input class="form-check-input" type="radio" name="payroll_type" id="type_weekly"
-                                    value="weekly">
+                                    value="weekly" {{ old('payroll_type') == 'weekly' ? 'checked' : '' }}>
                                 <label class="form-check-label" for="type_weekly">{{ __('dashboard.weekly') }}</label>
                             </div>
                             <div class="form-check form-check-inline mb-0">
                                 <input class="form-check-input" type="radio" name="payroll_type" id="type_daily"
-                                    value="daily">
+                                    value="daily" {{ old('payroll_type') == 'daily' ? 'checked' : '' }}>
                                 <label class="form-check-label" for="type_daily">{{ __('dashboard.daily') }}</label>
                             </div>
                             <small id="type-error" class="text-danger d-block w-100 mt-1" style="display:none;"></small>
@@ -47,14 +75,14 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-form-label">{{ __('dashboard.start_date') }}<span style="color: red;">*</span></label>
                         <div class="col-sm-9">
-                            <input type="date" name="start_date" class="form-control" required>
+                            <input type="date" name="start_date" class="form-control" value="{{ old('start_date') }}" required>
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <label class="col-sm-3 col-form-label">{{ __('dashboard.end_date') }}<span style="color: red;">*</span></label>
                         <div class="col-sm-9">
-                            <input type="date" name="end_date" class="form-control" required>
+                            <input type="date" name="end_date" class="form-control" value="{{ old('end_date') }}" required>
                         </div>
                     </div>
 
@@ -77,7 +105,8 @@
                                             @foreach ($getEmployees->where('salary_type', 3) as $employee)
                                                 <div class="checkbox-item">
                                                     <input type="checkbox" name="employee_ids[]" value="{{ $employee->id }}"
-                                                        id="employee-{{ $employee->id }}" class="employee-checkbox daily-employee">
+                                                        id="employee-{{ $employee->id }}" class="employee-checkbox daily-employee"
+                                                        {{ in_array($employee->id, old('employee_ids', [])) ? 'checked' : '' }}>
                                                     <label for="employee-{{ $employee->id }}">{{ $employee->name }}</label>
                                                 </div>
                                             @endforeach
@@ -100,7 +129,8 @@
                                             @foreach ($getEmployees->where('salary_type', 2) as $employee)
                                                 <div class="checkbox-item">
                                                     <input type="checkbox" name="employee_ids[]" value="{{ $employee->id }}"
-                                                        id="employee-{{ $employee->id }}" class="employee-checkbox weekly-employee">
+                                                        id="employee-{{ $employee->id }}" class="employee-checkbox weekly-employee"
+                                                        {{ in_array($employee->id, old('employee_ids', [])) ? 'checked' : '' }}>
                                                     <label for="employee-{{ $employee->id }}">{{ $employee->name }}</label>
                                                 </div>
                                             @endforeach
@@ -123,7 +153,8 @@
                                             @foreach ($getEmployees->where('salary_type', 1) as $employee)
                                                 <div class="checkbox-item">
                                                     <input type="checkbox" name="employee_ids[]" value="{{ $employee->id }}"
-                                                        id="employee-{{ $employee->id }}" class="employee-checkbox monthly-employee">
+                                                        id="employee-{{ $employee->id }}" class="employee-checkbox monthly-employee"
+                                                        {{ in_array($employee->id, old('employee_ids', [])) ? 'checked' : '' }}>
                                                     <label for="employee-{{ $employee->id }}">{{ $employee->name }}</label>
                                                 </div>
                                             @endforeach
@@ -142,11 +173,7 @@
         </div>
     </div>
 
-
-
 <!-- Link to the new JavaScript file -->
 <script src="{{ url('dist/js/payrollcreate.js')}}?v=3"></script>
 
-
 @endsection
-

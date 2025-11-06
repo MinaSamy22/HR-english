@@ -41,11 +41,16 @@ public function add(Request $request)
     $company_id = session('company_id');
     $branch_id = session('branch_id');
 
-    if ($branch_id !== null) {
-        $data['getDepartments'] = Department::where('branch_id', $branch_id)->get();
-    } else {
-        $data['getDepartments'] = Department::where('company_id', $company_id)->whereNull('branch_id')->get();
-    }
+    // if ($branch_id !== null) {
+    //     $data['getDepartments'] = Department::where('branch_id', $branch_id)->get();
+    // } else {
+    //     $data['getDepartments'] = Department::where('company_id', $company_id)->whereNull('branch_id')->get();
+    // }
+
+    // ✅ Always show all company data (no branch restriction)
+    $data['getDepartments'] = Department::where('company_id', $company_id)->get();
+
+
 
     return view('backend.jobss.add', $data);
 }
@@ -90,11 +95,14 @@ public function edit($id)
 
     $data['getRecord'] = Job::find($id);
 
-    if ($branch_id !== null) {
-        $data['getDepartments'] = Department::where('branch_id', $branch_id)->get();
-    } else {
-        $data['getDepartments'] = Department::where('company_id', $company_id)->whereNull('branch_id')->get();
-    }
+      // if ($branch_id !== null) {
+    //     $data['getDepartments'] = Department::where('branch_id', $branch_id)->get();
+    // } else {
+    //     $data['getDepartments'] = Department::where('company_id', $company_id)->whereNull('branch_id')->get();
+    // }
+
+    // ✅ Always show all company data (no branch restriction)
+    $data['getDepartments'] = Department::where('company_id', $company_id)->get();
 
     return view('backend.jobss.edit', $data);
 }

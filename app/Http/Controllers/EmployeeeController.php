@@ -50,17 +50,10 @@ public function add(Request $request)
     $company_id = session('company_id');
     $branch_id = session('branch_id');
 
-    if ($branch_id !== null) {
-        // 🔹 Filter by branch first
-        $data['getJobs']        = Job::where('branch_id', $branch_id)->get();
-        $data['getDepartments'] = Department::where('branch_id', $branch_id)->get();
-        $data['getManagers']    = Manager::where('branch_id', $branch_id)->get();
-    } else {
-        // 🔹 Fallback to company
-        $data['getJobs']        = Job::where('company_id', $company_id)->whereNull('branch_id')->get();
-        $data['getDepartments'] = Department::where('company_id', $company_id)->whereNull('branch_id')->get();
-        $data['getManagers']    = Manager::where('company_id', $company_id)->whereNull('branch_id')->get();
-    }
+   // ✅ Always show all company data (no branch restriction)
+    $data['getJobs']        = Job::where('company_id', $company_id)->get();
+    $data['getDepartments'] = Department::where('company_id', $company_id)->get();
+    $data['getManagers'] = Manager::where('company_id', $company_id)->get();
 
     return view('backend.employees.add', $data);
 }
@@ -161,15 +154,10 @@ public function edit($id)
 
     $data['getRecord'] = User::find($id);
 
-    if ($branch_id !== null) {
-        $data['getJobs']        = Job::where('branch_id', $branch_id)->get();
-        $data['getDepartments'] = Department::where('branch_id', $branch_id)->get();
-        $data['getManagers']    = Manager::where('branch_id', $branch_id)->get();
-    } else {
-        $data['getJobs']        = Job::where('company_id', $company_id)->whereNull('branch_id')->get();
-        $data['getDepartments'] = Department::where('company_id', $company_id)->whereNull('branch_id')->get();
-        $data['getManagers']    = Manager::where('company_id', $company_id)->whereNull('branch_id')->get();
-    }
+    // ✅ Always show all company data (no branch restriction)
+    $data['getJobs']        = Job::where('company_id', $company_id)->get();
+    $data['getDepartments'] = Department::where('company_id', $company_id)->get();
+    $data['getManagers'] = Manager::where('company_id', $company_id)->get();
 
     return view('backend.employees.edit', $data);
 }
@@ -228,6 +216,7 @@ public function edit_update($id, Request $request){
 
     $user->manager_id           = trim($request->manager_id);
     $user->department_id        = trim($request->department_id);
+    $user->is_role              = $request->is_role;
 
     $user->save();
 

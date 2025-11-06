@@ -26,6 +26,7 @@ use App\Http\Controllers\EmployeeeController;
 use App\Http\Controllers\EmployeesInterface\EmployeeMyAccountController;
 use App\Http\Controllers\EmployeesInterface\EmployeePayrollController;
 use App\Http\Controllers\EmployeesInterface\EmployeeVacationController;
+use App\Http\Controllers\FinancialAnalysisController;
 use App\Http\Controllers\InsuranceController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\JobHistoryController;
@@ -228,6 +229,7 @@ Route::middleware('admin')->group(function () {
     // Add these routes to your existing attendance rules routes
     Route::post('/attendance-rules/update-late-threshold', [AttendanceRulesController::class, 'updateLateThreshold'])->name('attendance-rules.update-late-threshold');
     Route::post('/attendance-rules/update-half-day-threshold', [AttendanceRulesController::class, 'updateHalfDayThreshold'])->name('attendance-rules.update-half-day-threshold');
+    Route::post('timezone/update',[AttendanceRulesController::class,'updateTimezone'])->name('timezone.update');
 
 
     //biometric excel
@@ -404,7 +406,11 @@ Route::middleware('admin')->group(function () {
     Route::get('admin/messages/sent', [MessageController::class, 'sent'])->name('messages.sent');
     Route::get('admin/messages/{message}', [MessageController::class, 'show'])->name('messages.show');
     Route::delete('admin/messages/{message}', [MessageController::class, 'destroy'])->name('messages.destroy');
-    Route::post('timezone/update',[AttendanceRulesController::class,'updateTimezone'])->name('timezone.update');
+
+    // Financial Analysis Routes
+      Route::get('admin/financial-analysis', [FinancialAnalysisController::class, 'index'])
+        ->name('financial.analysis');
+
 });
 
 

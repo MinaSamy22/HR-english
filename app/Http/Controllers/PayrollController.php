@@ -78,7 +78,7 @@ public function add_post(Request $request)
     $employeeIds = $request->input('employee_ids');
     $startDate = $request->input('start_date');
     $endDate = $request->input('end_date');
-    $payrollType  = $request->input('payroll_type'); // NEW: Get selected payroll type
+    $payrollType  = $request->input('payroll_type');
     $companyId = auth()->user()->company_id;
 
     $employees = User::with('company.attendanceSetting','attendances','vacations','times')->whereIn('id',$employeeIds)->get();
@@ -132,7 +132,20 @@ public function add_post(Request $request)
         }
     }
 
-    // Process employees that passed validation (MOVED THIS BEFORE ERROR HANDLING)
+    // IF ANY ERRORS EXIST, return back with errors WITHOUT processing ANY payrolls
+    if (!empty($validationErrors)) {
+        $errorMessage = __('h_payroll.payroll_generation_failed_for_following_employees') . "\n\n";
+        foreach ($validationErrors as $error) {
+            $errorMessage .= "• " . $error . "\n";
+        }
+        $errorMessage .= "\n" . __('h_payroll.please_fix_errors_before_proceeding');
+
+        return redirect()->back()
+            ->withInput()
+            ->with('error', $errorMessage);
+    }
+
+    // Process employees ONLY if all validations passed
     foreach ($processedEmployees as $employee) {
 
         $salary = $employee->salary;
@@ -156,8 +169,8 @@ public function add_post(Request $request)
         $payroll->bounas = $bonus;
         $payroll->deductions = $totalDeductions;
         $payroll->attendance_deduction = $attendanceDeductions;
-        $payroll->taxes = $totalTaxes; // tax + insurance
-        $payroll->rest_vacancy = $restVacancy; // Only for info/reporting, not deducted in net pay
+        $payroll->taxes = $totalTaxes;
+        $payroll->rest_vacancy = $restVacancy;
         $payroll->payroll_type = $payrollType;
 
         $payroll->net_pay = $salary - ($totalDeductions + $totalTaxes + $attendanceDeductions) + $bonus;
@@ -173,39 +186,14 @@ public function add_post(Request $request)
         $payroll->save();
     }
 
-    // Build response message based on results
-    $responseMessage = '';
-    $messageType = 'success';
+    // Build success message
+    $responseMessage = __('h_payroll.payroll_registered') . "\n\n" . __('h_payroll.generated_for') . ":\n";
+    $employeeNames = array_map(function($emp) { return '• ' . $emp->name; }, $processedEmployees);
+    $responseMessage .= implode("\n", $employeeNames);
 
-    // If there are processed employees, show success message
-    if (count($processedEmployees) > 0) {
-        $responseMessage = __('h_payroll.payroll_registered') . "\n\n" . __('h_payroll.generated_for') . ":\n";
-        $employeeNames = array_map(function($emp) { return '• ' . $emp->name; }, $processedEmployees);
-        $responseMessage .= implode("\n", $employeeNames);
-    }
-
-    // If there are validation errors, add them to the message
-    if (!empty($validationErrors)) {
-        if (!empty($responseMessage)) {
-            $responseMessage .= "\n\n" . __('h_payroll.payroll_generation_failed_for_following_employees') . "\n\n";
-        } else {
-            $responseMessage = __('h_payroll.payroll_generation_failed_for_following_employees') . "\n\n";
-            $messageType = 'error';
-        }
-
-        foreach ($validationErrors as $error) {
-            $responseMessage .= "• " . $error . "\n";
-        }
-
-        if (!empty($processedEmployees)) {
-            $responseMessage .= "\n" . __('h_payroll.note_payroll_successfully_generated_for_other_employees');
-        }
-    }
-
-    return redirect('admin/payroll')->with($messageType, $responseMessage);
+    // Redirect to index ONLY after successful generation of ALL payrolls
+    return redirect('admin/payroll')->with('success', $responseMessage);
 }
-
-
 
 
 

@@ -67,32 +67,43 @@ public function index(Request $request)
     return view('backend.attendance.employee', $data);
 }
 
-    public function AttendanceEmployeeSubmit(Request $request)
-    {
-        try {
-            $check_attendance = Attendance::ChechAlreadyAttendance($request->employee_id, $request->attendance_date);
+public function AttendanceEmployeeSubmit(Request $request)
+{
+    $company_id = session('company_id');
+    $created_by = auth()->id();
 
-            if (!empty($check_attendance)) {
-                $attendance = $check_attendance;
-            } else {
-                $attendance                    = new Attendance;
-                $attendance->employee_id       = $request->employee_id;
-                $attendance->attendance_date   = $request->attendance_date;
-                $attendance->created_by        = Auth::user()->id;
-                $attendance->company_id        = session('company_id');
-            }
+    $validated = $request->validate([
+        'attendance_date' => 'required|date',
+        'employee_id' => 'required',
+        'check_in' => 'nullable',
+        'check_out' => 'nullable',
+        'attendance_type' => 'nullable|string',
+    ]);
 
-            $attendance->attendance_type       = $request->attendance_type;
-            $attendance->save();
+    $updateData = [
+        'company_id' => $company_id,
+        'created_by' => $created_by,
+        'attendance_type' => $request->attendance_type ?: null,
+        'check_in' => $request->check_in ?: null,
+        'check_out' => $request->check_out ?: null,
+        'updated_at' => now(),
+    ];
 
-          return response()->json(['message' => __('dashboard.attendance_saved')]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Error: ' . $e->getMessage()
-            ], 500);
-        }
-    }
+    $record = \App\Models\Attendance::updateOrCreate(
+        [
+            'attendance_date' => $request->attendance_date,
+            'employee_id' => $request->employee_id,
+            'company_id' => $company_id,
+        ],
+        $updateData
+    );
 
+    return response()->json([
+        'success' => true,
+        'message' => 'Attendance saved successfully!',
+        'record' => $record
+    ]);
+}
 
     public function exportPdf(Request $request)
     {

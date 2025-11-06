@@ -488,4 +488,15 @@ return [
 'all_departments' => 'All Departments',
 'filter_by_department' => 'Filter by Department',
 'search_employee' => 'Search Employee',
+
+  'check_in' => 'Check In',
+  'check_out' => 'Check Out',
+'global_check_in' => ' Check-In',
+    'global_check_out' => ' Check-Out',
+    'apply_time' => 'Apply Time',
+     'please_select_employee' => 'Please select at least one employee.',
+    'times_applied_success' => 'Times applied successfully to selected employees.',
+    'error_saving_attendance' => 'An error occurred while saving attendance.',
+    'select_status' => 'Select Status',
+
 ];

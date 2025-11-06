@@ -201,8 +201,15 @@ class EmployeeService
             return $this->sendResponse(__('dashboard.invalid_start_time'), [], 0);
         }
 
-        $workStart = Carbon::createFromFormat('H:i:s', $employee->work_start_time);
-        $attendance_type = $now->lessThanOrEqualTo($workStart) ? 1 : 2; // 1 = On time, 2 = Late
+            $workStart = Carbon::createFromFormat('H:i:s', $employee->work_start_time);
+            $timeDifference = $workStart->diffInMinutes($now, false);
+            if ($timeDifference > $settings->half_day_threshold_minutes) {
+                $attendance_type = 3; // Absent
+            } elseif ($timeDifference > $settings->late_threshold_minutes) {
+                $attendance_type = 2; // Late
+            } else {
+                $attendance_type = 1; // On time
+            }
 
 
         $attendance = $this->employee->attendances()->create([
