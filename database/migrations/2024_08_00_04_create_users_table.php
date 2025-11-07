@@ -26,6 +26,7 @@ return new class extends Migration
 
             $table->string('salary_type')->nullable();
             $table->string('salary')->nullable();
+        $table->decimal('additional_salary', 10, 2)->nullable();
 
             $table->time('work_start_time')->nullable();
             $table->time('work_end_time')->nullable();

@@ -480,6 +480,8 @@ return [
     'please_select_time' => 'يرجى اختيار وقت واحد على الأقل (دخول أو خروج).',
 
     'select_status' => 'اختر الحالة',
+    'additional_salary' => 'الراتب الإضافي',
+    'enter_additional_salary' => 'أدخل الراتب الإضافي',
 
 ];
 

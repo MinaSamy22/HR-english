@@ -130,29 +130,67 @@
                                             <span style="color:red">{{ $errors->first('salary') }}</span>
                                         </div>
                                     </div>
-
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">{{ __('h_employee.main_salary') }} <span
-                                                style="color: red;">{{ __('h_employee.required_field') }}</span></label>
+                                        <label class="col-sm-2 col-form-label">
+                                            {{ __('h_employee.main_salary') }}
+                                            <span style="color: red;">{{ __('h_employee.required_field') }}</span>
+                                        </label>
                                         <div class="col-sm-10">
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" name="main_salary"
                                                     id="main_salary_yes" value="1"
-                                                    {{ old('main_salary', $getRecord->main_salary) === 1 ? 'checked' : '' }}>
-                                                <label class="form-check-label"
-                                                    for="main_salary_yes">{{ __('h_employee.yes') }}</label>
+                                                    {{ old('main_salary', $getRecord->main_salary) == 1 ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="main_salary_yes">
+                                                    {{ __('h_employee.yes') }}
+                                                </label>
                                             </div>
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" name="main_salary"
                                                     id="main_salary_no" value="0"
-                                                    {{ old('main_salary', $getRecord->main_salary) === 0 ? 'checked' : '' }}>
-                                                <label class="form-check-label"
-                                                    for="main_salary_no">{{ __('h_employee.no') }}</label>
+                                                    {{ old('main_salary', $getRecord->main_salary) == 0 ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="main_salary_no">
+                                                    {{ __('h_employee.no') }}
+                                                </label>
                                             </div>
                                             <br>
                                             <span style="color:red">{{ $errors->first('main_salary') }}</span>
                                         </div>
                                     </div>
+
+                                    {{-- Additional Salary field (hidden unless "No" is selected) --}}
+                                    <div class="form-group row" id="additional_salary_field" style="display:none;">
+                                        <label class="col-sm-2 col-form-label">
+                                          {{ __('dashboard.additional_salary') }}
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="number" name="additional_salary" class="form-control"
+                                                value="{{ old('additional_salary', $getRecord->additional_salary) }}"
+                                                placeholder="Enter additional salary" step="0.01">
+                                            <span style="color:red">{{ $errors->first('additional_salary') }}</span>
+                                        </div>
+                                    </div>
+
+                                    {{-- Script to show/hide dynamically --}}
+                                    <script>
+                                        document.addEventListener('DOMContentLoaded', function() {
+                                            const yesRadio = document.getElementById('main_salary_yes');
+                                            const noRadio = document.getElementById('main_salary_no');
+                                            const additionalSalaryField = document.getElementById('additional_salary_field');
+
+                                            function toggleAdditionalField() {
+                                                if (noRadio.checked) {
+                                                    additionalSalaryField.style.display = 'flex';
+                                                } else {
+                                                    additionalSalaryField.style.display = 'none';
+                                                }
+                                            }
+
+                                            yesRadio.addEventListener('change', toggleAdditionalField);
+                                            noRadio.addEventListener('change', toggleAdditionalField);
+                                            toggleAdditionalField(); // ensure correct state on load
+                                        });
+                                    </script>
+
 
                                     <!-- Add file input field -->
                                     <div class="form-group row">
@@ -313,7 +351,8 @@
 
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-lable">{{ __('h_employee.department_name') }}
-                                            <span style="color: red;">{{ __('h_employee.required_field') }}</span></label>
+                                            <span
+                                                style="color: red;">{{ __('h_employee.required_field') }}</span></label>
                                         <div class="col-sm-10">
                                             <select class="form-control" name="department_id" required>
                                                 @foreach ($getDepartments as $value_department)
@@ -328,21 +367,21 @@
 
 
                                     <div class="form-group row">
-    <label class="col-sm-2 col-form-label">
-        {{ __('h_employee.role') }}
-        <span style="color: red;">{{ __('h_employee.required_field') }}</span>
-    </label>
-    <div class="col-sm-10">
-        <select class="form-control" name="is_role" required>
-            <option value="0" {{ $getRecord->is_role == 0 ? 'selected' : '' }}>
-                {{ __('h_employee.employee') }}
-            </option>
-            <option value="1" {{ $getRecord->is_role == 1 ? 'selected' : '' }}>
-                {{ __('h_employee.hrs') }}
-            </option>
-        </select>
-    </div>
-</div>
+                                        <label class="col-sm-2 col-form-label">
+                                            {{ __('h_employee.role') }}
+                                            <span style="color: red;">{{ __('h_employee.required_field') }}</span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control" name="is_role" required>
+                                                <option value="0" {{ $getRecord->is_role == 0 ? 'selected' : '' }}>
+                                                    {{ __('h_employee.employee') }}
+                                                </option>
+                                                <option value="1" {{ $getRecord->is_role == 1 ? 'selected' : '' }}>
+                                                    {{ __('h_employee.hrs') }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
 
 
                                 </div>

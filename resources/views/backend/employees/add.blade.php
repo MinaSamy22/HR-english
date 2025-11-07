@@ -140,18 +140,53 @@
                                                 <input class="form-check-input" type="radio" name="main_salary"
                                                     id="main_salary_yes" value="1"
                                                     {{ old('main_salary') == '1' ? 'checked' : '' }}>
-                                                <label class="form-check-label"
-                                                    for="main_salary_yes">{{ __('h_employee.yes') }}</label>
+                                                <label class="form-check-label" for="main_salary_yes">
+                                                    {{ __('h_employee.yes') }}
+                                                </label>
                                             </div>
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" name="main_salary"
                                                     id="main_salary_no" value="0"
                                                     {{ old('main_salary') == '0' ? 'checked' : '' }}>
-                                                <label class="form-check-label"
-                                                    for="main_salary_no">{{ __('h_employee.no') }}</label>
+                                                <label class="form-check-label" for="main_salary_no">
+                                                    {{ __('h_employee.no') }}
+                                                </label>
                                             </div>
                                         </div>
                                     </div>
+
+                                    <!-- Additional Salary field -->
+                                    <div class="form-group row align-items-center" id="additional_salary_field"
+                                        style="display:none;">
+                                        <label class="col-sm-2 col-form-label">
+                                          {{ __('dashboard.additional_salary') }}
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="number" name="additional_salary" class="form-control"
+                                               placeholder="{{ __('dashboard.enter_additional_salary') }}" step="0.01">
+                                        </div>
+                                    </div>
+
+                                    <script>
+                                        document.addEventListener('DOMContentLoaded', function() {
+                                            const yesRadio = document.getElementById('main_salary_yes');
+                                            const noRadio = document.getElementById('main_salary_no');
+                                            const additionalSalaryField = document.getElementById('additional_salary_field');
+
+                                            function toggleAdditionalField() {
+                                                if (noRadio.checked) {
+                                                    additionalSalaryField.style.display = 'flex';
+                                                } else {
+                                                    additionalSalaryField.style.display = 'none';
+                                                }
+                                            }
+
+                                            yesRadio.addEventListener('change', toggleAdditionalField);
+                                            noRadio.addEventListener('change', toggleAdditionalField);
+                                            toggleAdditionalField(); // run on page load
+                                        });
+                                    </script>
+
 
 
                                     <div class="form-group row">

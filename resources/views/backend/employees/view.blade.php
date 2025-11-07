@@ -145,7 +145,16 @@
                                         </div>
                                     </div>
 
+                                 @if ($getRecord->main_salary == 0)
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-lable"> {{ __('dashboard.additional_salary') }} <span
+                                                style="color: red;"></span></label>
+                                        <div class="col-sm-10">
+                                            {{ $getRecord->additional_salary }}
 
+                                        </div>
+                                    </div>
+                                @endif
 
                                     @if ($getRecord->attachment)
                                         <div class="form-group row">

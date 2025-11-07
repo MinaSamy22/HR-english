@@ -498,5 +498,7 @@ return [
     'times_applied_success' => 'Times applied successfully to selected employees.',
     'error_saving_attendance' => 'An error occurred while saving attendance.',
     'select_status' => 'Select Status',
+    'additional_salary' => 'Additional Salary',
+    'enter_additional_salary' => 'Enter additional salary',
 
 ];

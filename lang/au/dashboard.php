@@ -496,6 +496,8 @@ return [
 
 'select_status' => 'حالت منتخب کریں',
 
+    'additional_salary' => 'اضافی تنخواہ',
+    'enter_additional_salary' => 'اضافی تنخواہ درج کریں',
 
 
 
