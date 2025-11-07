@@ -24,53 +24,50 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Apply global times
-// Apply global times
-if (applyGlobalBtn) {
-    applyGlobalBtn.addEventListener('click', async function (e) {
-        e.preventDefault();
+    if (applyGlobalBtn) {
+        applyGlobalBtn.addEventListener('click', async function (e) {
+            e.preventDefault();
 
-        const inTime = globalCheckIn.value.trim();
-        const outTime = globalCheckOut.value.trim();
-        const date = attendanceDateInput.value;
+            const inTime = globalCheckIn.value.trim();
+            const outTime = globalCheckOut.value.trim();
+            const date = attendanceDateInput.value;
 
-        const selected = Array.from(employeeCheckboxes).filter(chk => chk.checked);
-        if (selected.length === 0) {
-            alert('Please select at least one employee.');
-            return;
-        }
+            const selected = Array.from(employeeCheckboxes).filter(chk => chk.checked);
+            if (selected.length === 0) {
+                alert('Please select at least one employee.');
+                return;
+            }
 
-        const originalHtml = applyGlobalBtn.innerHTML;
-        applyGlobalBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Saving...`;
-        applyGlobalBtn.disabled = true;
+            const originalHtml = applyGlobalBtn.innerHTML;
+            applyGlobalBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Saving...`;
+            applyGlobalBtn.disabled = true;
 
-        for (const chk of selected) {
-            const empId = chk.value;
-            const inField = document.querySelector(`.check-in-input[data-employee='${empId}']`);
-            const outField = document.querySelector(`.check-out-input[data-employee='${empId}']`);
+            for (const chk of selected) {
+                const empId = chk.value;
+                const inField = document.querySelector(`.check-in-input[data-employee='${empId}']`);
+                const outField = document.querySelector(`.check-out-input[data-employee='${empId}']`);
 
-            // Update UI
-            inField.value = inTime || '';
-            outField.value = outTime || '';
+                // Update UI
+                inField.value = inTime || '';
+                outField.value = outTime || '';
 
-            // Get selected attendance type for this employee
-            const selectedRadio = document.querySelector(`.attendance-radio[data-employee='${empId}']:checked`);
-            const attendanceType = selectedRadio ? selectedRadio.value : null;
+                // Get selected attendance type for this employee
+                const selectedRadio = document.querySelector(`.attendance-radio[data-employee='${empId}']:checked`);
+                const attendanceType = selectedRadio ? selectedRadio.value : null;
 
-            // Save with all values (to avoid overwriting)
-            await saveData(empId, {
-                attendance_date: date,
-                check_in: inTime ? `${inTime.length === 5 ? inTime + ':00' : inTime}` : null,
-                check_out: outTime ? `${outTime.length === 5 ? outTime + ':00' : outTime}` : null,
-                attendance_type: attendanceType
-            });
-        }
+                await saveData(empId, {
+                    attendance_date: date,
+                    check_in: inTime ? `${inTime.length === 5 ? inTime + ':00' : inTime}` : null,
+                    check_out: outTime ? `${outTime.length === 5 ? outTime + ':00' : outTime}` : null,
+                    attendance_type: attendanceType
+                });
+            }
 
-        applyGlobalBtn.innerHTML = originalHtml;
-        applyGlobalBtn.disabled = false;
-        alert('All selected employees updated successfully!');
-    });
-}
-
+            applyGlobalBtn.innerHTML = originalHtml;
+            applyGlobalBtn.disabled = false;
+            alert('All selected employees updated successfully!');
+        });
+    }
 
     // Save attendance type (radio)
     function saveAttendance(event) {
@@ -127,15 +124,27 @@ if (applyGlobalBtn) {
 
             const result = await res.json();
 
-            if (result.success && element) {
-                if (element.classList.contains('attendance-radio-group')) {
-                    element.classList.add('save-success-radio');
-                    setTimeout(() => element.classList.remove('save-success-radio'), 1200);
-                } else {
-                    element.classList.add('save-success');
-                    setTimeout(() => element.classList.remove('save-success'), 1200);
+            if (result.success) {
+                // ✅ Automatically refresh the attendance radios for that employee
+                const type = result.record.attendance_type;
+                if (type) {
+                    const radios = document.querySelectorAll(`.attendance-radio[data-employee='${employeeId}']`);
+                    radios.forEach(r => {
+                        r.checked = (r.value == type);
+                    });
                 }
-            } else if (!result.success) {
+
+                // ✅ Visual feedback
+                if (element) {
+                    if (element.classList.contains('attendance-radio-group')) {
+                        element.classList.add('save-success-radio');
+                        setTimeout(() => element.classList.remove('save-success-radio'), 1200);
+                    } else {
+                        element.classList.add('save-success');
+                        setTimeout(() => element.classList.remove('save-success'), 1200);
+                    }
+                }
+            } else {
                 console.error(result.message || 'Save failed.');
             }
         } catch (error) {

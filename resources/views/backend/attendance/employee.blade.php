@@ -235,5 +235,5 @@
         }
     </style>
 
-    <script src="{{ url('dist/js/attendance.js') }}?v=20"></script>
+    <script src="{{ url('dist/js/attendance.js') }}?v=21"></script>
 @endsection

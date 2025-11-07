@@ -80,10 +80,77 @@ public function AttendanceEmployeeSubmit(Request $request)
         'attendance_type' => 'nullable|string',
     ]);
 
+    // 🔹 Load existing record
+    $existing = \App\Models\Attendance::where([
+        'attendance_date' => $request->attendance_date,
+        'employee_id' => $request->employee_id,
+        'company_id' => $company_id,
+    ])->first();
+
+    $attendanceRule = \App\Models\AttendanceRule::where('company_id', $company_id)->first();
+    $user = \App\Models\User::find($request->employee_id);
+
+    // Detect field changes
+    $checkInChanged = !$existing || $existing->check_in != $request->check_in;
+    $checkOutChanged = !$existing || $existing->check_out != $request->check_out;
+    $manualTypeSelected = $request->filled('attendance_type');
+    $oldType = $existing ? $existing->attendance_type : null;
+
+    $attendanceType = $oldType;
+
+    if ($manualTypeSelected && $request->attendance_type != $oldType) {
+        // ✅ HR manually changed attendance type
+        $attendanceType = $request->attendance_type;
+    } elseif (($checkInChanged || $checkOutChanged) && $user && $attendanceRule) {
+        // ✅ Auto recalc when time changes
+        $checkIn = $request->check_in ? strtotime($request->check_in) : null;
+        $checkOut = $request->check_out ? strtotime($request->check_out) : null;
+        $workStart = $user->work_start_time ? strtotime($user->work_start_time) : null;
+        $workEnd = $user->work_end_time ? strtotime($user->work_end_time) : null;
+
+        if ($checkIn && $checkOut && $workStart && $workEnd) {
+            // 🔸 If check-in and check-out are identical → Absent
+            if ($request->check_in === $request->check_out) {
+                $attendanceType = 3; // ❌ Absent
+            } else {
+                $lateMinutes = ($checkIn - $workStart) / 60;
+                $earlyLeaveMinutes = ($workEnd - $checkOut) / 60;
+
+                // ✅ If checkout early by 60 minutes or more → Absent
+                if ($earlyLeaveMinutes >= 60) {
+                    $attendanceType = 3; // ❌ Absent
+                }
+                elseif ($lateMinutes <= $attendanceRule->late_threshold_minutes && $earlyLeaveMinutes <= 0) {
+                    $attendanceType = 1; // ✅ Present
+                }
+                elseif (
+                    $lateMinutes >= $attendanceRule->late_threshold_minutes &&
+                    $lateMinutes <= $attendanceRule->half_day_threshold_minutes
+                ) {
+                    $attendanceType = 4; // ⏱ Half Day
+                }
+                elseif (
+                    $lateMinutes > $attendanceRule->half_day_threshold_minutes ||
+                    $earlyLeaveMinutes > $attendanceRule->half_day_threshold_minutes
+                ) {
+                    $attendanceType = 3; // ❌ Absent
+                }
+                else {
+                    $attendanceType = 1; // Default → Present
+                }
+            }
+        } elseif (is_null($checkIn) && is_null($checkOut)) {
+            $attendanceType = 3; // ❌ Absent
+        } else {
+            $attendanceType = null; // Partial data
+        }
+    }
+
+    // 🔹 Save or update record
     $updateData = [
         'company_id' => $company_id,
         'created_by' => $created_by,
-        'attendance_type' => $request->attendance_type ?: null,
+        'attendance_type' => $attendanceType,
         'check_in' => $request->check_in ?: null,
         'check_out' => $request->check_out ?: null,
         'updated_at' => now(),
@@ -104,6 +171,7 @@ public function AttendanceEmployeeSubmit(Request $request)
         'record' => $record
     ]);
 }
+
 
     public function exportPdf(Request $request)
     {
