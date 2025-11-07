@@ -70,6 +70,7 @@ Route::get('lang/{lang}', function ($lang) {
 
 Route::get('/', [AuthController::class, 'index'])->name('start'); //index navigate to auth controller
 Route::post('login_post', [AuthController::class, 'login_post'])->name('login_post');
+Route::get('view/news/image/{filename}', [NewsController::class, 'viewImage'])->name('view.news.image');
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -315,7 +316,6 @@ Route::middleware('admin')->group(function () {
     Route::get('admin/news/{news}/edit', [NewsController::class, 'edit'])->name('news.edit');
     Route::put('admin/news/{news}', [NewsController::class, 'update'])->name('news.update');
     Route::delete('admin/news/{news}', [NewsController::class, 'destroy'])->name('news.destroy');
-    Route::get('view/news/image/{filename}', [NewsController::class, 'viewImage'])->name('view.news.image');
     Route::get('admin/news/filter', [NewsController::class, 'filterNews'])->name('news.filter');
     Route::post('admin/news/{news}/toggle-status', [NewsController::class, 'toggleStatus'])->name('news.toggle-status');
     Route::post('admin/news/bulk-delete', [NewsController::class, 'bulkDelete'])->name('news.bulk-delete');
