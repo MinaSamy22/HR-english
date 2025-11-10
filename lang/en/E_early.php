@@ -6,7 +6,7 @@ return [
     'submit_new_request' => 'Submit New Request',
     'date' => 'Date',
     'leave_time' => 'Leave Time',
-    'reason_optional' => 'Reason (optional)',
+    'reason_optional' => 'Reason',
     'reason_placeholder' => 'Write your reason here...',
     'urgent_request' => 'Mark as Urgent',
     'leave_time_selected' => 'Leave Time Selected',

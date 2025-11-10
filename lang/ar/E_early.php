@@ -5,7 +5,7 @@ return [
     'submit_new_request' => 'إرسال طلب جديد',
     'date' => 'التاريخ',
     'leave_time' => 'وقت الانصراف',
-    'reason_optional' => 'السبب (اختياري)',
+    'reason_optional' => 'السبب',
     'reason_placeholder' => 'اكتب السبب هنا...',
     'urgent_request' => 'طلب عاجل',
     'leave_time_selected' => 'الوقت المختار للانصراف',

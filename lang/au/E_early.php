@@ -5,7 +5,7 @@ return [
     'submit_new_request' => 'نئی درخواست جمع کروائیں',
     'date' => 'تاریخ',
     'leave_time' => 'روانگی کا وقت',
-    'reason_optional' => 'وجہ (اختیاری)',
+    'reason_optional' => 'وجہ ',
     'reason_placeholder' => 'یہاں وجہ لکھیں...',
     'urgent_request' => 'فوری درخواست',
     'leave_time_selected' => 'منتخب کردہ روانگی کا وقت',
