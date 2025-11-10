@@ -69,5 +69,6 @@ return [
     'rejected' => 'Rejected',
     'pending' => 'Pending',
 ],
+    'early_leave_requests' => 'Early Leave Requests',
 
 ];

@@ -595,6 +595,15 @@
                     </a>
                 </li>
 
+                <!-- Early Leave Requests -->
+                <li class="nav-item">
+                    <a href="{{ url('employee/early-leave') }}"
+                        class="nav-link @if (Request::segment(2) == 'early-leave') active @endif">
+                        <i class="nav-icon fa fa-running"></i>
+                       <p>{{ __('E_dashboard.early_leave_requests') }}</p>
+                    </a>
+                </li>
+
                 <!--resignation Requests -->
                 <li class="nav-item">
                     <a href="{{ url('employee/resignation') }}"

@@ -70,4 +70,7 @@ return [
     'rejected' => 'مرفوض',
     'pending' => 'قيد الانتظار',
 ],
+
+    'early_leave_requests' => 'طلب الانصراف المبكر',
+
 ];

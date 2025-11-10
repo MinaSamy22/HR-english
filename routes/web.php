@@ -15,6 +15,7 @@ use App\Http\Controllers\CompanyInfoController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeductionController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\EmployeesInterface\EarlyLeaveController;
 use App\Http\Controllers\EmployeesInterface\EmployeeLateRemovalController;
 use App\Http\Controllers\EmployeesInterface\EmployeePerformanceController;
 use App\Http\Controllers\EmployeesInterface\ExtraTimeRequestController;
@@ -489,6 +490,11 @@ Route::middleware('employee')->group(function () {
     Route::post('employee/late/request', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.request');
     Route::post('employee/late-removal-request', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.removal.request');
     Route::post('employee/late-removal/store', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.removal.store');
+
+    //Early leave request
+    Route::get('employee/early-leave', [EarlyLeaveController::class, 'index'])->name('employee.early_leave.index');
+    Route::post('employee/early-leave/store', [EarlyLeaveController::class, 'store'])->name('employee.early.store');
+    Route::delete('employee/early-leave/cancel/{id}', [EarlyLeaveController::class, 'cancel'])->name('employee.early.destroy');
 
 
     // this to show each request page from notification

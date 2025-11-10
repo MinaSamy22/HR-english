@@ -70,4 +70,7 @@ return [
         'rejected' => 'مسترد',
         'pending' => 'زیر التواء',
     ],
+
+        'early_leave_requests' => 'ابتدائی رخصت کی درخواست',
+
 ];
