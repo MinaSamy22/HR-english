@@ -11,32 +11,39 @@
             </a>
         </div>
 
-        <!-- Pending Requests Badge Summary -->
+<!-- Pending Requests Badge Summary -->
         <div class="card mt-3">
             <div class="card-body">
-                <div class="row text-center">
-                    <div class="col-md-3">
+                <div class="row text-center justify-content-between">
+                    <div class="col">
                         <div class="p-3">
                             <i class="fas fa-calendar-alt text-info" style="font-size: 2rem;"></i>
                             <h4 class="mt-2">{{ $pendingVacations->count() }}</h4>
                             <p class="text-muted">{{ __('h_requests.vacation_requests') }}</p>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col">
                         <div class="p-3">
                             <i class="fas fa-clock text-warning" style="font-size: 2rem;"></i>
                             <h4 class="mt-2">{{ $pendingExtraTimes->count() }}</h4>
                             <p class="text-muted">{{ __('h_requests.extra_time_requests') }}</p>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col">
                         <div class="p-3">
                             <i class="fas fa-user-clock text-secondary" style="font-size: 2rem;"></i>
                             <h4 class="mt-2">{{ $pendingLateRemovals->count() }}</h4>
                             <p class="text-muted">{{ __('h_requests.late_removal_requests') }}</p>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col">
+                        <div class="p-3">
+                            <i class="fas fa-door-open text-primary" style="font-size: 2rem;"></i>
+                            <h4 class="mt-2">{{ $pendingEarlyLeaves->count() }}</h4>
+                            <p class="text-muted">{{ __('h_requests.early_leave_requests') }}</p>
+                        </div>
+                    </div>
+                    <div class="col">
                         <div class="p-3">
                             <i class="fas fa-sign-out-alt text-danger" style="font-size: 2rem;"></i>
                             <h4 class="mt-2">{{ $pendingResignations->count() }}</h4>
@@ -155,6 +162,46 @@
         </div>
         @endif
 
+        {{-- Pending Early Leave Requests --}}
+        @if($pendingEarlyLeaves->count() > 0)
+        <div class="card mt-3">
+            <div class="card-header bg-primary text-white">
+                <i class="fas fa-door-open"></i> {{ __('h_requests.early_leave_requests') }}
+                <span class="badge badge-light ml-2">{{ $pendingEarlyLeaves->count() }}</span>
+            </div>
+            <div class="card-body">
+                @foreach($pendingEarlyLeaves as $request)
+                    <div class="d-flex justify-content-between align-items-center border-bottom py-3">
+                        <div>
+                            <strong>{{ $request->user->name ?? __('h_requests.unknown') }}</strong>
+                            @if($request->urgent_request)
+                                <span class="badge badge-danger ml-2">{{ __('h_requests.urgent') }}</span>
+                            @endif
+                            <br>
+                            <small class="text-muted">{{ __('h_requests.date') }}:</small> {{ \Carbon\Carbon::parse($request->request_date)->format('Y-m-d') }}<br>
+                            <small class="text-muted">{{ __('h_requests.requested_leave_time') }}:</small> {{ $request->requested_leave_time }}<br>
+                            <strong>{{ __('h_requests.reason') }}:</strong> {{ $request->reason }}
+                        </div>
+                        <div class="text-right">
+                            <form method="POST" action="{{ route('Requests.accept', ['type' => 'early_leave', 'id' => $request->id]) }}" style="display: inline;">
+                                @csrf
+                                <button type="submit" class="btn btn-success btn-sm" onclick="return confirm('{{ __('h_requests.confirm_accept_early_leave') }}')">
+                                    <i class="fas fa-check"></i> {{ __('h_requests.accept') }}
+                                </button>
+                            </form>
+                            <form method="POST" action="{{ route('Requests.reject', ['type' => 'early_leave', 'id' => $request->id]) }}" style="display: inline;">
+                                @csrf
+                                <button type="submit" class="btn btn-danger btn-sm ml-1" onclick="return confirm('{{ __('h_requests.confirm_reject_early_leave') }}')">
+                                    <i class="fas fa-times"></i> {{ __('h_requests.reject') }}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+        @endif
+
         {{-- Pending Resignation Requests --}}
         @if($pendingResignations->count() > 0)
         <div class="card mt-3 mb-5">
@@ -191,7 +238,7 @@
         @endif
 
         {{-- No Pending Requests Message --}}
-        @if($pendingVacations->count() == 0 && $pendingExtraTimes->count() == 0 && $pendingLateRemovals->count() == 0 && $pendingResignations->count() == 0)
+        @if($pendingVacations->count() == 0 && $pendingExtraTimes->count() == 0 && $pendingLateRemovals->count() == 0 && $pendingEarlyLeaves->count() == 0 && $pendingResignations->count() == 0)
         <div class="card mt-3">
             <div class="card-body">
                 <div class="text-center py-5">

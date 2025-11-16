@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\EarlyLeaveRequest;
 use App\Models\VacationRequest;
 use App\Models\ExtraTimeRequest;
 use App\Models\Resignation;
@@ -44,6 +45,7 @@ if (!function_exists('getPendingRequestsCount')) {
             }
         };
 
+        //start counting the requests here ↓
         // Count pending vacation requests with consistent filtering
         $vacationCount = VacationRequest::where('status', 'pending')
             ->whereHas('user', $userFilterClosure)
@@ -64,7 +66,12 @@ if (!function_exists('getPendingRequestsCount')) {
             ->whereHas('user', $userFilterClosure)
             ->count();
 
-        return $vacationCount + $extraTimeCount + $resignationCount + $lateRemovalCount;
+        // Count pending early leave requests with consistent filtering
+        $earlyLeaveCount = EarlyLeaveRequest::where('status', 'pending')
+            ->whereHas('user', $userFilterClosure)
+            ->count();
+
+        return $vacationCount + $extraTimeCount + $resignationCount + $lateRemovalCount + $earlyLeaveCount;
     }
 }
 
@@ -131,7 +138,13 @@ if (!function_exists('getProcessedRequestsCount')) {
             ->whereHas('user', $userFilterClosure)
             ->count();
 
-        return $vacationCount + $extraTimeCount + $resignationCount + $lateRemovalCount;
+        // Count unseen processed early leave requests
+        $earlyLeaveCount = EarlyLeaveRequest::whereIn('status', ['accepted', 'rejected'])
+            ->where('is_seen', 0)
+            ->whereHas('user', $userFilterClosure)
+            ->count();
+
+        return $vacationCount + $extraTimeCount + $resignationCount + $lateRemovalCount + $earlyLeaveCount;
     }
 }
 
@@ -267,6 +280,30 @@ if (!function_exists('getPendingNotifications')) {
                 'icon' => 'fas fa-user-clock',
                 'color' => 'text-info',
                 'url' => route('Requests', $request->id)
+            ];
+        }
+
+        // Get early leave requests
+        $earlyLeaveRequests = EarlyLeaveRequest::where('status', 'pending')
+            ->with('user')
+            ->whereHas('user', $userFilterClosure)
+            ->orderBy('created_at', 'desc')
+            ->take($limit)
+            ->get();
+
+        foreach ($earlyLeaveRequests as $request) {
+            $notifications[] = [
+                'type' => 'early_leave',
+                'id' => $request->id,
+                'message' => __('dashboard.early_leave_request', [
+                    'name' => $request->user->name,
+                    'time' => \Carbon\Carbon::parse($request->requested_leave_time)->format('H:i')
+                ]),
+                'date' => $request->created_at,
+                'icon' => 'fas fa-door-open',
+                'color' => 'text-success',
+                'url' => route('Requests', $request->id),
+                'urgent' => $request->urgent_request
             ];
         }
 
@@ -447,6 +484,36 @@ if (!function_exists('getProcessedNotifications')) {
             ];
         }
 
+// Get processed early leave requests (unseen)
+        $earlyLeaveRequests = EarlyLeaveRequest::whereIn('status', ['accepted', 'rejected'])
+            ->where('is_seen', 0)
+            ->with('user')
+            ->whereHas('user', $userFilterClosure)
+            ->orderBy('updated_at', 'desc')
+            ->take($limit)
+            ->get();
+
+        foreach ($earlyLeaveRequests as $request) {
+            $statusMessage = $request->status == 'accepted'
+                ? __('dashboard.request_accepted')
+                : __('dashboard.request_rejected');
+
+            $notifications[] = [
+                'type' => 'early_leave',
+                'request_type' => 'early_leave',
+                'id' => $request->id,
+                'status' => $request->status,
+                'message' => __('dashboard.early_leave_request_processed', [
+                    'name' => $request->user->name,
+                    'time' => \Carbon\Carbon::parse($request->requested_leave_time)->format('H:i'),
+                    'status' => $statusMessage
+                ]),
+                'date' => $request->updated_at,
+                'icon' => 'fas fa-door-open',
+                'color' => 'text-success',
+                'url' => route('processed-requests.show', ['type' => 'early_leave', 'id' => $request->id])
+            ];
+        }
 
 
         // Sort all notifications by date (newest first) and limit

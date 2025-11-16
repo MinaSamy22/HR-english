@@ -62,6 +62,8 @@ return [
         'resignation' => 'استعفیٰ',
         'late_removal' => 'دیر سے ہٹانا',
         'extra_time' => 'اضافی وقت',
+        'early_leave' => 'جلدی رخصتی',
+
     ],
 
     // Status

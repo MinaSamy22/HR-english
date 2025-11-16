@@ -118,7 +118,7 @@ public function AttendanceEmployeeSubmit(Request $request)
 
                 // ✅ If checkout early by 60 minutes or more → Absent
                 if ($earlyLeaveMinutes >= 60) {
-                    $attendanceType = 3; // ❌ Absent
+                    $attendanceType = 4; // ⏱ half day
                 }
                 elseif ($lateMinutes <= $attendanceRule->late_threshold_minutes && $earlyLeaveMinutes <= 0) {
                     $attendanceType = 1; // ✅ Present
@@ -144,6 +144,15 @@ public function AttendanceEmployeeSubmit(Request $request)
         } else {
             $attendanceType = null; // Partial data
         }
+    }
+    // 🔍 NEW FEATURE: Approved early leave keeps employee present
+    $hasApprovedEarlyLeave = \App\Models\EarlyLeaveRequest::where('employee_id', $request->employee_id)
+        ->where('request_date', $request->attendance_date)
+        ->where('status', 'approved')
+        ->exists();
+
+    if ($hasApprovedEarlyLeave) {
+        $attendanceType = "1"; // Force Present
     }
 
     // 🔹 Save or update record

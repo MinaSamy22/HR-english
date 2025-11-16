@@ -85,5 +85,14 @@ return [
 
     // کنٹرولر کے پیغامات
     'reject message' => 'درخواست کامیابی سے مسترد کر دی گئی۔',
-    'accept message' => 'درخواست کامیابی سے منظور کر لی گئی۔'
+    'accept message' => 'درخواست کامیابی سے منظور کر لی گئی۔',
+
+    'processed_early_leave_requests' => ' جلدی رخصتی کی درخواستیں',
+    'early_leave_requests' => ' جلدی رخصتی کی درخواستیں',
+    'leave_time' => 'رخصتی کا وقت',
+    'urgent' => 'فوری',
+    'confirm_reject_early_leave' => 'کیا آپ واقعی اس جلدی رخصتی کی درخواست کو مسترد کرنا چاہتے ہیں؟',
+    'confirm_accept_early_leave' => 'کیا آپ واقعی اس جلدی رخصتی کی درخواست کو قبول کرنا چاہتے ہیں؟',
+    'requested_leave_time' => 'درخواست شدہ چھٹی کا وقت',
+
 ];

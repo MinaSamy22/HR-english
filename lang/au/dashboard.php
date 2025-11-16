@@ -499,6 +499,8 @@ return [
     'additional_salary' => 'اضافی تنخواہ',
     'enter_additional_salary' => 'اضافی تنخواہ درج کریں',
 
+     'early_leave_request'=> 'ابتدائی چھٹی کی درخواست',
+     'early_leave_request_processed'=> 'پراسیس شدہ ابتدائی چھٹی کی درخواستیں'
 
 
 

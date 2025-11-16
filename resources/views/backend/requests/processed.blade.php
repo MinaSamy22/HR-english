@@ -178,6 +178,53 @@
         </div>
         @endif
 
+        {{-- Processed Early Leave Requests --}}
+        @if($processedEarlyLeaves->count() > 0)
+        <div class="card mt-3">
+            <div class="card-header bg-light">
+                <i class="fas fa-door-open"></i> {{ __('h_requests.processed_early_leave_requests') }}
+                <span class="badge badge-secondary ml-2">{{ $processedEarlyLeaves->count() }}</span>
+            </div>
+            <div class="card-body">
+                @foreach($processedEarlyLeaves as $request)
+                    <div class="d-flex justify-content-between align-items-center border-bottom py-3">
+                        <div>
+                            <strong>{{ $request->user->name ?? __('h_requests.unknown') }}</strong><br>
+                            <small class="text-muted">{{ __('h_requests.date') }}:</small>  {{ \Carbon\Carbon::parse($request->request_date)->format('Y-m-d') }}<br>
+                            <small class="text-muted">{{ __('h_requests.leave_time') }}:</small> {{ $request->requested_leave_time }}<br>
+                            @if($request->urgent_request)
+                                <span class="badge badge-warning">{{ __('h_requests.urgent') }}</span><br>
+                            @endif
+                            <strong>{{ __('h_requests.reason') }}:</strong> {{ $request->reason }}<br>
+                            <small class="text-muted">{{ __('h_requests.updated') }}:</small> {{ $request->updated_at->format('Y-m-d H:i') }}
+                        </div>
+                        <div class="text-right">
+                            <span class="badge badge-{{ $request->status == 'accepted' ? 'success' : 'danger' }} mb-2">
+                                <i class="fas fa-{{ $request->status == 'accepted' ? 'check' : 'times' }}"></i>
+                                {{ __('h_requests.' . $request->status) }}
+                            </span><br>
+                            @if($request->status == 'accepted')
+                                <form method="POST" action="{{ route('Requests.reject', ['type' => 'early_leave', 'id' => $request->id]) }}" style="display: inline;">
+                                    @csrf
+                                    <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('{{ __('h_requests.confirm_reject_early_leave') }}')">
+                                        <i class="fas fa-times"></i> {{ __('h_requests.reject') }}
+                                    </button>
+                                </form>
+                            @else
+                                <form method="POST" action="{{ route('Requests.accept', ['type' => 'early_leave', 'id' => $request->id]) }}" style="display: inline;">
+                                    @csrf
+                                    <button type="submit" class="btn btn-outline-success btn-sm" onclick="return confirm('{{ __('h_requests.confirm_accept_early_leave') }}')">
+                                        <i class="fas fa-check"></i> {{ __('h_requests.accept') }}
+                                    </button>
+                                </form>
+                            @endif
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+        @endif
+
         {{-- Processed Resignation Requests --}}
         @if($processedResignations->count() > 0)
         <div class="card mt-3 mb-5">
@@ -222,7 +269,7 @@
         @endif
 
         {{-- No Processed Requests Message --}}
-        @if($processedVacations->count() == 0 && $processedExtraTimes->count() == 0 && $processedLateRemovals->count() == 0 && $processedResignations->count() == 0)
+        @if($processedVacations->count() == 0 && $processedExtraTimes->count() == 0 && $processedLateRemovals->count() == 0 && $processedEarlyLeaves->count() == 0 && $processedResignations->count() == 0)
         <div class="card mt-3">
             <div class="card-body">
                 <div class="text-center py-5">

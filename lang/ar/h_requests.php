@@ -85,5 +85,15 @@ return [
 
        //controller
     'reject message' => 'تم رفض الطلب بنجاح',
-    'accept message' => 'تم قبول الطلب بنجاح'
+    'accept message' => 'تم قبول الطلب بنجاح',
+
+    'processed_early_leave_requests' => 'طلبات المغادرة المبكرة ',
+    'early_leave_requests' => 'طلبات المغادرة المبكرة ',
+    'leave_time' => 'وقت المغادرة',
+    'urgent' => 'عاجل',
+    'confirm_reject_early_leave' => 'هل أنت متأكد من رفض طلب المغادرة المبكرة هذا؟',
+    'confirm_accept_early_leave' => 'هل أنت متأكد من قبول طلب المغادرة المبكرة هذا؟',
+
+    'requested_leave_time' => 'وقت المغادرة المطلوب',
+
 ];

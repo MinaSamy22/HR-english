@@ -316,6 +316,8 @@ return [
    // Request type messages
 'vacation_request_processed' => 'تم :status <strong>طلب إجازة :type</strong>',
 'extra_time_request_processed' => 'تم :status <strong>طلب العمل الإضافي لـ :hours ساعات</strong>',
+'early_leave_request_processed' => 'تم :status <strong>إذن خروج مبكر</strong>',
+'extra_time_request_processed' => 'تم :status <strong>طلب العمل الإضافي لـ :hours ساعات</strong>',
 'resignation_request_processed' => 'تم :status <strong>طلب الاستقالة</strong>',
 'late_removal_request_processed' => 'تم :status <strong>طلب إزالة التأخير</strong> بتاريخ :date',
 
@@ -482,6 +484,6 @@ return [
     'select_status' => 'اختر الحالة',
     'additional_salary' => 'الراتب الإضافي',
     'enter_additional_salary' => 'أدخل الراتب الإضافي',
-
+    'early_leave_request'=> 'طلب إذن خروج مبكر',
 ];
 

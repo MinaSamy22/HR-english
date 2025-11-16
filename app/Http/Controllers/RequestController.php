@@ -8,9 +8,10 @@ use App\Models\VacationRequest;
 use App\Models\ExtraTimeRequest;
 use App\Models\Resignation;
 use App\Models\LateRemovalRequest;
-use App\Models\Vacation; // Add this import
-use App\Models\Time; // Add this import
-use App\Models\Attendance; // Add this import
+use App\Models\EarlyLeaveRequest;
+use App\Models\Vacation;
+use App\Models\Time;
+use App\Models\Attendance;
 
 class RequestController extends Controller
 {
@@ -68,147 +69,178 @@ class RequestController extends Controller
             ->with('user')
             ->get();
 
+        // Get pending early leave requests
+        $pendingEarlyLeaves = EarlyLeaveRequest::where('status', 'pending')
+            ->whereHas('user', $userFilterClosure)
+            ->with('user')
+            ->get();
+
         return view('backend.requests.pending', compact(
             'pendingVacations',
             'pendingExtraTimes',
             'pendingResignations',
-            'pendingLateRemovals'
+            'pendingLateRemovals',
+            'pendingEarlyLeaves'
         ));
     }
 
-    public function processed(Request $request)
-    {
-        // Get current company ID from session
-        $companyId = session('company_id');
 
-        // Get filter parameters
-        $selectedMonth = $request->get('month');
-        $searchName = $request->get('search_name');
+public function processed(Request $request)
+{
+    // Get current company ID from session
+    $companyId = session('company_id');
 
-        // Build processed requests queries with filters and company restriction
-        $processedVacationsQuery = VacationRequest::whereIn('status', ['accepted', 'rejected'])
-            ->whereHas('user', function($query) use ($companyId) {
-                $query->where('company_id', $companyId);
-            })
-            ->with('user')
-            ->orderBy('updated_at', 'desc');
+    // Get filter parameters
+    $selectedMonth = $request->get('month');
+    $searchName = $request->get('search_name');
 
-        $processedExtraTimesQuery = ExtraTimeRequest::whereIn('status', ['accepted', 'rejected'])
-            ->whereHas('user', function($query) use ($companyId) {
-                $query->where('company_id', $companyId);
-            })
-            ->with('user')
-            ->orderBy('updated_at', 'desc');
+    // Build processed requests queries with filters and company restriction
+    $processedVacationsQuery = VacationRequest::whereIn('status', ['accepted', 'rejected'])
+        ->whereHas('user', function($query) use ($companyId) {
+            $query->where('company_id', $companyId);
+        })
+        ->with('user')
+        ->orderBy('updated_at', 'desc');
 
-        $processedResignationsQuery = Resignation::whereIn('status', ['accepted', 'rejected'])
-            ->whereHas('user', function($query) use ($companyId) {
-                $query->where('company_id', $companyId);
-            })
-            ->with('user')
-            ->orderBy('updated_at', 'desc');
+    $processedExtraTimesQuery = ExtraTimeRequest::whereIn('status', ['accepted', 'rejected'])
+        ->whereHas('user', function($query) use ($companyId) {
+            $query->where('company_id', $companyId);
+        })
+        ->with('user')
+        ->orderBy('updated_at', 'desc');
 
-        $processedLateRemovalsQuery = LateRemovalRequest::whereIn('status', ['accepted', 'rejected'])
-            ->whereHas('user', function($query) use ($companyId) {
-                $query->where('company_id', $companyId);
-            })
-            ->with('user')
-            ->orderBy('updated_at', 'desc');
+    $processedResignationsQuery = Resignation::whereIn('status', ['accepted', 'rejected'])
+        ->whereHas('user', function($query) use ($companyId) {
+            $query->where('company_id', $companyId);
+        })
+        ->with('user')
+        ->orderBy('updated_at', 'desc');
 
-        // Apply month filter if selected
-        if ($selectedMonth) {
-            $year = date('Y');
-            $month = $selectedMonth;
+    $processedLateRemovalsQuery = LateRemovalRequest::whereIn('status', ['accepted', 'rejected'])
+        ->whereHas('user', function($query) use ($companyId) {
+            $query->where('company_id', $companyId);
+        })
+        ->with('user')
+        ->orderBy('updated_at', 'desc');
 
-            $processedVacationsQuery->whereYear('updated_at', $year)
-                ->whereMonth('updated_at', $month);
+    // Add Early Leave Requests query
+    $processedEarlyLeavesQuery = EarlyLeaveRequest::whereIn('status', ['accepted', 'rejected'])
+        ->whereHas('user', function($query) use ($companyId) {
+            $query->where('company_id', $companyId);
+        })
+        ->with('user')
+        ->orderBy('updated_at', 'desc');
 
-            $processedExtraTimesQuery->whereYear('updated_at', $year)
-                ->whereMonth('updated_at', $month);
+    // Apply month filter if selected
+    if ($selectedMonth) {
+        $year = date('Y');
+        $month = $selectedMonth;
 
-            $processedResignationsQuery->whereYear('updated_at', $year)
-                ->whereMonth('updated_at', $month);
+        $processedVacationsQuery->whereYear('updated_at', $year)
+            ->whereMonth('updated_at', $month);
 
-            $processedLateRemovalsQuery->whereYear('updated_at', $year)
-                ->whereMonth('updated_at', $month);
-        }
+        $processedExtraTimesQuery->whereYear('updated_at', $year)
+            ->whereMonth('updated_at', $month);
 
-        // Apply name search filter if provided
-        if ($searchName) {
-            $processedVacationsQuery->whereHas('user', function($query) use ($searchName, $companyId) {
-                $query->where('name', 'LIKE', '%' . $searchName . '%')
-                      ->where('company_id', $companyId);
-            });
+        $processedResignationsQuery->whereYear('updated_at', $year)
+            ->whereMonth('updated_at', $month);
 
-            $processedExtraTimesQuery->whereHas('user', function($query) use ($searchName, $companyId) {
-                $query->where('name', 'LIKE', '%' . $searchName . '%')
-                      ->where('company_id', $companyId);
-            });
+        $processedLateRemovalsQuery->whereYear('updated_at', $year)
+            ->whereMonth('updated_at', $month);
 
-            $processedResignationsQuery->whereHas('user', function($query) use ($searchName, $companyId) {
-                $query->where('name', 'LIKE', '%' . $searchName . '%')
-                      ->where('company_id', $companyId);
-            });
-
-            $processedLateRemovalsQuery->whereHas('user', function($query) use ($searchName, $companyId) {
-                $query->where('name', 'LIKE', '%' . $searchName . '%')
-                      ->where('company_id', $companyId);
-            });
-        }
-
-        // Execute queries
-        $processedVacations = $processedVacationsQuery->get();
-        $processedExtraTimes = $processedExtraTimesQuery->get();
-        $processedResignations = $processedResignationsQuery->get();
-        $processedLateRemovals = $processedLateRemovalsQuery->get();
-
-        // Generate months list for filter dropdown
-        $months = [
-            1 => 'January', 2 => 'February', 3 => 'March', 4 => 'April',
-            5 => 'May', 6 => 'June', 7 => 'July', 8 => 'August',
-            9 => 'September', 10 => 'October', 11 => 'November', 12 => 'December'
-        ];
-
-        return view('backend.requests.processed', compact(
-            'processedVacations',
-            'processedExtraTimes',
-            'processedResignations',
-            'processedLateRemovals',
-            'months',
-            'selectedMonth',
-            'searchName'
-        ));
+        $processedEarlyLeavesQuery->whereYear('updated_at', $year)
+            ->whereMonth('updated_at', $month);
     }
 
-    public function accept($type, $id)
-    {
-        $model = $this->getModelInstance($type, $id);
+    // Apply name search filter if provided
+    if ($searchName) {
+        $processedVacationsQuery->whereHas('user', function($query) use ($searchName, $companyId) {
+            $query->where('name', 'LIKE', '%' . $searchName . '%')
+                  ->where('company_id', $companyId);
+        });
 
-        // Verify the request belongs to the current company before processing
-        if (!$this->belongsToCurrentCompany($model)) {
-            abort(403, 'Unauthorized access to this request.');
-        }
+        $processedExtraTimesQuery->whereHas('user', function($query) use ($searchName, $companyId) {
+            $query->where('name', 'LIKE', '%' . $searchName . '%')
+                  ->where('company_id', $companyId);
+        });
 
-        $model->status = 'accepted';
-        $model->is_seen = 0; // Mark as unseen for notifications
-        $model->save();
+        $processedResignationsQuery->whereHas('user', function($query) use ($searchName, $companyId) {
+            $query->where('name', 'LIKE', '%' . $searchName . '%')
+                  ->where('company_id', $companyId);
+        });
 
-        // If it's a vacation request, save to vacations table
-        if ($type === 'vacation') {
-            $this->saveVacationToVacationsTable($model);
-        }
+        $processedLateRemovalsQuery->whereHas('user', function($query) use ($searchName, $companyId) {
+            $query->where('name', 'LIKE', '%' . $searchName . '%')
+                  ->where('company_id', $companyId);
+        });
 
-        // If it's an extra time request, save to times table
-        if ($type === 'extra_time') {
-            $this->saveExtraTimeToTimesTable($model);
-        }
-
-        // If it's a late removal request, update attendance
-        if ($type === 'late_removal') {
-            $this->updateAttendanceForLateRemoval($model);
-        }
-
-        return back()->with('success', __('h_requests.accept message'));
+        $processedEarlyLeavesQuery->whereHas('user', function($query) use ($searchName, $companyId) {
+            $query->where('name', 'LIKE', '%' . $searchName . '%')
+                  ->where('company_id', $companyId);
+        });
     }
+
+    // Execute queries
+    $processedVacations = $processedVacationsQuery->get();
+    $processedExtraTimes = $processedExtraTimesQuery->get();
+    $processedResignations = $processedResignationsQuery->get();
+    $processedLateRemovals = $processedLateRemovalsQuery->get();
+    $processedEarlyLeaves = $processedEarlyLeavesQuery->get();
+
+    // Generate months list for filter dropdown
+    $months = [
+        1 => 'January', 2 => 'February', 3 => 'March', 4 => 'April',
+        5 => 'May', 6 => 'June', 7 => 'July', 8 => 'August',
+        9 => 'September', 10 => 'October', 11 => 'November', 12 => 'December'
+    ];
+
+    return view('backend.requests.processed', compact(
+        'processedVacations',
+        'processedExtraTimes',
+        'processedResignations',
+        'processedLateRemovals',
+        'processedEarlyLeaves',
+        'months',
+        'selectedMonth',
+        'searchName'
+    ));
+}
+
+public function accept($type, $id)
+{
+    $model = $this->getModelInstance($type, $id);
+
+    // Verify the request belongs to the current company before processing
+    if (!$this->belongsToCurrentCompany($model)) {
+        abort(403, 'Unauthorized access to this request.');
+    }
+
+    $model->status = 'accepted';
+    $model->is_seen = 0; // Mark as unseen for notifications
+    $model->save();
+
+    // If it's a vacation request, save to vacations table
+    if ($type === 'vacation') {
+        $this->saveVacationToVacationsTable($model);
+    }
+
+    // If it's an extra time request, save to times table
+    if ($type === 'extra_time') {
+        $this->saveExtraTimeToTimesTable($model);
+    }
+
+    // If it's a late removal request, update attendance
+    if ($type === 'late_removal') {
+        $this->updateAttendanceForLateRemoval($model);
+    }
+
+    // If it's an early leave request, handle it
+    if ($type === 'early_leave') {
+        $this->handleEarlyLeaveRequest($model);
+    }
+
+    return back()->with('success', __('h_requests.accept message'));
+}
 
     public function reject($type, $id)
     {
@@ -226,11 +258,14 @@ class RequestController extends Controller
         return back()->with('success', __('h_requests.reject message'));
     }
 
+
+    // the next one related to employee interface and the action afyer reject or accept
+
     /**
      * Show a processed request and mark it as seen
      */
    /**
- * Show a processed request and mark it as seen
+ * Show a processed request and mark it as seen in employee interface
  */
 public function showProcessedRequest($type, $id)
 {
@@ -255,6 +290,8 @@ public function showProcessedRequest($type, $id)
             return redirect()->route('employee.resignation.index');
         case 'late_removal':
             return redirect()->route('employee.late.index');
+        case 'early_leave':
+            return redirect()->route('employee.early_leave.index');
         default:
             // Fallback to the original view if type doesn't match
             return view('backend.requests.show', compact('model', 'type'));
@@ -265,67 +302,65 @@ public function showProcessedRequest($type, $id)
     /**
      * Mark all processed notifications as seen (AJAX endpoint)
      */
-    public function markAllProcessedAsSeen()
-    {
-        // Get current company ID and branch ID from session
-        $companyId = session('company_id');
-        $branchId = session('branch_id');
+    // public function markAllProcessedAsSeen()
+    // {
+    //     // Get current company ID and branch ID from session
+    //     $companyId = session('company_id');
+    //     $branchId = session('branch_id');
 
-        if (!$companyId) {
-            return response()->json(['error' => 'No company session'], 400);
-        }
+    //     if (!$companyId) {
+    //         return response()->json(['error' => 'No company session'], 400);
+    //     }
 
-        // Determine filtering logic based on branch_id and is_main
-        $showAllCompanyRequests = false;
-        $filterBranchId = null;
+    //     // Determine filtering logic based on branch_id and is_main
+    //     $showAllCompanyRequests = false;
+    //     $filterBranchId = null;
 
-        if ($branchId) {
-            $currentBranch = Branch::find($branchId);
-            if ($currentBranch && $currentBranch->is_main == 1) {
-                $showAllCompanyRequests = true;
-            } else {
-                $filterBranchId = $branchId;
-            }
-        } else {
-            $showAllCompanyRequests = true;
-        }
+    //     if ($branchId) {
+    //         $currentBranch = Branch::find($branchId);
+    //         if ($currentBranch && $currentBranch->is_main == 1) {
+    //             $showAllCompanyRequests = true;
+    //         } else {
+    //             $filterBranchId = $branchId;
+    //         }
+    //     } else {
+    //         $showAllCompanyRequests = true;
+    //     }
 
-        // Create a closure for the user filtering logic
-        $userFilterClosure = function($query) use ($showAllCompanyRequests, $companyId, $filterBranchId) {
-            if ($showAllCompanyRequests) {
-                $query->where('company_id', $companyId);
-            } else {
-                $query->where('branch_id', $filterBranchId);
-            }
-        };
+    //     // Create a closure for the user filtering logic
+    //     $userFilterClosure = function($query) use ($showAllCompanyRequests, $companyId, $filterBranchId) {
+    //         if ($showAllCompanyRequests) {
+    //             $query->where('company_id', $companyId);
+    //         } else {
+    //             $query->where('branch_id', $filterBranchId);
+    //         }
+    //     };
 
-        // Mark all unseen processed requests as seen
-        VacationRequest::whereIn('status', ['accepted', 'rejected'])
-            ->where('is_seen', 0)
-            ->whereHas('user', $userFilterClosure)
-            ->update(['is_seen' => 1]);
+    //     // Mark all unseen processed requests as seen
+    //     VacationRequest::whereIn('status', ['accepted', 'rejected'])
+    //         ->where('is_seen', 0)
+    //         ->whereHas('user', $userFilterClosure)
+    //         ->update(['is_seen' => 1]);
 
-        ExtraTimeRequest::whereIn('status', ['accepted', 'rejected'])
-            ->where('is_seen', 0)
-            ->whereHas('user', $userFilterClosure)
-            ->update(['is_seen' => 1]);
+    //     ExtraTimeRequest::whereIn('status', ['accepted', 'rejected'])
+    //         ->where('is_seen', 0)
+    //         ->whereHas('user', $userFilterClosure)
+    //         ->update(['is_seen' => 1]);
 
-        Resignation::whereIn('status', ['accepted', 'rejected'])
-            ->where('is_seen', 0)
-            ->whereHas('user', $userFilterClosure)
-            ->update(['is_seen' => 1]);
+    //     Resignation::whereIn('status', ['accepted', 'rejected'])
+    //         ->where('is_seen', 0)
+    //         ->whereHas('user', $userFilterClosure)
+    //         ->update(['is_seen' => 1]);
 
-        LateRemovalRequest::whereIn('status', ['accepted', 'rejected'])
-            ->where('is_seen', 0)
-            ->whereHas('user', $userFilterClosure)
-            ->update(['is_seen' => 1]);
+    //     LateRemovalRequest::whereIn('status', ['accepted', 'rejected'])
+    //         ->where('is_seen', 0)
+    //         ->whereHas('user', $userFilterClosure)
+    //         ->update(['is_seen' => 1]);
 
-        return response()->json(['success' => true]);
-    }
+    //     return response()->json(['success' => true]);
+    // }
 
-    /**
-     * Check if the request belongs to the current company
-     */
+
     private function belongsToCurrentCompany($model)
     {
         $companyId = session('company_id');
@@ -349,14 +384,15 @@ public function showProcessedRequest($type, $id)
                 return Resignation::with('user')->findOrFail($id);
             case 'late_removal':
                 return LateRemovalRequest::with('user')->findOrFail($id);
+            case 'early_leave':
+                return EarlyLeaveRequest::with('user')->findOrFail($id);
             default:
                 abort(404);
         }
     }
 
-    /**
-     * Save accepted vacation request to vacations table
-     */
+
+    // actions after the acceptance or rejecting
     private function saveVacationToVacationsTable(VacationRequest $vacationRequest)
     {
         // Check if vacation already exists to prevent duplicates
@@ -394,9 +430,6 @@ public function showProcessedRequest($type, $id)
         }
     }
 
-    /**
-     * Calculate vacation days between start and end date
-     */
     private function calculateVacationDays($startDate, $endDate)
     {
         $start = Carbon::parse($startDate);
@@ -406,9 +439,6 @@ public function showProcessedRequest($type, $id)
         return $start->diffInDays($end) + 1;
     }
 
-    /**
-     * Save accepted extra time request to times table
-     */
     private function saveExtraTimeToTimesTable(ExtraTimeRequest $extraTimeRequest)
     {
         // Try different possible field names for employee ID
@@ -431,7 +461,6 @@ public function showProcessedRequest($type, $id)
                       $extraTimeRequest->created_at ??
                       now();
 
-        // Debug logging (remove after fixing)
         \Log::info('ExtraTimeRequest data:', [
             'all_data' => $extraTimeRequest->toArray(),
             'employee_id' => $employeeId,
@@ -475,7 +504,7 @@ public function showProcessedRequest($type, $id)
 
             // Set the created_at to the date from the extra time request
             $timeEntry->created_at = Carbon::parse($requestDate);
-            $timeEntry->updated_at = now(); // Keep updated_at as current time
+            $timeEntry->updated_at = now();
             $timeEntry->save();
 
             \Log::info('Successfully saved time entry for employee: ' . $employeeId . ' with date: ' . $requestDate);
@@ -484,16 +513,12 @@ public function showProcessedRequest($type, $id)
         }
     }
 
-    /**
-     * Update attendance when late removal request is accepted
-     */
     private function updateAttendanceForLateRemoval(LateRemovalRequest $lateRemovalRequest)
     {
         // Get employee ID and date from the late removal request
         $employeeId = $lateRemovalRequest->employee_id;
-        $attendanceDate = $lateRemovalRequest->day; // Using the 'day' column you added
+        $attendanceDate = $lateRemovalRequest->day;
 
-        // Debug logging
         \Log::info('LateRemovalRequest data:', [
             'request_id' => $lateRemovalRequest->id,
             'employee_id' => $employeeId,
@@ -511,7 +536,7 @@ public function showProcessedRequest($type, $id)
             return;
         }
 
-        // Find the attendance record using the attendance_id from the request (more reliable)
+        // Find the attendance record using the attendance_id from the request
         $attendance = null;
 
         if ($lateRemovalRequest->attendance_id) {
@@ -533,9 +558,58 @@ public function showProcessedRequest($type, $id)
             \Log::info('Successfully updated attendance for employee: ' . $employeeId . ' on date: ' . $attendanceDate);
         } else {
             \Log::error('No attendance record found for employee: ' . $employeeId . ' on date: ' . $attendanceDate);
+        }
+    }
 
-            // Optionally, you could create a new attendance record here
-            // But it's better to log the error since the attendance should already exist
+    /**
+     * Handle early leave request when accepted
+     */
+    private function handleEarlyLeaveRequest(EarlyLeaveRequest $earlyLeaveRequest)
+    {
+        // Get employee ID and date from the early leave request
+        $employeeId = $earlyLeaveRequest->employee_id;
+        $requestDate = $earlyLeaveRequest->request_date;
+        $leaveTime = $earlyLeaveRequest->requested_leave_time;
+
+        \Log::info('EarlyLeaveRequest data:', [
+            'request_id' => $earlyLeaveRequest->id,
+            'employee_id' => $employeeId,
+            'request_date' => $requestDate,
+            'leave_time' => $leaveTime,
+            'urgent' => $earlyLeaveRequest->urgent_request,
+        ]);
+
+        if (!$employeeId) {
+            \Log::error('Employee ID is null for EarlyLeaveRequest ID: ' . $earlyLeaveRequest->id);
+            return;
+        }
+
+        if (!$requestDate) {
+            \Log::error('Request date is null for EarlyLeaveRequest ID: ' . $earlyLeaveRequest->id);
+            return;
+        }
+
+        // Find the attendance record for this date
+        $attendance = Attendance::where('employee_id', $employeeId)
+            ->whereDate('attendance_date', Carbon::parse($requestDate)->toDateString())
+            ->first();
+
+        if ($attendance) {
+            // You can update the checkout time or add a note
+            // Depending on your business logic, you might want to:
+            // 1. Update the checkout time to the requested leave time
+            // 2. Add a flag indicating early leave was approved
+            // 3. Calculate any deductions if needed
+
+            // Example: Update checkout time if not already set or if later than requested time
+            if (!$attendance->check_out || Carbon::parse($attendance->check_out)->greaterThan(Carbon::parse($leaveTime))) {
+                $attendance->check_out = $leaveTime;
+                $attendance->save();
+
+                \Log::info('Successfully updated checkout time for employee: ' . $employeeId . ' on date: ' . $requestDate);
+            }
+        } else {
+            \Log::warning('No attendance record found for employee: ' . $employeeId . ' on date: ' . $requestDate);
         }
     }
 }

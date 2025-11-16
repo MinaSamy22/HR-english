@@ -63,6 +63,8 @@ return [
     'resignation' => 'Resignation',
     'late_removal' => 'Late Removal',
     'extra_time' => 'Extra Time',
+    'early_leave' => 'Early Leave',
+
 ],
 'status' => [
     'accepted' => 'Accepted',

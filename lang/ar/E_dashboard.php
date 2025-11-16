@@ -64,6 +64,8 @@ return [
     'resignation' => 'استقالة',
     'late_removal' => 'إزالة التأخير',
     'extra_time' => 'وقت إضافي',
+    'early_leave' => 'مغادرة مبكرة',
+
 ],
 'status' => [
     'accepted' => 'مقبول',

@@ -17,7 +17,8 @@ return new class extends Migration
         $table->date('request_date');
         $table->time('requested_leave_time');
         $table->string('reason');
-        $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+        $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
+        $table->tinyInteger('is_seen')->default(0);
         $table->boolean('urgent_request')->default(false);
         $table->unsignedBigInteger('created_by')->nullable(); // employee system user
         $table->unsignedBigInteger('updated_by')->nullable(); // HR approver

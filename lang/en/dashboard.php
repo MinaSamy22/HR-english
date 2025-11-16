@@ -500,5 +500,6 @@ return [
     'select_status' => 'Select Status',
     'additional_salary' => 'Additional Salary',
     'enter_additional_salary' => 'Enter additional salary',
-
+    'early_leave_request' => 'Early Leave Request',
+    'early_leave_request_processed'=> 'Processed Early Leave Requests'
 ];

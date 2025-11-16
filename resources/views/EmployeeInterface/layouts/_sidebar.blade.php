@@ -159,6 +159,9 @@
                                                 case 'late_removal':
                                                     $iconColor = 'text-secondary';
                                                     break;
+                                                case 'early_leave':
+                                                    $iconColor = 'text-warning';
+                                                    break;
                                             }
                                         }
                                     @endphp
