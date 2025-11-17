@@ -38,54 +38,54 @@
             </a>
         </li> --}}
 
-<li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="languageDropdown"
-        role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="languageDropdown"
+                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
-        <div class="badge d-flex align-items-center custom-badge">
-    @if(app()->getLocale() == 'ar')
-        <span class="flag-icon flag-icon-sa mr-1"></span>
-        <span class="font-weight-bold">عربي</span>
-    @elseif(app()->getLocale() == 'au')
-        <span class="flag-icon flag-icon-pk mr-1"></span>
-        <span class="font-weight-bold">اردو</span>
-    @else
-        <span class="flag-icon flag-icon-gb mr-1"></span>
-        <span class="font-weight-bold">EN</span>
-    @endif
-</div>
-    </a>
+                <div class="badge d-flex align-items-center custom-badge">
+                    @if (app()->getLocale() == 'ar')
+                        <span class="flag-icon flag-icon-sa mr-1"></span>
+                        <span class="font-weight-bold">عربي</span>
+                    @elseif(app()->getLocale() == 'au')
+                        <span class="flag-icon flag-icon-pk mr-1"></span>
+                        <span class="font-weight-bold">اردو</span>
+                    @else
+                        <span class="flag-icon flag-icon-gb mr-1"></span>
+                        <span class="font-weight-bold">EN</span>
+                    @endif
+                </div>
+            </a>
 
-<div class="dropdown-menu dropdown-menu-right shadow-sm" aria-labelledby="languageDropdown">
+            <div class="dropdown-menu dropdown-menu-right shadow-sm" aria-labelledby="languageDropdown">
 
-    <!-- English -->
-    <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'en' ? 'active' : '' }}"
-        href="{{ url('lang/en') }}">
-        <span class="flag-icon flag-icon-gb mr-2"></span> English
-        @if (app()->getLocale() == 'en')
-            <i class="fas fa-check ml-auto text-success"></i>
-        @endif
-    </a>
+                <!-- English -->
+                <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'en' ? 'active' : '' }}"
+                    href="{{ url('lang/en') }}">
+                    <span class="flag-icon flag-icon-gb mr-2"></span> English
+                    @if (app()->getLocale() == 'en')
+                        <i class="fas fa-check ml-auto text-success"></i>
+                    @endif
+                </a>
 
-    <!-- Arabic -->
-    <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'ar' ? 'active' : '' }}"
-        href="{{ url('lang/ar') }}">
-        <span class="flag-icon flag-icon-sa mr-2"></span> العربية
-        @if (app()->getLocale() == 'ar')
-            <i class="fas fa-check ml-auto text-success"></i>
-        @endif
-    </a>
+                <!-- Arabic -->
+                <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'ar' ? 'active' : '' }}"
+                    href="{{ url('lang/ar') }}">
+                    <span class="flag-icon flag-icon-sa mr-2"></span> العربية
+                    @if (app()->getLocale() == 'ar')
+                        <i class="fas fa-check ml-auto text-success"></i>
+                    @endif
+                </a>
 
-    <!-- Urdu -->
-    <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'ur' ? 'active' : '' }}"
-        href="{{ url('lang/au') }}">
-        <span class="flag-icon flag-icon-pk mr-2"></span> اردو
-        @if (app()->getLocale() == 'au')
-            <i class="fas fa-check ml-auto text-success"></i>
-        @endif
-    </a>
-</div>
-</li>
+                <!-- Urdu -->
+                <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'ur' ? 'active' : '' }}"
+                    href="{{ url('lang/au') }}">
+                    <span class="flag-icon flag-icon-pk mr-2"></span> اردو
+                    @if (app()->getLocale() == 'au')
+                        <i class="fas fa-check ml-auto text-success"></i>
+                    @endif
+                </a>
+            </div>
+        </li>
 
 
 
@@ -196,57 +196,57 @@
         </li>
 
         {{-- إشعارات الرسائل --}}
-{{-- إشعارات الرسائل --}}
-<li class="nav-item dropdown">
-    <a class="nav-link position-relative p-2" href="#" id="messagesDropdown" role="button"
-        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fas fa-envelope fa-lg text-secondary"></i>
+        {{-- إشعارات الرسائل --}}
+        <li class="nav-item dropdown">
+            <a class="nav-link position-relative p-2" href="#" id="messagesDropdown" role="button"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-envelope fa-lg text-secondary"></i>
 
-        @if ($unreadMessagesCount > 0)
-            <span class="badge badge-danger position-absolute"
-                style="top: 2px; right: 2px; font-size: 0.65rem; padding: 0.25em 0.5em; border-radius: 8px;">
-                {{ $unreadMessagesCount > 99 ? '99+' : $unreadMessagesCount }}
-            </span>
-        @endif
-    </a>
+                @if ($unreadMessagesCount > 0)
+                    <span class="badge badge-danger position-absolute"
+                        style="top: 2px; right: 2px; font-size: 0.65rem; padding: 0.25em 0.5em; border-radius: 8px;">
+                        {{ $unreadMessagesCount > 99 ? '99+' : $unreadMessagesCount }}
+                    </span>
+                @endif
+            </a>
 
-    <div class="dropdown-menu shadow notif-dropdown" aria-labelledby="messagesDropdown">
-        <div class="dropdown-header d-flex justify-content-between align-items-center px-3 py-2 border-bottom">
-            <h6 class="mb-0 font-weight-bold">{{ __('E_message.messages') }}</h6>
-            @if ($unreadMessagesCount > 0)
-                <span class="badge badge-light text-muted">
-                    {{ $unreadMessagesCount }} {{ __('E_message.new') }}
-                </span>
-            @endif
-        </div>
-
-        <div style="max-height: 350px; overflow-y: auto;">
-            @forelse ($unreadMessages as $message)
-                <a class="dropdown-item py-2 border-bottom small notification-item"
-                    href="{{ $message['url'] }}" style="white-space: normal;">
-                    <div class="d-flex align-items-start notif-item">
-                        <div class="icon-wrapper flex-shrink-0">
-                            <i class="{{ $message['icon'] }} text-primary" style="font-size: 1rem;"></i>
-                        </div>
-                        <div class="flex-grow-1 notif-text">
-                            <div class="font-weight-normal" style="font-size: 0.9rem;">
-                                {{ $message['message'] }}
-                            </div>
-                            <div class="text-muted" style="font-size: 0.75rem;">
-                                {{ $message['date']->diffForHumans() }}
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            @empty
-                <div class="dropdown-item text-muted small text-center py-3">
-                    <i class="fas fa-envelope-open-text mb-2 d-block text-secondary"></i>
-                    {{ __('E_message.no_unread_messages') }}
+            <div class="dropdown-menu shadow notif-dropdown" aria-labelledby="messagesDropdown">
+                <div class="dropdown-header d-flex justify-content-between align-items-center px-3 py-2 border-bottom">
+                    <h6 class="mb-0 font-weight-bold">{{ __('E_message.messages') }}</h6>
+                    @if ($unreadMessagesCount > 0)
+                        <span class="badge badge-light text-muted">
+                            {{ $unreadMessagesCount }} {{ __('E_message.new') }}
+                        </span>
+                    @endif
                 </div>
-            @endforelse
-        </div>
-    </div>
-</li>
+
+                <div style="max-height: 350px; overflow-y: auto;">
+                    @forelse ($unreadMessages as $message)
+                        <a class="dropdown-item py-2 border-bottom small notification-item"
+                            href="{{ $message['url'] }}" style="white-space: normal;">
+                            <div class="d-flex align-items-start notif-item">
+                                <div class="icon-wrapper flex-shrink-0">
+                                    <i class="{{ $message['icon'] }} text-primary" style="font-size: 1rem;"></i>
+                                </div>
+                                <div class="flex-grow-1 notif-text">
+                                    <div class="font-weight-normal" style="font-size: 0.9rem;">
+                                        {{ $message['message'] }}
+                                    </div>
+                                    <div class="text-muted" style="font-size: 0.75rem;">
+                                        {{ $message['date']->diffForHumans() }}
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    @empty
+                        <div class="dropdown-item text-muted small text-center py-3">
+                            <i class="fas fa-envelope-open-text mb-2 d-block text-secondary"></i>
+                            {{ __('E_message.no_unread_messages') }}
+                        </div>
+                    @endforelse
+                </div>
+            </div>
+        </li>
 
 
 
@@ -292,6 +292,24 @@
             });
         </script>
         <style>
+            /* Add spacing between notification icons in LTR */
+            [dir="ltr"] .nav-item.dropdown {
+                margin-left: 0.5rem;
+            }
+
+            [dir="ltr"] .nav-item.dropdown:first-child {
+                margin-left: 0;
+            }
+
+            /* Keep RTL spacing as is (it's working well) */
+            [dir="rtl"] .nav-item.dropdown {
+                margin-right: 0.5rem;
+            }
+
+            [dir="rtl"] .nav-item.dropdown:first-child {
+                margin-right: 0;
+            }
+
             .dropdown-item.active,
             .dropdown-item:active {
                 background-color: #e3f2fd !important;
@@ -603,7 +621,7 @@
                     <a href="{{ url('employee/early-leave') }}"
                         class="nav-link @if (Request::segment(2) == 'early-leave') active @endif">
                         <i class="nav-icon fa fa-running"></i>
-                       <p>{{ __('E_dashboard.early_leave_requests') }}</p>
+                        <p>{{ __('E_dashboard.early_leave_requests') }}</p>
                     </a>
                 </li>
 
@@ -633,6 +651,169 @@
 
 
 
+    <style>
+        /* ===== TABLET & MOBILE RESPONSIVE FIXES ===== */
 
+        /* Tablet devices (768px - 1024px) */
+        @media (max-width: 1024px) and (min-width: 768px) {
+            /* Make sidebar collapsible by default on tablets */
+            .main-sidebar {
+                margin-left: -250px;
+            }
+
+            body:not(.sidebar-collapse) .main-sidebar {
+                margin-left: 0;
+            }
+
+            /* Adjust main content when sidebar is hidden */
+            .content-wrapper,
+            .main-header,
+            .main-footer {
+                margin-left: 0 !important;
+            }
+
+            body:not(.sidebar-collapse) .content-wrapper,
+            body:not(.sidebar-collapse) .main-header,
+            body:not(.sidebar-collapse) .main-footer {
+                margin-left: 250px !important;
+            }
+
+            /* Add overlay when sidebar is open on tablet */
+            body:not(.sidebar-collapse)::before {
+                content: '';
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 1037;
+            }
+
+            /* Ensure sidebar appears above overlay */
+            .main-sidebar {
+                position: fixed;
+                z-index: 1038;
+                height: 100vh;
+            }
+        }
+
+        /* Mobile devices (max-width: 767px) */
+        @media (max-width: 767px) {
+            /* Sidebar hidden by default */
+            .main-sidebar {
+                position: fixed;
+                transform: translateX(-250px);
+                transition: transform 0.3s ease-in-out;
+                z-index: 1038;
+                height: 100vh;
+            }
+
+            /* Show sidebar when menu is open */
+            body:not(.sidebar-collapse) .main-sidebar {
+                transform: translateX(0);
+            }
+
+            /* RTL support for mobile */
+            [dir="rtl"] .main-sidebar {
+                transform: translateX(250px);
+            }
+
+            [dir="rtl"] body:not(.sidebar-collapse) .main-sidebar {
+                transform: translateX(0);
+            }
+
+            /* Content takes full width on mobile */
+            .content-wrapper,
+            .main-header,
+            .main-footer {
+                margin-left: 0 !important;
+            }
+
+            /* Dark overlay when sidebar is open */
+            body:not(.sidebar-collapse)::before {
+                content: '';
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.6);
+                z-index: 1037;
+                animation: fadeIn 0.3s;
+            }
+
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+
+            /* Reduce sidebar width slightly on very small screens */
+            @media (max-width: 576px) {
+                .main-sidebar {
+                    width: 230px;
+                }
+
+                .main-sidebar {
+                    transform: translateX(-230px);
+                }
+
+                [dir="rtl"] .main-sidebar {
+                    transform: translateX(230px);
+                }
+            }
+        }
+
+        /* Smooth transitions for sidebar */
+        .main-sidebar {
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Ensure pushmenu button is visible and functional */
+        .nav-link[data-widget="pushmenu"] {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Better touch targets for mobile */
+        @media (max-width: 767px) {
+            .nav-link {
+                padding: 0.75rem 1rem;
+                min-height: 44px;
+            }
+
+            .nav-sidebar .nav-link {
+                padding: 0.75rem 1rem;
+            }
+
+            .nav-sidebar .nav-link p {
+                font-size: 0.95rem;
+            }
+        }
+
+        /* Fix brand logo on mobile */
+        @media (max-width: 767px) {
+            .brand-link {
+                padding: 0.8125rem 0.5rem;
+            }
+
+            .brand-text {
+                font-size: 1rem;
+            }
+        }
+
+        /* Adjust user panel for smaller screens */
+        @media (max-width: 767px) {
+            .user-panel {
+                padding: 0.75rem 0.5rem !important;
+            }
+
+            .user-panel .info a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
 <!-- JavaScript Link (add before closing </body> tag) -->
 <script src="{{ asset('dist/js/darkmode.js') }}"></script>
