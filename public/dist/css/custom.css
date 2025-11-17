@@ -331,3 +331,379 @@ html[dir="rtl"] .mr-auto:not(.navbar-nav) {
     margin-right: 0 !important;
     margin-left: auto !important;
 }
+/* Base RTL Styles */
+html[dir="rtl"] body {
+    direction: rtl !important;
+    text-align: right;
+}
+
+body {
+    direction: rtl !important;
+    text-align: right;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* Desktop Sidebar (Default) */
+.main-sidebar {
+    right: 0 !important;
+    left: auto !important;
+}
+
+.content-wrapper, .main-footer, .main-header {
+    margin-left: 0 !important;
+    margin-right: 250px !important;
+}
+
+.navbar-nav {
+    margin-right: auto !important;
+    margin-left: 0 !important;
+}
+
+.brand-link .brand-image {
+    float: right !important;
+    margin-right: .5rem !important;
+    margin-left: 0 !important;
+}
+
+.nav-sidebar .nav-link>.right,
+.nav-sidebar .nav-link>p>.right {
+    left: 1rem;
+    right: auto;
+}
+
+.nav-sidebar .nav-link>.right:nth-child(2),
+.nav-sidebar .nav-link>p>.right:nth-child(2) {
+    left: 2.2rem;
+    right: auto;
+}
+
+.small-box .icon {
+    left: 15px !important;
+    right: auto !important;
+}
+
+[class*="icheck-"]>input:first-child:checked+label::after {
+    right: 15px;
+    left: auto;
+}
+
+/* Desktop collapsed sidebar */
+@media (min-width: 992px) {
+    .sidebar-mini.sidebar-collapse .content-wrapper,
+    .sidebar-mini.sidebar-collapse .main-footer,
+    .sidebar-mini.sidebar-collapse .main-header {
+        margin-right: 4.6rem !important;
+        margin-left: 0 !important;
+    }
+}
+
+/* Tablet Styles (768px - 991px) */
+@media (max-width: 991.98px) {
+    .main-sidebar, .main-sidebar::before {
+        margin-right: -250px !important;
+        margin-left: 0 !important;
+    }
+
+    .content-wrapper, .main-footer, .main-header {
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+    }
+
+    .sidebar-open .main-sidebar, .sidebar-open .main-sidebar::before {
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+    }
+    
+    /* Ensure hamburger menu is visible on tablets */
+    [data-widget="pushmenu"] {
+        display: block !important;
+    }
+}
+
+/* Mobile Styles (below 768px) */
+@media (max-width: 767.98px) {
+    .main-sidebar, .main-sidebar::before {
+        margin-right: -250px !important;
+        margin-left: 0 !important;
+    }
+
+    .content-wrapper, .main-footer, .main-header {
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+    }
+
+    .sidebar-open .main-sidebar, .sidebar-open .main-sidebar::before {
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+    }
+}
+
+/* Force RTL direction */
+html[dir="rtl"] body {
+    direction: rtl !important;
+    text-align: right !important;
+}
+
+/* Sidebar RTL fix */
+html[dir="rtl"] .main-sidebar {
+    right: 0 !important;
+    left: auto !important;
+}
+
+/* Shift content */
+html[dir="rtl"] .content-wrapper,
+html[dir="rtl"] .main-header,
+html[dir="rtl"] .main-footer {
+    margin-right: 250px !important;
+    margin-left: 0 !important;
+}
+
+/* Navbar RTL fix */
+html[dir="rtl"] .navbar-nav {
+    margin-right: auto !important;
+    margin-left: 0 !important;
+}
+html[dir="rtl"] .navbar-nav .nav-item {
+    text-align: right;
+}
+
+/* Brand logo alignment */
+html[dir="rtl"] .brand-link .brand-image {
+    float: right;
+    margin-right: 0.5rem;
+    margin-left: 0;
+}
+
+/* Sidebar nav icons alignment */
+html[dir="rtl"] .nav-sidebar .nav-link .right {
+    left: 1rem !important;
+    right: auto !important;
+}
+
+/* Small boxes icon fix */
+html[dir="rtl"] .small-box .icon {
+    left: 10px !important;
+    right: auto !important;
+}
+
+/* Cards alignment */
+html[dir="rtl"] .card {
+    text-align: right;
+}
+
+/* Buttons fix */
+html[dir="rtl"] .btn {
+    text-align: center;
+}
+
+/* Override padding/margin */
+html[dir="rtl"] .ml-auto {
+    margin-left: 0 !important;
+    margin-right: auto !important;
+}
+html[dir="rtl"] .mr-auto {
+    margin-right: 0 !important;
+    margin-left: auto !important;
+}
+
+[dir="ltr"] .text-end {
+    text-align: right !important;
+}
+
+[dir="rtl"] .text-end {
+    text-align: left !important;
+}
+
+/* RTL Tablet and Mobile Fixes */
+@media (max-width: 991.98px) {
+    html[dir="rtl"] .main-sidebar,
+    html[dir="rtl"] .main-sidebar::before {
+        margin-right: -250px !important;
+        margin-left: 0 !important;
+    }
+
+    html[dir="rtl"] .content-wrapper,
+    html[dir="rtl"] .main-footer,
+    html[dir="rtl"] .main-header {
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+    }
+
+    html[dir="rtl"] .sidebar-open .main-sidebar,
+    html[dir="rtl"] .sidebar-open .main-sidebar::before {
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+    }
+}
+
+a:not([href]):not([tabindex]) {
+    color: #c2c7d0;
+    text-decoration: none;
+}
+a:not([href]):not([tabindex]):hover {
+    color: #fdfdfd;
+}
+
+/* Swap floats for RTL */
+html[dir="rtl"] .float-left, .float-right, .breadcrumb, .breadcrumb-item, .card-header, .card-title {
+    float: right !important;
+}
+html[dir="rtl"] .float-right {
+    float: left !important;
+}
+
+/* Breadcrumb fix */
+html[dir="rtl"] .breadcrumb {
+    justify-content: flex-start !important;
+}
+html[dir="rtl"] .breadcrumb-item {
+    float: none !important;
+}
+
+/* Card header and title fix */
+html[dir="rtl"] .card-header {
+    text-align: right !important;
+}
+html[dir="rtl"] .card-title {
+    float: right !important;
+}
+
+html[dir="rtl"] .breadcrumb-item + .breadcrumb-item::before {
+    float: none !important;
+    padding-right: 0.0rem;
+    color: #6c757d;
+    content: "\\";
+}
+
+[dir="rtl"] .your-element {
+    border-left: none;
+    border-right: 4px solid #007bff;
+}
+
+/* RTL fixes for mobile stat cards */
+@media (max-width: 767.98px) {
+    html[dir="rtl"] .card-content {
+        text-align: right !important;
+        direction: rtl !important;
+    }
+
+    html[dir="rtl"] .stat-info {
+        text-align: right !important;
+        direction: rtl !important;
+        margin-right: 0 !important;
+        margin-left: 14px !important;
+    }
+
+    html[dir="rtl"] .stat-number {
+        text-align: right !important;
+    }
+
+    html[dir="rtl"] .stat-label {
+        text-align: right !important;
+    }
+
+    html[dir="rtl"] .stat-trend {
+        text-align: right !important;
+        justify-content: flex-end !important;
+        direction: rtl !important;
+    }
+
+    html[dir="rtl"] .stat-icon {
+        margin-left: 0 !important;
+        margin-right: 14px !important;
+    }
+}
+
+@media (max-width: 575.98px) {
+    html[dir="rtl"] .card-content {
+        text-align: right !important;
+    }
+
+    html[dir="rtl"] .stat-info {
+        text-align: right !important;
+        margin-right: 14px !important;
+        margin-left: 0 !important;
+    }
+
+    html[dir="rtl"] .stat-number {
+        text-align: right !important;
+    }
+
+    html[dir="rtl"] .stat-label {
+        text-align: right !important;
+    }
+
+    html[dir="rtl"] .stat-trend {
+        text-align: right !important;
+        justify-content: flex-end !important;
+        flex-direction: row-reverse !important;
+    }
+
+    html[dir="rtl"] .stat-icon {
+        margin-left: 14px !important;
+        margin-right: 0 !important;
+    }
+}
+
+/* Fix navbar item spacing in RTL */
+html[dir="rtl"] .navbar-nav .nav-item {
+    margin-left: 0.37rem !important;
+    margin-right: 0.37rem !important;
+}
+
+/* Ensure proper spacing for navbar links */
+html[dir="rtl"] .navbar-nav .nav-link {
+    padding-left: 0.37rem !important;
+    padding-right: 0.37rem !important;
+}
+
+/* Fix for dropdown items spacing */
+html[dir="rtl"] .nav-item.dropdown {
+    margin-left: 0.37rem !important;
+    margin-right: 0.37rem !important;
+}
+
+html[dir="rtl"] .navbar-nav.ml-auto {
+    margin-left: 0 !important;
+    margin-right: auto !important;
+}
+
+html[dir="rtl"] .navbar-nav.mr-auto {
+    margin-right: 0 !important;
+    margin-left: auto !important;
+}
+
+/* Keep spacing for other ml-auto/mr-auto elements but exclude navbar */
+html[dir="rtl"] .ml-auto:not(.navbar-nav) {
+    margin-left: 0 !important;
+    margin-right: auto !important;
+}
+
+html[dir="rtl"] .mr-auto:not(.navbar-nav) {
+    margin-right: 0 !important;
+    margin-left: auto !important;
+}
+
+/* Additional tablet optimization */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    /* Ensure sidebar overlay works correctly on tablets */
+    .sidebar-open .main-sidebar {
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        z-index: 1040;
+    }
+    
+    /* Add backdrop when sidebar is open on tablet */
+    body.sidebar-open::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1039;
+    }
+}
