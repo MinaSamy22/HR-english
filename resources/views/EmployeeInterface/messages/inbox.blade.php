@@ -10,7 +10,7 @@
                 </div>
                 <div class="">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ url('employee/dashboard') }}">{{ __('E_message.dashboard') }}</a></li>
+                        <li class="breadcrumb-item"><a href="home">{{ __('E_dashboard.home') }}</a></li>
                         <li class="breadcrumb-item active">{{ __('E_message.messages') }}</li>
                     </ol>
                 </div>

@@ -11,7 +11,7 @@
                     </div>
                     <div class="">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{ url('home') }}">{{ __('E_performance.home') }}</a></li>
+                            <li class="breadcrumb-item"><a href="home">{{ __('E_performance.home') }}</a></li>
                             <li class="breadcrumb-item active">{{ __('E_performance.performance') }}</li>
                         </ol>
                     </div>
