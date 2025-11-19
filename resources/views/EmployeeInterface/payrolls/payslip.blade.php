@@ -5,16 +5,12 @@
     <div class="content-wrapper">
         <section class="content-header">
             <div class="container-fluid">
-            <div class=" mb-2 d-flex justify-content-between">
-                    <div class="col-sm-6">
-                        <h1>{{ __('E_payroll.payslips_report') }}</h1>
-                    </div>
-                    <div class="">
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
+                         <h1 class="m-0 mt-3 mb-3">{{ __('E_payroll.payslips_report') }}</h1>
                         <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="home" class="text">{{ __('Calender.home') }}</a></li>
-                            <li class="breadcrumb-item active">{{ __('E_payroll.employee_payslips') }}</li>
+                        <li class="breadcrumb-item active">{{ __('E_payroll.employee_payslips') }}</li>
                         </ol>
-                    </div>
                 </div>
             </div>
         </section>
@@ -296,7 +292,7 @@
                                                                         onclick="downloadPayslip({{ $payroll->id }})">
                                                                         <i class="fas fa-download"></i> {{ __('E_payroll.download') }}
                                                                     </button> --}}
-                                                                    
+
                                                                 </div>
                                                             </div>
                                                         </div>

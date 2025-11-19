@@ -5,16 +5,12 @@
     <!-- Page Header -->
     <div class="content-header">
         <div class="container-fluid">
-            <div class="mb-2 d-flex justify-content-between">
-                <div class="col-sm-6">
-                    <h1 class="m-0">{{ __('E_early.early_leave_requests') }}</h1>
-                </div>
-                <div>
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
+                    <h1 class="m-0 mt-3 mb-3">{{ __('E_early.early_leave_requests') }}</h1>
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="home">{{ __('Calender.home') }}</a></li>
                         <li class="breadcrumb-item active">{{ __('E_early.early_leave_requests') }}</li>
                     </ol>
-                </div>
             </div>
         </div>
     </div>

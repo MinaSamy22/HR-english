@@ -59,16 +59,13 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <div class="container-fluid">
-                <div class=" mb-2 d-flex justify-content-between">
-                    <div class="col-sm-6">
-                        <h1><i class="fas fa-clock mr-2"></i>{{ __('dashboard.company_settings') }}</h1>
-                    </div>
-                    <div class="">
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
+                        <h1 class="m-0 mt-3 mb-3"><i class="fas fa-clock mr-2"></i>{{ __('dashboard.company_settings') }}</h1>
+
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">{{ __('dashboard.settings') }}</a></li>
                             <li class="breadcrumb-item active">{{ __('dashboard.company_settings') }}</li>
                         </ol>
-                    </div>
                 </div>
             </div>
         </section>

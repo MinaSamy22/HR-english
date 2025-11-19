@@ -4,16 +4,12 @@
 <div class="content-wrapper" style="background-image: url('{{ asset('/dist/img/dashboard.jpg') }}'); background-size: cover; background-position: center;">
     <div class="content-header">
         <div class="container-fluid">
-            <div class=" mb-2 d-flex justify-content-between">
-                <div class="col-sm-6">
-                    <h1 class="m-0 text">{{ __('h_todo.reminder') }}</h1>
-                </div>
-                <div class="">
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
+                    <h1 class="m-0 mt-3 mb-3">{{ __('h_todo.reminder') }}</h1>
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#" class="text">{{ __('h_todo.home') }}</a></li>
                         <li class="breadcrumb-item active text">{{ __('h_todo.reminder') }}</li>
                     </ol>
-                </div>
             </div>
         </div>
     </div>
