@@ -1,10 +1,8 @@
 @extends('backend.layouts.app')
 @section('content')
     <link rel="stylesheet" href="{{ url('dist/css/payrollcreate.css') }}">
-
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper"
-        style="background-image: url('{{ asset('/dist/img/additional.jpg') }}'); background-size: cover; background-position: center;">
+    <div class="content-wrapper" style="background-image: url('{{ asset('/dist/img/additional.jpg') }}'); background-size: cover; background-position: center;">
         <!-- Content Header (Page header) -->
         <div class="content-header">
             <div class="container-fluid">
