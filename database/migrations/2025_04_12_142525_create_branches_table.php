@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->string('location')->nullable();
             $table->boolean('is_main')->default(false);
             $table->unsignedBigInteger('company_id');
-            $table->timestamps();
+            $table->timestamps(); 
 
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
         });

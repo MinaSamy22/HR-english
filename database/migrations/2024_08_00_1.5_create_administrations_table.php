@@ -8,22 +8,23 @@ return new class extends Migration
 {
     public function up(): void
     {
-        if (!Schema::hasTable('administrations')) {
             Schema::create('administrations', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
             $table->string('code')->nullable();
             $table->foreignId('manager_id')->nullable()->constrained()->onDelete('set null');
             $table->foreignId('company_id')->nullable()->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('branch_id')->nullable();
+
             $table->timestamps();
             });
         }
-    }
+
 
     public function down(): void
     {
         Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('administrations');
-        Schema::enableForeignKeyConstraints(); 
+        Schema::enableForeignKeyConstraints();
     }
 };
