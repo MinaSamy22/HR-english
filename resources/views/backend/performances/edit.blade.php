@@ -8,7 +8,7 @@
     <div class="content-header">
         <div class="container-fluid">
             <div class=" mb-2 d-flex justify-content-between">
-                <div class="col-sm-6">
+                <div class="">
                     <h1>{{ __('h_performance.edit_performance_evaluation') }}</h1>
                 </div>
                 <div class="">

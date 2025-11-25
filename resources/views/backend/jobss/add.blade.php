@@ -8,10 +8,11 @@
                 <div class="d-flex justify-content-between align-items-center flex-wrap">
                         <h1 class="m-0 mt-3 mb-3">{{ __('h_jobs.jobs') }}</h1>
 
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">{{ __('h_jobs.add') }}</a></li>
-                            <li class="breadcrumb-item active">{{ __('h_jobs.jobs') }}</li>
-                        </ol>
+
+                          <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item "><a href="{{ url('admin/jobs') }}">{{ __('h_jobs.jobs') }}</a></li>
+                            <li class="breadcrumb-item active">{{ __('h_jobs.add') }}</li>
+                          </ol>
                     </div><!-- /.row -->
                 </div><!-- /.container-fluid -->
             </div>

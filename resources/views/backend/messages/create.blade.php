@@ -1,11 +1,12 @@
 @extends('backend.layouts.app')
 
+
 @section('content')
 <div class="content-wrapper" style="background-image: url('{{ asset('/dist/img/dashboard.jpg') }}'); background-size: cover; background-position: center;">
     <div class="content-header">
         <div class="container-fluid">
             <div class=" mb-2 d-flex justify-content-between">
-                <div class="col-sm-6">
+                <div class="">
                     <h1 class="m-0">{{ __('h_message.compose_message') }}</h1>
                 </div>
                 <div class="">

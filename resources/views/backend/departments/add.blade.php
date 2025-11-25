@@ -9,8 +9,8 @@
                         <h1 class="m-0 mt-3 mb-3">{{ __('h_department.home') }}</h1>
 
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">{{ __('h_department.breadcrumb_add') }}</a></li>
-                            <li class="breadcrumb-item active">{{ __('h_department.breadcrumb_department') }}</li>
+                            <li class="breadcrumb-item "><a href="{{ url('admin/department') }}">{{ __('h_department.breadcrumb_department') }}</a></li>
+                            <li class="breadcrumb-item active">{{ __('h_department.breadcrumb_add') }}</li>
                         </ol>
                 </div><!-- /.row -->
             </div><!-- /.container-fluid -->

@@ -5,13 +5,13 @@
     <div class="content-header">
         <div class="container-fluid">
             <div class=" mb-2 d-flex justify-content-between">
-                <div class="col-sm-6">
+                <div class="">
                     <h1 class="m-0"><i class="fas fa-paper-plane mr-2"></i>{{ __('h_message.sent_messages') }}</h1>
                 </div>
                 <div class="">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ url('admin/dashboard') }}">{{ __('h_message.home') }}</a></li>
-                        <li class="breadcrumb-item active">{{ __('h_message.sent_messages') }}</li>
+                         <li class="breadcrumb-item"><a href="{{ url('admin/dashboard') }}">{{ __('h_message.home') }}</a></li>
+                         <li class="breadcrumb-item active">{{ __('h_message.sent_messages') }}</li>
                     </ol>
                 </div>
             </div>

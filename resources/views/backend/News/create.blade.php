@@ -6,16 +6,12 @@
 <div class="content-wrapper">
     <div class="content-header">
         <div class="container-fluid">
-            <div class=" mb-2 d-flex justify-content-between">
-                <div class="col-sm-6">
-                    <h1 class="m-0">{{ __('h_news.add_news') }}</h1>
-                </div>
-                <div class="">
+                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                    <h1 class="m-0 mt-3 mb-3">{{ __('h_news.add_news') }}</h1>
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('news.index') }}">{{ __('h_news.news') }}</a></li>
                         <li class="breadcrumb-item active">{{ __('h_news.add') }}</li>
                     </ol>
-                </div>
             </div>
         </div>
     </div>

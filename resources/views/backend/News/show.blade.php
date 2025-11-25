@@ -7,12 +7,12 @@
     <div class="content-header">
         <div class="container-fluid">
             <div class=" mb-2 d-flex justify-content-between">
-                <div class="col-sm-6">
+                <div class="">
                     <h1 class="m-0">{{ __('h_news.view_news') }}</h1>
                 </div>
                 <div class="">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('news.index') }}">{{ __('h_news.news') }}</a></li>
+                        <li class="breadcrumb-item"><a href="#">{{ __('dashboard.home') }}</a></li>
                         <li class="breadcrumb-item active">{{ __('h_news.view') }}</li>
                     </ol>
                 </div>

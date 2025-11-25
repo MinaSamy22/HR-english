@@ -9,8 +9,8 @@
                         <h1 class="m-0 mt-3 mb-3">{{ __('h_manager.view_managers') }}</h1>
 
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">{{ __('h_manager.view') }}</a></li>
-                            <li class="breadcrumb-item active">{{ __('h_manager.managers') }}</li>
+                            <li class="breadcrumb-item "><a href="{{ url('admin/manager') }}">{{ __('h_manager.managers') }}</a></li>
+                            <li class="breadcrumb-item active">{{ __('h_manager.view') }}</li>
                         </ol>
                 </div><!-- /.row -->
             </div><!-- /.container-fluid -->
