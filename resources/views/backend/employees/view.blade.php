@@ -5,12 +5,13 @@
         <!-- Content Header (Page header) -->
         <div class="content-header">
             <div class="container-fluid">
-        <div class="d-flex justify-content-between align-items-center flex-wrap">
-                        <h1 class="m-0 mt-3 mb-3">{{ __('h_employee.View Employees') }}</h1>
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item "><a href="{{ url('admin/employees') }}">{{ __('h_employee.employees_breadcrumb') }}</a></li>
-                            <li class="breadcrumb-item active">{{ __('h_employee.View') }} </li>
-                        </ol>
+                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                    <h1 class="m-0 mt-3 mb-3">{{ __('h_employee.View Employees') }}</h1>
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item "><a
+                                href="{{ url('admin/employees') }}">{{ __('h_employee.employees_breadcrumb') }}</a></li>
+                        <li class="breadcrumb-item active">{{ __('h_employee.View') }} </li>
+                    </ol>
                 </div><!-- /.row -->
             </div><!-- /.container-fluid -->
         </div>
@@ -86,6 +87,80 @@
                                         </div>
                                     </div>
 
+                                    <!-- Nationality -->
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">{{ __('dashboard.nationality') }}</label>
+                                        <div class="col-sm-10">
+                                            @if ($getRecord->nationality == 'foreign')
+                                                {{ __('dashboard.nationality_foreign') }}
+                                            @else
+                                                {{ __('dashboard.nationality_local') }}
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <!-- Foreign Fields Wrapper -->
+                                    <div id="foreign_fields"
+                                        style="{{ $getRecord->nationality == 'foreign' ? '' : 'display:none;' }}">
+
+                                        <div class="form-group row">
+                                            <label
+                                                class="col-sm-2 col-form-label">{{ __('dashboard.country_code') }}</label>
+                                            <div class="col-sm-10">
+                                                {{ $getRecord->country_code ?? '—' }}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label
+                                                class="col-sm-2 col-form-label">{{ __('dashboard.residency_expiry') }}</label>
+                                            <div class="col-sm-10">
+                                                {{ $getRecord->residency_expiry ? date('d-m-Y', strtotime($getRecord->residency_expiry)) : '—' }}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label
+                                                class="col-sm-2 col-form-label">{{ __('dashboard.passport_number') }}</label>
+                                            <div class="col-sm-10">
+                                                {{ $getRecord->passport_number ?? '—' }}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label
+                                                class="col-sm-2 col-form-label">{{ __('dashboard.passport_expiry') }}</label>
+                                            <div class="col-sm-10">
+                                                {{ $getRecord->passport_expiry ? date('d-m-Y', strtotime($getRecord->passport_expiry)) : '—' }}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label
+                                                class="col-sm-2 col-form-label">{{ __('dashboard.residency_number') }}</label>
+                                            <div class="col-sm-10">
+                                                {{ $getRecord->residency_number ?? '—' }}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label">{{ __('dashboard.iban') }}</label>
+                                            <div class="col-sm-10">
+                                                {{ $getRecord->iban ?? '—' }}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label
+                                                class="col-sm-2 col-form-lable">{{ __('dashboard.residency_job') }}</label>
+                                            <div class="col-sm-10">
+                                                {{ $getRecord->residency_job ?? '—' }}
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
 
 
                                     <div class="form-group row">
@@ -141,16 +216,16 @@
                                         </div>
                                     </div>
 
-                                 @if ($getRecord->main_salary == 0)
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-lable"> {{ __('dashboard.additional_salary') }} <span
-                                                style="color: red;"></span></label>
-                                        <div class="col-sm-10">
-                                            {{ $getRecord->additional_salary }}
+                                    @if ($getRecord->main_salary == 0)
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-lable"> {{ __('dashboard.additional_salary') }}
+                                                <span style="color: red;"></span></label>
+                                            <div class="col-sm-10">
+                                                {{ $getRecord->additional_salary }}
 
+                                            </div>
                                         </div>
-                                    </div>
-                                @endif
+                                    @endif
 
                                     @if ($getRecord->attachment)
                                         <div class="form-group row">

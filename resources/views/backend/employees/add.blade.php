@@ -15,7 +15,7 @@
             </div><!-- /.container-fluid -->
         </div>
         <!-- /.content-header -->
- 
+
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
@@ -24,8 +24,7 @@
                             <div class="card-header">
                                 <h3 class="card-title">{{ __('h_employee.add_employee') }}</h3>
                             </div>
-                            <form class="form-horizontal" method="post" accept="{{ url('admin/employees/add') }}"
-                                enctype="multipart/form-data">
+                                  <form class="form-horizontal" method="post" action="{{ url('admin/employees/add') }}" enctype="multipart/form-data">
                                 {{ csrf_field() }}
                                 <div class="card-body">
 
@@ -181,6 +180,94 @@
                                             toggleAdditionalField(); // run on page load
                                         });
                                     </script>
+
+<div class="form-group row">
+    <label class="col-sm-2 col-form-label">
+        {{ __('dashboard.nationality') }} <span style="color:red">*</span>
+    </label>
+    <div class="col-sm-10">
+        <select name="nationality" id="nationality" class="form-control" required>
+            <option value="local">{{ __('dashboard.nationality_local') }}</option>
+            <option value="foreign">{{ __('dashboard.nationality_foreign') }}</option>
+        </select>
+    </div>
+</div>
+
+<div id="foreign_fields" style="display:none;">
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">{{ __('dashboard.country_code') }}</label>
+        <div class="col-sm-10">
+            <input type="text" name="country_code" class="form-control">
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">{{ __('dashboard.residency_expiry') }}</label>
+        <div class="col-sm-10">
+            <input type="date" name="residency_expiry" class="form-control">
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">{{ __('dashboard.passport_number') }}</label>
+        <div class="col-sm-10">
+            <input type="text" name="passport_number" class="form-control">
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">{{ __('dashboard.passport_expiry') }}</label>
+        <div class="col-sm-10">
+            <input type="date" name="passport_expiry" class="form-control">
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            {{ __('dashboard.residency_number') }} <span style="color:red">*</span>
+        </label>
+        <div class="col-sm-10">
+            <input type="text" name="residency_number" class="form-control" required>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">{{ __('dashboard.iban') }}</label>
+        <div class="col-sm-10">
+            <input type="text" name="iban" class="form-control">
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">{{ __('dashboard.residency_job') }}</label>
+        <div class="col-sm-10">
+            <input type="text" name="residency_job" class="form-control">
+        </div>
+    </div>
+
+
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const nationality = document.getElementById('nationality');
+    const foreignFields = document.getElementById('foreign_fields');
+    const requiredInputs = foreignFields.querySelectorAll('[required]');
+
+    function toggleForeign() {
+        if (nationality.value === 'foreign') {
+            foreignFields.style.display = 'block';
+            requiredInputs.forEach(input => input.setAttribute('required', true));
+        } else {
+            foreignFields.style.display = 'none';
+            requiredInputs.forEach(input => input.removeAttribute('required'));
+        }
+    }
+
+    nationality.addEventListener('change', toggleForeign);
+    toggleForeign();
+});
+</script>
 
 
 

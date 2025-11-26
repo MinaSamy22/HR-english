@@ -485,5 +485,17 @@ return [
     'additional_salary' => 'الراتب الإضافي',
     'enter_additional_salary' => 'أدخل الراتب الإضافي',
     'early_leave_request'=> 'طلب إذن خروج مبكر',
+
+    'nationality' => 'الجنسية',
+    'nationality_local' => 'محلي',
+    'nationality_foreign' => 'أجنبي',
+
+    'country_code' => 'كود الدولة',
+    'residency_expiry' => 'تاريخ انتهاء الإقامة',
+    'passport_number' => 'رقم الجواز',
+    'passport_expiry' => 'تاريخ انتهاء الجواز',
+    'residency_number' => 'رقم الإقامة',
+    'iban' => 'IBAN البنك',
+    'residency_job' => 'المهنة في الإقامة',
 ];
 

@@ -500,10 +500,20 @@ return [
     'enter_additional_salary' => 'اضافی تنخواہ درج کریں',
 
      'early_leave_request'=> 'ابتدائی چھٹی کی درخواست',
-     'early_leave_request_processed'=> 'پراسیس شدہ ابتدائی چھٹی کی درخواستیں'
+     'early_leave_request_processed'=> 'پراسیس شدہ ابتدائی چھٹی کی درخواستیں',
 
 
+    'nationality' => 'قومیت',
+    'nationality_local' => 'مقامی',
+    'nationality_foreign' => 'غیر ملکی',
 
+    'country_code' => 'ملک کا کوڈ',
+    'residency_expiry' => 'اقامت کی آخری تاریخ',
+    'passport_number' => 'پاسپورٹ نمبر',
+    'passport_expiry' => 'پاسپورٹ کی آخری تاریخ',
+    'residency_number' => 'اقامہ نمبر',
+    'iban' => 'بینک IBAN',
+    'residency_job' => 'اقامہ میں درج پیشہ',
 
 
 ];

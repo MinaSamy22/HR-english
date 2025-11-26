@@ -5,13 +5,14 @@
         <!-- Content Header (Page header) -->
         <div class="content-header">
             <div class="container-fluid">
-        <div class="d-flex justify-content-between align-items-center flex-wrap">
-                        <h1 class="m-0">{{ __('h_employee.employees') }}</h1>
+                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                    <h1 class="m-0">{{ __('h_employee.employees') }}</h1>
 
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item "><a href="{{ url('admin/employees') }}">{{ __('h_employee.employees_breadcrumb') }}</a></li>
-                            <li class="breadcrumb-item active">{{ __('h_employee.edit_breadcrumb') }}</li>
-                        </ol>
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item "><a
+                                href="{{ url('admin/employees') }}">{{ __('h_employee.employees_breadcrumb') }}</a></li>
+                        <li class="breadcrumb-item active">{{ __('h_employee.edit_breadcrumb') }}</li>
+                    </ol>
                 </div><!-- /.row -->
             </div><!-- /.container-fluid -->
         </div>
@@ -157,7 +158,7 @@
                                     {{-- Additional Salary field (hidden unless "No" is selected) --}}
                                     <div class="form-group row" id="additional_salary_field" style="display:none;">
                                         <label class="col-sm-2 col-form-label">
-                                          {{ __('dashboard.additional_salary') }}
+                                            {{ __('dashboard.additional_salary') }}
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="number" name="additional_salary" class="form-control"
@@ -185,6 +186,135 @@
                                             yesRadio.addEventListener('change', toggleAdditionalField);
                                             noRadio.addEventListener('change', toggleAdditionalField);
                                             toggleAdditionalField(); // ensure correct state on load
+                                        });
+                                    </script>
+
+                                    <!-- Nationality -->
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">
+                                            {{ __('dashboard.nationality') }} <span style="color:red">*</span>
+                                        </label>
+
+                                        <div class="col-sm-10">
+                                            <select name="nationality" id="nationality" class="form-control" required>
+                                                <option value="local"
+                                                    {{ old('nationality', $getRecord->nationality) == 'local' ? 'selected' : '' }}>
+                                                    {{ __('dashboard.nationality_local') }}
+                                                </option>
+
+                                                <option value="foreign"
+                                                    {{ old('nationality', $getRecord->nationality) == 'foreign' ? 'selected' : '' }}>
+                                                    {{ __('dashboard.nationality_foreign') }}
+                                                </option>
+                                            </select>
+
+                                            <span style="color:red">{{ $errors->first('nationality') }}</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- FOREIGN FIELDS -->
+                                    <div id="foreign_fields"
+                                        style="{{ old('nationality', $getRecord->nationality) == 'foreign' ? '' : 'display:none;' }}">
+
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label">
+                                                {{ __('dashboard.country_code') }} <span style="color:red">*</span>
+                                            </label>
+
+                                            <div class="col-sm-10">
+                                                <input type="text" name="country_code" class="form-control"
+                                                    value="{{ old('country_code', $getRecord->country_code) }}">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label">
+                                                {{ __('dashboard.residency_expiry') }} <span style="color:red">*</span>
+                                            </label>
+
+                                            <div class="col-sm-10">
+                                                <input type="date" name="residency_expiry" class="form-control"
+                                                    value="{{ old('residency_expiry', $getRecord->residency_expiry) }}">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label
+                                                class="col-sm-2 col-form-label">{{ __('dashboard.passport_number') }}</label>
+
+                                            <div class="col-sm-10">
+                                                <input type="text" name="passport_number" class="form-control"
+                                                    value="{{ old('passport_number', $getRecord->passport_number) }}">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label
+                                                class="col-sm-2 col-form-label">{{ __('dashboard.passport_expiry') }}</label>
+
+                                            <div class="col-sm-10">
+                                                <input type="date" name="passport_expiry" class="form-control"
+                                                    value="{{ old('passport_expiry', $getRecord->passport_expiry) }}">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label">
+                                                {{ __('dashboard.residency_number') }} <span style="color:red">*</span>
+                                            </label>
+
+                                            <div class="col-sm-10">
+                                                <input type="text" name="residency_number" class="form-control"
+                                                    value="{{ old('residency_number', $getRecord->residency_number) }}">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label">
+                                                {{ __('dashboard.iban') }} <span style="color:red">*</span>
+                                            </label>
+
+                                            <div class="col-sm-10">
+                                                <input type="text" name="iban" class="form-control"
+                                                    value="{{ old('iban', $getRecord->iban) }}">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label
+                                                class="col-sm-2 col-form-label">{{ __('dashboard.residency_job') }}</label>
+
+                                            <div class="col-sm-10">
+                                                <input type="text" name="residency_job" class="form-control"
+                                                    value="{{ old('residency_job', $getRecord->residency_job) }}">
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                    <script>
+                                        document.addEventListener('DOMContentLoaded', function() {
+                                            const nationality = document.getElementById('nationality');
+                                            const foreignFields = document.getElementById('foreign_fields');
+                                            const requiredInputs = foreignFields.querySelectorAll('input');
+
+                                            function toggleForeign() {
+                                                if (nationality.value === 'foreign') {
+                                                    foreignFields.style.display = 'block';
+                                                    requiredInputs.forEach(input => {
+                                                        input.setAttribute('required', true);
+                                                    });
+                                                } else {
+                                                    foreignFields.style.display = 'none';
+                                                    requiredInputs.forEach(input => {
+                                                        input.removeAttribute('required');
+                                                    });
+                                                }
+                                            }
+
+                                            nationality.addEventListener('change', toggleForeign);
+                                            toggleForeign();
                                         });
                                     </script>
 
@@ -309,7 +439,8 @@
 
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">{{ __('h_employee.free_biometric') }} <span
+                                        <label class="col-sm-2 col-form-label">{{ __('h_employee.free_biometric') }}
+                                            <span
                                                 style="color: red;">{{ __('h_employee.required_field') }}</span></label>
                                         <div class="col-sm-10">
                                             <div class="form-check form-check-inline">

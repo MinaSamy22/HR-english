@@ -63,7 +63,7 @@
                         <h1 class="m-0 mt-3 mb-3"><i class="fas fa-clock mr-2"></i>{{ __('dashboard.company_settings') }}</h1>
 
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">{{ __('dashboard.settings') }}</a></li>
+                            <li class="breadcrumb-item"><a href="dashboard" class="text">{{ __('Calender.home') }}</a></li>
                             <li class="breadcrumb-item active">{{ __('dashboard.company_settings') }}</li>
                         </ol>
                 </div>

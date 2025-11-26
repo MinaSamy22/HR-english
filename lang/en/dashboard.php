@@ -501,5 +501,17 @@ return [
     'additional_salary' => 'Additional Salary',
     'enter_additional_salary' => 'Enter additional salary',
     'early_leave_request' => 'Early Leave Request',
-    'early_leave_request_processed'=> 'Processed Early Leave Requests'
+    'early_leave_request_processed'=> 'Processed Early Leave Requests',
+
+    'nationality' => 'Nationality',
+    'nationality_local' => 'Local',
+    'nationality_foreign' => 'Foreign',
+
+    'country_code' => 'Country Code',
+    'residency_expiry' => 'Residency Expiry Date',
+    'passport_number' => 'Passport Number',
+    'passport_expiry' => 'Passport Expiry Date',
+    'residency_number' => 'Residency Number',
+    'iban' => 'Bank IBAN',
+    'residency_job' => 'Job in Residency',
 ];

@@ -10,7 +10,7 @@
         <div class="d-flex justify-content-between align-items-center flex-wrap">
                     <h1 class="m-0 mt-3 mb-3">{{ __('h_charts.reports') }}</h1>
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#" class="text">{{ __('h_charts.home') }}</a></li>
+                        <li class="breadcrumb-item"><a href="dashboard" class="text">{{ __('Calender.home') }}</a></li>
                         <li class="breadcrumb-item active text">{{ __('h_charts.charts') }}</li>
                     </ol>
             </div><!-- /.row -->

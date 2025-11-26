@@ -12,7 +12,7 @@
                     </div>
                     <div class="">
                     <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#"> {{ __('E_myaccount.Setting') }}</a></li>
+                            <li class="breadcrumb-item"><a href="dashboard" class="text">{{ __('Calender.home') }}</a></li>
                             <li class="breadcrumb-item active">{{ __('E_myaccount.My Account') }}</li>
                             <!-- Dark Mode Toggle Button -->
                             <li class="breadcrumb-item">
