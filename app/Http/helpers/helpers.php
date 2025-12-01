@@ -15,7 +15,12 @@ function hr_can($key)
         // Old HR without permissions record → full access
         if (!$perm) return true;
 
-        return in_array($key, $perm->permissions ?? []);
+        // Decode JSON string to array
+        $permissions = is_string($perm->permissions)
+            ? json_decode($perm->permissions, true)
+            : $perm->permissions;
+
+        return in_array($key, $permissions ?? []);
     }
 
     return false;
