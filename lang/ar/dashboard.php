@@ -497,5 +497,10 @@ return [
     'residency_number' => 'رقم الإقامة',
     'iban' => 'IBAN البنك',
     'residency_job' => 'المهنة في الإقامة',
+
+    'hr_permissions' => 'صلاحيات موظف الموارد البشرية',
+    'select_all' => 'تحديد الكل',
+    'unselect_all' => 'إلغاء تحديد الكل',
+
 ];
 

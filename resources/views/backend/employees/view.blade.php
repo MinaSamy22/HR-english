@@ -376,14 +376,100 @@
 
 
 
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-lable"> {{ __('h_employee.is_role') }} <span
-                                                style="color: red;">
-                                            </span></label>
-                                        <div class="col-sm-10">
-                                            {{ !empty($getRecord->is_role) ? __('h_employee.hrs') : __('h_employee.employee') }}
-                                        </div>
-                                    </div>
+
+
+
+<div class="form-group row">
+    <label class="col-sm-2 col-form-label">{{ __('h_employee.role') }}</label>
+    <div class="col-sm-10">
+        @if(!empty($getRecord->is_role) && $getRecord->is_role == 1)
+            <span class="badge bg-success">{{ __('h_employee.hrs') }}</span>
+        @else
+            <span class="badge bg-secondary">{{ __('h_employee.employee') }}</span>
+        @endif
+    </div>
+</div>
+
+@if(!empty($getRecord->is_role) && $getRecord->is_role == 1)
+    <!-- HR Permissions Display Section -->
+    <div class="mt-4">
+        <h4>{{ __('dashboard.hr_permissions') }}</h4>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="row">
+
+                    @php
+                        // Retrieve HR permissions from DB
+                        $hrPermissions = \App\Models\HrPermission::where('user_id', $getRecord->id)
+                            ->where('company_id', session('company_id'))
+                            ->first();
+
+                        $savedPermissions = [];
+
+                        if ($hrPermissions) {
+                            if (is_array($hrPermissions->permissions)) {
+                                $savedPermissions = $hrPermissions->permissions;
+                            } elseif (is_string($hrPermissions->permissions)) {
+                                $decoded = json_decode($hrPermissions->permissions, true);
+                                $savedPermissions = is_array($decoded) ? $decoded : [];
+                            }
+                        }
+
+                        // Map keys to translated labels
+                        $permissionLabels = [
+                            'employees' => __('dashboard.employees'),
+                            'managers' => __('dashboard.managers'),
+                            'administrations' => __('dashboard.administrations'),
+                            'departments' => __('dashboard.departments'),
+                            'jobs' => __('dashboard.jobs'),
+                            'job_history' => __('dashboard.job_history'),
+                            'news' => __('dashboard.news'),
+                            'requests' => __('dashboard.requests'),
+                            'messages' => __('h_message.messages'),
+                            'performance' => __('dashboard.performance'),
+                            'attendance' => __('dashboard.attendance'),
+                            'attendance_reports' => __('dashboard.attendance_reports'),
+                            'biometer_excel' => __('dashboard.biometer_excel'),
+                            'taxes' => __('dashboard.taxes'),
+                            'insurance' => __('dashboard.insurance'),
+                            'deductions' => __('dashboard.deductions'),
+                            'vacations' => __('dashboard.vacations'),
+                            'bounas' => __('dashboard.overtime'),
+                            'payroll' => __('dashboard.payroll'),
+                            'attendance_rule' => __('dashboard.company_policy'),
+                            'payslip' => __('dashboard.payslip_report'),
+                            'branches' => __('dashboard.branches'),
+                            'locations' => __('dashboard.locations'),
+                            'company_info' => __('dashboard.company_info'),
+                            'my_account' => __('dashboard.my_account'),
+                        ];
+                    @endphp
+
+                    @if(!empty($savedPermissions))
+                        @foreach($savedPermissions as $perm)
+                            <div class="col-md-4 mb-2">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" checked disabled>
+                                    <label class="form-check-label">
+                                        {{ $permissionLabels[$perm] ?? $perm }}
+                                    </label>
+                                </div>
+                            </div>
+                        @endforeach
+                    @else
+                        <p class="text-muted">{{ __('dashboard.no_permissions') }}</p>
+                    @endif
+
+                </div>
+            </div>
+        </div>
+    </div>
+@endif
+
+
+
+
 
 
                                     <div class="form-group row">

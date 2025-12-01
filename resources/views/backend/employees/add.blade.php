@@ -409,6 +409,94 @@ document.addEventListener('DOMContentLoaded', function () {
                                             </select>
                                         </div>
                                     </div>
+<!-- HR Permissions Section -->
+<div id="permissionsSection" class="mt-4" style="display:none;">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4>{{ __('dashboard.hr_permissions') }}</h4>
+
+        <!-- Select All Button -->
+        <button type="button" id="selectAllBtn" class="btn btn-primary btn-sm">
+            {{ __('dashboard.select_all') }}
+        </button>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="row">
+
+                @php
+                    $permissions = [
+                        'employees' => __('dashboard.employees'),
+                        'managers' => __('dashboard.managers'),
+                        'administrations' => __('dashboard.administrations'),
+                        'departments' => __('dashboard.departments'),
+                        'jobs' => __('dashboard.jobs'),
+                        'job_history' => __('dashboard.job_history'),
+                        'news' => __('dashboard.news'),
+                        'requests' => __('dashboard.requests'),
+                        'messages' => __('h_message.messages'),
+                        'performance' => __('dashboard.performance'),
+                        'attendance' => __('dashboard.attendance'),
+                        'attendance_reports' => __('dashboard.attendance_reports'),
+                        'biometer_excel' => __('dashboard.biometer_excel'),
+                        'taxes' => __('dashboard.taxes'),
+                        'insurance' => __('dashboard.insurance'),
+                        'deductions' => __('dashboard.deductions'),
+                        'vacations' => __('dashboard.vacations'),
+                        'bounas' => __('dashboard.overtime'),
+                        'payroll' => __('dashboard.payroll'),
+                        'attendance_rule' => __('dashboard.company_policy'),
+                        'payslip' => __('dashboard.payslip_report'),
+                        'branches' => __('dashboard.branches'),
+                        'locations' => __('dashboard.locations'),
+                        'company_info' => __('dashboard.company_info'),
+                        'my_account' => __('dashboard.my_account'),
+                    ];
+                @endphp
+
+                @foreach ($permissions as $key => $label)
+                    <div class="col-md-4 mb-2">
+                        <div class="form-check">
+                            <input class="form-check-input permission-checkbox"
+                                   type="checkbox"
+                                   name="permissions[]"
+                                   value="{{ $key }}"
+                                   id="perm_{{ $key }}">
+
+                            <label class="form-check-label" for="perm_{{ $key }}">
+                                {{ $label }}
+                            </label>
+                        </div>
+                    </div>
+                @endforeach
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Show/Hide Permission Section Based on Role
+    document.getElementById('roleSelect').addEventListener('change', function () {
+        let permissions = document.getElementById('permissionsSection');
+        this.value == "1" ? permissions.style.display = 'block' : permissions.style.display = 'none';
+    });
+
+    // Select All Permissions
+    document.getElementById('selectAllBtn').addEventListener('click', function () {
+        let checkboxes = document.querySelectorAll('.permission-checkbox');
+        let allChecked = [...checkboxes].every(ch => ch.checked);
+
+        checkboxes.forEach(ch => ch.checked = !allChecked);
+
+        // Button text changes based on state
+        this.innerText = allChecked
+            ? "{{ __('dashboard.select_all') }}"
+            : "{{ __('dashboard.unselect_all') }}";
+    });
+</script>
+
 
                                     <div class="form-group row" id="passwordField">
                                         <label class="col-sm-2 col-form-lable">{{ __('h_employee.password') }} <span

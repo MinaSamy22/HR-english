@@ -514,4 +514,8 @@ return [
     'residency_number' => 'Residency Number',
     'iban' => 'Bank IBAN',
     'residency_job' => 'Job in Residency',
+
+    'hr_permissions' => 'HR Permissions',
+    'select_all' => 'Select All',
+    'unselect_all' => 'Unselect All',
 ];

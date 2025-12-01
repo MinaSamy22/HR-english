@@ -199,6 +199,7 @@
                                         style="color: #6c757d; font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px;">
                                         <i class="fas fa-tasks mr-2"></i>{{ __('h_dashboard.main_actions') }}
                                     </h5>
+                                                                @if (hr_can('attendance_reports'))
                                     <!-- Add Attendance Manually -->
                                     <div class="quick-access-item mb-3">
                                         <a href="{{ route('attendance.index') }}"
@@ -209,9 +210,11 @@
                                                 style="font-weight: 500; color: #333;">{{ __('h_dashboard.add_attendance_manually') }}</span>
                                         </a>
                                     </div>
+                                    @endif
 
 
                                     <!-- Add Payroll -->
+                                    @if (hr_can('payroll'))
                                     <div class="quick-access-item mb-3">
                                         <a href="{{ route('payroll') }}"
                                             class="btn btn-light btn-block text-left quick-btn"
@@ -221,6 +224,7 @@
                                                 style="font-weight: 500; color: #333;">{{ __('h_dashboard.add_payroll') }}</span>
                                         </a>
                                     </div>
+                                    @endif
 
                                 </div>
                                 <!-- Reports Section -->
@@ -231,6 +235,7 @@
                                     </h5>
 
                                     <!-- Payslip Report -->
+                                    @if (hr_can('payslip'))
                                     <div class="quick-access-item mb-2">
                                         <a href="{{ route('payslip') }}"
                                             class="btn btn-light btn-block text-left quick-btn"
@@ -240,8 +245,10 @@
                                                 style="font-weight: 500; color: #333;">{{ __('h_dashboard.payslip_report') }}</span>
                                         </a>
                                     </div>
+                                    @endif
 
                                     <!-- Attendance Report -->
+                                    @if (hr_can('attendance_reports'))
                                     <div class="quick-access-item mb-2">
                                         <a href="{{ route('report') }}"
                                             class="btn btn-light btn-block text-left quick-btn"
@@ -251,6 +258,7 @@
                                                 style="font-weight: 500; color: #333;">{{ __('h_dashboard.attendance_report') }}</span>
                                         </a>
                                     </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>

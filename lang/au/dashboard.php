@@ -515,5 +515,8 @@ return [
     'iban' => 'بینک IBAN',
     'residency_job' => 'اقامہ میں درج پیشہ',
 
+    'hr_permissions' => 'ایچ آر اجازتیں',
+    'select_all' => 'سب منتخب کریں',
+    'unselect_all' => 'سب غیر منتخب کریں',
 
 ];

@@ -36,7 +36,9 @@
         "files": [
             "inclued/Helper.php",
             "app/Http/helpers/RequestHelper.php",
-            "app/Http/helpers/MessageHelper.php"
+            "app/Http/helpers/MessageHelper.php",
+            "app/Http/helpers/helpers.php"
+
 
 
         ]

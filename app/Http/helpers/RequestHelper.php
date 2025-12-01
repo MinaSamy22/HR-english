@@ -6,6 +6,8 @@ use App\Models\ExtraTimeRequest;
 use App\Models\Resignation;
 use App\Models\LateRemovalRequest;
 
+
+
 if (!function_exists('getPendingRequestsCount')) {
     function getPendingRequestsCount()
     {

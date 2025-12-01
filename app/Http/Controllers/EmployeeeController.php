@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\EmployeesExport;
 use App\Models\Department;
+use App\Models\HrPermission;
 use App\Models\Job;
 use App\Models\Manager;
 use App\Models\User;
@@ -159,6 +160,15 @@ public function add_post(Request $request)
     // Save the user to the database
     $user->save();
 
+    // If HR (role = 1) then save permissions
+if ($request->is_role == 1) {
+    HrPermission::create([
+        'user_id' => $user->id,
+        'company_id' => session('company_id'),
+        'permissions' => json_encode($request->permissions ?? []),
+    ]);
+}
+
     return redirect('admin/employees')->with('success', __('h_employee.employee_registered'));
 }
 
@@ -195,6 +205,24 @@ public function edit_update($id, Request $request){
         'is_biometric' => 'required|in:0,1', // Biometric validation
         'attachment' => 'nullable|file|mimes:pdf|max:2048', // Add attachment validation
     ]);
+
+    // SAVE HR PERMISSIONS (VERY IMPORTANT)
+    if ($request->is_role == 1) {
+        \App\Models\HrPermission::updateOrCreate(
+            [
+                'user_id' => $id,
+                'company_id' => session('company_id')
+            ],
+            [
+                'permissions' => $request->permissions ?? []
+            ]
+        );
+    } else {
+        // If not HR remove permissions
+        \App\Models\HrPermission::where('user_id', $id)
+            ->where('company_id', session('company_id'))
+            ->delete();
+    }
 
     $user = User::find($id);
 
