@@ -3,26 +3,32 @@
 function hr_can($key)
 {
     $user = Auth::user();
-
     if (!$user) return false;
 
-    // If user is HR and has NO record yet => allow everything
     if ($user->is_role == 1) {
-        $perm = \App\Models\HrPermission::where('user_id', $user->id)
-                   ->where('company_id', session('company_id'))
-                   ->first();
+        // Cache per user ID
+        static $cache = [];
 
-        // Old HR without permissions record → full access
-        if (!$perm) return true;
+        $cacheKey = $user->id . '_' . session('company_id');
 
-        // Decode JSON string to array
-        $permissions = is_string($perm->permissions)
-            ? json_decode($perm->permissions, true)
-            : $perm->permissions;
+        if (!isset($cache[$cacheKey])) {
+            $perm = \App\Models\HrPermission::where('user_id', $user->id)
+                       ->where('company_id', session('company_id'))
+                       ->first();
 
-        return in_array($key, $permissions ?? []);
+            if (!$perm) {
+                $cache[$cacheKey] = true; // full access
+            } else {
+                $cache[$cacheKey] = is_string($perm->permissions)
+                    ? json_decode($perm->permissions, true)
+                    : $perm->permissions;
+            }
+        }
+
+        if ($cache[$cacheKey] === true) return true;
+
+        return in_array($key, $cache[$cacheKey] ?? []);
     }
 
     return false;
 }
-
