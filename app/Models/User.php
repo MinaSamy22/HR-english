@@ -141,7 +141,7 @@ public function getEmployeeStatus()
 
     // 3) Transfer
     if (!empty($this->transfer_status) && $this->transfer_status == 1) {
-        return ['text' => 'نقل كفالة', 'color' => '#6c757dffc107']; // رمادي
+        return ['text' => 'نقل كفالة', 'color' => '#ffc107']; // رمادي
     }
 
     // 4) Default
