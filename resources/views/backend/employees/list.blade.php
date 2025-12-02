@@ -137,6 +137,7 @@
                                                 <th>{{ __('h_employee.email') }}</th>
                                                 <th>{{ __('h_employee.branch') }}</th>
                                                 <th>{{ __('h_employee.role') }}</th>
+                                                <th>{{ __('E_attendance.status') }}</th>
                                                 <th>{{ __('h_employee.action') }}</th>
                                             </tr>
                                         </thead>
@@ -149,6 +150,23 @@
                                                     <td>{{ $value->branch_name ?? __('h_dashboard.main_branch') }}</td>
                                                     <td>{{ !empty($value->is_role) ? __('h_employee.hrs') : __('h_employee.employee') }}
                                                     </td>
+@php
+    $status = $value->getEmployeeStatus();
+@endphp
+
+<td>
+    <span class="badge"
+        style="
+            background-color: {{ $status['color'] }};
+            padding: 6px 12px;
+            color: white;
+            border-radius: 6px;
+        ">
+        {{ $status['text'] }}
+    </span>
+</td>
+
+
                                                     <td>
                                                         <a href="{{ url('admin/employees/view/' . $value->id) }}"
                                                             class="btn btn-info rounded-pill "
@@ -161,12 +179,12 @@
                                                             <i class="fas fa-edit"></i>
                                                         </a>
                                                         <button type="button"
-        class="btn btn-danger rounded-pill delete-btn"
-        data-id="{{ $value->id }}"
-        data-url="{{ route('employees_delete', $value->id) }}"
-        title="{{ __('dashboard.delete') }}">
-    <i class="fas fa-trash-alt"></i>
-</button>
+                                                            class="btn btn-danger rounded-pill delete-btn"
+                                                            data-id="{{ $value->id }}"
+                                                            data-url="{{ route('employees_delete', $value->id) }}"
+                                                            title="{{ __('dashboard.delete') }}">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </button>
 
                                                     </td>
                                                 </tr>
@@ -189,21 +207,21 @@
             </div>
         </section>
     </div>
-@section('script')
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    window.deleteEmployeeTranslations = {
-        title: "{{ __('dashboard.delete') }}",
-        text: "{{ __('h_employee.delete_confirmation') }}",
-        confirm: "{{ __('dashboard.delete') }}",
-        cancel: "{{ __('dashboard.cancel') }}",
-        deleted: "{{ __('dashboard.deleted') }}!",
-        success: "{{ __('dashboard.delete_success') }}",
-        error: "{{ __('dashboard.error') }}",
-        failed: "{{ __('dashboard.delete_failed') }}"
-    };
-</script>
-<script src="{{ asset('dist/js/employee.js') }}?v=4"></script>
-@endsection
+    @section('script')
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            window.deleteEmployeeTranslations = {
+                title: "{{ __('dashboard.delete') }}",
+                text: "{{ __('h_employee.delete_confirmation') }}",
+                confirm: "{{ __('dashboard.delete') }}",
+                cancel: "{{ __('dashboard.cancel') }}",
+                deleted: "{{ __('dashboard.deleted') }}!",
+                success: "{{ __('dashboard.delete_success') }}",
+                error: "{{ __('dashboard.error') }}",
+                failed: "{{ __('dashboard.delete_failed') }}"
+            };
+        </script>
+        <script src="{{ asset('dist/js/employee.js') }}?v=4"></script>
+    @endsection
 
 @endsection
