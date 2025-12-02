@@ -123,24 +123,22 @@ public function getEmployeeStatus()
         ->orderByDesc('id')
         ->first();
 
-    if ($attendance) {
-        $checkInTs = !empty($attendance->check_in) ? strtotime($attendance->check_in) : null;
-        $checkOutTs = !empty($attendance->check_out) ? strtotime($attendance->check_out) : null;
+$checkInTs = !empty($attendance->check_in) && $attendance->check_in != 'NULL' ? strtotime($attendance->check_in) : null;
+$checkOutTs = !empty($attendance->check_out) && $attendance->check_out != 'NULL' ? strtotime($attendance->check_out) : null;
+$nowTs = strtotime(date('H:i:s'));
 
-        if ($checkInTs && (!$checkOutTs || ($nowTs >= $checkInTs && $nowTs <= $checkOutTs))) {
-            return ['text' => 'يعمل الآن', 'color' => '#28a745']; // أخضر
-        } else {
-            return ['text' => 'في العمل', 'color' => '#ffc107']; // أصفر
-        }
-    }
+if ($checkInTs && (!$checkOutTs || ($nowTs >= $checkInTs && $nowTs <= $checkOutTs))) {
+    return ['text' => 'يعمل الآن', 'color' => '#28a745'];
+} else {
+    return ['text' => 'في العمل', 'color' => '#6c757d'];
+}
+
 
     // 3) Transfer
     if (!empty($this->transfer_status) && $this->transfer_status == 1) {
         return ['text' => 'نقل كفالة', 'color' => '#ffc107']; //
     }
 
-    // 4) Default
-    return ['text' => 'في العمل', 'color' => '#6c757d']; //
 }
 
 
