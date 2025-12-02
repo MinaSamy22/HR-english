@@ -518,4 +518,8 @@ return [
     'hr_permissions' => 'HR Permissions',
     'select_all' => 'Select All',
     'unselect_all' => 'Unselect All',
+    'vacation' => 'On Vacation',
+    'working_now' => 'Working Now',
+    'at_work' => 'At Work',
+    'transfer_sponsorship' => 'Transfer Sponsorship',
 ];

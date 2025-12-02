@@ -519,4 +519,8 @@ return [
     'select_all' => 'سب منتخب کریں',
     'unselect_all' => 'سب غیر منتخب کریں',
 
+    'vacation' => 'چھٹی پر',
+    'working_now' => 'ابھی کام کر رہے ہیں',
+    'at_work' => 'کام پر',
+    'transfer_sponsorship' => 'کفالت کی منتقلی',
 ];

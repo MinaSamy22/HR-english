@@ -101,10 +101,10 @@ public static function getRecord($request)
 public function getEmployeeStatus()
 {
     $today = date('Y-m-d');
-    $now = time(); // استخدم timestamp بدلاً من string
+    $now = date('H:i:s'); // الساعة الحالية
     $companyId = session('company_id');
 
-    // 1) Vacation - أزرق
+    // 1) Vacation
     $vacation = \DB::table('vacations')
         ->where('employee_id', $this->id)
         ->where('company_id', $companyId)
@@ -113,7 +113,7 @@ public function getEmployeeStatus()
         ->first();
 
     if ($vacation) {
-        return ['text' => 'إجازة', 'color' => '#007bff']; // أزرق
+        return ['text' => __('dashboard.vacation'), 'color' => '#007bff'];
     }
 
     // 2) Attendance
@@ -121,41 +121,33 @@ public function getEmployeeStatus()
         ->where('employee_id', $this->id)
         ->where('company_id', $companyId)
         ->whereDate('attendance_date', $today)
-        ->orderByDesc('id')
+        ->orderByDesc('id') // آخر حضور اليوم
         ->first();
 
     if ($attendance) {
         $check_in = $attendance->check_in;
         $check_out = $attendance->check_out;
 
-        // حالة: سجل دخول ولم يسجل خروج حتى الآن → يعمل الآن (أخضر)
-        if (!empty($check_in) && empty($check_out)) {
-            return ['text' => 'يعمل الآن', 'color' => '#28a745']; // أخضر
-        }
-
-        // حالة: سجل دخول وخروج
-        if (!empty($check_in) && !empty($check_out)) {
-            // تحويل الأوقات إلى timestamps للمقارنة الصحيحة
-            $checkOutTime = strtotime($today . ' ' . $check_out);
-
-            // إذا كان الوقت الحالي > وقت الخروج (بعد الخروج) → في العمل (رمادي)
-            if ($now > $checkOutTime) {
-                return ['text' => 'في العمل', 'color' => '#6c757d']; // رمادي
-            } else {
-                // إذا كان الوقت الحالي <= وقت الخروج (لا زال يعمل) → يعمل الآن (أخضر)
-                return ['text' => 'يعمل الآن', 'color' => '#28a745']; // أخضر
-            }
+        // حالة يعمل الآن
+        if (!empty($check_in) && (!empty($check_out) && $now >= $check_in && $now <= $check_out)) {
+                return ['text' => __('dashboard.working_now'), 'color' => '#28a745'];
+        } elseif (!empty($check_in) && empty($check_out)) {
+            // حضر وما خرجش → شغال دلوقتي
+                return ['text' => __('dashboard.working_now'), 'color' => '#28a745'];
+        } else {
+                return ['text' => __('dashboard.at_work'), 'color' => '#6c757d'];
         }
     }
 
     // 3) Transfer
     if (!empty($this->transfer_status) && $this->transfer_status == 1) {
-        return ['text' => 'نقل كفالة', 'color' => '#ffc107']; // أصفر
+        return ['text' => __('dashboard.transfer_sponsorship'), 'color' => '#ffc107'];
     }
 
     // 4) Default
-    return ['text' => 'في العمل', 'color' => '#6c757d']; // رمادي
+    return ['text' => __('dashboard.at_work'), 'color' => '#6c757d'];
 }
+
 
 
 

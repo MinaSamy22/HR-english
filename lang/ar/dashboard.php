@@ -502,5 +502,9 @@ return [
     'select_all' => 'تحديد الكل',
     'unselect_all' => 'إلغاء تحديد الكل',
 
+    'vacation' => 'إجازة',
+    'working_now' => 'يعمل الآن',
+    'at_work' => 'في العمل',
+    'transfer_sponsorship' => 'نقل كفالة',
 ];
 
