@@ -97,13 +97,14 @@ public static function getRecord($request)
         return $paginatedResults;
     }
 }
+
 public function getEmployeeStatus()
 {
     $today = date('Y-m-d');
-    $nowTs = strtotime(date('H:i:s')); // الوقت الحالي بالـ timestamp
+    $now = date('H:i:s'); // الساعة الحالية
     $companyId = session('company_id');
 
-    // 1) Vacation
+    // 1) Vacation - أزرق
     $vacation = \DB::table('vacations')
         ->where('employee_id', $this->id)
         ->where('company_id', $companyId)
@@ -123,23 +124,37 @@ public function getEmployeeStatus()
         ->orderByDesc('id')
         ->first();
 
-$checkInTs = !empty($attendance->check_in) && $attendance->check_in != 'NULL' ? strtotime($attendance->check_in) : null;
-$checkOutTs = !empty($attendance->check_out) && $attendance->check_out != 'NULL' ? strtotime($attendance->check_out) : null;
-$nowTs = strtotime(date('H:i:s'));
+    if ($attendance) {
+        $check_in = $attendance->check_in;
+        $check_out = $attendance->check_out;
 
-if ($checkInTs && (!$checkOutTs || ($nowTs >= $checkInTs && $nowTs <= $checkOutTs))) {
-    return ['text' => 'يعمل الآن', 'color' => '#28a745'];
-} else {
-    return ['text' => 'في العمل', 'color' => '#6c757d'];
-}
+        // حالة: سجل دخول ولم يسجل خروج حتى الآن → يعمل الآن (أخضر)
+        if (!empty($check_in) && empty($check_out)) {
+            return ['text' => 'يعمل الآن', 'color' => '#28a745']; // أخضر
+        }
 
+        // حالة: سجل دخول وخروج، والوقت الحالي بعد وقت الخروج → في العمل (رمادي)
+        if (!empty($check_in) && !empty($check_out) && $now > $check_out) {
+            return ['text' => 'في العمل', 'color' => '#6c757d']; // رمادي
+        }
+
+        // حالة: سجل دخول وخروج، والوقت الحالي بين الدخول والخروج → يعمل الآن (أخضر)
+        if (!empty($check_in) && !empty($check_out) && $now >= $check_in && $now <= $check_out) {
+            return ['text' => 'يعمل الآن', 'color' => '#28a745']; // أخضر
+        }
+    }
 
     // 3) Transfer
     if (!empty($this->transfer_status) && $this->transfer_status == 1) {
-        return ['text' => 'نقل كفالة', 'color' => '#ffc107']; //
+        return ['text' => 'نقل كفالة', 'color' => '#ffc107']; // أصفر
     }
 
+    // 4) Default
+    return ['text' => 'في العمل', 'color' => '#6c757d']; // رمادي
 }
+
+
+
 
 
     public static function getAllRecordsForExport($request)
