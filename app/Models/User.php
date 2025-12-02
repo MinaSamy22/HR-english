@@ -97,11 +97,10 @@ public static function getRecord($request)
         return $paginatedResults;
     }
 }
-
 public function getEmployeeStatus()
 {
     $today = date('Y-m-d');
-    $now = date('H:i:s'); // الساعة الحالية
+    $nowTs = strtotime(date('H:i:s')); // الوقت الحالي بالـ timestamp
     $companyId = session('company_id');
 
     // 1) Vacation
@@ -121,19 +120,15 @@ public function getEmployeeStatus()
         ->where('employee_id', $this->id)
         ->where('company_id', $companyId)
         ->whereDate('attendance_date', $today)
-        ->orderByDesc('id') // آخر حضور اليوم
+        ->orderByDesc('id')
         ->first();
 
     if ($attendance) {
-        $check_in = $attendance->check_in;
-        $check_out = $attendance->check_out;
+        $checkInTs = !empty($attendance->check_in) ? strtotime($attendance->check_in) : null;
+        $checkOutTs = !empty($attendance->check_out) ? strtotime($attendance->check_out) : null;
 
-        // حالة يعمل الآن
-        if (!empty($check_in) && (!empty($check_out) && $now >= $check_in && $now <= $check_out)) {
+        if ($checkInTs && (!$checkOutTs || ($nowTs >= $checkInTs && $nowTs <= $checkOutTs))) {
             return ['text' => 'يعمل الآن', 'color' => '#28a745']; // أخضر
-        } elseif (!empty($check_in) && empty($check_out)) {
-            // حضر وما خرجش → شغال دلوقتي
-            return ['text' => 'يعمل الآن', 'color' => '#28a745'];
         } else {
             return ['text' => 'في العمل', 'color' => '#ffc107']; // أصفر
         }
@@ -141,16 +136,12 @@ public function getEmployeeStatus()
 
     // 3) Transfer
     if (!empty($this->transfer_status) && $this->transfer_status == 1) {
-        return ['text' => 'نقل كفالة', 'color' => '#ffc107']; // رمادي
+        return ['text' => 'نقل كفالة', 'color' => '#ffc107']; //
     }
 
     // 4) Default
-    return ['text' => 'في العمل', 'color' => '#6c757d']; // أصفر
+    return ['text' => 'في العمل', 'color' => '#6c757d']; //
 }
-
-
-
-
 
 
     public static function getAllRecordsForExport($request)
