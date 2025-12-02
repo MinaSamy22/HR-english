@@ -101,7 +101,7 @@ public static function getRecord($request)
 public function getEmployeeStatus()
 {
     $today = date('Y-m-d');
-    $now = date('H:i:s'); // الساعة الحالية
+    $now = time(); // استخدم timestamp بدلاً من string
     $companyId = session('company_id');
 
     // 1) Vacation - أزرق
@@ -133,14 +133,18 @@ public function getEmployeeStatus()
             return ['text' => 'يعمل الآن', 'color' => '#28a745']; // أخضر
         }
 
-        // حالة: سجل دخول وخروج، والوقت الحالي بعد وقت الخروج → في العمل (رمادي)
-        if (!empty($check_in) && !empty($check_out) && $now > $check_out) {
-            return ['text' => 'في العمل', 'color' => '#6c757d']; // رمادي
-        }
+        // حالة: سجل دخول وخروج
+        if (!empty($check_in) && !empty($check_out)) {
+            // تحويل الأوقات إلى timestamps للمقارنة الصحيحة
+            $checkOutTime = strtotime($today . ' ' . $check_out);
 
-        // حالة: سجل دخول وخروج، والوقت الحالي بين الدخول والخروج → يعمل الآن (أخضر)
-        if (!empty($check_in) && !empty($check_out) && $now >= $check_in && $now <= $check_out) {
-            return ['text' => 'يعمل الآن', 'color' => '#28a745']; // أخضر
+            // إذا كان وقت الخروج بعد الوقت الحالي → يعمل الآن (أخضر)
+            if ($checkOutTime > $now) {
+                return ['text' => 'يعمل الآن', 'color' => '#28a745']; // أخضر
+            } else {
+                // إذا كان وقت الخروج قبل الوقت الحالي → في العمل (رمادي)
+                return ['text' => 'في العمل', 'color' => '#6c757d']; // رمادي
+            }
         }
     }
 
