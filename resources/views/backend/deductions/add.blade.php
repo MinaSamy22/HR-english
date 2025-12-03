@@ -6,17 +6,15 @@
         <!-- Content Header (Page header) -->
         <div class="content-header">
             <div class="container-fluid">
-        <div class="d-flex justify-content-between align-items-center flex-wrap">
-                        <h1 class="m-0 mt-3 mb-3">{{ __('h_deduction.add_deduction') }}</h1>
-
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">{{ __('h_deduction.add') }}</a></li>
-                            <li class="breadcrumb-item active">{{ __('h_deduction.deductions') }}</li>
-                        </ol>
-                </div><!-- /.row -->
-            </div><!-- /.container-fluid -->
+                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                    <h1 class="m-0 mt-3 mb-3">{{ __('h_deduction.add_deduction') }}</h1>
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">{{ __('h_deduction.add') }}</a></li>
+                        <li class="breadcrumb-item active">{{ __('h_deduction.deductions') }}</li>
+                    </ol>
+                </div>
+            </div>
         </div>
-        <!-- /.content-header -->
 
         <section class="content">
             <div class="container-fluid">
@@ -26,45 +24,63 @@
                             <div class="card-header">
                                 <h3 class="card-title">{{ __('h_deduction.add_deduction') }}</h3>
                             </div>
-                            <form class="form-horizontal" method="post" accept="{{ url('admin/deductions/add') }}"
+
+                            <form class="form-horizontal" method="post" action="{{ url('admin/deductions/add') }}"
                                 enctype="multipart/form-data">
                                 {{ csrf_field() }}
+
                                 <div class="card-body">
 
-                                    {{-- the first spam for the red message
-the secound spam that not closed any thing you write in the place of close whill appear in red mess
-value = old for not rebeating the input  --}}
-
-                                    <div class="form-group row"> {{-- for make selection --}}
+                                    {{-- Employee Selection --}}
+                                    <div class="form-group row">
                                         <label class="col-sm-2 col-form-lable">{{ __('h_deduction.employee_name') }}</label>
                                         <div class="col-sm-10">
-                                            <select class="form-control" name="employee_id" required> {{-- b7ot el esm el f database bta3t hna --}}
+                                            <select class="form-control" name="employee_id" id="employeeSelect" required>
                                                 <option value="">{{ __('h_deduction.select_employee') }}</option>
                                                 @foreach ($getUsers as $value_users)
-                                                    <option value="{{ $value_users->id }}">{{ $value_users->name }}</option> {{-- name of users table --}}
+                                                    <option value="{{ $value_users->id }}">{{ $value_users->name }}
+                                                    </option>
                                                 @endforeach
                                             </select>
                                         </div>
                                     </div>
 
+
+
+
+                                    {{-- Deduction Reason --}}
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-lable">{{ __('h_deduction.deduction_reason') }} <span style="color: red;"></span></label>
+                                        <label
+                                            class="col-sm-2 col-form-lable">{{ __('h_deduction.deduction_reason') }}</label>
                                         <div class="col-sm-10">
-                                            <input type="text" value="{{ old('deduction_type') }}"
-                                                name="deduction_type" class="form-control" placeholder="{{ __('h_deduction.enter_reason') }}">
+                                            <input type="text" value="{{ old('deduction_type') }}" name="deduction_type"
+                                                class="form-control" placeholder="{{ __('h_deduction.enter_reason') }}">
+                                        </div>
+                                    </div>
+                                    {{-- Days to Deduct --}}
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-lable">{{ __('h_deduction.days_to_deduct') }}</label>
+                                        <div class="col-sm-10">
+                                            <input type="decimal" id="deduct_days" name="deduction_days"
+                                                class="form-control" placeholder="{{ __('h_deduction.enter_number_of_days') }}">
+
                                         </div>
                                     </div>
 
+                                    {{-- Deduction Amount --}}
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-lable">{{ __('h_deduction.money_deduction') }} <span style="color: red;"></span></label>
+                                        <label
+                                            class="col-sm-2 col-form-lable">{{ __('h_deduction.money_deduction') }}</label>
                                         <div class="col-sm-10">
-                                            <input type="number" value="{{ old('money_deduction') }}"
-                                                name="money_deduction" class="form-control" placeholder="{{ __('h_deduction.enter_money_deduction') }}">
+                                            <input type="decimal" value="{{ old('money_deduction') }}"
+                                                name="money_deduction" id="money_deduction" class="form-control"
+                                                placeholder="{{ __('h_deduction.enter_money_deduction') }}">
                                         </div>
                                     </div>
 
+                                    {{-- Date --}}
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-lable">{{ __('h_deduction.date') }} <span style="color: red;"></span></label>
+                                        <label class="col-sm-2 col-form-lable">{{ __('h_deduction.date') }}</label>
                                         <div class="col-sm-10">
                                             <input type="datetime-local" value="{{ old('created_at') }}" name="created_at"
                                                 class="form-control">
@@ -74,9 +90,10 @@ value = old for not rebeating the input  --}}
                                 </div>
 
                                 <div class="card-footer">
-                                    <a href="{{ url('admin/deductions') }}" class="btn btn-default float-left">{{ __('h_deduction.back') }}</a>
-                                    {{-- float for the place of the button --}}
-                                    <button type="submit" class="btn btn-primary float-right">{{ __('h_deduction.submit') }}</button>
+                                    <a href="{{ url('admin/deductions') }}"
+                                        class="btn btn-default float-left">{{ __('h_deduction.back') }}</a>
+                                    <button type="submit"
+                                        class="btn btn-primary float-right">{{ __('h_deduction.submit') }}</button>
                                 </div>
                             </form>
 
@@ -86,4 +103,47 @@ value = old for not rebeating the input  --}}
             </div>
         </section>
     </div>
+
+        {{-- Hidden employees data for calculation --}}
+    <script>
+        let employees = @json($getUsers->map(function($u){
+            return [
+                'id' => $u->id,
+                'salary' => $u->salary,
+                'working_days' => is_array($u->working_days) ? count($u->working_days) : 30
+            ];
+        }));
+    </script>
+
+    {{-- Auto-calculation JS --}}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            let employeeSelect = document.getElementById("employeeSelect");
+            let daysInput = document.getElementById("deduct_days");
+            let moneyInput = document.getElementById("money_deduction");
+
+            function calculateDeduction() {
+                let empId = employeeSelect.value;
+                let days = parseFloat(daysInput.value);
+
+                if (!empId || !days) return;
+
+                let emp = employees.find(e => e.id == empId);
+                if (!emp) return;
+
+                let salary = parseFloat(emp.salary);
+                let workingDays = parseInt(emp.working_days);
+                if (workingDays <= 0) workingDays = 30;
+
+                let dailyWage = salary / workingDays;
+                let deductionValue = dailyWage * days;
+
+                moneyInput.value = deductionValue.toFixed(2);
+            }
+
+            employeeSelect.addEventListener('change', calculateDeduction);
+            daysInput.addEventListener('input', calculateDeduction);
+        });
+    </script>
 @endsection

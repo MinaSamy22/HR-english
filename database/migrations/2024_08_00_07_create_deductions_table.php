@@ -12,6 +12,7 @@ class CreateDeductionsTable extends Migration
             $table->id();
             $table->foreignId('employee_id')->constrained('users')->onDelete('cascade'); //on delete cascade de 34an lma ams7 al employee da from employees a3rf ams7o o kmaaan etms7 kman mn hna
             $table->string('deduction_type')->nullable();
+            $table->integer('deduction_days')->nullable();
             $table->integer('money_deduction')->nullable();
             $table->foreignId('company_id')->nullable()->constrained('companies')->onDelete('cascade');
 
@@ -24,6 +25,6 @@ class CreateDeductionsTable extends Migration
     {
         Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('deductions');
-        Schema::enableForeignKeyConstraints(); 
+        Schema::enableForeignKeyConstraints();
     }
 }

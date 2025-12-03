@@ -57,13 +57,17 @@ public function add(Request $request)
     'employee_id'         => 'required',
     'deduction_type'      => 'required',
     'money_deduction'     => 'required',
+    'deduction_days'      => 'nullable|numeric',
     'created_at'          => 'required',
+
 
     ]);
 
     $deduction                          = new Deduction;
     $deduction->employee_id             = trim ($request->employee_id);
     $deduction->deduction_type          = trim ($request->deduction_type);
+    $deduction->deduction_days          = trim($request->deduction_days); // NEW
+
     $deduction->money_deduction         = trim ($request->money_deduction);
     $deduction->created_at              = trim ($request->created_at);
     $deduction->company_id              = session('company_id'); // Important!
