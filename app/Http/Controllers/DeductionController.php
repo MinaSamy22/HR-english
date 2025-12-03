@@ -66,7 +66,7 @@ public function add(Request $request)
     $deduction                          = new Deduction;
     $deduction->employee_id             = trim ($request->employee_id);
     $deduction->deduction_type          = trim ($request->deduction_type);
-    $deduction->deduction_days          = trim($request->deduction_days); // NEW
+    $deduction->deduction_days          = $request->deduction_days;
 
     $deduction->money_deduction         = trim ($request->money_deduction);
     $deduction->created_at              = trim ($request->created_at);
