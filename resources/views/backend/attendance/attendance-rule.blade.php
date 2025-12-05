@@ -14,6 +14,7 @@
     <meta name="msg-error-updating-late-deduction" content="{{ __('dashboard.error_updating_late_deduction') }}">
     <meta name="msg-error-updating-half-day-deduction" content="{{ __('dashboard.error_updating_half_day_deduction') }}">
     <meta name="msg-updated-successfully" content="{{ __('dashboard.updated_successfully') }}">
+    <meta name="msg-error-updating-absent-threshold" content="{{ __('dashboard.error_updating_absent_threshold') }}">
     {{-- Translation meta tags --}}
     <meta name="msg-select-employee" content="{{ __('dashboard.no_employees_selected') }}">
     <meta name="msg-invalid-hours" content="{{ __('dashboard.invalid_hours') }}">
@@ -177,7 +178,25 @@
                                         <div id="half_day_deduction_feedback" class="mt-1"></div>
                                     </div>
 
-
+<!-- Absent Time Threshold -->
+<div class="form-group">
+    <label for="absent_threshold_minutes">
+        <i class="fas fa-user-times text-danger mr-1"></i>
+        {{ __('dashboard.absent_threshold') }}
+    </label>
+    <div class="input-group">
+        <input type="number" class="form-control" id="absent_threshold_minutes"
+            name="absent_threshold_minutes"
+            value="{{ old('absent_threshold_minutes', $setting->absent_threshold_minutes ?? 480) }}"
+            min="120" max="600" style="max-width: 120px;"
+            onchange="updateAbsentThreshold(this.value)">
+        <div class="input-group-append">
+            <span class="input-group-text">{{ __('dashboard.minutes_of_absence') }}</span>
+        </div>
+    </div>
+    <small class="form-text text-muted">{{ __('dashboard.minutes_of_absence_to_consider_full_absent') }}</small>
+    <div id="absentThresholdFeedback" class="mt-2"></div>
+</div>
 
 
                                     <!-- Alert Area -->
@@ -556,12 +575,13 @@
 
     <script src="{{ url('dist/js/attendance settings/hours-days-vacation-bounas.js?v=6') }}"></script>
     <script src="{{ url('dist\js\attendance settings\holidays.js?v=1') }}"></script>
-    <script src="{{ url('dist\js\attendance settings\late-halfDeduction.js?v=3') }}"></script>
+    <script src="{{ url('dist\js\attendance settings\late-halfDeduction.js?v=4') }}"></script>
     <script>
         // URL and token configuration
         const updateLateDeductionUrl = '{{ route('attendance-rules.update-late-deduction') }}';
         const updateLateThresholdUrl = '{{ route('attendance-rules.update-late-threshold') }}';
         const updateHalfDayThresholdUrl = '{{ route('attendance-rules.update-half-day-threshold') }}';
+        const updateAbsentThresholdUrl = '{{ route('attendance-rules.update-absent-threshold') }}'; // ADD THIS
         const halfDayUpdateRoute = '{{ route('attendance-rules.update-half-day') }}';
         const csrfToken = '{{ csrf_token() }}';
     </script>

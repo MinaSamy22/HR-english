@@ -165,3 +165,43 @@ function updateHalfDayDeduction(value) {
         }, 3000);
     });
 }
+
+
+/**
+ * Absent Threshold Handler
+ * Handles updating absent threshold minutes via AJAX
+ */
+function updateAbsentThreshold(minutes) {
+    const feedbackEl = document.getElementById('absentThresholdFeedback');
+
+    fetch(updateAbsentThresholdUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken,
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+            absent_threshold_minutes: minutes
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(err => { throw err; });
+        }
+        return response.json();
+    })
+    .then(data => {
+        feedbackEl.innerHTML = '<div class="text-success">' + data.message + '</div>';
+        setTimeout(() => {
+            feedbackEl.innerHTML = '';
+        }, 3000);
+    })
+    .catch(error => {
+        const errorMsg = getTranslation('msg-error-updating-absent-threshold');
+        feedbackEl.innerHTML = '<div class="text-danger">' + errorMsg + '</div>';
+        setTimeout(() => {
+            feedbackEl.innerHTML = '';
+        }, 3000);
+    });
+}

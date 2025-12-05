@@ -7,14 +7,20 @@
                 <span class="info-box-icon"><i class="fas fa-calculator"></i></span>
                 <div class="info-box-content">
                     <strong>{{ __('dashboard.summary') }}:</strong>
-                    <span class="info-box-number">
-                        {{ __('dashboard.late_arrival') }}: <span
-                            id="late_deduction_preview">{{ $setting->late_deduction_percentage ?? 0 }}</span>%
-                        {{ __('dashboard.deduction') }}
-                    </span>
+
                     <span class="info-box-number">
                         {{ __('dashboard.late_arrival_threshold') }}: <span
                             id="late_deduction_preview">{{ $setting->late_threshold_minutes ?? 0 }}</span>
+                        {{ __('dashboard.min') }}
+                    </span>
+                    <span class="info-box-number">
+                        {{ __('dashboard.half_day_threshold') }}: <span
+                            id="half_day_threshold_minutes">{{ $setting->half_day_threshold_minutes ?? 0 }}</span>
+                        {{ __('dashboard.min') }}
+                    </span>
+                     <span class="info-box-number">
+                        {{ __('dashboard.absent_threshold') }}: <span
+                            id="half_day_threshold_minutes">{{ $setting->absent_threshold_minutes ?? 0 }}</span>
                         {{ __('dashboard.min') }}
                     </span>
 
@@ -22,26 +28,22 @@
                         <div class="progress-bar" id="late_progress" style="width: 100%">
                         </div>
                     </div>
+
                     <span class="info-box-number mt-1">
                         {{ __('dashboard.half_day') }}: <span
                             id="half_day_deduction_preview">{{ $setting->half_day_deduction_percentage ?? 0 }}</span>%
                         {{ __('dashboard.deduction') }}
                     </span>
-                      <span class="info-box-number">
-                        {{ __('dashboard.half_day_threshold') }}: <span
-                            id="half_day_threshold_minutes">{{ $setting->half_day_threshold_minutes ?? 0 }}</span>
-                        {{ __('dashboard.min') }}
+                    <span class="info-box-number">
+                        {{ __('dashboard.late_arrival') }}: <span
+                            id="late_deduction_preview">{{ $setting->late_deduction_percentage ?? 0 }}</span>%
+                        {{ __('dashboard.deduction') }}
                     </span>
+
                     <div class="progress">
-                        <div class="progress-bar" id="half_day_progress"
-                            style="width: 100%"></div>
+                        <div class="progress-bar" id="late_progress" style="width: 100%">
+                        </div>
                     </div>
-
-                    <!-- New Summary Items -->
-                    <hr class="mt-3 mb-2">
-
-
-
 
 
                     <span class="info-box-number">

@@ -523,4 +523,9 @@ return [
     'working_now' => 'ابھی کام کر رہے ہیں',
     'at_work' => 'کام پر',
     'transfer_sponsorship' => 'کفالت کی منتقلی',
+
+    'absent_threshold' => 'مکمل غیر حاضری کی حد',
+'minutes_of_absence_to_consider_full_absent' => 'ملازم کو مکمل طور پر غیر حاضر سمجھنے کے لیے غیر حاضری کے منٹ',
+'absent_threshold_updated_successfully' => 'غیر حاضری کی حد کامیابی سے اپ ڈیٹ ہو گئی',
+'error_updating_absent_threshold' => 'غیر حاضری کی حد اپ ڈیٹ کرنے میں خرابی',
 ];

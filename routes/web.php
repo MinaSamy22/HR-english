@@ -222,6 +222,8 @@ Route::middleware('admin')->group(function () {
     Route::post('/attendance-rules/update-work-hours', [AttendanceRulesController::class, 'updateWorkHoursPerDay'])->name('attendance.update-work-hours');
     Route::post('/attendance/update-employee-work-hours', [AttendanceRulesController::class, 'updateEmployeeWorkHours'])->name('attendance.update-employee-work-hours');
 
+
+    Route::post('/attendance-rules/update-absent-threshold', [AttendanceRulesController::class, 'updateAbsentThreshold'])->name('attendance-rules.update-absent-threshold');
     //vacation balance assignment to employees
     Route::post('/attendance/update-employee-vacation-balance', [AttendanceRulesController::class, 'updateEmployeeVacationBalance'])->name('attendance.update-employee-vacation-balance');
     //bonus per hour assignment to employees

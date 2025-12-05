@@ -113,46 +113,59 @@ public function AttendanceEmployeeSubmit(Request $request)
             if ($request->check_in === $request->check_out) {
                 $attendanceType = 3; // ❌ Absent
             } else {
-                $lateMinutes = ($checkIn - $workStart) / 60;
-                $earlyLeaveMinutes = ($workEnd - $checkOut) / 60;
+                // Calculate late minutes (arrival after work start time)
+                $lateMinutes = max(0, ($checkIn - $workStart) / 60);
 
-                // ✅ If checkout early by 60 minutes or more → Absent
-                if ($earlyLeaveMinutes >= 60) {
-                    $attendanceType = 4; // ⏱ half day
-                }
-                elseif ($lateMinutes <= $attendanceRule->late_threshold_minutes && $earlyLeaveMinutes <= 0) {
-                    $attendanceType = 1; // ✅ Present
-                }
-                elseif (
-                    $lateMinutes >= $attendanceRule->late_threshold_minutes &&
-                    $lateMinutes <= $attendanceRule->half_day_threshold_minutes
-                ) {
-                    $attendanceType = 4; // ⏱ Half Day
-                }
-                elseif (
-                    $lateMinutes > $attendanceRule->half_day_threshold_minutes ||
-                    $earlyLeaveMinutes > $attendanceRule->half_day_threshold_minutes
-                ) {
+                // Calculate early leave minutes (leaving before work end time)
+                $earlyLeaveMinutes = max(0, ($workEnd - $checkOut) / 60);
+
+                // Calculate total absence minutes (late + early leave)
+                $totalAbsenceMinutes = $lateMinutes + $earlyLeaveMinutes;
+
+                // 🔹 Get dynamic thresholds from attendance rules
+                $lateThreshold = $attendanceRule->late_threshold_minutes ?? 15;
+                $halfDayThreshold = $attendanceRule->half_day_threshold_minutes ?? 240;
+                $absentThreshold = $attendanceRule->absent_threshold_minutes ?? 480;
+
+                // 🔹 Dynamic attendance type calculation
+                if ($totalAbsenceMinutes >= $absentThreshold) {
+                    // Total absence >= absent threshold → Absent
                     $attendanceType = 3; // ❌ Absent
                 }
+                elseif ($totalAbsenceMinutes >= $halfDayThreshold) {
+                    // Total absence >= half day threshold → Half Day
+                    $attendanceType = 4; // ⏱ Half Day
+                }
+                elseif ($lateMinutes >= $lateThreshold && $lateMinutes < $halfDayThreshold) {
+                    // Late but not half day → Late
+                    $attendanceType = 2; // ⏰ Late
+                }
+                elseif ($lateMinutes < $lateThreshold && $earlyLeaveMinutes < $lateThreshold) {
+                    // Within acceptable range → Present
+                    $attendanceType = 1; // ✅ Present
+                }
                 else {
-                    $attendanceType = 1; // Default → Present
+                    // Default to Present if conditions don't match
+                    $attendanceType = 1; // ✅ Present
                 }
             }
         } elseif (is_null($checkIn) && is_null($checkOut)) {
+            // No check-in and no check-out → Absent
             $attendanceType = 3; // ❌ Absent
         } else {
-            $attendanceType = null; // Partial data
+            // Partial data (only check-in or only check-out)
+            $attendanceType = null;
         }
     }
-    // 🔍 NEW FEATURE: Approved early leave keeps employee present
+
+    // 🔍 FEATURE: Approved early leave keeps employee present
     $hasApprovedEarlyLeave = \App\Models\EarlyLeaveRequest::where('employee_id', $request->employee_id)
         ->where('request_date', $request->attendance_date)
         ->where('status', 'approved')
         ->exists();
 
     if ($hasApprovedEarlyLeave) {
-        $attendanceType = "1"; // Force Present
+        $attendanceType = 1; // Force Present
     }
 
     // 🔹 Save or update record

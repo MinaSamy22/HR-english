@@ -30,6 +30,9 @@ public function index(Request $request)
     return view('backend.attendance.attendance-rule', $data);
 }
 
+
+
+
     public function saveRules(Request $request)
     {
         $request->validate([
@@ -37,6 +40,7 @@ public function index(Request $request)
             'half_day_deduction_percentage'      => 'required|integer|min:0|max:100',
             'late_threshold_minutes'             => 'required|integer|min:1|max:120',
             'half_day_threshold_minutes'         => 'required|integer|min:60|max:480',
+            'absent_threshold_minutes'           => 'required|integer|min:60|max:1440',
             'work_hours_per_day'                 => 'required|numeric|min:1|max:24',
             'working_days'                       => 'required|array',
             'holiday_dates'                      => 'array',
@@ -68,6 +72,9 @@ public function index(Request $request)
                 'half_day_deduction_percentage'  => $request->half_day_deduction_percentage,
                 'late_threshold_minutes'         => $request->late_threshold_minutes,
                 'half_day_threshold_minutes'     => $request->half_day_threshold_minutes,
+
+                'absent_threshold_minutes' => $request->absent_threshold_minutes,
+
                 'work_hours_per_day'             => $request->work_hours_per_day,
                 'working_days'                   => json_encode($request->working_days),
                 'official_holidays'              => json_encode($holidays),
@@ -145,6 +152,23 @@ return response()->json(['message' => __('dashboard.late_deduction_percentage_up
 
 return response()->json(['message' => __('dashboard.half_day_deduction_percentage_updated_successfully')]);
     }
+
+
+    public function updateAbsentThreshold(Request $request)
+{
+    $request->validate([
+        'absent_threshold_minutes' => 'required|integer|min:120|max:600',
+    ]);
+
+    $company_id = session('company_id');
+
+    $rule = AttendanceRule::updateOrCreate(
+        ['company_id' => $company_id],
+        ['absent_threshold_minutes' => $request->absent_threshold_minutes]
+    );
+
+    return response()->json(['message' => __('dashboard.absent_threshold_updated_successfully')]);
+}
 
 
     // Updated method for updating individual employee work hours - now saves to users table
@@ -385,6 +409,9 @@ public function updateHolidays(Request $request)
         ], 500);
     }
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 
 

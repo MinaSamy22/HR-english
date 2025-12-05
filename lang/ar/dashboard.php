@@ -506,5 +506,10 @@ return [
     'working_now' => 'يعمل الآن',
     'at_work' => 'في العمل',
     'transfer_sponsorship' => 'نقل كفالة',
+
+    'absent_threshold' => 'حد الغياب الكامل',
+'minutes_of_absence_to_consider_full_absent' => 'الدقائق اللازمة لاعتبار الموظف غائباً بالكامل',
+'absent_threshold_updated_successfully' => 'تم تحديث حد الغياب بنجاح',
+'error_updating_absent_threshold' => 'خطأ في تحديث حد الغياب',
 ];
 

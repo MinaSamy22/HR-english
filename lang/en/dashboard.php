@@ -522,4 +522,10 @@ return [
     'working_now' => 'Working Now',
     'at_work' => 'At Work',
     'transfer_sponsorship' => 'Transfer Sponsorship',
+
+    
+    'absent_threshold' => 'Full Absence Threshold',
+'minutes_of_absence_to_consider_full_absent' => 'Minutes of absence to consider employee fully absent',
+'absent_threshold_updated_successfully' => 'Absent threshold updated successfully',
+'error_updating_absent_threshold' => 'Error updating absent threshold',
 ];
