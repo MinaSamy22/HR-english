@@ -493,130 +493,168 @@
                                         </div>
                                     </div>
 
-<div class="form-group row">
-    <label class="col-sm-2 col-form-label">
-        {{ __('h_employee.role') }}
-        <span style="color: red;">{{ __('h_employee.required_field') }}</span>
-    </label>
-    <div class="col-sm-10">
-        <select class="form-control" name="is_role" required>
-            <option value="0" {{ $getRecord->is_role == 0 ? 'selected' : '' }}>
-                {{ __('h_employee.employee') }}
-            </option>
-            <option value="1" {{ $getRecord->is_role == 1 ? 'selected' : '' }}>
-                {{ __('h_employee.hrs') }}
-            </option>
-        </select>
-    </div>
-</div>
-
-{{-- HR Permissions Edit Section --}}
-@if(!empty($getRecord->is_role) && $getRecord->is_role == 1)
-    <div class="form-group row mt-4">
-
-        <!-- Left Label -->
-        <label class="col-sm-2 col-form-label">
-            {{ __('dashboard.hr_permissions') }}
-        </label>
-
-        <!-- Right Content -->
-        <div class="col-sm-10">
-
-            <!-- Title + Select All -->
-            <div class="d-flex justify-content-between align-items-center mb-2">
-                <h5 class="mb-0">{{ __('dashboard.hr_permissions') }}</h5>
-
-                <button type="button" id="selectAllBtn" class="btn btn-primary btn-sm">
-                    {{ __('dashboard.select_all') }}
-                </button>
-            </div>
-
-            <div class="card shadow-sm">
-                <div class="card-body">
-
-                    @php
-                        $hrPermissions = \App\Models\HrPermission::where('user_id', $getRecord->id)
-                            ->where('company_id', session('company_id'))
-                            ->first();
-
-                        $savedPermissions = [];
-                        if ($hrPermissions) {
-                            if (is_array($hrPermissions->permissions)) {
-                                $savedPermissions = $hrPermissions->permissions;
-                            } elseif (is_string($hrPermissions->permissions)) {
-                                $savedPermissions = json_decode($hrPermissions->permissions, true) ?? [];
-                            }
-                        }
-
-                        $permissionLabels = [
-                            'employees' => __('dashboard.employees'),
-                            'managers' => __('dashboard.managers'),
-                            'administrations' => __('dashboard.administrations'),
-                            'departments' => __('dashboard.departments'),
-                            'jobs' => __('dashboard.jobs'),
-                            'job_history' => __('dashboard.job_history'),
-                            'news' => __('dashboard.news'),
-                            'requests' => __('dashboard.requests'),
-                            'messages' => __('h_message.messages'),
-                            'performance' => __('dashboard.performance'),
-                            'attendance' => __('dashboard.attendance'),
-                            'attendance_reports' => __('dashboard.attendance_reports'),
-                            'biometer_excel' => __('dashboard.biometer_excel'),
-                            'taxes' => __('dashboard.taxes'),
-                            'insurance' => __('dashboard.insurance'),
-                            'deductions' => __('dashboard.deductions'),
-                            'vacations' => __('dashboard.vacations'),
-                            'bounas' => __('dashboard.overtime'),
-                            'payroll' => __('dashboard.payroll'),
-                            'attendance_rule' => __('dashboard.company_policy'),
-                            'payslip' => __('dashboard.payslip_report'),
-                            'branches' => __('dashboard.branches'),
-                            'locations' => __('dashboard.locations'),
-                            'company_info' => __('dashboard.company_info'),
-                            'my_account' => __('dashboard.my_account'),
-                        ];
-                    @endphp
-
-                    <div class="row">
-                        @foreach($permissionLabels as $key => $label)
-                            <div class="col-md-4 mb-2">
-                                <div class="form-check">
-                                    <input
-                                        class="form-check-input permission-checkbox"
-                                        type="checkbox"
-                                        name="permissions[]"
-                                        value="{{ $key }}"
-                                        id="perm_{{ $key }}"
-                                        {{ in_array($key, $savedPermissions) ? 'checked' : '' }}
-                                    >
-                                    <label class="form-check-label" for="perm_{{ $key }}">{{ $label }}</label>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-
-                </div>
-            </div>
-
-        </div>
-    </div>
-@endif
+                                    <!-- ROLE SELECTION -->
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">
+                                            {{ __('h_employee.role') }}
+                                            <span style="color: red;">{{ __('h_employee.required_field') }}</span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control" name="is_role" id="roleSelect" required>
+                                                <option value="0" {{ $getRecord->is_role == 0 ? 'selected' : '' }}>
+                                                    {{ __('h_employee.employee') }}
+                                                </option>
+                                                <option value="1" {{ $getRecord->is_role == 1 ? 'selected' : '' }}>
+                                                    {{ __('h_employee.hrs') }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
 
 
-{{-- SELECT ALL SCRIPT --}}
-<script>
-    document.getElementById('selectAllBtn').addEventListener('click', function () {
-        let checkboxes = document.querySelectorAll('.permission-checkbox');
-        let allChecked = [...checkboxes].every(ch => ch.checked);
+                                    <!-- HR PERMISSIONS SECTION -->
+                                    <div id="permissionsSection" class="form-group row mt-4" style="display:none;">
 
-        checkboxes.forEach(ch => ch.checked = !allChecked);
+                                        @php
+                                            // Load saved permissions from DB
+                                            $hrPermissions = \App\Models\HrPermission::where('user_id', $getRecord->id)
+                                                ->where('company_id', session('company_id'))
+                                                ->first();
 
-        this.innerText = allChecked
-            ? "{{ __('dashboard.select_all') }}"
-            : "{{ __('dashboard.unselect_all') }}";
-    });
-</script>
+                                            $savedPermissions = [];
+                                            if ($hrPermissions) {
+                                                if (is_array($hrPermissions->permissions)) {
+                                                    $savedPermissions = $hrPermissions->permissions;
+                                                } elseif (is_string($hrPermissions->permissions)) {
+                                                    $savedPermissions =
+                                                        json_decode($hrPermissions->permissions, true) ?? [];
+                                                }
+                                            }
 
+                                            // Labels list
+                                            $permissionLabels = [
+                                                'employees' => __('dashboard.employees'),
+                                                'managers' => __('dashboard.managers'),
+                                                'administrations' => __('dashboard.administrations'),
+                                                'departments' => __('dashboard.departments'),
+                                                'jobs' => __('dashboard.jobs'),
+                                                'job_history' => __('dashboard.job_history'),
+                                                'news' => __('dashboard.news'),
+                                                'requests' => __('dashboard.requests'),
+                                                'messages' => __('h_message.messages'),
+                                                'performance' => __('dashboard.performance'),
+                                                'attendance' => __('dashboard.attendance'),
+                                                'attendance_reports' => __('dashboard.attendance_reports'),
+                                                'biometer_excel' => __('dashboard.biometer_excel'),
+                                                'taxes' => __('dashboard.taxes'),
+                                                'insurance' => __('dashboard.insurance'),
+                                                'deductions' => __('dashboard.deductions'),
+                                                'vacations' => __('dashboard.vacations'),
+                                                'bounas' => __('dashboard.overtime'),
+                                                'payroll' => __('dashboard.payroll'),
+                                                'attendance_rule' => __('dashboard.company_policy'),
+                                                'payslip' => __('dashboard.payslip_report'),
+                                                'branches' => __('dashboard.branches'),
+                                                'locations' => __('dashboard.locations'),
+                                                'company_info' => __('dashboard.company_info'),
+                                                'my_account' => __('dashboard.my_account'),
+                                            ];
+                                        @endphp
+
+                                        <!-- LEFT LABEL -->
+                                        <label class="col-sm-2 col-form-label">
+                                            {{ __('dashboard.hr_permissions') }}
+                                        </label>
+
+                                        <!-- RIGHT CONTENT -->
+                                        <div class="col-sm-10">
+
+                                            <!-- Title + Select All -->
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <h5 class="mb-0">{{ __('dashboard.hr_permissions') }}</h5>
+
+                                                <button type="button" id="selectAllBtn" class="btn btn-primary btn-sm">
+                                                    {{ __('dashboard.select_all') }}
+                                                </button>
+                                            </div>
+
+                                            <!-- Permissions Card -->
+                                            <div class="card shadow-sm">
+                                                <div class="card-body">
+
+                                                    <div class="row">
+                                                        @foreach ($permissionLabels as $key => $label)
+                                                            <div class="col-md-4 mb-2">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input permission-checkbox"
+                                                                        type="checkbox" name="permissions[]"
+                                                                        value="{{ $key }}"
+                                                                        id="perm_{{ $key }}"
+                                                                        {{ in_array($key, $savedPermissions) ? 'checked' : '' }}>
+                                                                    <label class="form-check-label"
+                                                                        for="perm_{{ $key }}">
+                                                                        {{ $label }}
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <!-- SCRIPT -->
+                                    <script>
+                                        document.addEventListener('DOMContentLoaded', function() {
+
+                                            let roleSelect = document.getElementById('roleSelect');
+                                            let permissionsSection = document.getElementById('permissionsSection');
+                                            let selectAllBtn = document.getElementById('selectAllBtn');
+
+                                            /* SHOW / HIDE PERMISSIONS */
+                                            function togglePermissions() {
+                                                if (roleSelect.value == "1") {
+                                                    permissionsSection.style.display = 'flex';
+                                                } else {
+                                                    permissionsSection.style.display = 'none';
+                                                    document.querySelectorAll('.permission-checkbox').forEach(ch => ch.checked = false);
+                                                }
+                                            }
+
+                                            /* SELECT ALL BUTTON */
+                                            function updateSelectAllText() {
+                                                let checkboxes = document.querySelectorAll('.permission-checkbox');
+                                                let allChecked = [...checkboxes].every(ch => ch.checked);
+
+                                                if (selectAllBtn) {
+                                                    selectAllBtn.innerText = allChecked ?
+                                                        "{{ __('dashboard.unselect_all') }}" :
+                                                        "{{ __('dashboard.select_all') }}";
+                                                }
+                                            }
+
+                                            if (selectAllBtn) {
+                                                selectAllBtn.addEventListener('click', function() {
+                                                    let checkboxes = document.querySelectorAll('.permission-checkbox');
+                                                    let allChecked = [...checkboxes].every(ch => ch.checked);
+
+                                                    checkboxes.forEach(ch => ch.checked = !allChecked);
+
+                                                    updateSelectAllText();
+                                                });
+                                            }
+
+                                            /* INIT ON PAGE LOAD */
+                                            togglePermissions();
+                                            updateSelectAllText();
+
+                                            /* WHEN ROLE CHANGES */
+                                            roleSelect.addEventListener('change', togglePermissions);
+                                        });
+                                    </script>
 
 
                                 </div>
