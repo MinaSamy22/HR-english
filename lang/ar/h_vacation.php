@@ -3,7 +3,7 @@
 return [
     // General
     'home' => 'الرئيسية',
-    'vacation' => 'الإجازة', 
+    'vacation' => 'الإجازة',
     'vacations' => 'الإجازات',
 
     // Page titles and navigation
@@ -54,6 +54,11 @@ return [
 
     // Controller
     'controller-add-message' => 'تم تسجيل الاجازة بنجاح',
-    'controller-delete-message' => 'تم الحذف بنجاح'
+    'controller-delete-message' => 'تم الحذف بنجاح',
+
+    'with_balance' => 'برصيد إجازات',
+    'no_balance' => 'بدون رصيد إجازات',
+    'remaining_balance' => 'الرصيد المتبقي',
+
 
 ];

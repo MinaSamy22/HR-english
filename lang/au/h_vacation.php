@@ -54,5 +54,10 @@ return [
 
     // Controller
     'controller-add-message' => 'چھٹی کامیابی سے رجسٹر ہو گئی۔',
-    'controller-delete-message' => 'ریکارڈ کامیابی سے حذف ہو گیا۔'
+    'controller-delete-message' => 'ریکارڈ کامیابی سے حذف ہو گیا۔',
+
+    'with_balance' => 'بیلنس کے ساتھ',
+    'no_balance' => 'بغیر بیلنس',
+        'remaining_balance' => 'باقی موازنہ', // يعني "الرصيد المتبقي" بالأردية
+
 ];

@@ -164,7 +164,7 @@ function updateHalfDayDeduction(value) {
             feedbackEl.innerHTML = '';
         }, 3000);
     });
-}
+} 
 
 
 /**

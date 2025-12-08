@@ -144,7 +144,7 @@
                                             <input type="number" class="form-control" id="half_day_threshold_minutes"
                                                 name="half_day_threshold_minutes"
                                                 value="{{ old('half_day_threshold_minutes', $setting->half_day_threshold_minutes ?? 240) }}"
-                                                min="60" max="480" style="max-width: 120px;"
+                                                style="max-width: 120px;"
                                                 onchange="updateHalfDayThreshold(this.value)">
                                             <div class="input-group-append">
                                                 <span
@@ -188,7 +188,7 @@
         <input type="number" class="form-control" id="absent_threshold_minutes"
             name="absent_threshold_minutes"
             value="{{ old('absent_threshold_minutes', $setting->absent_threshold_minutes ?? 480) }}"
-            min="120" max="600" style="max-width: 120px;"
+            min="0" max="1440" style="max-width: 120px;"
             onchange="updateAbsentThreshold(this.value)">
         <div class="input-group-append">
             <span class="input-group-text">{{ __('dashboard.minutes_of_absence') }}</span>
@@ -295,7 +295,7 @@
                                             <div class="card">
                                                 <div class="card-header">
                                                     <h5><i
-                                                            class="fas fa-dollar-sign text-success mr-2"></i>{{ __('dashboard.assign_bonus_per_hour') }}
+                                                            class="fas fa-coins text-success mr-2"></i>{{ __('dashboard.assign_bonus_per_hour') }}
                                                     </h5>
                                                 </div>
                                                 <div class="card-body">
@@ -428,9 +428,9 @@
                                                                     </span>
                                                                 </td>
                                                                 <td>
-                                                                    <span class="badge badge-success employee-bonus"
+                                                                    <span class="badge badge-success fas fa-coins"
                                                                         data-id="{{ $employee->id }}">
-                                                                        ${{ number_format($employee->bonus_per_hour ?? ($setting->bonus_per_hour ?? 0), 2) }}
+                                                                        {{ number_format($employee->bonus_per_hour ?? ($setting->bonus_per_hour ?? 0), 2) }}
                                                                     </span>
                                                                 </td>
                                                             </tr>

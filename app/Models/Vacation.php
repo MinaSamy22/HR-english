@@ -14,6 +14,7 @@ class Vacation extends Model
         'start_date',
         'end_date',
         'total',
+        'remaining_balance',
         'vacation_type',
         'company_id',
         'branch_id',

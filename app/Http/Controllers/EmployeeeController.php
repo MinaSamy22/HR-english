@@ -337,7 +337,7 @@ public function importEmployees(Request $request)
         'excel_file' => 'required|file|mimes:xlsx,xls,csv',
     ]);
 
-    try {
+    try { 
         $data = Excel::toArray([], $request->file('excel_file'));
         $rows = $data[0] ?? [];
 

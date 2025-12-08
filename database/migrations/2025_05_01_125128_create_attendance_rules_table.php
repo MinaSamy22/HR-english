@@ -22,6 +22,8 @@ return new class extends Migration
             $table->json('official_holidays')->nullable(); // not deduct the attendance of the offical holdays ex. eastern holiday, labor day,..
             $table->decimal('work_hours_per_day', 4, 2)->nullable();
             $table->decimal('bonus_per_hour', 5, 2)->nullable();
+            $table->string('company_policy_pdf')->nullable();
+
             $table->timestamps();
 
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');

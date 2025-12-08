@@ -113,7 +113,7 @@ public function getEmployeeStatus()
         ->first();
 
     if ($vacation) {
-        return ['text' => __('dashboard.vacation'), 'color' => '#007bff'];
+        return ['text' => __('dashboard.vacation'), 'color' => '#0192c3ff'];
     }
 
     // 2) Attendance

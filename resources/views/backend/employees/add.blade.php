@@ -1,16 +1,18 @@
 @extends('backend.layouts.app')
 @section('content')
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper" style="background-image: url('{{ asset('/dist/img/generall.png') }}'); background-size: cover; background-position: center;">
+    <div class="content-wrapper"
+        style="background-image: url('{{ asset('/dist/img/generall.png') }}'); background-size: cover; background-position: center;">
         <!-- Content Header (Page header) -->
         <div class="content-header">
             <div class="container-fluid">
-        <div class="d-flex justify-content-between align-items-center flex-wrap">
-                        <h1 class="m-0 mt-3 mb-3">{{ __('h_employee.employees') }}</h1>
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item "><a href="{{ url('admin/employees') }}">{{ __('h_employee.employees_breadcrumb') }}</a></li>
-                            <li class="breadcrumb-item active">{{ __('h_employee.add_breadcrumb') }}</li>
-                        </ol>
+                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                    <h1 class="m-0 mt-3 mb-3">{{ __('h_employee.employees') }}</h1>
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item "><a
+                                href="{{ url('admin/employees') }}">{{ __('h_employee.employees_breadcrumb') }}</a></li>
+                        <li class="breadcrumb-item active">{{ __('h_employee.add_breadcrumb') }}</li>
+                    </ol>
                 </div><!-- /.row -->
             </div><!-- /.container-fluid -->
         </div>
@@ -24,7 +26,8 @@
                             <div class="card-header">
                                 <h3 class="card-title">{{ __('h_employee.add_employee') }}</h3>
                             </div>
-                                  <form class="form-horizontal" method="post" action="{{ url('admin/employees/add') }}" enctype="multipart/form-data">
+                            <form class="form-horizontal" method="post" action="{{ url('admin/employees/add') }}"
+                                enctype="multipart/form-data">
                                 {{ csrf_field() }}
                                 <div class="card-body">
 
@@ -153,11 +156,12 @@
                                     <div class="form-group row align-items-center" id="additional_salary_field"
                                         style="display:none;">
                                         <label class="col-sm-2 col-form-label">
-                                          {{ __('dashboard.additional_salary') }}
+                                            {{ __('dashboard.additional_salary') }}
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="number" name="additional_salary" class="form-control"
-                                               placeholder="{{ __('dashboard.enter_additional_salary') }}" step="0.01">
+                                                placeholder="{{ __('dashboard.enter_additional_salary') }}"
+                                                step="0.01">
                                         </div>
                                     </div>
 
@@ -181,93 +185,99 @@
                                         });
                                     </script>
 
-<div class="form-group row">
-    <label class="col-sm-2 col-form-label">
-        {{ __('dashboard.nationality') }} <span style="color:red">*</span>
-    </label>
-    <div class="col-sm-10">
-        <select name="nationality" id="nationality" class="form-control" required>
-            <option value="local">{{ __('dashboard.nationality_local') }}</option>
-            <option value="foreign">{{ __('dashboard.nationality_foreign') }}</option>
-        </select>
-    </div>
-</div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">
+                                            {{ __('dashboard.nationality') }} <span style="color:red">*</span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select name="nationality" id="nationality" class="form-control" required>
+                                                <option value="local">{{ __('dashboard.nationality_local') }}</option>
+                                                <option value="foreign">{{ __('dashboard.nationality_foreign') }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
 
-<div id="foreign_fields" style="display:none;">
+                                    <div id="foreign_fields" style="display:none;">
 
-    <div class="form-group row">
-        <label class="col-sm-2 col-form-label">{{ __('dashboard.country_code') }}</label>
-        <div class="col-sm-10">
-            <input type="text" name="country_code" class="form-control">
-        </div>
-    </div>
+                                        <div class="form-group row">
+                                            <label
+                                                class="col-sm-2 col-form-label">{{ __('dashboard.country_code') }}</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" name="country_code" class="form-control">
+                                            </div>
+                                        </div>
 
-    <div class="form-group row">
-        <label class="col-sm-2 col-form-label">{{ __('dashboard.residency_expiry') }}</label>
-        <div class="col-sm-10">
-            <input type="date" name="residency_expiry" class="form-control">
-        </div>
-    </div>
+                                        <div class="form-group row">
+                                            <label
+                                                class="col-sm-2 col-form-label">{{ __('dashboard.residency_expiry') }}</label>
+                                            <div class="col-sm-10">
+                                                <input type="date" name="residency_expiry" class="form-control">
+                                            </div>
+                                        </div>
 
-    <div class="form-group row">
-        <label class="col-sm-2 col-form-label">{{ __('dashboard.passport_number') }}</label>
-        <div class="col-sm-10">
-            <input type="text" name="passport_number" class="form-control">
-        </div>
-    </div>
+                                        <div class="form-group row">
+                                            <label
+                                                class="col-sm-2 col-form-label">{{ __('dashboard.passport_number') }}</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" name="passport_number" class="form-control">
+                                            </div>
+                                        </div>
 
-    <div class="form-group row">
-        <label class="col-sm-2 col-form-label">{{ __('dashboard.passport_expiry') }}</label>
-        <div class="col-sm-10">
-            <input type="date" name="passport_expiry" class="form-control">
-        </div>
-    </div>
+                                        <div class="form-group row">
+                                            <label
+                                                class="col-sm-2 col-form-label">{{ __('dashboard.passport_expiry') }}</label>
+                                            <div class="col-sm-10">
+                                                <input type="date" name="passport_expiry" class="form-control">
+                                            </div>
+                                        </div>
 
-    <div class="form-group row">
-        <label class="col-sm-2 col-form-label">
-            {{ __('dashboard.residency_number') }} <span style="color:red">*</span>
-        </label>
-        <div class="col-sm-10">
-            <input type="text" name="residency_number" class="form-control" required>
-        </div>
-    </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label">
+                                                {{ __('dashboard.residency_number') }} <span style="color:red">*</span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" name="residency_number" class="form-control"
+                                                    required>
+                                            </div>
+                                        </div>
 
-    <div class="form-group row">
-        <label class="col-sm-2 col-form-label">{{ __('dashboard.iban') }}</label>
-        <div class="col-sm-10">
-            <input type="text" name="iban" class="form-control">
-        </div>
-    </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label">{{ __('dashboard.iban') }}</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" name="iban" class="form-control">
+                                            </div>
+                                        </div>
 
-    <div class="form-group row">
-        <label class="col-sm-2 col-form-label">{{ __('dashboard.residency_job') }}</label>
-        <div class="col-sm-10">
-            <input type="text" name="residency_job" class="form-control">
-        </div>
-    </div>
+                                        <div class="form-group row">
+                                            <label
+                                                class="col-sm-2 col-form-label">{{ __('dashboard.residency_job') }}</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" name="residency_job" class="form-control">
+                                            </div>
+                                        </div>
 
 
-</div>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const nationality = document.getElementById('nationality');
-    const foreignFields = document.getElementById('foreign_fields');
-    const requiredInputs = foreignFields.querySelectorAll('[required]');
+                                    </div>
+                                    <script>
+                                        document.addEventListener('DOMContentLoaded', function() {
+                                            const nationality = document.getElementById('nationality');
+                                            const foreignFields = document.getElementById('foreign_fields');
+                                            const requiredInputs = foreignFields.querySelectorAll('[required]');
 
-    function toggleForeign() {
-        if (nationality.value === 'foreign') {
-            foreignFields.style.display = 'block';
-            requiredInputs.forEach(input => input.setAttribute('required', true));
-        } else {
-            foreignFields.style.display = 'none';
-            requiredInputs.forEach(input => input.removeAttribute('required'));
-        }
-    }
+                                            function toggleForeign() {
+                                                if (nationality.value === 'foreign') {
+                                                    foreignFields.style.display = 'block';
+                                                    requiredInputs.forEach(input => input.setAttribute('required', true));
+                                                } else {
+                                                    foreignFields.style.display = 'none';
+                                                    requiredInputs.forEach(input => input.removeAttribute('required'));
+                                                }
+                                            }
 
-    nationality.addEventListener('change', toggleForeign);
-    toggleForeign();
-});
-</script>
+                                            nationality.addEventListener('change', toggleForeign);
+                                            toggleForeign();
+                                        });
+                                    </script>
 
 
 
@@ -409,93 +419,93 @@ document.addEventListener('DOMContentLoaded', function () {
                                             </select>
                                         </div>
                                     </div>
-<!-- HR Permissions Section -->
-<div id="permissionsSection" class="mt-4" style="display:none;">
+                                    <!-- HR Permissions Section -->
+                                    <div id="permissionsSection" class="mt-4" style="display:none;">
 
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4>{{ __('dashboard.hr_permissions') }}</h4>
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h4>{{ __('dashboard.hr_permissions') }}</h4>
 
-        <!-- Select All Button -->
-        <button type="button" id="selectAllBtn" class="btn btn-primary btn-sm">
-            {{ __('dashboard.select_all') }}
-        </button>
-    </div>
+                                            <!-- Select All Button -->
+                                            <button type="button" id="selectAllBtn" class="btn btn-primary btn-sm">
+                                                {{ __('dashboard.select_all') }}
+                                            </button>
+                                        </div>
 
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <div class="row">
+                                        <div class="card shadow-sm">
+                                            <div class="card-body">
+                                                <div class="row">
 
-                @php
-                    $permissions = [
-                        'employees' => __('dashboard.employees'),
-                        'managers' => __('dashboard.managers'),
-                        'administrations' => __('dashboard.administrations'),
-                        'departments' => __('dashboard.departments'),
-                        'jobs' => __('dashboard.jobs'),
-                        'job_history' => __('dashboard.job_history'),
-                        'news' => __('dashboard.news'),
-                        'requests' => __('dashboard.requests'),
-                        'messages' => __('h_message.messages'),
-                        'performance' => __('dashboard.performance'),
-                        'attendance' => __('dashboard.attendance'),
-                        'attendance_reports' => __('dashboard.attendance_reports'),
-                        'biometer_excel' => __('dashboard.biometer_excel'),
-                        'taxes' => __('dashboard.taxes'),
-                        'insurance' => __('dashboard.insurance'),
-                        'deductions' => __('dashboard.deductions'),
-                        'vacations' => __('dashboard.vacations'),
-                        'bounas' => __('dashboard.overtime'),
-                        'payroll' => __('dashboard.payroll'),
-                        'attendance_rule' => __('dashboard.company_policy'),
-                        'payslip' => __('dashboard.payslip_report'),
-                        'branches' => __('dashboard.branches'),
-                        'locations' => __('dashboard.locations'),
-                        'company_info' => __('dashboard.company_info'),
-                        'my_account' => __('dashboard.my_account'),
-                    ];
-                @endphp
+                                                    @php
+                                                        $permissions = [
+                                                            'employees' => __('dashboard.employees'),
+                                                            'managers' => __('dashboard.managers'),
+                                                            'administrations' => __('dashboard.administrations'),
+                                                            'departments' => __('dashboard.departments'),
+                                                            'jobs' => __('dashboard.jobs'),
+                                                            'job_history' => __('dashboard.job_history'),
+                                                            'news' => __('dashboard.news'),
+                                                            'requests' => __('dashboard.requests'),
+                                                            'messages' => __('h_message.messages'),
+                                                            'performance' => __('dashboard.performance'),
+                                                            'attendance' => __('dashboard.attendance'),
+                                                            'attendance_reports' => __('dashboard.attendance_reports'),
+                                                            'biometer_excel' => __('dashboard.biometer_excel'),
+                                                            'taxes' => __('dashboard.taxes'),
+                                                            'insurance' => __('dashboard.insurance'),
+                                                            'deductions' => __('dashboard.deductions'),
+                                                            'vacations' => __('dashboard.vacations'),
+                                                            'bounas' => __('dashboard.overtime'),
+                                                            'payroll' => __('dashboard.payroll'),
+                                                            'attendance_rule' => __('dashboard.company_policy'),
+                                                            'payslip' => __('dashboard.payslip_report'),
+                                                            'branches' => __('dashboard.branches'),
+                                                            'locations' => __('dashboard.locations'),
+                                                            'company_info' => __('dashboard.company_info'),
+                                                            'my_account' => __('dashboard.my_account'),
+                                                        ];
+                                                    @endphp
 
-                @foreach ($permissions as $key => $label)
-                    <div class="col-md-4 mb-2">
-                        <div class="form-check">
-                            <input class="form-check-input permission-checkbox"
-                                   type="checkbox"
-                                   name="permissions[]"
-                                   value="{{ $key }}"
-                                   id="perm_{{ $key }}">
+                                                    @foreach ($permissions as $key => $label)
+                                                        <div class="col-md-4 mb-2">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input permission-checkbox"
+                                                                    type="checkbox" name="permissions[]"
+                                                                    value="{{ $key }}"
+                                                                    id="perm_{{ $key }}">
 
-                            <label class="form-check-label" for="perm_{{ $key }}">
-                                {{ $label }}
-                            </label>
-                        </div>
-                    </div>
-                @endforeach
+                                                                <label class="form-check-label"
+                                                                    for="perm_{{ $key }}">
+                                                                    {{ $label }}
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
 
-            </div>
-        </div>
-    </div>
-</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-<script>
-    // Show/Hide Permission Section Based on Role
-    document.getElementById('roleSelect').addEventListener('change', function () {
-        let permissions = document.getElementById('permissionsSection');
-        this.value == "1" ? permissions.style.display = 'block' : permissions.style.display = 'none';
-    });
+                                    <script>
+                                        // Show/Hide Permission Section Based on Role
+                                        document.getElementById('roleSelect').addEventListener('change', function() {
+                                            let permissions = document.getElementById('permissionsSection');
+                                            this.value == "1" ? permissions.style.display = 'block' : permissions.style.display = 'none';
+                                        });
 
-    // Select All Permissions
-    document.getElementById('selectAllBtn').addEventListener('click', function () {
-        let checkboxes = document.querySelectorAll('.permission-checkbox');
-        let allChecked = [...checkboxes].every(ch => ch.checked);
+                                        // Select All Permissions
+                                        document.getElementById('selectAllBtn').addEventListener('click', function() {
+                                            let checkboxes = document.querySelectorAll('.permission-checkbox');
+                                            let allChecked = [...checkboxes].every(ch => ch.checked);
 
-        checkboxes.forEach(ch => ch.checked = !allChecked);
+                                            checkboxes.forEach(ch => ch.checked = !allChecked);
 
-        // Button text changes based on state
-        this.innerText = allChecked
-            ? "{{ __('dashboard.select_all') }}"
-            : "{{ __('dashboard.unselect_all') }}";
-    });
-</script>
+                                            // Button text changes based on state
+                                            this.innerText = allChecked ?
+                                                "{{ __('dashboard.select_all') }}" :
+                                                "{{ __('dashboard.unselect_all') }}";
+                                        });
+                                    </script>
 
 
                                     <div class="form-group row" id="passwordField">

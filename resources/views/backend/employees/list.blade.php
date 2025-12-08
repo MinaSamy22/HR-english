@@ -150,21 +150,38 @@
                                                     <td>{{ $value->branch_name ?? __('h_dashboard.main_branch') }}</td>
                                                     <td>{{ !empty($value->is_role) ? __('h_employee.hrs') : __('h_employee.employee') }}
                                                     </td>
-@php
-    $status = $value->getEmployeeStatus();
-@endphp
+                                                    @php
+                                                        $status = $value->getEmployeeStatus();
+                                                    @endphp
 
-<td>
-    <span class="badge"
-        style="
-            background-color: {{ $status['color'] }};
-            padding: 6px 12px;
-            color: white;
-            border-radius: 6px;
-        ">
+                                                    <td>
+    <div style="
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        background: #ffffff;
+        border: 1px solid #e5e5e5;
+        box-shadow: 0px 2px 4px rgba(0,0,0,0.05);
+        font-weight: 600;
+        font-size: 14px;
+        color: #333;
+    ">
+        <!-- Dot -->
+        <span style="
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: {{ $status['color'] }};
+            box-shadow: {{ $status['color'] == '#28a745' ? '0 0 8px #28a745' : 'none' }};
+            display: inline-block;
+        "></span>
+
         {{ $status['text'] }}
-    </span>
+    </div>
 </td>
+
 
 
                                                     <td>

@@ -54,5 +54,11 @@ return [
 
     // Controller
     'controller-add-message' => 'Vacation successfully registered.',
-    'controller-delete-message' => 'Record successfully deleted.'
+    'controller-delete-message' => 'Record successfully deleted.',
+
+    'with_balance' => 'With Balance',
+    'no_balance' => 'No Balance',
+    'remaining_balance' => 'Remaining Balance',
+
+
 ];

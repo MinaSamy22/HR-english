@@ -39,8 +39,8 @@ public function index(Request $request)
             'late_deduction_percentage'          => 'required|integer|min:0|max:100',
             'half_day_deduction_percentage'      => 'required|integer|min:0|max:100',
             'late_threshold_minutes'             => 'required|integer|min:1|max:120',
-            'half_day_threshold_minutes'         => 'required|integer|min:60|max:480',
-            'absent_threshold_minutes'           => 'required|integer|min:60|max:1440',
+            'half_day_threshold_minutes'         => 'required|integer|min:0|max:580',
+            'absent_threshold_minutes'           => 'required|integer|min:0|max:1440',
             'work_hours_per_day'                 => 'required|numeric|min:1|max:24',
             'working_days'                       => 'required|array',
             'holiday_dates'                      => 'array',
@@ -106,7 +106,7 @@ return response()->json(['message' => __('dashboard.late_arrival_threshold_updat
     public function updateHalfDayThreshold(Request $request)
     {
         $request->validate([
-            'half_day_threshold_minutes' => 'required|integer|min:60|max:480',
+            'half_day_threshold_minutes' => 'required|integer|min:0|max:480',
         ]);
 
         $company_id = session('company_id');
@@ -157,7 +157,7 @@ return response()->json(['message' => __('dashboard.half_day_deduction_percentag
     public function updateAbsentThreshold(Request $request)
 {
     $request->validate([
-        'absent_threshold_minutes' => 'required|integer|min:120|max:600',
+        'absent_threshold_minutes' => 'required|integer|min:0|max:600',
     ]);
 
     $company_id = session('company_id');

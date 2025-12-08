@@ -95,5 +95,6 @@ return [
     'confirm_accept_early_leave' => 'هل أنت متأكد من قبول طلب المغادرة المبكرة هذا؟',
 
     'requested_leave_time' => 'وقت المغادرة المطلوب',
+'no_vacation_balance_warning' => 'تحذير: هذا الموظف لا يملك رصيد إجازات  لهذا الطلب.',
 
 ];

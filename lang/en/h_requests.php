@@ -96,5 +96,7 @@ return [
     'confirm_reject_early_leave' => 'Are you sure you want to reject this early leave request?',
     'confirm_accept_early_leave' => 'Are you sure you want to accept this early leave request?',
     'requested_leave_time' => 'Requested Leave Time',
+    'no_vacation_balance_warning' => 'Warning: This employee does not have vacation balance for this request.',
+
 
 ];
