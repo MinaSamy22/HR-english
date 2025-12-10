@@ -100,7 +100,7 @@ public function uploadPolicyPdf(Request $request)
     }
 
     // Define custom folder path
-    $destinationPath = base_path('../../HR-Uploads/pdf_policy/');
+    $destinationPath = public_path('../../HR-Uploads/pdf_policy/');
 
     // Create folder if it doesn't exist
     if (!file_exists($destinationPath)) {

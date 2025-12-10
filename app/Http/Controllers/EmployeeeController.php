@@ -145,7 +145,7 @@ public function add_post(Request $request)
     // Handle company/branch assignment
     if (session()->has('branch_id')) {
         $user->branch_id = session('branch_id');
-    }
+    } 
 
     // Handle attachment
     if ($request->hasFile('attachment')) {
@@ -337,7 +337,7 @@ public function importEmployees(Request $request)
         'excel_file' => 'required|file|mimes:xlsx,xls,csv',
     ]);
 
-    try { 
+    try {
         $data = Excel::toArray([], $request->file('excel_file'));
         $rows = $data[0] ?? [];
 
