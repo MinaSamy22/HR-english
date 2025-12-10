@@ -48,4 +48,12 @@ return [
     //controller messages
     'add-message' => 'Resignation request submitted successfully, It will be reviewed by your hr.',
     'delete-message' => 'Resignation request deleted.',
+
+    'resignation'=>'Resignation',
+     'placeholder' => 'Select Resignation',
+    'end_contract' => 'End of Contract',
+    'terminate_contract' => 'Contract Termination',
+    'normal_resignation' => 'Normal Resignation',
+    'sponsorship_transfer' => 'Sponsorship Transfer',
+    'final_exit' => 'Final Exit',
 ];

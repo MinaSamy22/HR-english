@@ -41,9 +41,10 @@ class ResignationController extends Controller
         ]);
 
         Resignation::create([
-            'employee_id' => Auth::guard('employee')->id(),
-            'resignation_date' => $request->resignation_date,
-            'reason' => $request->reason,
+            'employee_id'          => Auth::guard('employee')->id(),
+            'resignation_date'     => $request->resignation_date,
+            'type'                 => $request->type,
+            'reason'               => $request->reason,
         ]);
 
          return redirect()->route('employee.resignation.index')
