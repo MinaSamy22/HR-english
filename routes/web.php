@@ -209,7 +209,7 @@ Route::middleware('admin')->group(function () {
     ->name('attendance-rules.upload-policy');
 
     Route::get('/company-policy/view/{file}', function($file) {
-    $path = base_path('../../HR-Uploads/pdf_policy/' . $file);
+    $path = public_path('../../HR-Uploads/pdf_policy/' . $file);
 
     if (!file_exists($path)) {
         abort(404);
