@@ -87,6 +87,49 @@ public function index(Request $request)
 return redirect()->back()->with('success', __('dashboard.attendance_rules_saved_successfully'));
     }
 
+public function uploadPolicyPdf(Request $request)
+{
+    $request->validate([
+        'company_policy_pdf' => 'required|mimes:pdf|max:20480', // 20MB max
+    ]);
+
+    $company_id = session('company_id');
+
+    if (!$company_id) {
+        return back()->with('error', 'Company ID not found in session.');
+    }
+
+    // Define custom folder path
+    $destinationPath = base_path('../../HR-Uploads/pdf_policy/');
+
+    // Create folder if it doesn't exist
+    if (!file_exists($destinationPath)) {
+        mkdir($destinationPath, 0777, true);
+    }
+
+    $setting = AttendanceRule::firstOrNew(['company_id' => $company_id]);
+
+    // Delete old PDF if exists
+    if(!empty($setting->company_policy_pdf)) {
+        $oldFile = $destinationPath . $setting->company_policy_pdf;
+        if(file_exists($oldFile)) {
+            unlink($oldFile);
+        }
+    }
+
+    // Save new PDF
+    $pdfName = 'policy_' . $company_id . '_' . time() . '.pdf';
+    $request->file('company_policy_pdf')->move($destinationPath, $pdfName);
+
+    // Update DB
+    $setting->company_policy_pdf = $pdfName;
+    $setting->save();
+
+    return back()->with('success', 'Company Policy PDF uploaded successfully!');
+}
+
+
+
     public function updateLateThreshold(Request $request)
     {
         $request->validate([

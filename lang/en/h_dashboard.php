@@ -36,4 +36,12 @@ return [
     'no_recent_news_desc' => 'There are no recent news items to display.',
     'add_first_news' => 'Add First News',
 
+     // Company Policy Section
+     'company_policy' => 'Company Policy',
+    'policy_note_text' => 'Please review our company policy document carefully. It contains important information about workplace guidelines, attendance rules, code of conduct, and essential procedures that all employees must follow.',
+    'company_policy_document' => 'Company Policy Document',
+    'company_policy_uploaded' => 'Policy document is available',
+    'view' => 'View',
+    'no_company_policy' => 'No company policy uploaded yet',
+    'policy_will_appear_here' => 'Policy document will appear here once uploaded by management',
 ];

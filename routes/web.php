@@ -204,6 +204,21 @@ Route::middleware('admin')->group(function () {
     Route::get('/attendance-rules', [AttendanceRulesController::class, 'index'])->name('attendance-rules.index');
     Route::post('admin/attendance-rule/save', [AttendanceRulesController::class, 'saveRules'])->name('attendance-rule.save');
 
+
+    Route::post('/attendance-rules/upload-policy', [AttendanceRulesController::class, 'uploadPolicyPdf'])
+    ->name('attendance-rules.upload-policy');
+
+    Route::get('/company-policy/view/{file}', function($file) {
+    $path = base_path('../../HR-Uploads/pdf_policy/' . $file);
+
+    if (!file_exists($path)) {
+        abort(404);
+    }
+
+    return response()->file($path);
+})->name('company-policy.view');
+
+
     // holiday management
     Route::get('/attendance-rules/get-holidays', [AttendanceRulesController::class, 'getHolidays']);
     Route::post('admin/attendance-rule/add-holiday', [AttendanceRulesController::class, 'addHoliday'])->name('attendance-rule.add-holiday');

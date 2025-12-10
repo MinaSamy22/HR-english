@@ -523,9 +523,15 @@ return [
     'at_work' => 'At Work',
     'transfer_sponsorship' => 'Transfer Sponsorship',
 
-    
+
     'absent_threshold' => 'Full Absence Threshold',
 'minutes_of_absence_to_consider_full_absent' => 'Minutes of absence to consider employee fully absent',
 'absent_threshold_updated_successfully' => 'Absent threshold updated successfully',
 'error_updating_absent_threshold' => 'Error updating absent threshold',
+
+   'upload_company_policy_pdf' => 'Upload Company Policy (PDF)',
+    'choose_pdf_to_upload' => 'Choose PDF to upload',
+    'max_file_size' => 'Maximum file size: 5MB',
+    'upload_replace_policy_pdf' => 'Upload / Replace Policy PDF',
+    'view_current_policy' => 'View Current Policy',
 ];

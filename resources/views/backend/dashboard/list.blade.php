@@ -266,84 +266,158 @@
                 </div><!-- /.row -->
 
 
-                <!-- Company News Section -->
-                <div class="row mt-4">
-                    <div class="col-12">
-                        <div class="card shadow-sm"
-                            style="border-radius: 10px; border: none; border-inline-start: 4px solid #28a745;">
-                            <div class="card-header d-flex justify-content-between align-items-center"
-                                style="background: white; color: #333; border: none; border-bottom: 1px solid #e9ecef;">
-                                <h3 class="card-title" style="font-weight: 600; font-size: 1.1rem; color: #28a745;">
-                                    <i class="fas fa-newspaper mr-2"></i>{{ __('h_dashboard.latest_company_news') }}
-                                </h3>
+<div class="row mt-4">
 
-                            </div>
-                            <div class="card-body"
-                                style="background: white; padding: 1.5rem; max-height: 500px; overflow-y: auto;">
-                                @if (isset($recentNews) && $recentNews->count() > 0)
+
+
+    <!--  Company News Section (Green) -->
+    <div class="col-lg-6 col-md-12">
+        <div class="card shadow-sm"
+            style="border-radius: 10px; border: none; border-inline-start: 4px solid #28a745;">
+            <div class="card-header d-flex justify-content-between align-items-center"
+                style="background: white; color: #333; border: none; border-bottom: 1px solid #e9ecef;">
+                <h3 class="card-title" style="font-weight: 600; font-size: 1.1rem; color: #28a745;">
+                    <i class="fas fa-newspaper mr-2"></i>{{ __('h_dashboard.latest_company_news') }}
+                </h3>
+            </div>
+
+            <div class="card-body"
+                style="background: white; padding: 1.5rem; max-height: 500px; overflow-y: auto;">
+
+                @if (isset($recentNews) && $recentNews->count() > 0)
+                    <div class="row">
+                        @foreach ($recentNews as $newsItem)
+                            <div class="col-lg-12 col-md-12 mb-3">
+                                <div class="news-item border rounded p-3 h-100"
+                                    style="border-inline-start: 3px solid #28a745 !important; background: #f8f9fa; transition: 0.3s;">
+
                                     <div class="row">
-                                        @foreach ($recentNews as $newsItem)
-                                            <div class="col-lg-6 col-md-12 mb-4">
-                                                <div class="news-item border rounded p-3 h-100"
-                                                    style="border-inline-start: 3px solid #28a745 !important; transition: all 0.3s ease; background: #f8f9fa;">
-                                                    <div class="row">
-                                                        @if ($newsItem->hasImage())
-                                                            <div class="col-4">
-                                                                <div class="news-image-container"
-                                                                    style="height: 80px; width: 100%; overflow: hidden; border-radius: 0.375rem; background: #f8f9fa; display: flex; align-items: center; justify-content: center;">
-                                                                    <img src="{{ $newsItem->imageUrl }}"
-                                                                        alt="{{ $newsItem->title }}" class="img-fluid"
-                                                                        style="max-height: 100%; max-width: 100%; object-fit: contain;">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-8">
-                                                            @else
-                                                                <div class="col-12">
-                                                        @endif
-                                                        <h6 class="news-title mb-2"
-                                                            style="color: #333; font-weight: 600; line-height: 1.4;">
-                                                            <a href="{{ route('news.show', $newsItem) }}"
-                                                                class="text-decoration-none" style="color: inherit;">
-                                                                {{ Str::limit($newsItem->title, 50) }}
-                                                            </a>
-                                                        </h6>
-                                                        <p class="news-excerpt mb-2 text-muted small">
-                                                            {{ Str::limit($newsItem->description, 80) }}
-                                                        </p>
-                                                        <div
-                                                            class="news-meta d-flex justify-content-between align-items-center">
-                                                            <small class="text-muted">
-                                                                <i class="fas fa-calendar-alt mr-1"></i>
-                                                                {{ $newsItem->formattedDate }}
-                                                            </small>
-                                                            <a href="{{ route('news.show', $newsItem) }}"
-                                                                class="btn btn-success btn-sm view-btn"
-                                                                style="font-size: 0.75rem; padding: 0.25rem 0.5rem;">
-                                                                <i
-                                                                    class="fas fa-eye mr-1"></i>{{ __('h_dashboard.view') }}
-                                                            </a>
-                                                        </div>
-                                                    </div>
+                                        @if ($newsItem->hasImage())
+                                            <div class="col-4">
+                                                <div class="news-image-container"
+                                                    style="height: 80px; width: 100%; overflow: hidden; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center;">
+                                                    <img src="{{ $newsItem->imageUrl }}"
+                                                         alt="{{ $newsItem->title }}"
+                                                         class="img-fluid"
+                                                         style="max-height: 100%; object-fit: contain;">
                                                 </div>
                                             </div>
+                                            <div class="col-8">
+                                        @else
+                                            <div class="col-12">
+                                        @endif
+
+                                            <h6 class="news-title mb-2"
+                                                style="color: #333; font-weight: 600; line-height: 1.4;">
+                                                <a href="{{ route('news.show', $newsItem) }}"
+                                                   class="text-decoration-none" style="color: inherit;">
+                                                    {{ Str::limit($newsItem->title, 50) }}
+                                                </a>
+                                            </h6>
+
+                                            <p class="news-excerpt mb-2 text-muted small">
+                                                {{ Str::limit($newsItem->description, 80) }}
+                                            </p>
+
+                                            <div class="news-meta d-flex justify-content-between align-items-center">
+                                                <small class="text-muted">
+                                                    <i class="fas fa-calendar-alt mr-1"></i>
+                                                    {{ $newsItem->formattedDate }}
+                                                </small>
+
+                                                <a href="{{ route('news.show', $newsItem) }}"
+                                                   class="btn btn-success btn-sm view-btn"
+                                                   style="font-size: 0.75rem; padding: 0.25rem 0.5rem;">
+                                                    <i class="fas fa-eye mr-1"></i>{{ __('h_dashboard.view') }}
+                                                </a>
+                                            </div>
+
+                                        </div>
                                     </div>
-                                @endforeach
-                            </div>
-                        @else
-                            <div class="text-center py-4">
-                                <div class="mb-3">
-                                    <i class="fas fa-newspaper fa-3x text-muted"></i>
+
                                 </div>
-                                <h5 class="text-muted">{{ __('h_dashboard.no_recent_news') }}</h5>
-                                <p class="text-muted mb-3">{{ __('h_dashboard.no_recent_news_desc') }}</p>
-                                <a href="{{ route('news.create') }}" class="btn btn-success">
-                                    <i class="fas fa-plus mr-2"></i>{{ __('h_dashboard.add_first_news') }}
-                                </a>
                             </div>
-                            @endif
-                        </div>
+                        @endforeach
                     </div>
+
+                @else
+
+                    <div class="text-center py-4">
+                        <div class="mb-3">
+                            <i class="fas fa-newspaper fa-3x text-muted"></i>
+                        </div>
+                        <h5 class="text-muted">{{ __('h_dashboard.no_recent_news') }}</h5>
+                        <p class="text-muted mb-3">{{ __('h_dashboard.no_recent_news_desc') }}</p>
+                        <a href="{{ route('news.create') }}" class="btn btn-success">
+                            <i class="fas fa-plus mr-2"></i>{{ __('h_dashboard.add_first_news') }}
+                        </a>
+                    </div>
+
+                @endif
+
+            </div>
+        </div>
+    </div>
+
+<!-- ✅ Company Policy Section (Grey) -->
+<div class="col-lg-6 col-md-12">
+    <div class="card shadow-sm"
+        style="border-radius: 10px; border: none; border-inline-start: 4px solid #6c757d;">
+        <div class="card-header d-flex justify-content-between align-items-center"
+            style="background: white; color: #333; border: none; border-bottom: 1px solid #e9ecef;">
+            <h3 class="card-title" style="font-weight: 600; font-size: 1.1rem; color: #6c757d;">
+                <i class="fas fa-file-pdf mr-2"></i> {{ __('h_dashboard.company_policy') }}
+            </h3>
+        </div>
+
+        <div class="card-body" style="background: white; padding: 1.5rem;">
+
+            @if(isset($setting) && isset($setting->company_policy_pdf) && !empty($setting->company_policy_pdf))
+
+                <div class="mb-3 p-3 border rounded"
+                     style="border-inline-start: 3px solid #6c757d !important; background: #f8f9fa;">
+                    <p class="mb-2" style="font-size: 0.95rem; line-height: 1.6;">
+                        <i class="fas fa-info-circle text-secondary mr-1"></i>
+                        {{ __('h_dashboard.policy_note_text', ['default' => 'Review the company policy document to stay informed about workplace guidelines, attendance rules, and important procedures.']) }}
+                    </p>
                 </div>
+
+                <div class="d-flex justify-content-between align-items-center p-3 border rounded"
+                     style="border-inline-start: 3px solid #6c757d !important; background: #f8f9fa;">
+                    <div>
+                        <p class="mb-1 font-weight-bold" style="font-size: 0.95rem; color: #495057;">
+                            {{ __('h_dashboard.company_policy_document') }}
+                        </p>
+                        <p class="mb-0 text-muted" style="font-size: 0.85rem;">
+                            {{ __('h_dashboard.company_policy_uploaded') }}
+                        </p>
+                    </div>
+
+                    <a href="{{ route('company-policy.view', $setting->company_policy_pdf) }}"
+                       target="_blank"
+                       class="btn btn-secondary btn-sm"
+                       style="font-size: 0.85rem; padding: 0.5rem 1rem;">
+                        <i class="fas fa-eye mr-1"></i> {{ __('h_dashboard.view') }}
+                    </a>
+                </div>
+
+            @else
+
+                <div class="text-center py-4">
+                    <i class="fas fa-file-pdf text-muted mb-3" style="font-size: 3rem; opacity: 0.3;"></i>
+                    <p class="text-muted mb-0" style="font-size: 0.95rem;">
+                        {{ __('h_dashboard.no_company_policy') }}
+                    </p>
+                    <small class="text-muted">{{ __('h_dashboard.policy_will_appear_here') }}</small>
+                </div>
+
+            @endif
+
+        </div>
+    </div>
+</div>
+</div>
+
             </div><!-- /.row -->
 
     </div><!-- /.container-fluid -->
@@ -396,6 +470,8 @@
             transform: scale(1.02);
             transition: transform 0.2s ease;
         }
+
+
     </style>
 
 

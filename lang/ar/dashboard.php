@@ -511,5 +511,11 @@ return [
 'minutes_of_absence_to_consider_full_absent' => 'الدقائق اللازمة لاعتبار الموظف غائباً بالكامل',
 'absent_threshold_updated_successfully' => 'تم تحديث حد الغياب بنجاح',
 'error_updating_absent_threshold' => 'خطأ في تحديث حد الغياب',
+
+   'upload_company_policy_pdf' => 'تحميل سياسة الشركة (PDF)',
+    'choose_pdf_to_upload' => 'اختر ملف PDF للتحميل',
+    'max_file_size' => 'الحد الأقصى لحجم الملف: 5 ميغابايت',
+    'upload_replace_policy_pdf' => 'تحميل / استبدال ملف السياسة',
+    'view_current_policy' => 'عرض السياسة الحالية',
 ];
 

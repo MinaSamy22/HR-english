@@ -528,4 +528,9 @@ return [
 'minutes_of_absence_to_consider_full_absent' => 'ملازم کو مکمل طور پر غیر حاضر سمجھنے کے لیے غیر حاضری کے منٹ',
 'absent_threshold_updated_successfully' => 'غیر حاضری کی حد کامیابی سے اپ ڈیٹ ہو گئی',
 'error_updating_absent_threshold' => 'غیر حاضری کی حد اپ ڈیٹ کرنے میں خرابی',
+'upload_company_policy_pdf' => 'کمپنی کی پالیسی اپ لوڈ کریں (PDF)',
+    'choose_pdf_to_upload' => 'اپ لوڈ کرنے کے لیے PDF منتخب کریں',
+    'max_file_size' => 'زیادہ سے زیادہ فائل سائز: 5MB',
+    'upload_replace_policy_pdf' => 'پالیسی PDF اپ لوڈ / تبدیل کریں',
+    'view_current_policy' => 'موجودہ پالیسی دیکھیں',
 ];

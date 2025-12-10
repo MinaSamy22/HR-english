@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\AttendanceRule;
 use App\Models\Branch;
 use App\Models\Department;
 use App\Models\News;
@@ -112,6 +113,9 @@ public function dashboard(Request $request)
     $data['vacations'] = $vacations;
     $data['absences'] = $absences;
     $data['Present'] = $presentMonthly;
+
+      // 👇 ADD THIS LINE - Fetch attendance rule settings for company policy PDF
+    $data['setting'] = AttendanceRule::where('company_id', $company_id)->first();
 
     return view('backend.dashboard.list', $data);
 }

@@ -686,55 +686,42 @@
 
 
                 {{-- Payroll --}}
-                @if (hr_can('attendance_rule') || hr_can('payroll') || hr_can('payslip'))
-                    <li class="nav-item has-treeview
-    @if (in_array(Request::segment(2), ['attendance-rule', 'payroll', 'payslip'])) menu-open @endif">
+@if (hr_can('payroll') || hr_can('payslip'))
+    <li class="nav-item has-treeview @if (in_array(Request::segment(2), ['payroll', 'payslip'])) menu-open @endif">
+        <a href="#" class="nav-link @if (in_array(Request::segment(2), ['payroll', 'payslip'])) active @endif">
+            <i class="nav-icon fa fa-coins"></i>
+            <p>
+                {{ __('dashboard.payroll') }}
+                <i class="right fa fa-angle-left"></i>
+            </p>
+        </a>
 
-                        <a href="#" class="nav-link
-        @if (in_array(Request::segment(2), ['attendance-rule', 'payroll', 'payslip'])) active @endif">
-                            <i class="nav-icon fa fa-coins"></i>
-                            <p>{{ __('dashboard.payroll') }}<i class="right fa fa-angle-left"></i></p>
-                        </a>
+        <ul class="nav nav-treeview">
 
-                        <ul class="nav nav-treeview">
+            {{-- Calculate Payroll --}}
+            @if (hr_can('payroll'))
+                <li class="nav-item">
+                    <a href="{{ url('admin/payroll') }}" class="nav-link @if (Request::segment(2) == 'payroll') active @endif">
+                        <i class="fa fa-calculator nav-icon"></i>
+                        <p>{{ __('dashboard.calculate_payroll') }}</p>
+                    </a>
+                </li>
+            @endif
 
-                            {{-- Company Policy (Attendance Rule) — Only visible for main branch AND permission --}}
-                            @if (hr_can('attendance_rule') &&
-                                    (session('branch_id') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1))
-                                <li class="nav-item">
-                                    <a href="{{ url('admin/attendance-rule') }}"
-                                        class="nav-link @if (Request::segment(2) == 'attendance-rule') active @endif">
-                                        <i class="fa fa-cogs nav-icon"></i>
-                                        <p>{{ __('dashboard.company_policy') }}</p>
-                                    </a>
-                                </li>
-                            @endif
+            {{-- Payslip --}}
+            @if (hr_can('payslip'))
+                <li class="nav-item">
+                    <a href="{{ url('admin/payslip') }}" class="nav-link @if (Request::segment(2) == 'payslip') active @endif">
+                        <i class="fa fa-receipt nav-icon"></i>
+                        <p>{{ __('dashboard.payslip_report') }}</p>
+                    </a>
+                </li>
+            @endif
 
-                            {{-- Calculate Payroll --}}
-                            @if (hr_can('payroll'))
-                                <li class="nav-item">
-                                    <a href="{{ url('admin/payroll') }}"
-                                        class="nav-link @if (Request::segment(2) == 'payroll') active @endif">
-                                        <i class="fa fa-calculator nav-icon"></i>
-                                        <p>{{ __('dashboard.calculate_payroll') }}</p>
-                                    </a>
-                                </li>
-                            @endif
+        </ul>
+    </li>
+@endif
 
-                            {{-- Payslip --}}
-                            @if (hr_can('payslip'))
-                                <li class="nav-item">
-                                    <a href="{{ url('admin/payslip') }}"
-                                        class="nav-link @if (Request::segment(2) == 'payslip') active @endif">
-                                        <i class="fa fa-receipt nav-icon"></i>
-                                        <p>{{ __('dashboard.payslip_report') }}</p>
-                                    </a>
-                                </li>
-                            @endif
-
-                        </ul>
-                    </li>
-                @endif
 
 
                 {{-- <li class="nav-item">
@@ -754,6 +741,17 @@
                             <p>{{ __('dashboard.branches') }}</p>
                         </a>
                     </li> --}}
+                     {{-- Company Policy (Attendance Rule) — Only visible for main branch AND permission --}}
+                            @if (hr_can('attendance_rule') &&
+                                    (session('branch_id') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1))
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/attendance-rule') }}"
+                                        class="nav-link @if (Request::segment(2) == 'attendance-rule') active @endif">
+                                        <i class="fa fa-cogs nav-icon"></i>
+                                        <p>{{ __('dashboard.company_policy') }}</p>
+                                    </a>
+                                </li>
+                            @endif
 
                 <!-- Branches -->
                 @if (hr_can('branches'))
