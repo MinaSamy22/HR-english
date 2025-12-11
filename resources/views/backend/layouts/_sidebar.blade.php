@@ -181,56 +181,56 @@
 
 
         <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="languageDropdown"
-        role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="languageDropdown"
+                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
-<div class="badge d-flex align-items-center custom-badge">
-    @if(app()->getLocale() == 'ar')
-        <span class="flag-icon flag-icon-sa mr-1"></span>
-        <span class="font-weight-bold">عربي</span>
-    @elseif(app()->getLocale() == 'au')
-        <span class="flag-icon flag-icon-pk mr-1"></span>
-        <span class="font-weight-bold">اردو</span>
-    @else
-        <span class="flag-icon flag-icon-gb mr-1"></span>
-        <span class="font-weight-bold">EN</span>
-    @endif
-</div>
+                <div class="badge d-flex align-items-center custom-badge">
+                    @if (app()->getLocale() == 'ar')
+                        <span class="flag-icon flag-icon-sa mr-1"></span>
+                        <span class="font-weight-bold">عربي</span>
+                    @elseif(app()->getLocale() == 'au')
+                        <span class="flag-icon flag-icon-pk mr-1"></span>
+                        <span class="font-weight-bold">اردو</span>
+                    @else
+                        <span class="flag-icon flag-icon-gb mr-1"></span>
+                        <span class="font-weight-bold">EN</span>
+                    @endif
+                </div>
 
 
-    </a>
+            </a>
 
-<div class="dropdown-menu dropdown-menu-right shadow-sm" aria-labelledby="languageDropdown">
+            <div class="dropdown-menu dropdown-menu-right shadow-sm" aria-labelledby="languageDropdown">
 
-    <!-- English -->
-    <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'en' ? 'active' : '' }}"
-        href="{{ url('lang/en') }}">
-        <span class="flag-icon flag-icon-gb mr-2"></span> English
-        @if (app()->getLocale() == 'en')
-            <i class="fas fa-check ml-auto text-success"></i>
-        @endif
-    </a>
+                <!-- English -->
+                <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'en' ? 'active' : '' }}"
+                    href="{{ url('lang/en') }}">
+                    <span class="flag-icon flag-icon-gb mr-2"></span> English
+                    @if (app()->getLocale() == 'en')
+                        <i class="fas fa-check ml-auto text-success"></i>
+                    @endif
+                </a>
 
-    <!-- Arabic -->
-    <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'ar' ? 'active' : '' }}"
-        href="{{ url('lang/ar') }}">
-        <span class="flag-icon flag-icon-sa mr-2"></span> العربية
-        @if (app()->getLocale() == 'ar')
-            <i class="fas fa-check ml-auto text-success"></i>
-        @endif
-    </a>
+                <!-- Arabic -->
+                <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'ar' ? 'active' : '' }}"
+                    href="{{ url('lang/ar') }}">
+                    <span class="flag-icon flag-icon-sa mr-2"></span> العربية
+                    @if (app()->getLocale() == 'ar')
+                        <i class="fas fa-check ml-auto text-success"></i>
+                    @endif
+                </a>
 
-    <!-- Urdu -->
-    <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'ur' ? 'active' : '' }}"
-        href="{{ url('lang/au') }}">
-        <span class="flag-icon flag-icon-pk mr-2"></span> اردو
-        @if (app()->getLocale() == 'au')
-            <i class="fas fa-check ml-auto text-success"></i>
-        @endif
-    </a>
-</div>
+                <!-- Urdu -->
+                <a class="dropdown-item d-flex align-items-center {{ app()->getLocale() == 'ur' ? 'active' : '' }}"
+                    href="{{ url('lang/au') }}">
+                    <span class="flag-icon flag-icon-pk mr-2"></span> اردو
+                    @if (app()->getLocale() == 'au')
+                        <i class="fas fa-check ml-auto text-success"></i>
+                    @endif
+                </a>
+            </div>
 
-</li>
+        </li>
 
 
         @php
@@ -389,137 +389,172 @@
                 <li class="nav-header">{{ __('dashboard.main_info') }}</li>
 
                 <!-- Employees -->
-                <li class="nav-item">
-                    <a href="{{ url('admin/employees') }}"
-                        class="nav-link @if (Request::segment(2) == 'employees') active @endif">
-                        <i class="nav-icon fa fa-users"></i>
-                        <p>{{ __('dashboard.employees') }}</p>
-                    </a>
-                </li>
+                @if (hr_can('employees'))
+                    <li class="nav-item">
+                        <a href="{{ url('admin/employees') }}"
+                            class="nav-link @if (Request::segment(2) == 'employees') active @endif">
+                            <i class="nav-icon fa fa-users"></i>
+                            <p>{{ __('dashboard.employees') }}</p>
+                        </a>
+                    </li>
+                @endif
 
 
 
                 <!-- Managers -->
-                <li class="nav-item">
-                    <a href="{{ url('admin/manager') }}"
-                        class="nav-link @if (Request::segment(2) == 'manager') active @endif">
-                        <i class="nav-icon fa fa-user"></i>
-                        <p>{{ __('dashboard.managers') }}</p>
-                    </a>
-                </li>
+                @if (hr_can('managers'))
+                    <li class="nav-item">
+                        <a href="{{ url('admin/manager') }}"
+                            class="nav-link @if (Request::segment(2) == 'manager') active @endif">
+                            <i class="nav-icon fa fa-user"></i>
+                            <p>{{ __('dashboard.managers') }}</p>
+                        </a>
+                    </li>
+                @endif
 
                 <!-- Administration -->
-                <li class="nav-item">
-                    <a href="{{ url('admin/administration') }}"
-                        class="nav-link @if (Request::segment(2) == 'administration') active @endif">
-                        <i class="nav-icon fas fa-sitemap"></i>
-                        <p>{{ __('dashboard.administrations') }}</p>
-                    </a>
-                </li>
+                @if (hr_can('administrations'))
+                    <li class="nav-item">
+                        <a href="{{ url('admin/administration') }}"
+                            class="nav-link @if (Request::segment(2) == 'administration') active @endif">
+                            <i class="nav-icon fas fa-sitemap"></i>
+                            <p>{{ __('dashboard.administrations') }}</p>
+                        </a>
+                    </li>
+                @endif
 
                 <!-- Departments -->
-                <li class="nav-item">
-                    <a href="{{ url('admin/department') }}"
-                        class="nav-link @if (Request::segment(2) == 'department') active @endif">
-                        <i class="nav-icon fa fa-building"></i>
-                        <p>{{ __('dashboard.departments') }}</p>
-                    </a>
-                </li>
+                @if (hr_can('departments'))
+                    <li class="nav-item">
+                        <a href="{{ url('admin/department') }}"
+                            class="nav-link @if (Request::segment(2) == 'department') active @endif">
+                            <i class="nav-icon fa fa-building"></i>
+                            <p>{{ __('dashboard.departments') }}</p>
+                        </a>
+                    </li>
+                @endif
+                @if (hr_can('jobs') || hr_can('job_history'))
+                    <li class="nav-item has-treeview
+    @if (Request::segment(2) == 'jobs' || Request::segment(2) == 'job_history') menu-open @endif">
 
-                <!-- Jobs -->
-                <li class="nav-item has-treeview @if (Request::segment(2) == 'jobs' || Request::segment(2) == 'job_history') menu-open @endif">
-                    <a href="#" class="nav-link @if (Request::segment(2) == 'jobs' || Request::segment(2) == 'job_history') active @endif">
-                        <i class="nav-icon fa fa-briefcase"></i>
-                        <p>{{ __('dashboard.jobs') }}<i class="right fa fa-angle-left"></i></p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ url('admin/jobs') }}"
-                                class="nav-link @if (Request::segment(2) == 'jobs') active @endif">
-                                <i class="fa fa-list nav-icon"></i>
-                                <p>{{ __('dashboard.current_jobs') }}</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ url('admin/job_history') }}"
-                                class="nav-link @if (Request::segment(2) == 'job_history') active @endif">
-                                <i class="fa fa-history nav-icon"></i>
-                                <p>{{ __('dashboard.job_history') }}</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                        <a href="#" class="nav-link
+        @if (Request::segment(2) == 'jobs' || Request::segment(2) == 'job_history') active @endif">
+                            <i class="nav-icon fa fa-briefcase"></i>
+                            <p>{{ __('dashboard.jobs') }}<i class="right fa fa-angle-left"></i></p>
+                        </a>
+
+                        <ul class="nav nav-treeview">
+
+                            @if (hr_can('jobs'))
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/jobs') }}"
+                                        class="nav-link @if (Request::segment(2) == 'jobs') active @endif">
+                                        <i class="fa fa-list nav-icon"></i>
+                                        <p>{{ __('dashboard.current_jobs') }}</p>
+                                    </a>
+                                </li>
+                            @endif
+
+                            @if (hr_can('job_history'))
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/job_history') }}"
+                                        class="nav-link @if (Request::segment(2) == 'job_history') active @endif">
+                                        <i class="fa fa-history nav-icon"></i>
+                                        <p>{{ __('dashboard.job_history') }}</p>
+                                    </a>
+                                </li>
+                            @endif
+
+                        </ul>
+
+                    </li>
+                @endif
 
                 <li class="nav-header">{{ __('dashboard.communication') }}</li>
 
                 <!-- News -->
-                <li class="nav-item">
-                    <a href="{{ url('admin/news') }}"
-                        class="nav-link @if (Request::segment(2) == 'news') active @endif">
-                        <i class="nav-icon fa fa-bullhorn"></i>
-                        <p>{{ __('dashboard.company_news') }}</p>
-                    </a>
-                </li>
-
-                <!-- Employee Requests -->
-                @php
-                    $pendingRequestsCount = getPendingRequestsCount();
-                @endphp
-
-                <li class="nav-item">
-                    <a href="{{ url('admin/Requests') }}"
-                        class="nav-link @if (Request::segment(2) == 'Requests') active @endif">
-                        <i class="nav-icon fa fa-envelope"></i>
-                        <p>
-                            {{ __('dashboard.requests') }}
-                            @if ($pendingRequestsCount > 0)
-                                <span class="badge badge-danger right">{{ $pendingRequestsCount }}</span>
-                            @endif
-                        </p>
-                    </a>
-                </li>
-
-                <!-- Messages -->
-                <li class="nav-item">
-                    <a href="{{ url('admin/messages') }}"
-                        class="nav-link @if (Request::segment(2) == 'messages') active @endif">
-                        <i class="nav-icon fas fa-paper-plane"></i>
-                        <p>{{ __('h_message.messages') }}</p>
-                    </a>
-                </li>
+                @if (hr_can('news'))
+                    <li class="nav-item">
+                        <a href="{{ url('admin/news') }}"
+                            class="nav-link @if (Request::segment(2) == 'news') active @endif">
+                            <i class="nav-icon fa fa-bullhorn"></i>
+                            <p>{{ __('dashboard.company_news') }}</p>
+                        </a>
+                    </li>
+                @endif
 
 
-                <!-- Performance -->
-                <li class="nav-item has-treeview
+                @if (hr_can('requests'))
+                    <!-- Employee Requests -->
+                    @php
+                        $pendingRequestsCount = getPendingRequestsCount();
+                    @endphp
+
+                    <li class="nav-item">
+                        <a href="{{ url('admin/Requests') }}"
+                            class="nav-link @if (Request::segment(2) == 'Requests') active @endif">
+                            <i class="nav-icon fa fa-envelope"></i>
+                            <p>
+                                {{ __('dashboard.requests') }}
+                                @if ($pendingRequestsCount > 0)
+                                    <span class="badge badge-danger right">{{ $pendingRequestsCount }}</span>
+                                @endif
+                            </p>
+                        </a>
+                    </li>
+                @endif
+
+                @if (hr_can('messages'))
+                    <!-- Messages -->
+                    <li class="nav-item">
+                        <a href="{{ url('admin/messages') }}"
+                            class="nav-link @if (Request::segment(2) == 'messages') active @endif">
+                            <i class="nav-icon fas fa-paper-plane"></i>
+                            <p>{{ __('h_message.messages') }}</p>
+                        </a>
+                    </li>
+                @endif
+
+
+                {{-- Performance --}}
+                @if (hr_can('performance') || hr_can('performance_criteria'))
+                    <li class="nav-item has-treeview
     @if (Request::segment(2) == 'performance' || Request::segment(2) == 'performance-criteria') menu-open @endif">
-                    <a href="#" class="nav-link @if (Request::segment(2) == 'performance' || Request::segment(2) == 'performance-criteria') active @endif">
-                        <i class="nav-icon fas fa-chart-line"></i>
-                        <p>
-                            {{ __('dashboard.performance') }}
-                            <i class="right fa fa-angle-left"></i>
-                        </p>
-                    </a>
 
-                    <ul class="nav nav-treeview">
-
-                        <li class="nav-item">
-                            <a href="{{ url('admin/performance-criteria') }}"
-                                class="nav-link @if (Request::segment(2) == 'performance-criteria') active @endif">
-                                <i class="fa fa-cogs nav-icon"></i>
-                                {{ __('dashboard.criteria') }}
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="{{ url('admin/performance') }}"
-                                class="nav-link @if (Request::segment(2) == 'performance') active @endif">
-                                <i class="fa fa-list nav-icon"></i>
+                        <a href="#" class="nav-link
+        @if (Request::segment(2) == 'performance' || Request::segment(2) == 'performance-criteria') active @endif">
+                            <i class="nav-icon fas fa-chart-line"></i>
+                            <p>
                                 {{ __('dashboard.performance') }}
-                            </a>
-                        </li>
+                                <i class="right fa fa-angle-left"></i>
+                            </p>
+                        </a>
 
-                    </ul>
-                </li>
+                        <ul class="nav nav-treeview">
+
+                            @if (hr_can('performance_criteria'))
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/performance-criteria') }}"
+                                        class="nav-link @if (Request::segment(2) == 'performance-criteria') active @endif">
+                                        <i class="fa fa-cogs nav-icon"></i>
+                                        {{ __('dashboard.criteria') }}
+                                    </a>
+                                </li>
+                            @endif
+
+                            @if (hr_can('performance'))
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/performance') }}"
+                                        class="nav-link @if (Request::segment(2) == 'performance') active @endif">
+                                        <i class="fa fa-list nav-icon"></i>
+                                        {{ __('dashboard.performance') }}
+                                    </a>
+                                </li>
+                            @endif
+
+                        </ul>
+                    </li>
+                @endif
 
 
 
@@ -528,134 +563,164 @@
 
 
 
-                <!-- Attendance -->
-                <li class="nav-item has-treeview @if (in_array(Request::segment(2), ['attendance', 'reports', 'biometer-excel'])) menu-open @endif">
-                    <a href="#" class="nav-link @if (in_array(Request::segment(2), ['attendance', 'reports', 'biometer-excel'])) active @endif">
-                        <i class="nav-icon fa fa-calendar-check"></i>
-                        <p>{{ __('dashboard.attendance') }}<i class="right fa fa-angle-left"></i></p>
-                    </a>
-                    <ul class="nav nav-treeview">
+                {{-- Attendance --}}
+                @if (hr_can('attendance') || hr_can('attendance_reports') || hr_can('biometer_excel'))
+                    <li class="nav-item has-treeview
+    @if (in_array(Request::segment(2), ['attendance', 'reports', 'biometer-excel'])) menu-open @endif">
 
-                        <li class="nav-item">
-                            <a href="{{ url('admin/attendance') }}"
-                                class="nav-link @if (Request::segment(2) == 'attendance') active @endif">
-                                <i class="nav-icon fa fa-calendar-alt"></i>
-                                <p>{{ __('dashboard.attendance_manually') }}</p>
-                            </a>
-                        </li>
+                        <a href="#" class="nav-link
+        @if (in_array(Request::segment(2), ['attendance', 'reports', 'biometer-excel'])) active @endif">
+                            <i class="nav-icon fa fa-calendar-check"></i>
+                            <p>{{ __('dashboard.attendance') }}<i class="right fa fa-angle-left"></i></p>
+                        </a>
 
-                        <li class="nav-item">
-                            <a href="{{ url('admin/reports') }}"
-                                class="nav-link @if (Request::segment(2) == 'reports') active @endif">
-                                <i class="nav-icon fa fa-file-alt"></i>
-                                <p>{{ __('dashboard.attendance_reports') }}</p>
-                            </a>
-                        </li>
+                        <ul class="nav nav-treeview">
 
-                        <li class="nav-item">
-                            <a href="{{ url('admin/biometer-excel') }}"
-                                class="nav-link @if (Request::segment(2) == 'biometer-excel') active @endif">
-                                <i class="fas fa-file-excel nav-icon"></i>
-                                <p>{{ __('dashboard.biometer_excel') }}</p>
-                            </a>
-                        </li>
+                            @if (hr_can('attendance'))
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/attendance') }}"
+                                        class="nav-link @if (Request::segment(2) == 'attendance') active @endif">
+                                        <i class="nav-icon fa fa-calendar-alt"></i>
+                                        <p>{{ __('dashboard.attendance_manually') }}</p>
+                                    </a>
+                                </li>
+                            @endif
 
-                    </ul>
-                </li>
+                            @if (hr_can('attendance_reports'))
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/reports') }}"
+                                        class="nav-link @if (Request::segment(2) == 'reports') active @endif">
+                                        <i class="nav-icon fa fa-file-alt"></i>
+                                        <p>{{ __('dashboard.attendance_reports') }}</p>
+                                    </a>
+                                </li>
+                            @endif
 
+                            @if (hr_can('biometer_excel'))
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/biometer-excel') }}"
+                                        class="nav-link @if (Request::segment(2) == 'biometer-excel') active @endif">
+                                        <i class="fas fa-file-excel nav-icon"></i>
+                                        <p>{{ __('dashboard.biometer_excel') }}</p>
+                                    </a>
+                                </li>
+                            @endif
 
-                <!-- Taxs & insurance  -->
-                <li class="nav-item has-treeview @if (Request::segment(2) == 'taxes' || Request::segment(2) == 'insurance') menu-open @endif">
-                    <a href="#" class="nav-link @if (Request::segment(2) == 'taxes' || Request::segment(2) == 'insurance') active @endif">
-                        <i class="nav-icon fa fa-file-invoice-dollar"></i>
-                        <p>{{ __('dashboard.tax_insurance') }}<i class="right fa fa-angle-left"></i></p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ url('admin/taxes') }}"
-                                class="nav-link @if (Request::segment(2) == 'taxes') active @endif">
-                                <i class="fa fa-calculator nav-icon"></i>
-                                <p>{{ __('dashboard.taxes') }}</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ url('admin/insurance') }}"
-                                class="nav-link @if (Request::segment(2) == 'insurance') active @endif">
-                                <i class="fa fa-medkit nav-icon"></i>
-                                <p>{{ __('dashboard.insurance') }}</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                        </ul>
+                    </li>
+                @endif
 
+                {{-- Taxes & Insurance --}}
+                @if (hr_can('taxes') || hr_can('insurance'))
+                    <li class="nav-item has-treeview
+    @if (Request::segment(2) == 'taxes' || Request::segment(2) == 'insurance') menu-open @endif">
+
+                        <a href="#" class="nav-link
+        @if (Request::segment(2) == 'taxes' || Request::segment(2) == 'insurance') active @endif">
+                            <i class="nav-icon fa fa-file-invoice-dollar"></i>
+                            <p>{{ __('dashboard.tax_insurance') }}<i class="right fa fa-angle-left"></i></p>
+                        </a>
+
+                        <ul class="nav nav-treeview">
+
+                            @if (hr_can('taxes'))
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/taxes') }}"
+                                        class="nav-link @if (Request::segment(2) == 'taxes') active @endif">
+                                        <i class="fa fa-calculator nav-icon"></i>
+                                        <p>{{ __('dashboard.taxes') }}</p>
+                                    </a>
+                                </li>
+                            @endif
+
+                            @if (hr_can('insurance'))
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/insurance') }}"
+                                        class="nav-link @if (Request::segment(2) == 'insurance') active @endif">
+                                        <i class="fa fa-medkit nav-icon"></i>
+                                        <p>{{ __('dashboard.insurance') }}</p>
+                                    </a>
+                                </li>
+                            @endif
+
+                        </ul>
+                    </li>
+                @endif
 
 
 
 
                 <!-- deductions -->
-                <li class="nav-item">
-                    <a href="{{ url('admin/deductions') }}"
-                        class="nav-link @if (Request::segment(2) == 'deductions') active @endif">
-                        <i class="nav-icon fa fa-exclamation-circle	"></i>
-                        <p>{{ __('dashboard.deductions') }}</p>
-                    </a>
-                </li>
+                @if (hr_can('deductions'))
+                    <li class="nav-item">
+                        <a href="{{ url('admin/deductions') }}"
+                            class="nav-link @if (Request::segment(2) == 'deductions') active @endif">
+                            <i class="nav-icon fa fa-exclamation-circle	"></i>
+                            <p>{{ __('dashboard.deductions') }}</p>
+                        </a>
+                    </li>
+                @endif
 
 
                 <!-- Vacations -->
+                @if (hr_can('vacations'))
+                    <li class="nav-item">
+                        <a href="{{ url('admin/vacations') }}"
+                            class="nav-link @if (Request::segment(2) == 'vacations') active @endif">
+                            <i class="nav-icon fa fa-umbrella-beach"></i>
+                            <p> {{ __('dashboard.vacations') }} </p>
+                        </a>
+                    </li>
+                @endif
+
+                @if (hr_can('bounas'))
+                    <!-- Bounas -->
+                    <li class="nav-item">
+                        <a href="{{ url('admin/bounas') }}"
+                            class="nav-link @if (Request::segment(2) == 'bounas') active @endif">
+                            <i class="nav-icon fa fa-dollar-sign"></i>
+                            <p> {{ __('dashboard.overtime') }} </p>
+                        </a>
+                    </li>
+                @endif
+
+
+                {{-- Payroll --}}
+@if (hr_can('payroll') || hr_can('payslip'))
+    <li class="nav-item has-treeview @if (in_array(Request::segment(2), ['payroll', 'payslip'])) menu-open @endif">
+        <a href="#" class="nav-link @if (in_array(Request::segment(2), ['payroll', 'payslip'])) active @endif">
+            <i class="nav-icon fa fa-coins"></i>
+            <p>
+                {{ __('dashboard.payroll') }}
+                <i class="right fa fa-angle-left"></i>
+            </p>
+        </a>
+
+        <ul class="nav nav-treeview">
+
+            {{-- Calculate Payroll --}}
+            @if (hr_can('payroll'))
                 <li class="nav-item">
-                    <a href="{{ url('admin/vacations') }}"
-                        class="nav-link @if (Request::segment(2) == 'vacations') active @endif">
-                        <i class="nav-icon fa fa-umbrella-beach"></i>
-                        <p> {{ __('dashboard.vacations') }} </p>
+                    <a href="{{ url('admin/payroll') }}" class="nav-link @if (Request::segment(2) == 'payroll') active @endif">
+                        <i class="fa fa-calculator nav-icon"></i>
+                        <p>{{ __('dashboard.calculate_payroll') }}</p>
                     </a>
                 </li>
+            @endif
 
-
-                <!-- Bounas -->
+            {{-- Payslip --}}
+            @if (hr_can('payslip'))
                 <li class="nav-item">
-                    <a href="{{ url('admin/bounas') }}"
-                        class="nav-link @if (Request::segment(2) == 'bounas') active @endif">
-                        <i class="nav-icon fa fa-dollar-sign"></i>
-                        <p> {{ __('dashboard.overtime') }} </p>
+                    <a href="{{ url('admin/payslip') }}" class="nav-link @if (Request::segment(2) == 'payslip') active @endif">
+                        <i class="fa fa-receipt nav-icon"></i>
+                        <p>{{ __('dashboard.payslip_report') }}</p>
                     </a>
                 </li>
+            @endif
 
-
-                <!-- Payroll -->
-                <li class="nav-item has-treeview @if (in_array(Request::segment(2), ['attendance-rule', 'payroll', 'payslip'])) menu-open @endif">
-                    <a href="#" class="nav-link @if (in_array(Request::segment(2), ['attendance-rule', 'payroll', 'payslip'])) active @endif">
-                        <i class="nav-icon fa fa-coins"></i>
-                        <p>{{ __('dashboard.payroll') }}<i class="right fa fa-angle-left"></i></p>
-                    </a>
-                    <ul class="nav nav-treeview">
-
-                        @if (session('branch_id') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1)
-                            <li class="nav-item">
-                                <a href="{{ url('admin/attendance-rule') }}"
-                                    class="nav-link @if (Request::segment(2) == 'attendance-rule') active @endif">
-                                    <i class="fa fa-cogs nav-icon"></i>
-                                    <p>{{ __('dashboard.company_policy') }}</p>
-                                </a>
-                            </li>
-                        @endif
-                        <li class="nav-item">
-                            <a href="{{ url('admin/payroll') }}"
-                                class="nav-link @if (Request::segment(2) == 'payroll') active @endif">
-                                <i class="fa fa-calculator nav-icon"></i>
-                                <p>{{ __('dashboard.calculate_payroll') }}</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ url('admin/payslip') }}"
-                                class="nav-link @if (Request::segment(2) == 'payslip') active @endif">
-                                <i class="fa fa-receipt nav-icon"></i>
-                                <p>{{ __('dashboard.payslip_report') }}</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
+        </ul>
+    </li>
+@endif
 
 
 
@@ -669,55 +734,74 @@
                 <li class="nav-header">{{ __('dashboard.settings') }}</li>
 
                 <!-- payroll report -->
-                    {{-- <li class="nav-item">
+                {{-- <li class="nav-item">
                         <a href="{{ url('admin/financial-analysis') }}"
                             class="nav-link @if (Request::segment(2) == 'financial-analysis') active @endif">
                             <i class="nav-icon fas fa-chart-area text-white"></i>
                             <p>{{ __('dashboard.branches') }}</p>
                         </a>
                     </li> --}}
+                     {{-- Company Policy (Attendance Rule) — Only visible for main branch AND permission --}}
+                            @if (hr_can('attendance_rule') &&
+                                    (session('branch_id') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1))
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/attendance-rule') }}"
+                                        class="nav-link @if (Request::segment(2) == 'attendance-rule') active @endif">
+                                        <i class="fa fa-cogs nav-icon"></i>
+                                        <p>{{ __('dashboard.company_policy') }}</p>
+                                    </a>
+                                </li>
+                            @endif
 
                 <!-- Branches -->
-                @if (session('branch_id') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1)
+                @if (hr_can('branches'))
+                    @if (session('branch_id') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1)
+                        <li class="nav-item">
+                            <a href="{{ url('admin/branches') }}"
+                                class="nav-link @if (Request::segment(2) == 'branches') active @endif">
+                                <i class="nav-icon fas fa-code-branch text-white"></i>
+                                <p>{{ __('dashboard.branches') }}</p>
+                            </a>
+                        </li>
+                    @endif
+                @endif
+
+                <!-- locations -->
+                @if (hr_can('locations'))
                     <li class="nav-item">
-                        <a href="{{ url('admin/branches') }}"
-                            class="nav-link @if (Request::segment(2) == 'branches') active @endif">
-                            <i class="nav-icon fas fa-code-branch text-white"></i>
-                            <p>{{ __('dashboard.branches') }}</p>
+                        <a href="{{ route('locations.index') }}"
+                            class="nav-link @if (Request::segment(2) == 'locations') active @endif">
+                            <i class="nav-icon fas fa-map-marker-alt"></i>
+                            <p>{{ __('dashboard.employee-locations') }}</p>
                         </a>
                     </li>
                 @endif
 
-                <!-- Company information -->
-                <li class="nav-item">
-                    <a href="{{ route('locations.index') }}"
-                        class="nav-link @if (Request::segment(2) == 'locations') active @endif">
-                        <i class="nav-icon fas fa-map-marker-alt"></i>
-                        <p>{{ __('dashboard.employee-locations') }}</p>
-                    </a>
-                </li>
-
 
                 <!-- Company information -->
-                @if (session('branch_id') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1)
-                    <li class="nav-item">
-                        <a href="{{ url('admin/company-info') }}"
-                            class="nav-link @if (Request::segment(2) == 'company-info') active @endif">
-                            <i class="nav-icon fas fa-info-circle "></i>
-                            <p>{{ __('dashboard.company_info') }}</p>
-                        </a>
-                    </li>
+                @if (hr_can('company_info'))
+                    @if (session('branch_id') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1)
+                        <li class="nav-item">
+                            <a href="{{ url('admin/company-info') }}"
+                                class="nav-link @if (Request::segment(2) == 'company-info') active @endif">
+                                <i class="nav-icon fas fa-info-circle "></i>
+                                <p>{{ __('dashboard.company_info') }}</p>
+                            </a>
+                        </li>
+                    @endif
                 @endif
 
 
                 <!-- My Account -->
-                <li class="nav-item">
-                    <a href="{{ url('admin/my_account') }}"
-                        class="nav-link @if (Request::segment(2) == 'my_account') active @endif">
-                        <i class="nav-icon fa fa-cog"></i>
-                        <p>{{ __('dashboard.my_account') }}</p>
-                    </a>
-                </li>
+                @if (hr_can('my_account'))
+                    <li class="nav-item">
+                        <a href="{{ url('admin/my_account') }}"
+                            class="nav-link @if (Request::segment(2) == 'my_account') active @endif">
+                            <i class="nav-icon fa fa-cog"></i>
+                            <p>{{ __('dashboard.my_account') }}</p>
+                        </a>
+                    </li>
+                @endif
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

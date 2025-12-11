@@ -16,6 +16,7 @@ return new class extends Migration
             $table->date('hire_date')->nullable();
             $table->integer('salary')->nullable();
             $table->integer('commission_pct')->nullable();
+            $table->unsignedBigInteger('branch_id')->nullable();
 
             // Adding the company_id foreign key
             $table->foreignId('company_id')->nullable()->constrained()->onDelete('cascade');

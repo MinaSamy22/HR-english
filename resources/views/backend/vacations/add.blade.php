@@ -6,16 +6,13 @@
         <!-- Content Header (Page header) -->
         <div class="content-header">
             <div class="container-fluid">
-            <div class=" mb-2 d-flex justify-content-between">
-                    <div class="col-sm-6">
-                        <h1 class="m-0">{{ __('h_vacation.vacation') }}</h1>
-                    </div><!-- /.col -->
-                    <div class="">
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
+                       <h1 class="m-0 mt-3 mb-3">{{ __('h_vacation.vacation') }}</h1>
+
                         <ol class="breadcrumb float-sm-{{ app()->getLocale() == 'ar' ? 'left' : 'right' }}">
                             <li class="breadcrumb-item"><a href="#">{{ __('h_vacation.add') }}</a></li>
                             <li class="breadcrumb-item active">{{ __('h_vacation.vacations') }}</li>
                         </ol>
-                    </div><!-- /.col -->
                 </div><!-- /.row -->
             </div><!-- /.container-fluid -->
         </div>
@@ -44,17 +41,26 @@
                                 <div class="card-body">
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">{{ __('h_vacation.employee_name') }} <span
-                                                style="color: red;">*</span></label>
-                                        <div class="col-sm-10">
-                                            <select class="form-control" name="employee_id" required>
-                                                <option value="">{{ __('h_vacation.select_employee_name') }}</option>
-                                                @foreach ($getUsers as $value_users)
-                                                    <option value="{{ $value_users->id }}">{{ $value_users->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
+    <label class="col-sm-2 col-form-label">
+        {{ __('h_vacation.employee_name') }} <span style="color: red;">*</span>
+    </label>
+    <div class="col-sm-10">
+        <select class="form-control" name="employee_id" required>
+            <option value="">{{ __('h_vacation.select_employee_name') }}</option>
+            @foreach($getUsers as $user)
+    @php
+        $usedDays = \App\Models\Vacation::where('employee_id', $user->id)->sum('total');
+        $remaining = $user->vacation_balance !== null ? $user->vacation_balance - $usedDays : __('h_vacation.no_balance');;
+    @endphp
+    <option value="{{ $user->id }}">
+        {{ $user->name }} ({{ __('h_vacation.remaining_balance') }}: {{ $remaining }})
+    </option>
+@endforeach
+
+        </select>
+    </div>
+</div>
+
 
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-label">{{ __('h_vacation.vacation_type') }} <span

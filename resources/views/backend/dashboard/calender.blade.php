@@ -10,16 +10,12 @@
     <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
-            <div class=" mb-2 d-flex justify-content-between">
-                <div class="col-sm-6">
-                    <h1 class="m-0 text">{{ __('Calender.title') }}</h1>
-                </div><!-- /.col -->
-                <div class="">
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
+                    <h1 class="m-0 mt-3 mb-3">{{ __('Calender.title') }}</h1>
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#" class="text">{{ __('Calender.home') }}</a></li>
+                        <li class="breadcrumb-item"><a href="dashboard" class="text">{{ __('Calender.home') }}</a></li>
                         <li class="breadcrumb-item active text">{{ __('Calender.title') }}</li>
                     </ol>
-                </div><!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div><!-- /.content-header -->

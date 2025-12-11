@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('phone_number')->nullable();
             $table->string('commercial_registration')->nullable();
             $table->string('tax_card')->nullable();
+            $table->string('google_key')->nullable();
             $table->timestamps();
         });
     }

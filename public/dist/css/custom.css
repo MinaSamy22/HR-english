@@ -331,3 +331,16 @@ html[dir="rtl"] .mr-auto:not(.navbar-nav) {
     margin-right: 0 !important;
     margin-left: auto !important;
 }
+.breadcrumb {
+    white-space: nowrap !important;
+}
+
+.content-header .d-flex {
+    flex-wrap: nowrap !important; /* Prevents breaking into two lines */
+}
+
+@media (max-width: 576px) {
+    .content-header h1 {
+        font-size: 18px;
+    }
+}

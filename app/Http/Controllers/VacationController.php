@@ -9,18 +9,64 @@ use Carbon\Carbon;
 class VacationController extends Controller
 {
     // Method to display the list of vacations
-    public function index(Request $request)
+public function index(Request $request)
 {
-    $data['getRecord'] = Vacation::getRecord($request);
+    $company_id = session('company_id');
+    $branch_id = $request->filter_branch_id ?? session('branch_id');
 
-    // Add branches data like in your jobs controller
-    $data['branches'] = \DB::table('branches')
-        ->where('company_id', session('company_id'))
+    // Base Query
+    $baseQuery = \DB::table('vacations')
+        ->join('users', 'users.id', '=', 'vacations.employee_id')
+        ->leftJoin('branches', 'branches.id', '=', 'vacations.branch_id')
+        ->where('vacations.company_id', $company_id)
+        ->select(
+            'vacations.*',
+            'users.name',
+            'users.vacation_balance',
+            'branches.name as branch_name'
+        );
+
+    // Filter by name
+    if (!empty($request->name)) {
+        $baseQuery->where('users.name', 'like', '%' . $request->name . '%');
+    }
+
+    // Filter by branch
+    if (!empty($request->filter_branch_id)) {
+        $baseQuery->where('vacations.branch_id', $request->filter_branch_id);
+    }
+
+    // ================
+    // 1) With Balance
+    // ================
+    $withBalance = (clone $baseQuery)
+        ->where('users.vacation_balance', '>', 0)
+        ->orderBy('vacations.id', 'desc')
+        ->paginate(10, ['*'], 'withBalancePage');
+
+    // ==================
+    // 2) No Balance
+    // ==================
+    $noBalance = (clone $baseQuery)
+        ->where(function ($q) {
+            $q->where('users.vacation_balance', '=', 0)
+              ->orWhereNull('users.vacation_balance');
+        })
+        ->orderBy('vacations.id', 'desc')
+        ->paginate(10, ['*'], 'noBalancePage');
+
+    // Branches list
+    $branches = \DB::table('branches')
+        ->where('company_id', $company_id)
         ->select('id', 'name', 'is_main')
         ->orderBy('name')
         ->get();
 
-    return view('backend.vacations.index', $data);
+    return view('backend.vacations.index', compact(
+        'withBalance',
+        'noBalance',
+        'branches'
+    ));
 }
 
     // Method to show the add vacation form
@@ -79,7 +125,7 @@ public function add_post(Request $request)
     // Calculate already used days
     $totalUsed = Vacation::where('employee_id', $employee->id)->sum('total');
 
-    // Remaining balance
+    // Remaining balance BEFORE this request
     $remainingBalance = max(0, $vacationLimit - $totalUsed);
 
     if ($remainingBalance <= 0) {
@@ -90,14 +136,18 @@ public function add_post(Request $request)
         return back()->withErrors(['error' => "You are trying to request $totalDays days, but the remaining balance is only $remainingBalance days. Vacation request denied."]);
     }
 
+    // ✅ Update remaining balance AFTER this request
+    $remainingAfterVacation = $remainingBalance - $totalDays;
+
     // Save vacation request
     $vacation = new Vacation();
-    $vacation->employee_id   = trim($request->employee_id);
-    $vacation->vacation_type = trim($request->vacation_type);
-    $vacation->start_date    = $startDate;
-    $vacation->end_date      = $endDate;
-    $vacation->total         = $totalDays;
-    $vacation->company_id    = session('company_id');
+    $vacation->employee_id       = trim($request->employee_id);
+    $vacation->vacation_type     = trim($request->vacation_type);
+    $vacation->start_date        = $startDate;
+    $vacation->end_date          = $endDate;
+    $vacation->total             = $totalDays;
+    $vacation->remaining_balance = $remainingAfterVacation; // 🔹 new column
+    $vacation->company_id        = session('company_id');
 
     if (session()->has('branch_id')) {
         $vacation->branch_id = session('branch_id');
@@ -105,8 +155,12 @@ public function add_post(Request $request)
 
     $vacation->save();
 
+    // 🔹 (اختياري) تحديث رصيد الموظف في جدول المستخدمين
+    // $employee->update(['vacation_balance' => $remainingAfterVacation]);
+
     return redirect('admin/vacations')->with('success', __('h_vacation.controller-add-message'));
 }
+
 
 
     // Method to delete a vacation record

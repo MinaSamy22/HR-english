@@ -64,10 +64,15 @@ return [
     'resignation' => 'استقالة',
     'late_removal' => 'إزالة التأخير',
     'extra_time' => 'وقت إضافي',
+    'early_leave' => 'مغادرة مبكرة',
+
 ],
 'status' => [
     'accepted' => 'مقبول',
     'rejected' => 'مرفوض',
     'pending' => 'قيد الانتظار',
 ],
+
+    'early_leave_requests' => 'طلب الانصراف المبكر',
+
 ];

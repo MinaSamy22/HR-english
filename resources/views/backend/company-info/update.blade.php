@@ -12,7 +12,7 @@
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">{{ __('h_companyinfo.setting') }}</a></li>
+                            <li class="breadcrumb-item"><a href="dashboard" class="text">{{ __('Calender.home') }}</a></li>
                             <li class="breadcrumb-item active">{{ __('h_companyinfo.company_information') }}</li>
                         </ol>
                     </div><!-- /.col -->

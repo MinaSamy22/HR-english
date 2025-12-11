@@ -22,14 +22,14 @@ class EmployeeHomeController extends Controller
 
         // Get recent news for the employee's company
         $recentNews = News::where('company_id', $user->company_id)
-                          ->orderBy('news_date', 'desc')
-                          ->orderBy('created_at', 'desc')
-                          ->limit(4)
-                          ->get();
+            ->orderBy('news_date', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->limit(4)
+            ->get();
 
         // Debug: Check news items and their images
         \Log::info('News count: ' . $recentNews->count());
-        foreach($recentNews as $index => $newsItem) {
+        foreach ($recentNews as $index => $newsItem) {
             \Log::info("News Item #{$index}:");
             \Log::info("- ID: {$newsItem->id}");
             \Log::info("- Title: {$newsItem->title}");
@@ -73,18 +73,18 @@ class EmployeeHomeController extends Controller
             ->whereYear('attendance_date', $currentYear)
             ->count();
 
-// Get vacation balance from users table
-$totalVacationAllowed = DB::table('users')
-    ->where('id', $user->id)
-    ->value('vacation_balance') ?? 0;
+        // Get vacation balance from users table
+        $totalVacationAllowed = DB::table('users')
+            ->where('id', $user->id)
+            ->value('vacation_balance') ?? 0;
 
-// Get total vacations taken from vacations table
-$vacationsTaken = DB::table('vacations')
-    ->where('employee_id', $user->id)
-    ->sum('total') ?? 0;
+        // Get total vacations taken from vacations table
+        $vacationsTaken = DB::table('vacations')
+            ->where('employee_id', $user->id)
+            ->sum('total') ?? 0;
 
-// Calculate remaining vacation balance
-$vacationBalance = $totalVacationAllowed - $vacationsTaken;
+        // Calculate remaining vacation balance
+        $vacationBalance = $totalVacationAllowed - $vacationsTaken;
 
         // Get recent activities from request tables - INLINE LOGIC
         $activities = collect();
@@ -114,6 +114,12 @@ $vacationBalance = $totalVacationAllowed - $vacationsTaken;
                 'type' => 'Late Removal',
                 'badge_class' => 'badge-warning',
                 'icon' => 'fas fa-user-clock',
+                'employee_column' => 'employee_id'
+            ],
+            'early_leave_requests' => [
+                'type' => 'Early Leave',
+                'badge_class' => 'badge-info',
+                'icon' => 'fas fa-door-open',
                 'employee_column' => 'employee_id'
             ]
         ];
@@ -233,11 +239,11 @@ $vacationBalance = $totalVacationAllowed - $vacationsTaken;
     public function getRecentNewsByCompany($companyId, $limit = 4)
     {
         return News::where('company_id', $companyId)
-                   ->whereDate('news_date', '>=', now()->subDays(30)) // Last 30 days
-                   ->orderBy('news_date', 'desc')
-                   ->orderBy('created_at', 'desc')
-                   ->limit($limit)
-                   ->get();
+            ->whereDate('news_date', '>=', now()->subDays(30)) // Last 30 days
+            ->orderBy('news_date', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->limit($limit)
+            ->get();
     }
 
     /**
@@ -246,9 +252,9 @@ $vacationBalance = $totalVacationAllowed - $vacationsTaken;
     public function getAllNewsByCompany($companyId, $perPage = 10)
     {
         return News::where('company_id', $companyId)
-                   ->orderBy('news_date', 'desc')
-                   ->orderBy('created_at', 'desc')
-                   ->paginate($perPage);
+            ->orderBy('news_date', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage);
     }
 
     /**

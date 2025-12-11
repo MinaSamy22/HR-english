@@ -15,6 +15,7 @@ use App\Http\Controllers\CompanyInfoController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeductionController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\EmployeesInterface\EarlyLeaveController;
 use App\Http\Controllers\EmployeesInterface\EmployeeLateRemovalController;
 use App\Http\Controllers\EmployeesInterface\EmployeePerformanceController;
 use App\Http\Controllers\EmployeesInterface\ExtraTimeRequestController;
@@ -203,6 +204,21 @@ Route::middleware('admin')->group(function () {
     Route::get('/attendance-rules', [AttendanceRulesController::class, 'index'])->name('attendance-rules.index');
     Route::post('admin/attendance-rule/save', [AttendanceRulesController::class, 'saveRules'])->name('attendance-rule.save');
 
+
+    Route::post('/attendance-rules/upload-policy', [AttendanceRulesController::class, 'uploadPolicyPdf'])
+    ->name('attendance-rules.upload-policy');
+
+    Route::get('/company-policy/view/{file}', function($file) {
+    $path = public_path('../../HR-Uploads/pdf_policy/' . $file);
+
+    if (!file_exists($path)) {
+        abort(404);
+    }
+
+    return response()->file($path);
+})->name('company-policy.view');
+
+
     // holiday management
     Route::get('/attendance-rules/get-holidays', [AttendanceRulesController::class, 'getHolidays']);
     Route::post('admin/attendance-rule/add-holiday', [AttendanceRulesController::class, 'addHoliday'])->name('attendance-rule.add-holiday');
@@ -221,6 +237,8 @@ Route::middleware('admin')->group(function () {
     Route::post('/attendance-rules/update-work-hours', [AttendanceRulesController::class, 'updateWorkHoursPerDay'])->name('attendance.update-work-hours');
     Route::post('/attendance/update-employee-work-hours', [AttendanceRulesController::class, 'updateEmployeeWorkHours'])->name('attendance.update-employee-work-hours');
 
+
+    Route::post('/attendance-rules/update-absent-threshold', [AttendanceRulesController::class, 'updateAbsentThreshold'])->name('attendance-rules.update-absent-threshold');
     //vacation balance assignment to employees
     Route::post('/attendance/update-employee-vacation-balance', [AttendanceRulesController::class, 'updateEmployeeVacationBalance'])->name('attendance.update-employee-vacation-balance');
     //bonus per hour assignment to employees
@@ -489,6 +507,11 @@ Route::middleware('employee')->group(function () {
     Route::post('employee/late/request', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.request');
     Route::post('employee/late-removal-request', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.removal.request');
     Route::post('employee/late-removal/store', [EmployeeLateRemovalController::class, 'store'])->name('employee.late.removal.store');
+
+    //Early leave request
+    Route::get('employee/early-leave', [EarlyLeaveController::class, 'index'])->name('employee.early_leave.index');
+    Route::post('employee/early-leave/store', [EarlyLeaveController::class, 'store'])->name('employee.early.store');
+    Route::delete('employee/early-leave/cancel/{id}', [EarlyLeaveController::class, 'cancel'])->name('employee.early.destroy');
 
 
     // this to show each request page from notification

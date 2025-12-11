@@ -5,16 +5,14 @@
         <!-- Content Header (Page header) -->
         <div class="content-header">
             <div class="container-fluid">
-                <div class=" mb-2 d-flex justify-content-between">
-                    <div class="col-sm-6">
-                        <h1 class="m-0">{{ __('h_employee.employees') }}</h1>
-                    </div><!-- /.col -->
-                    <div class="">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">{{ __('h_employee.edit_breadcrumb') }}</a></li>
-                            <li class="breadcrumb-item active">{{ __('h_employee.employees_breadcrumb') }}</li>
-                        </ol>
-                    </div><!-- /.col -->
+                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                    <h1 class="m-0">{{ __('h_employee.employees') }}</h1>
+
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item "><a
+                                href="{{ url('admin/employees') }}">{{ __('h_employee.employees_breadcrumb') }}</a></li>
+                        <li class="breadcrumb-item active">{{ __('h_employee.edit_breadcrumb') }}</li>
+                    </ol>
                 </div><!-- /.row -->
             </div><!-- /.container-fluid -->
         </div>
@@ -130,29 +128,196 @@
                                             <span style="color:red">{{ $errors->first('salary') }}</span>
                                         </div>
                                     </div>
-
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">{{ __('h_employee.main_salary') }} <span
-                                                style="color: red;">{{ __('h_employee.required_field') }}</span></label>
+                                        <label class="col-sm-2 col-form-label">
+                                            {{ __('h_employee.main_salary') }}
+                                            <span style="color: red;">{{ __('h_employee.required_field') }}</span>
+                                        </label>
                                         <div class="col-sm-10">
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" name="main_salary"
                                                     id="main_salary_yes" value="1"
-                                                    {{ old('main_salary', $getRecord->main_salary) === 1 ? 'checked' : '' }}>
-                                                <label class="form-check-label"
-                                                    for="main_salary_yes">{{ __('h_employee.yes') }}</label>
+                                                    {{ old('main_salary', $getRecord->main_salary) == 1 ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="main_salary_yes">
+                                                    {{ __('h_employee.yes') }}
+                                                </label>
                                             </div>
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" name="main_salary"
                                                     id="main_salary_no" value="0"
-                                                    {{ old('main_salary', $getRecord->main_salary) === 0 ? 'checked' : '' }}>
-                                                <label class="form-check-label"
-                                                    for="main_salary_no">{{ __('h_employee.no') }}</label>
+                                                    {{ old('main_salary', $getRecord->main_salary) == 0 ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="main_salary_no">
+                                                    {{ __('h_employee.no') }}
+                                                </label>
                                             </div>
                                             <br>
                                             <span style="color:red">{{ $errors->first('main_salary') }}</span>
                                         </div>
                                     </div>
+
+                                    {{-- Additional Salary field (hidden unless "No" is selected) --}}
+                                    <div class="form-group row" id="additional_salary_field" style="display:none;">
+                                        <label class="col-sm-2 col-form-label">
+                                            {{ __('dashboard.additional_salary') }}
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="number" name="additional_salary" class="form-control"
+                                                value="{{ old('additional_salary', $getRecord->additional_salary) }}"
+                                                placeholder="Enter additional salary" step="0.01">
+                                            <span style="color:red">{{ $errors->first('additional_salary') }}</span>
+                                        </div>
+                                    </div>
+
+                                    {{-- Script to show/hide dynamically --}}
+                                    <script>
+                                        document.addEventListener('DOMContentLoaded', function() {
+                                            const yesRadio = document.getElementById('main_salary_yes');
+                                            const noRadio = document.getElementById('main_salary_no');
+                                            const additionalSalaryField = document.getElementById('additional_salary_field');
+
+                                            function toggleAdditionalField() {
+                                                if (noRadio.checked) {
+                                                    additionalSalaryField.style.display = 'flex';
+                                                } else {
+                                                    additionalSalaryField.style.display = 'none';
+                                                }
+                                            }
+
+                                            yesRadio.addEventListener('change', toggleAdditionalField);
+                                            noRadio.addEventListener('change', toggleAdditionalField);
+                                            toggleAdditionalField(); // ensure correct state on load
+                                        });
+                                    </script>
+
+                                    <!-- Nationality -->
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">
+                                            {{ __('dashboard.nationality') }} <span style="color:red">*</span>
+                                        </label>
+
+                                        <div class="col-sm-10">
+                                            <select name="nationality" id="nationality" class="form-control" required>
+                                                <option value="local"
+                                                    {{ old('nationality', $getRecord->nationality) == 'local' ? 'selected' : '' }}>
+                                                    {{ __('dashboard.nationality_local') }}
+                                                </option>
+
+                                                <option value="foreign"
+                                                    {{ old('nationality', $getRecord->nationality) == 'foreign' ? 'selected' : '' }}>
+                                                    {{ __('dashboard.nationality_foreign') }}
+                                                </option>
+                                            </select>
+
+                                            <span style="color:red">{{ $errors->first('nationality') }}</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- FOREIGN FIELDS -->
+                                    <div id="foreign_fields"
+                                        style="{{ old('nationality', $getRecord->nationality) == 'foreign' ? '' : 'display:none;' }}">
+
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label">
+                                                {{ __('dashboard.country_code') }} <span style="color:red">*</span>
+                                            </label>
+
+                                            <div class="col-sm-10">
+                                                <input type="text" name="country_code" class="form-control"
+                                                    value="{{ old('country_code', $getRecord->country_code) }}">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label">
+                                                {{ __('dashboard.residency_expiry') }} <span style="color:red">*</span>
+                                            </label>
+
+                                            <div class="col-sm-10">
+                                                <input type="date" name="residency_expiry" class="form-control"
+                                                    value="{{ old('residency_expiry', $getRecord->residency_expiry) }}">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label
+                                                class="col-sm-2 col-form-label">{{ __('dashboard.passport_number') }}</label>
+
+                                            <div class="col-sm-10">
+                                                <input type="text" name="passport_number" class="form-control"
+                                                    value="{{ old('passport_number', $getRecord->passport_number) }}">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label
+                                                class="col-sm-2 col-form-label">{{ __('dashboard.passport_expiry') }}</label>
+
+                                            <div class="col-sm-10">
+                                                <input type="date" name="passport_expiry" class="form-control"
+                                                    value="{{ old('passport_expiry', $getRecord->passport_expiry) }}">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label">
+                                                {{ __('dashboard.residency_number') }} <span style="color:red">*</span>
+                                            </label>
+
+                                            <div class="col-sm-10">
+                                                <input type="text" name="residency_number" class="form-control"
+                                                    value="{{ old('residency_number', $getRecord->residency_number) }}">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label">
+                                                {{ __('dashboard.iban') }} <span style="color:red">*</span>
+                                            </label>
+
+                                            <div class="col-sm-10">
+                                                <input type="text" name="iban" class="form-control"
+                                                    value="{{ old('iban', $getRecord->iban) }}">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label
+                                                class="col-sm-2 col-form-label">{{ __('dashboard.residency_job') }}</label>
+
+                                            <div class="col-sm-10">
+                                                <input type="text" name="residency_job" class="form-control"
+                                                    value="{{ old('residency_job', $getRecord->residency_job) }}">
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                    <script>
+                                        document.addEventListener('DOMContentLoaded', function() {
+                                            const nationality = document.getElementById('nationality');
+                                            const foreignFields = document.getElementById('foreign_fields');
+                                            const requiredInputs = foreignFields.querySelectorAll('input');
+
+                                            function toggleForeign() {
+                                                if (nationality.value === 'foreign') {
+                                                    foreignFields.style.display = 'block';
+                                                    requiredInputs.forEach(input => {
+                                                        input.setAttribute('required', true);
+                                                    });
+                                                } else {
+                                                    foreignFields.style.display = 'none';
+                                                    requiredInputs.forEach(input => {
+                                                        input.removeAttribute('required');
+                                                    });
+                                                }
+                                            }
+
+                                            nationality.addEventListener('change', toggleForeign);
+                                            toggleForeign();
+                                        });
+                                    </script>
+
 
                                     <!-- Add file input field -->
                                     <div class="form-group row">
@@ -274,7 +439,8 @@
 
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">{{ __('h_employee.free_biometric') }} <span
+                                        <label class="col-sm-2 col-form-label">{{ __('h_employee.free_biometric') }}
+                                            <span
                                                 style="color: red;">{{ __('h_employee.required_field') }}</span></label>
                                         <div class="col-sm-10">
                                             <div class="form-check form-check-inline">
@@ -313,7 +479,8 @@
 
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-lable">{{ __('h_employee.department_name') }}
-                                            <span style="color: red;">{{ __('h_employee.required_field') }}</span></label>
+                                            <span
+                                                style="color: red;">{{ __('h_employee.required_field') }}</span></label>
                                         <div class="col-sm-10">
                                             <select class="form-control" name="department_id" required>
                                                 @foreach ($getDepartments as $value_department)
@@ -326,23 +493,168 @@
                                         </div>
                                     </div>
 
-
+                                    <!-- ROLE SELECTION -->
                                     <div class="form-group row">
-    <label class="col-sm-2 col-form-label">
-        {{ __('h_employee.role') }}
-        <span style="color: red;">{{ __('h_employee.required_field') }}</span>
-    </label>
-    <div class="col-sm-10">
-        <select class="form-control" name="is_role" required>
-            <option value="0" {{ $getRecord->is_role == 0 ? 'selected' : '' }}>
-                {{ __('h_employee.employee') }}
-            </option>
-            <option value="1" {{ $getRecord->is_role == 1 ? 'selected' : '' }}>
-                {{ __('h_employee.hrs') }}
-            </option>
-        </select>
-    </div>
-</div>
+                                        <label class="col-sm-2 col-form-label">
+                                            {{ __('h_employee.role') }}
+                                            <span style="color: red;">{{ __('h_employee.required_field') }}</span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control" name="is_role" id="roleSelect" required>
+                                                <option value="0" {{ $getRecord->is_role == 0 ? 'selected' : '' }}>
+                                                    {{ __('h_employee.employee') }}
+                                                </option>
+                                                <option value="1" {{ $getRecord->is_role == 1 ? 'selected' : '' }}>
+                                                    {{ __('h_employee.hrs') }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+                                    <!-- HR PERMISSIONS SECTION -->
+                                    <div id="permissionsSection" class="form-group row mt-4" style="display:none;">
+
+                                        @php
+                                            // Load saved permissions from DB
+                                            $hrPermissions = \App\Models\HrPermission::where('user_id', $getRecord->id)
+                                                ->where('company_id', session('company_id'))
+                                                ->first();
+
+                                            $savedPermissions = [];
+                                            if ($hrPermissions) {
+                                                if (is_array($hrPermissions->permissions)) {
+                                                    $savedPermissions = $hrPermissions->permissions;
+                                                } elseif (is_string($hrPermissions->permissions)) {
+                                                    $savedPermissions =
+                                                        json_decode($hrPermissions->permissions, true) ?? [];
+                                                }
+                                            }
+
+                                            // Labels list
+                                            $permissionLabels = [
+                                                'employees' => __('dashboard.employees'),
+                                                'managers' => __('dashboard.managers'),
+                                                'administrations' => __('dashboard.administrations'),
+                                                'departments' => __('dashboard.departments'),
+                                                'jobs' => __('dashboard.jobs'),
+                                                'job_history' => __('dashboard.job_history'),
+                                                'news' => __('dashboard.news'),
+                                                'requests' => __('dashboard.requests'),
+                                                'messages' => __('h_message.messages'),
+                                                'performance' => __('dashboard.performance'),
+                                                'attendance' => __('dashboard.attendance'),
+                                                'attendance_reports' => __('dashboard.attendance_reports'),
+                                                'biometer_excel' => __('dashboard.biometer_excel'),
+                                                'taxes' => __('dashboard.taxes'),
+                                                'insurance' => __('dashboard.insurance'),
+                                                'deductions' => __('dashboard.deductions'),
+                                                'vacations' => __('dashboard.vacations'),
+                                                'bounas' => __('dashboard.overtime'),
+                                                'payroll' => __('dashboard.payroll'),
+                                                'attendance_rule' => __('dashboard.company_policy'),
+                                                'payslip' => __('dashboard.payslip_report'),
+                                                'branches' => __('dashboard.branches'),
+                                                'locations' => __('dashboard.locations'),
+                                                'company_info' => __('dashboard.company_info'),
+                                                'my_account' => __('dashboard.my_account'),
+                                            ];
+                                        @endphp
+
+                                        <!-- LEFT LABEL -->
+                                        <label class="col-sm-2 col-form-label">
+                                            {{ __('dashboard.hr_permissions') }}
+                                        </label>
+
+                                        <!-- RIGHT CONTENT -->
+                                        <div class="col-sm-10">
+
+                                            <!-- Title + Select All -->
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <h5 class="mb-0">{{ __('dashboard.hr_permissions') }}</h5>
+
+                                                <button type="button" id="selectAllBtn" class="btn btn-primary btn-sm">
+                                                    {{ __('dashboard.select_all') }}
+                                                </button>
+                                            </div>
+
+                                            <!-- Permissions Card -->
+                                            <div class="card shadow-sm">
+                                                <div class="card-body">
+
+                                                    <div class="row">
+                                                        @foreach ($permissionLabels as $key => $label)
+                                                            <div class="col-md-4 mb-2">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input permission-checkbox"
+                                                                        type="checkbox" name="permissions[]"
+                                                                        value="{{ $key }}"
+                                                                        id="perm_{{ $key }}"
+                                                                        {{ in_array($key, $savedPermissions) ? 'checked' : '' }}>
+                                                                    <label class="form-check-label"
+                                                                        for="perm_{{ $key }}">
+                                                                        {{ $label }}
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <!-- SCRIPT -->
+                                    <script>
+                                        document.addEventListener('DOMContentLoaded', function() {
+
+                                            let roleSelect = document.getElementById('roleSelect');
+                                            let permissionsSection = document.getElementById('permissionsSection');
+                                            let selectAllBtn = document.getElementById('selectAllBtn');
+
+                                            /* SHOW / HIDE PERMISSIONS */
+                                            function togglePermissions() {
+                                                if (roleSelect.value == "1") {
+                                                    permissionsSection.style.display = 'flex';
+                                                } else {
+                                                    permissionsSection.style.display = 'none';
+                                                    document.querySelectorAll('.permission-checkbox').forEach(ch => ch.checked = false);
+                                                }
+                                            }
+
+                                            /* SELECT ALL BUTTON */
+                                            function updateSelectAllText() {
+                                                let checkboxes = document.querySelectorAll('.permission-checkbox');
+                                                let allChecked = [...checkboxes].every(ch => ch.checked);
+
+                                                if (selectAllBtn) {
+                                                    selectAllBtn.innerText = allChecked ?
+                                                        "{{ __('dashboard.unselect_all') }}" :
+                                                        "{{ __('dashboard.select_all') }}";
+                                                }
+                                            }
+
+                                            if (selectAllBtn) {
+                                                selectAllBtn.addEventListener('click', function() {
+                                                    let checkboxes = document.querySelectorAll('.permission-checkbox');
+                                                    let allChecked = [...checkboxes].every(ch => ch.checked);
+
+                                                    checkboxes.forEach(ch => ch.checked = !allChecked);
+
+                                                    updateSelectAllText();
+                                                });
+                                            }
+
+                                            /* INIT ON PAGE LOAD */
+                                            togglePermissions();
+                                            updateSelectAllText();
+
+                                            /* WHEN ROLE CHANGES */
+                                            roleSelect.addEventListener('change', togglePermissions);
+                                        });
+                                    </script>
 
 
                                 </div>

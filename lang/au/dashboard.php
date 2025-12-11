@@ -496,10 +496,41 @@ return [
 
 'select_status' => 'حالت منتخب کریں',
 
+    'additional_salary' => 'اضافی تنخواہ',
+    'enter_additional_salary' => 'اضافی تنخواہ درج کریں',
+
+     'early_leave_request'=> 'ابتدائی چھٹی کی درخواست',
+     'early_leave_request_processed'=> 'پراسیس شدہ ابتدائی چھٹی کی درخواستیں',
 
 
+    'nationality' => 'قومیت',
+    'nationality_local' => 'مقامی',
+    'nationality_foreign' => 'غیر ملکی',
 
+    'country_code' => 'ملک کا کوڈ',
+    'residency_expiry' => 'اقامت کی آخری تاریخ',
+    'passport_number' => 'پاسپورٹ نمبر',
+    'passport_expiry' => 'پاسپورٹ کی آخری تاریخ',
+    'residency_number' => 'اقامہ نمبر',
+    'iban' => 'بینک IBAN',
+    'residency_job' => 'اقامہ میں درج پیشہ',
 
+    'hr_permissions' => 'ایچ آر اجازتیں',
+    'select_all' => 'سب منتخب کریں',
+    'unselect_all' => 'سب غیر منتخب کریں',
 
+    'vacation' => 'چھٹی پر',
+    'working_now' => 'ابھی کام کر رہے ہیں',
+    'at_work' => 'کام پر',
+    'transfer_sponsorship' => 'کفالت کی منتقلی',
 
+    'absent_threshold' => 'مکمل غیر حاضری کی حد',
+'minutes_of_absence_to_consider_full_absent' => 'ملازم کو مکمل طور پر غیر حاضر سمجھنے کے لیے غیر حاضری کے منٹ',
+'absent_threshold_updated_successfully' => 'غیر حاضری کی حد کامیابی سے اپ ڈیٹ ہو گئی',
+'error_updating_absent_threshold' => 'غیر حاضری کی حد اپ ڈیٹ کرنے میں خرابی',
+'upload_company_policy_pdf' => 'کمپنی کی پالیسی اپ لوڈ کریں (PDF)',
+    'choose_pdf_to_upload' => 'اپ لوڈ کرنے کے لیے PDF منتخب کریں',
+    'max_file_size' => 'زیادہ سے زیادہ فائل سائز: 5MB',
+    'upload_replace_policy_pdf' => 'پالیسی PDF اپ لوڈ / تبدیل کریں',
+    'view_current_policy' => 'موجودہ پالیسی دیکھیں',
 ];

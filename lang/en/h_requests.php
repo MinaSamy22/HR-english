@@ -85,7 +85,18 @@ return [
 
        //controller
     'reject message' => 'Request rejected successfully.',
-    'accept message' => 'Request successfully accepted.'
+    'accept message' => 'Request successfully accepted.',
+
+
+     // Early Leave Requests
+    'processed_early_leave_requests' => 'Processed Early Leave Requests',
+    'early_leave_requests' => 'Early Leave Requests',
+    'leave_time' => 'Leave Time',
+    'urgent' => 'Urgent',
+    'confirm_reject_early_leave' => 'Are you sure you want to reject this early leave request?',
+    'confirm_accept_early_leave' => 'Are you sure you want to accept this early leave request?',
+    'requested_leave_time' => 'Requested Leave Time',
+    'no_vacation_balance_warning' => 'Warning: This employee does not have vacation balance for this request.',
 
 
 ];

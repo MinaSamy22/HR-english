@@ -98,6 +98,55 @@ public static function getRecord($request)
     }
 }
 
+public function getEmployeeStatus()
+{
+    $today = date('Y-m-d');
+    $now = date('H:i:s'); // الساعة الحالية
+    $companyId = session('company_id');
+
+    // 1) Vacation
+    $vacation = \DB::table('vacations')
+        ->where('employee_id', $this->id)
+        ->where('company_id', $companyId)
+        ->whereDate('start_date', '<=', $today)
+        ->whereDate('end_date', '>=', $today)
+        ->first();
+
+    if ($vacation) {
+        return ['text' => __('dashboard.vacation'), 'color' => '#0192c3ff'];
+    }
+
+    // 2) Attendance
+    $attendance = \DB::table('attendances')
+        ->where('employee_id', $this->id)
+        ->where('company_id', $companyId)
+        ->whereDate('attendance_date', $today)
+        ->orderByDesc('id') // آخر حضور اليوم
+        ->first();
+
+    if ($attendance) {
+        $check_in = $attendance->check_in;
+        $check_out = $attendance->check_out;
+
+        // حالة يعمل الآن
+        if (!empty($check_in) && (!empty($check_out) && $now >= $check_in && $now <= $check_out)) {
+                return ['text' => __('dashboard.working_now'), 'color' => '#28a745'];
+        } elseif (!empty($check_in) && empty($check_out)) {
+            // حضر وما خرجش → شغال دلوقتي
+                return ['text' => __('dashboard.working_now'), 'color' => '#28a745'];
+        } else {
+                return ['text' => __('dashboard.at_work'), 'color' => '#6c757d'];
+        }
+    }
+
+    // 3) Transfer
+    if (!empty($this->transfer_status) && $this->transfer_status == 1) {
+        return ['text' => __('dashboard.transfer_sponsorship'), 'color' => '#ffc107'];
+    }
+
+    // 4) Default
+    return ['text' => __('dashboard.at_work'), 'color' => '#6c757d'];
+}
 
 
 

@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\EmployeesExport;
 use App\Models\Department;
+use App\Models\HrPermission;
 use App\Models\Job;
 use App\Models\Manager;
 use App\Models\User;
@@ -74,6 +75,7 @@ public function add_post(Request $request)
         'is_role'               => 'required|in:0,1',
         'is_biometric'          => 'required|in:0,1',
         'main_salary'           => 'required|in:0,1',
+        'additional_salary'     => 'nullable|numeric|min:0',
         'work_start_time'       => 'required|date_format:H:i',
         'work_end_time'         => 'required|date_format:H:i',
         'work_hours_per_day'    => 'required|numeric|min:1|max:24',
@@ -83,6 +85,16 @@ public function add_post(Request $request)
         'attachment'            => 'nullable|file|mimes:pdf|max:2048',
         'macaddress'            => 'nullable|string|max:255',
         'password'              => 'required|min:6',
+
+         // NEW
+        'nationality'           => 'required|in:local,foreign',
+        'country_code'          => 'required_if:nationality,foreign|nullable|string|max:10',
+        'residency_expiry'      => 'required_if:nationality,foreign|nullable|date',
+        'passport_number'       => 'required_if:nationality,foreign|nullable|string|max:50',
+        'passport_expiry'       => 'required_if:nationality,foreign|nullable|date',
+        'residency_number'      => 'required_if:nationality,foreign|nullable|string|max:50',
+        'iban'                  => 'nullable|string|max:50',
+        'residency_job'         => 'nullable|string|max:100',
     ]);
 
     // Create a new user
@@ -112,6 +124,18 @@ public function add_post(Request $request)
     $user->is_role              = $request->is_role;
     $user->is_biometric         = $request->is_biometric;
     $user->main_salary          = $request->main_salary;
+    $user->additional_salary = $request->additional_salary ?? 0;
+
+    //new
+    $user->nationality       =     $request->nationality;
+    $user->country_code      =     $request->country_code;
+    $user->residency_expiry  =     $request->residency_expiry;
+    $user->passport_number   =     $request->passport_number;
+    $user->passport_expiry   =     $request->passport_expiry;
+    $user->residency_number  =     $request->residency_number;
+    $user->iban              =     $request->iban;
+    $user->residency_job     =     $request->residency_job;
+
 
     $user->company_id           = session('company_id');
 
@@ -121,7 +145,7 @@ public function add_post(Request $request)
     // Handle company/branch assignment
     if (session()->has('branch_id')) {
         $user->branch_id = session('branch_id');
-    }
+    } 
 
     // Handle attachment
     if ($request->hasFile('attachment')) {
@@ -132,8 +156,18 @@ public function add_post(Request $request)
         $user->attachment = $filename;
     }
 
+
     // Save the user to the database
     $user->save();
+
+    // If HR (role = 1) then save permissions
+if ($request->is_role == 1) {
+    HrPermission::create([
+        'user_id' => $user->id,
+        'company_id' => session('company_id'),
+        'permissions' => json_encode($request->permissions ?? []),
+    ]);
+}
 
     return redirect('admin/employees')->with('success', __('h_employee.employee_registered'));
 }
@@ -171,6 +205,24 @@ public function edit_update($id, Request $request){
         'is_biometric' => 'required|in:0,1', // Biometric validation
         'attachment' => 'nullable|file|mimes:pdf|max:2048', // Add attachment validation
     ]);
+
+    // SAVE HR PERMISSIONS (VERY IMPORTANT)
+    if ($request->is_role == 1) {
+        \App\Models\HrPermission::updateOrCreate(
+            [
+                'user_id' => $id,
+                'company_id' => session('company_id')
+            ],
+            [
+                'permissions' => $request->permissions ?? []
+            ]
+        );
+    } else {
+        // If not HR remove permissions
+        \App\Models\HrPermission::where('user_id', $id)
+            ->where('company_id', session('company_id'))
+            ->delete();
+    }
 
     $user = User::find($id);
 
@@ -213,6 +265,19 @@ public function edit_update($id, Request $request){
 
     $user->is_biometric         = $request->is_biometric;
     $user->main_salary          = $request->main_salary;
+    $user->additional_salary    = $request->additional_salary;
+
+    //new
+    $user->nationality       =     $request->nationality;
+    $user->country_code      =     $request->country_code;
+    $user->residency_expiry  =     $request->residency_expiry;
+    $user->passport_number   =     $request->passport_number;
+    $user->passport_expiry   =     $request->passport_expiry;
+    $user->residency_number  =     $request->residency_number;
+    $user->iban              =     $request->iban;
+    $user->residency_job     =     $request->residency_job;
+
+
 
     $user->manager_id           = trim($request->manager_id);
     $user->department_id        = trim($request->department_id);

@@ -62,6 +62,8 @@ return [
         'resignation' => 'استعفیٰ',
         'late_removal' => 'دیر سے ہٹانا',
         'extra_time' => 'اضافی وقت',
+        'early_leave' => 'جلدی رخصتی',
+
     ],
 
     // Status
@@ -70,4 +72,7 @@ return [
         'rejected' => 'مسترد',
         'pending' => 'زیر التواء',
     ],
+
+        'early_leave_requests' => 'ابتدائی رخصت کی درخواست',
+
 ];

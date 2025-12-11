@@ -11,7 +11,7 @@
                 </div>
                 <div class="">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">{{ __('dashboard.home') }}</a></li>
+                        <li class="breadcrumb-item"><a href="dashboard" class="text">{{ __('Calender.home') }}</a></li>
                         <li class="breadcrumb-item active">{{ __('dashboard.news') }}</li>
                     </ol>
                 </div>

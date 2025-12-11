@@ -4,21 +4,18 @@
         <!-- Content Header (Page header) -->
         <div class="content-header">
             <div class="container-fluid">
-            <div class=" mb-2 d-flex justify-content-between">
-                    <div class="col-sm-6">
-                        <h1 class="m-0">{{ __('E_vacations.vacation_requests') }}</h1>
-                    </div>
-                    <div class="">
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
+                        <h1 class="m-0 mt-3 mb-3">{{ __('E_vacations.vacation_requests') }}</h1>
+
                         <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="home" class="text">{{ __('Calender.home') }}</a></li>
 
                             <li class="breadcrumb-item active">{{ __('E_vacations.vacation_requests') }}</li>
                         </ol>
-                    </div>
                 </div>
             </div>
         </div>
-
+ 
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">

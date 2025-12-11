@@ -316,6 +316,8 @@ return [
    // Request type messages
 'vacation_request_processed' => 'تم :status <strong>طلب إجازة :type</strong>',
 'extra_time_request_processed' => 'تم :status <strong>طلب العمل الإضافي لـ :hours ساعات</strong>',
+'early_leave_request_processed' => 'تم :status <strong>إذن خروج مبكر</strong>',
+'extra_time_request_processed' => 'تم :status <strong>طلب العمل الإضافي لـ :hours ساعات</strong>',
 'resignation_request_processed' => 'تم :status <strong>طلب الاستقالة</strong>',
 'late_removal_request_processed' => 'تم :status <strong>طلب إزالة التأخير</strong> بتاريخ :date',
 
@@ -480,6 +482,40 @@ return [
     'please_select_time' => 'يرجى اختيار وقت واحد على الأقل (دخول أو خروج).',
 
     'select_status' => 'اختر الحالة',
+    'additional_salary' => 'الراتب الإضافي',
+    'enter_additional_salary' => 'أدخل الراتب الإضافي',
+    'early_leave_request'=> 'طلب إذن خروج مبكر',
 
+    'nationality' => 'الجنسية',
+    'nationality_local' => 'محلي',
+    'nationality_foreign' => 'أجنبي',
+
+    'country_code' => 'كود الدولة',
+    'residency_expiry' => 'تاريخ انتهاء الإقامة',
+    'passport_number' => 'رقم الجواز',
+    'passport_expiry' => 'تاريخ انتهاء الجواز',
+    'residency_number' => 'رقم الإقامة',
+    'iban' => 'IBAN البنك',
+    'residency_job' => 'المهنة في الإقامة',
+
+    'hr_permissions' => 'صلاحيات موظف الموارد البشرية',
+    'select_all' => 'تحديد الكل',
+    'unselect_all' => 'إلغاء تحديد الكل',
+
+    'vacation' => 'إجازة',
+    'working_now' => 'يعمل الآن',
+    'at_work' => 'في العمل',
+    'transfer_sponsorship' => 'نقل كفالة',
+
+    'absent_threshold' => 'حد الغياب الكامل',
+'minutes_of_absence_to_consider_full_absent' => 'الدقائق اللازمة لاعتبار الموظف غائباً بالكامل',
+'absent_threshold_updated_successfully' => 'تم تحديث حد الغياب بنجاح',
+'error_updating_absent_threshold' => 'خطأ في تحديث حد الغياب',
+
+   'upload_company_policy_pdf' => 'تحميل سياسة الشركة (PDF)',
+    'choose_pdf_to_upload' => 'اختر ملف PDF للتحميل',
+    'max_file_size' => 'الحد الأقصى لحجم الملف: 5 ميغابايت',
+    'upload_replace_policy_pdf' => 'تحميل / استبدال ملف السياسة',
+    'view_current_policy' => 'عرض السياسة الحالية',
 ];
 

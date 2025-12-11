@@ -8,12 +8,12 @@
     <div class="content-header">
         <div class="container-fluid">
             <div class=" mb-2 d-flex justify-content-between">
-                <div class="col-sm-6">
+                <div class="">
                     <h1>{{ __('h_performance.employee_performance') }}</h1>
                 </div>
                 <div class="">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ url('admin/dashboard') }}">{{ __('h_performance.dashboard') }}</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url('admin/dashboard') }}">{{ __('Calender.home') }}</a></li>
                         <li class="breadcrumb-item active">{{ __('h_performance.performance') }}</li>
                     </ol>
                 </div>

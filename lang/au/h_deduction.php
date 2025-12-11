@@ -48,5 +48,8 @@ return [
     // controller
     'add-message' => 'کامیابی کے ساتھ رجسٹر کیا گیا۔',
     'delete-message' => 'ریکارڈ کامیابی سے حذف ہوگیا۔',
-    'delete-mult-message' => 'منتخب شدہ کٹوتیاں کامیابی سے حذف ہوگئیں۔'
+    'delete-mult-message' => 'منتخب شدہ کٹوتیاں کامیابی سے حذف ہوگئیں۔',
+
+    'days_to_deduct'=> 'کٹوتی کے دن',
+    'enter_number_of_days'=> 'دنوں کی تعداد درج کریں'
 ];

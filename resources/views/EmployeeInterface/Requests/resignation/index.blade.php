@@ -21,6 +21,22 @@
                     @enderror
                 </div>
 
+                                   <div class="form-group row">
+    <label class="col-sm-2 col-form-label"> {{ __('E_resignation.resignation') }}
+    </label>
+    <div class="col-sm-10">
+        <select name="type" class="form-control" required>
+            <option value="">{{ __('E_resignation.placeholder') }}</option>
+            <option value="{{ __('E_resignation.end_contract') }}">{{ __('E_resignation.end_contract') }}</option>
+            <option value="{{ __('E_resignation.terminate_contract') }}">{{ __('E_resignation.terminate_contract') }}</option>
+            <option value="{{ __('E_resignation.normal_resignation') }}">{{ __('E_resignation.normal_resignation') }}</option>
+            <option value="{{ __('E_resignation.sponsorship_transfer') }}">{{ __('E_resignation.sponsorship_transfer') }}</option>
+            <option value="{{ __('E_resignation.final_exit') }}">{{ __('E_resignation.final_exit') }}</option>
+        </select>
+    </div>
+</div>
+
+
                 <div class="form-group">
                     <label for="reason">{{ __('E_resignation.reason') }}</label>
                     <textarea name="reason" class="form-control" rows="4" placeholder="{{ __('E_resignation.reason_placeholder') }}"></textarea>
@@ -49,6 +65,7 @@
                     <thead>
                         <tr>
                             <th>{{ __('E_resignation.date') }}</th>
+                            <th>{{ __('E_resignation.resignation') }}</th>
                             <th>{{ __('E_resignation.reason_table') }}</th>
                             <th>{{ __('E_resignation.status') }}</th>
                             <th>{{ __('E_resignation.submitted_at') }}</th>
@@ -59,6 +76,19 @@
     @forelse($resignations as $resignation)
         <tr>
             <td>{{ $resignation->resignation_date }}</td>
+<td>
+    @php
+        $resignationTypes = [
+            1 => __('E_resignation.end_contract'),
+            2 => __('E_resignation.terminate_contract'),
+            3 => __('E_resignation.normal_resignation'),
+            4 => __('E_resignation.sponsorship_transfer'),
+            5 => __('E_resignation.final_exit'),
+        ];
+    @endphp
+
+    {{ $resignationTypes[$resignation->type] ?? '-' }}
+</td>
             <td>{{ $resignation->reason ?? __('E_resignation.no_reason') }}</td>
            <td>
     @php

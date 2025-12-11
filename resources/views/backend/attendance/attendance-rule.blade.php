@@ -14,6 +14,7 @@
     <meta name="msg-error-updating-late-deduction" content="{{ __('dashboard.error_updating_late_deduction') }}">
     <meta name="msg-error-updating-half-day-deduction" content="{{ __('dashboard.error_updating_half_day_deduction') }}">
     <meta name="msg-updated-successfully" content="{{ __('dashboard.updated_successfully') }}">
+    <meta name="msg-error-updating-absent-threshold" content="{{ __('dashboard.error_updating_absent_threshold') }}">
     {{-- Translation meta tags --}}
     <meta name="msg-select-employee" content="{{ __('dashboard.no_employees_selected') }}">
     <meta name="msg-invalid-hours" content="{{ __('dashboard.invalid_hours') }}">
@@ -59,16 +60,15 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <div class="container-fluid">
-                <div class=" mb-2 d-flex justify-content-between">
-                    <div class="col-sm-6">
-                        <h1><i class="fas fa-clock mr-2"></i>{{ __('dashboard.company_settings') }}</h1>
-                    </div>
-                    <div class="">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">{{ __('dashboard.settings') }}</a></li>
-                            <li class="breadcrumb-item active">{{ __('dashboard.company_settings') }}</li>
-                        </ol>
-                    </div>
+                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                    <h1 class="m-0 mt-3 mb-3"><i class="fas fa-clock mr-2"></i>{{ __('dashboard.company_settings') }}
+                    </h1>
+
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="dashboard" class="text">{{ __('Calender.home') }}</a>
+                        </li>
+                        <li class="breadcrumb-item active">{{ __('dashboard.company_settings') }}</li>
+                    </ol>
                 </div>
             </div>
         </section>
@@ -146,8 +146,7 @@
                                             <input type="number" class="form-control" id="half_day_threshold_minutes"
                                                 name="half_day_threshold_minutes"
                                                 value="{{ old('half_day_threshold_minutes', $setting->half_day_threshold_minutes ?? 240) }}"
-                                                min="60" max="480" style="max-width: 120px;"
-                                                onchange="updateHalfDayThreshold(this.value)">
+                                                style="max-width: 120px;" onchange="updateHalfDayThreshold(this.value)">
                                             <div class="input-group-append">
                                                 <span
                                                     class="input-group-text">{{ __('dashboard.minutes_of_absence') }}</span>
@@ -180,7 +179,27 @@
                                         <div id="half_day_deduction_feedback" class="mt-1"></div>
                                     </div>
 
-
+                                    <!-- Absent Time Threshold -->
+                                    <div class="form-group">
+                                        <label for="absent_threshold_minutes">
+                                            <i class="fas fa-user-times text-danger mr-1"></i>
+                                            {{ __('dashboard.absent_threshold') }}
+                                        </label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="absent_threshold_minutes"
+                                                name="absent_threshold_minutes"
+                                                value="{{ old('absent_threshold_minutes', $setting->absent_threshold_minutes ?? 480) }}"
+                                                min="0" max="1440" style="max-width: 120px;"
+                                                onchange="updateAbsentThreshold(this.value)">
+                                            <div class="input-group-append">
+                                                <span
+                                                    class="input-group-text">{{ __('dashboard.minutes_of_absence') }}</span>
+                                            </div>
+                                        </div>
+                                        <small
+                                            class="form-text text-muted">{{ __('dashboard.minutes_of_absence_to_consider_full_absent') }}</small>
+                                        <div id="absentThresholdFeedback" class="mt-2"></div>
+                                    </div>
 
 
                                     <!-- Alert Area -->
@@ -279,7 +298,7 @@
                                             <div class="card">
                                                 <div class="card-header">
                                                     <h5><i
-                                                            class="fas fa-dollar-sign text-success mr-2"></i>{{ __('dashboard.assign_bonus_per_hour') }}
+                                                            class="fas fa-coins text-success mr-2"></i>{{ __('dashboard.assign_bonus_per_hour') }}
                                                     </h5>
                                                 </div>
                                                 <div class="card-body">
@@ -414,9 +433,11 @@
                                                                 <td>
                                                                     <span class="badge badge-success employee-bonus"
                                                                         data-id="{{ $employee->id }}">
-                                                                        ${{ number_format($employee->bonus_per_hour ?? ($setting->bonus_per_hour ?? 0), 2) }}
+                                                                        {{ number_format($employee->bonus_per_hour ?? ($setting->bonus_per_hour ?? 0), 2) }}
                                                                     </span>
+                                                                    <i class="fas fa-coins text-success ml-1"></i>
                                                                 </td>
+
                                                             </tr>
                                                         @endforeach
                                                     </tbody>
@@ -484,6 +505,56 @@
                                         <small
                                             class="form-text text-muted">{{ __('dashboard.add_multiple_holidays_with_titles_and_dates') }}</small>
                                     </div>
+
+                                    <!-- MAIN ATTENDANCE RULE FORM -->
+                                    <form id="attendancePolicyForm" method="POST"
+                                        action="{{ route('attendance-rule.save') }}">
+                                        @csrf
+
+                                        <!-- all your attendance settings fields here -->
+
+                                        {{-- <button type="submit" class="btn btn-success">Save Attendance Rules</button> --}}
+                                    </form>
+
+                                    <hr>
+
+                                    <!-- PDF UPLOAD FORM (must be OUTSIDE the first form) -->
+                                    <form method="POST" action="{{ route('attendance-rules.upload-policy') }}"
+                                        enctype="multipart/form-data" class="p-4 border rounded shadow-sm bg-light">
+                                        @csrf
+
+                                        <h5 class="mb-3 text-primary">
+                                            <i class="fas fa-file-pdf"></i>
+                                            {{ __('dashboard.upload_company_policy_pdf') }}
+                                        </h5>
+
+                                        <!-- File input -->
+                                        <div class="mb-3">
+                                            <label for="company_policy_pdf" class="form-label">
+                                                {{ __('dashboard.choose_pdf_to_upload') }}
+                                            </label>
+                                            <input type="file" name="company_policy_pdf" id="company_policy_pdf"
+                                                class="form-control" accept="application/pdf" required>
+                                            <small class="text-muted">{{ __('dashboard.max_file_size') }}</small>
+                                        </div>
+
+                                        <!-- Upload button -->
+                                        <button type="submit" class="btn btn-success">
+                                            <i class="fas fa-upload"></i> {{ __('dashboard.upload_replace_policy_pdf') }}
+                                        </button>
+
+                                        <!-- Show existing PDF and view button -->
+                                        @if (isset($setting->company_policy_pdf) && !empty($setting->company_policy_pdf))
+                                            <div class="mt-3">
+                                                <a href="{{ route('company-policy.view', $setting->company_policy_pdf) }}"
+                                                    class="btn btn-outline-info btn-sm" target="_blank">
+                                                    <i class="fas fa-eye"></i> {{ __('dashboard.view_current_policy') }}
+                                                </a>
+                                            </div>
+                                        @endif
+                                    </form>
+
+
 
                                     <!-- Timezone -->
                                     <div class="form-group">
@@ -559,12 +630,13 @@
 
     <script src="{{ url('dist/js/attendance settings/hours-days-vacation-bounas.js?v=6') }}"></script>
     <script src="{{ url('dist\js\attendance settings\holidays.js?v=1') }}"></script>
-    <script src="{{ url('dist\js\attendance settings\late-halfDeduction.js?v=3') }}"></script>
+    <script src="{{ url('dist\js\attendance settings\late-halfDeduction.js?v=4') }}"></script>
     <script>
         // URL and token configuration
         const updateLateDeductionUrl = '{{ route('attendance-rules.update-late-deduction') }}';
         const updateLateThresholdUrl = '{{ route('attendance-rules.update-late-threshold') }}';
         const updateHalfDayThresholdUrl = '{{ route('attendance-rules.update-half-day-threshold') }}';
+        const updateAbsentThresholdUrl = '{{ route('attendance-rules.update-absent-threshold') }}'; // ADD THIS
         const halfDayUpdateRoute = '{{ route('attendance-rules.update-half-day') }}';
         const csrfToken = '{{ csrf_token() }}';
     </script>

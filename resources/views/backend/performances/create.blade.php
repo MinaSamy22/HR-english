@@ -7,13 +7,12 @@
 <div class="content-wrapper">
     <div class="content-header">
         <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
+            <div class=" mb-2 d-flex justify-content-between">
+                <div class="">
                     <h1>{{ __('h_performance.create_performance_evaluation') }}</h1>
                 </div>
-                <div class="col-sm-6">
+                <div class="">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ url('admin/dashboard') }}">{{ __('h_performance.dashboard') }}</a></li>
                         <li class="breadcrumb-item"><a href="{{ route('performance.index') }}">{{ __('h_performance.performance') }}</a></li>
                         <li class="breadcrumb-item active">{{ __('h_performance.create') }}</li>
                     </ol>

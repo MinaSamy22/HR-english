@@ -26,14 +26,15 @@ return new class extends Migration
 
             $table->string('salary_type')->nullable();
             $table->string('salary')->nullable();
+            $table->decimal('additional_salary', 10, 2)->nullable();
 
             $table->time('work_start_time')->nullable();
             $table->time('work_end_time')->nullable();
             $table->decimal('work_hours_per_day')->nullable();
 
             $table->tinyInteger('shift_count')->default(1);
-        $table->time('second_work_start_time')->nullable();
-        $table->time('second_work_end_time')->nullable();
+            $table->time('second_work_start_time')->nullable();
+            $table->time('second_work_end_time')->nullable();
 
             $table->string('macaddress')->nullable();
             $table->boolean('is_biometric')->nullable();

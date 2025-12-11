@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('max_salary')->nullable();
             $table->foreignId('department_id')->nullable()->constrained('departments')->onDelete('set null');
             $table->foreignId('company_id')->nullable()->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('branch_id')->nullable();
 
             $table->timestamps();
 

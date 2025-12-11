@@ -63,7 +63,7 @@
                                         @endif
 
                                         <div class="form-group col-md-2">
-                                            <label>{{ __('dashboard.date') }}</label>
+                                            <label>{{ __('dashboard.date') }}</label> 
                                             <input type="date" value="{{ Request()->start_date }}" name="start_date"
                                                 class="form-control">
                                         </div>

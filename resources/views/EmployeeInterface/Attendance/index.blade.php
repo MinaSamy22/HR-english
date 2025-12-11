@@ -3,21 +3,22 @@
 @section('content')
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <div class="content-header">
-        <div class="container-fluid">
-            <div class=" mb-2 d-flex justify-content-between">
-                <div class="col-sm-6">
-                    <h1 class="m-0">{{ __('E_attendance.my_attendance') }}</h1>
-                </div>
-                <div class="">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="home" class="text">{{ __('Calender.home') }}</a></li>
-                        <li class="breadcrumb-item active">{{ __('E_attendance.attendance') }}</li>
-                    </ol>
-                </div>
-            </div>
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+              <h1 class="m-0 mt-3 mb-3">{{ __('E_attendance.my_attendance') }}</h1>
+
+            <ol class="breadcrumb mb-0 mt-2 mt-sm-0">
+                <li class="breadcrumb-item">
+                    <a href="home" class="text">{{ __('Calender.home') }}</a></li>
+                <li class="breadcrumb-item active">{{ __('E_attendance.attendance') }}</li>
+            </ol>
+
         </div>
     </div>
+</div>
+
 
     <!-- Main content -->
     <section class="content">

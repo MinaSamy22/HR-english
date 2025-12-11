@@ -48,4 +48,13 @@ return [
     //controller messages
     'add-message' => 'استعفیٰ کی درخواست کامیابی سے جمع ہو گئی ہے، اسے ایچ آر کے ذریعے جائزہ لیا جائے گا۔',
     'delete-message' => 'استعفیٰ کی درخواست حذف کر دی گئی ہے۔',
+
+            'resignation'=>'استعفی',
+    'placeholder' => 'استعفی کا انتخاب کریں',
+    'end_contract' => 'معاہدہ ختم',
+    'terminate_contract' => 'معاہدہ منسوخ',
+    'normal_resignation' => 'عام استعفی',
+    'sponsorship_transfer' => 'سپانسرشپ کی منتقلی',
+    'final_exit' => 'فائنل ایگزٹ',
+
 ];

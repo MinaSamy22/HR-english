@@ -5,16 +5,13 @@
         <!-- Content Header (Page header) -->
         <div class="content-header">
             <div class="container-fluid">
-            <div class=" mb-2 d-flex justify-content-between">
-                    <div class="col-sm-6">
-                        <h1 class="m-0">{{ __('h_adminstration.home') }}</h1>
-                    </div><!-- /.col -->
-                    <div class="">
+                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                        <h1 class="m-0 mt-3 mb-3">{{ __('h_adminstration.home') }}</h1>
+
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">{{ __('h_adminstration.breadcrumb_edit') }}</a></li>
-                            <li class="breadcrumb-item active">{{ __('h_adminstration.breadcrumb_administration') }}</li>
+                            <li class="breadcrumb-item "><a href="{{ url('admin/administration') }}">{{ __('h_adminstration.breadcrumb_administration') }}</a></li>
+                            <li class="breadcrumb-item active">{{ __('h_adminstration.breadcrumb_edit') }}</li>
                         </ol>
-                    </div><!-- /.col -->
                 </div><!-- /.row -->
             </div><!-- /.container-fluid -->
         </div>

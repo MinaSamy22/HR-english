@@ -48,5 +48,7 @@ return [
     // controller
     'add-message' => 'تم التسجيل بنجاح',
     'delete-message' => 'تم الحذف بنجاح',
-    'delete-mult-message' => 'تم حذف المحدد بنجاح'
+    'delete-mult-message' => 'تم حذف المحدد بنجاح',
+    'days_to_deduct'=> 'أيام الخصم',
+    'enter_number_of_days'=> 'أدخل عدد الأيام'
 ];

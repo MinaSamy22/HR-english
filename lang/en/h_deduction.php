@@ -48,5 +48,7 @@ return [
     // controller
     'add-message' => 'successfully register.',
     'delete-message' => 'Record successfully deleted.',
-    'delete-mult-message' => 'Selected deductions deleted successfully.'
+    'delete-mult-message' => 'Selected deductions deleted successfully.',
+    'days_to_deduct' => 'Days to Deduct',
+    'enter_number_of_days' => 'Enter number of days'
 ];

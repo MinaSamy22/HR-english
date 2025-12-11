@@ -1,23 +1,18 @@
 @extends('backend.layouts.app')
 @section('content')
     <link rel="stylesheet" href="{{ url('dist/css/payrollcreate.css') }}">
-
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper"
-        style="background-image: url('{{ asset('/dist/img/additional.jpg') }}'); background-size: cover; background-position: center;">
+    <div class="content-wrapper" style="background-image: url('{{ asset('/dist/img/additional.jpg') }}'); background-size: cover; background-position: center;">
         <!-- Content Header (Page header) -->
         <div class="content-header">
             <div class="container-fluid">
-                <div class=" mb-2 d-flex justify-content-between">
-                    <div class="col-sm-6">
-                        <h1 class="m-0">{{ __('h_tax.taxes') }}</h1>
-                    </div><!-- /.col -->
-                    <div class="">
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
+                        <h1 class="m-0 mt-3 mb-3">{{ __('h_tax.taxes') }}</h1>
+
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">{{ __('h_tax.add') }}</a></li>
                             <li class="breadcrumb-item active">{{ __('h_tax.taxes') }}</li>
                         </ol>
-                    </div><!-- /.col -->
                 </div><!-- /.row -->
             </div><!-- /.container-fluid -->
         </div>

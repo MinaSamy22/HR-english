@@ -48,4 +48,12 @@ return [
     //controller messages
     'add-message' => ' تم اضافة الطلب بنجاح وسيتم المراجعة بواسطة ال hr',
     'delete-message' => 'تم الحذف بنجاح',
+
+        'resignation'=>'الاستقالة',
+    'placeholder' => 'قم بأختيار الاستقالة',
+    'end_contract' => 'انهاء عقد',
+    'terminate_contract' => 'فسخ عقد',
+    'normal_resignation' => 'استقالة عادية',
+    'sponsorship_transfer' => 'نقل كفالة',
+    'final_exit' => 'خروج نهائي',
 ];

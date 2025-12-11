@@ -5,16 +5,12 @@
         <!-- Content Header -->
         <div class="content-header">
             <div class="container-fluid">
-            <div class=" mb-2 d-flex justify-content-between">
-                    <div class="col-sm-6">
-                        <h2>{{ __('E_performance.performance_management') }}</h2>
-                    </div>
-                    <div class="">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{ url('home') }}">{{ __('E_performance.home') }}</a></li>
-                            <li class="breadcrumb-item active">{{ __('E_performance.performance') }}</li>
-                        </ol>
-                    </div>
+                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                    <h1 class="m-0 mt-3 mb-3">{{ __('E_performance.performance_management') }}</h1>
+                    <ol class="breadcrumb mb-0 mt-2 mt-sm-0">
+                        <li class="breadcrumb-item"><a href="home">{{ __('E_performance.home') }}</a></li>
+                        <li class="breadcrumb-item active">{{ __('E_performance.performance') }}</li>
+                    </ol>
                 </div>
             </div>
         </div>
@@ -46,12 +42,13 @@
                                                     <td class="fw-medium">{{ $criteria->name }}</td>
                                                     <td>
                                                         <div class="text-truncate" style="max-width: 300px;"
-                                                             title="{{ $criteria->description ?? __('E_performance.no_description_available') }}">
+                                                            title="{{ $criteria->description ?? __('E_performance.no_description_available') }}">
                                                             {{ $criteria->description ?? __('E_performance.no_description_available') }}
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <span class="badge bg-success">{{ __('E_performance.active') }}</span>
+                                                        <span
+                                                            class="badge bg-success">{{ __('E_performance.active') }}</span>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -100,7 +97,8 @@
                                                         </small>
                                                     </td>
                                                     <td>
-                                                        <span class="badge fs-6
+                                                        <span
+                                                            class="badge fs-6
                                                             @if ($evaluation->overall_score >= 4.0) bg-success
                                                             @elseif($evaluation->overall_score >= 3.0) bg-warning
                                                             @else bg-danger @endif">
@@ -108,23 +106,28 @@
                                                         </span>
                                                     </td>
                                                     <td>
-                                                        <span class="badge
+                                                        <span
+                                                            class="badge
                                                             @if ($evaluation->status == 'completed') bg-success
                                                             @elseif($evaluation->status == 'reviewed') bg-primary
                                                             @else bg-secondary @endif">
                                                             @switch($evaluation->status)
                                                                 @case('completed')
                                                                     {{ __('E_performance.completed') }}
-                                                                    @break
+                                                                @break
+
                                                                 @case('reviewed')
                                                                     {{ __('E_performance.reviewed') }}
-                                                                    @break
+                                                                @break
+
                                                                 @case('pending')
                                                                     {{ __('E_performance.pending') }}
-                                                                    @break
+                                                                @break
+
                                                                 @case('draft')
                                                                     {{ __('E_performance.draft') }}
-                                                                    @break
+                                                                @break
+
                                                                 @default
                                                                     {{ ucfirst($evaluation->status) }}
                                                             @endswitch
@@ -134,7 +137,8 @@
                                                         <a href="{{ route('employee.performances.show', $evaluation->id) }}"
                                                             class="btn btn-primary btn-sm">
                                                             <i class="fas fa-eye"></i>
-                                                            <span class="d-none d-sm-inline">{{ __('E_performance.view_details') }}</span>
+                                                            <span
+                                                                class="d-none d-sm-inline">{{ __('E_performance.view_details') }}</span>
                                                         </a>
                                                     </td>
                                                 </tr>

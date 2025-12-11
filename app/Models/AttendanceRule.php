@@ -14,12 +14,16 @@ class AttendanceRule extends Model
     'half_day_deduction_percentage',
     'late_threshold_minutes',
         'half_day_threshold_minutes',
+            'absent_threshold_minutes', // Make sure this is here!
+
     'work_hours_per_day',
     'working_days',
     'official_holidays',
     'vacation_balance',
     'bonus_per_hour',
-    'timezone'
+    'timezone',
+            'company_policy_pdf',  // THIS MUST BE HERE!
+
 ];
     protected $casts = [
         'working_days' => 'array',

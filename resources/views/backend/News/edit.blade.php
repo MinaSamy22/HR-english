@@ -3,11 +3,12 @@
 @section('title', __('h_news.edit_news'))
 
 @section('content')
+
 <div class="content-wrapper">
     <div class="content-header">
         <div class="container-fluid">
             <div class=" mb-2 d-flex justify-content-between">
-                <div class="col-sm-6">
+                <div class="">
                     <h1 class="m-0">{{ __('h_news.edit_news') }}</h1>
                 </div>
                 <div class="">

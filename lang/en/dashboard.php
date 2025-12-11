@@ -498,5 +498,40 @@ return [
     'times_applied_success' => 'Times applied successfully to selected employees.',
     'error_saving_attendance' => 'An error occurred while saving attendance.',
     'select_status' => 'Select Status',
+    'additional_salary' => 'Additional Salary',
+    'enter_additional_salary' => 'Enter additional salary',
+    'early_leave_request' => 'Early Leave Request',
+    'early_leave_request_processed'=> 'Processed Early Leave Requests',
 
+    'nationality' => 'Nationality',
+    'nationality_local' => 'Local',
+    'nationality_foreign' => 'Foreign',
+
+    'country_code' => 'Country Code',
+    'residency_expiry' => 'Residency Expiry Date',
+    'passport_number' => 'Passport Number',
+    'passport_expiry' => 'Passport Expiry Date',
+    'residency_number' => 'Residency Number',
+    'iban' => 'Bank IBAN',
+    'residency_job' => 'Job in Residency',
+
+    'hr_permissions' => 'HR Permissions',
+    'select_all' => 'Select All',
+    'unselect_all' => 'Unselect All',
+    'vacation' => 'On Vacation',
+    'working_now' => 'Working Now',
+    'at_work' => 'At Work',
+    'transfer_sponsorship' => 'Transfer Sponsorship',
+
+
+    'absent_threshold' => 'Full Absence Threshold',
+'minutes_of_absence_to_consider_full_absent' => 'Minutes of absence to consider employee fully absent',
+'absent_threshold_updated_successfully' => 'Absent threshold updated successfully',
+'error_updating_absent_threshold' => 'Error updating absent threshold',
+
+   'upload_company_policy_pdf' => 'Upload Company Policy (PDF)',
+    'choose_pdf_to_upload' => 'Choose PDF to upload',
+    'max_file_size' => 'Maximum file size: 5MB',
+    'upload_replace_policy_pdf' => 'Upload / Replace Policy PDF',
+    'view_current_policy' => 'View Current Policy',
 ];

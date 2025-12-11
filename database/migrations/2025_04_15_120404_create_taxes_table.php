@@ -21,6 +21,7 @@ return new class extends Migration
 
                 $table->foreignId('employee_id')->constrained('users')->onDelete('cascade'); //on delete cascade de 34an lma ams7 al employee da from employees a3rf ams7o o kmaaan etms7 kman mn hna
                 $table->foreignId('company_id')->nullable()->constrained('companies')->onDelete('cascade');
+                $table->unsignedBigInteger('branch_id')->nullable();
 
                 $table->timestamps();
 

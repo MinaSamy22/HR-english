@@ -137,6 +137,7 @@
                                                 <th>{{ __('h_employee.email') }}</th>
                                                 <th>{{ __('h_employee.branch') }}</th>
                                                 <th>{{ __('h_employee.role') }}</th>
+                                                <th>{{ __('E_attendance.status') }}</th>
                                                 <th>{{ __('h_employee.action') }}</th>
                                             </tr>
                                         </thead>
@@ -149,6 +150,40 @@
                                                     <td>{{ $value->branch_name ?? __('h_dashboard.main_branch') }}</td>
                                                     <td>{{ !empty($value->is_role) ? __('h_employee.hrs') : __('h_employee.employee') }}
                                                     </td>
+                                                    @php
+                                                        $status = $value->getEmployeeStatus();
+                                                    @endphp
+
+                                                    <td>
+    <div style="
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        background: #ffffff;
+        border: 1px solid #e5e5e5;
+        box-shadow: 0px 2px 4px rgba(0,0,0,0.05);
+        font-weight: 600;
+        font-size: 14px;
+        color: #333;
+    ">
+        <!-- Dot -->
+        <span style="
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: {{ $status['color'] }};
+            box-shadow: {{ $status['color'] == '#28a745' ? '0 0 8px #28a745' : 'none' }};
+            display: inline-block;
+        "></span>
+
+        {{ $status['text'] }}
+    </div>
+</td>
+
+
+
                                                     <td>
                                                         <a href="{{ url('admin/employees/view/' . $value->id) }}"
                                                             class="btn btn-info rounded-pill "
@@ -161,12 +196,12 @@
                                                             <i class="fas fa-edit"></i>
                                                         </a>
                                                         <button type="button"
-        class="btn btn-danger rounded-pill delete-btn"
-        data-id="{{ $value->id }}"
-        data-url="{{ route('employees_delete', $value->id) }}"
-        title="{{ __('dashboard.delete') }}">
-    <i class="fas fa-trash-alt"></i>
-</button>
+                                                            class="btn btn-danger rounded-pill delete-btn"
+                                                            data-id="{{ $value->id }}"
+                                                            data-url="{{ route('employees_delete', $value->id) }}"
+                                                            title="{{ __('dashboard.delete') }}">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </button>
 
                                                     </td>
                                                 </tr>
@@ -189,21 +224,21 @@
             </div>
         </section>
     </div>
-@section('script')
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    window.deleteEmployeeTranslations = {
-        title: "{{ __('dashboard.delete') }}",
-        text: "{{ __('h_employee.delete_confirmation') }}",
-        confirm: "{{ __('dashboard.delete') }}",
-        cancel: "{{ __('dashboard.cancel') }}",
-        deleted: "{{ __('dashboard.deleted') }}!",
-        success: "{{ __('dashboard.delete_success') }}",
-        error: "{{ __('dashboard.error') }}",
-        failed: "{{ __('dashboard.delete_failed') }}"
-    };
-</script>
-<script src="{{ asset('dist/js/employee.js') }}?v=4"></script>
-@endsection
+    @section('script')
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            window.deleteEmployeeTranslations = {
+                title: "{{ __('dashboard.delete') }}",
+                text: "{{ __('h_employee.delete_confirmation') }}",
+                confirm: "{{ __('dashboard.delete') }}",
+                cancel: "{{ __('dashboard.cancel') }}",
+                deleted: "{{ __('dashboard.deleted') }}!",
+                success: "{{ __('dashboard.delete_success') }}",
+                error: "{{ __('dashboard.error') }}",
+                failed: "{{ __('dashboard.delete_failed') }}"
+            };
+        </script>
+        <script src="{{ asset('dist/js/employee.js') }}?v=4"></script>
+    @endsection
 
 @endsection

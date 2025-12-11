@@ -98,6 +98,7 @@
                                                 <th>{{ __('h_deduction.employee_name') }}</th>
                                                 <th>{{ __('h_employee.branch') }}</th>
                                                 <th>{{ __('h_deduction.deduction_reason') }}</th>
+                                                <th>{{ __('h_deduction.days_to_deduct') }}</th>
                                                 <th>{{ __('h_deduction.money') }}</th>
                                                 <th>{{ __('h_deduction.deduction_date') }}</th>
                                                 <th>{{ __('h_deduction.action') }}</th>{{-- buttons of crud inside it --}}
@@ -112,8 +113,9 @@
                                                     <td>{{ $value->name }}</td>
                                                     <td>{{ $value->branch_name ?? __('h_dashboard.main_branch') }}</td>
                                                     <td>{{ $value->deduction_type }}</td>
-                                                    <td>{{ $value->money_deduction }} {{ __('h_deduction.currency') }}
-                                                    </td>
+                                                    <td>{{ $value->deduction_days }} </td>
+
+                                                    <td>{{ $value->money_deduction }} {{ __('h_deduction.currency') }}</td>
                                                     <td>{{ date('d-m-Y (h:i A)', strtotime($value->created_at)) }}</td>
                                                     <td>
                                                         <button type="button" class="btn btn-danger rounded-pill delete-btn"

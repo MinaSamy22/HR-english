@@ -30,13 +30,17 @@ public function index(Request $request)
     return view('backend.attendance.attendance-rule', $data);
 }
 
+
+
+
     public function saveRules(Request $request)
     {
         $request->validate([
             'late_deduction_percentage'          => 'required|integer|min:0|max:100',
             'half_day_deduction_percentage'      => 'required|integer|min:0|max:100',
             'late_threshold_minutes'             => 'required|integer|min:1|max:120',
-            'half_day_threshold_minutes'         => 'required|integer|min:60|max:480',
+            'half_day_threshold_minutes'         => 'required|integer|min:0|max:580',
+            'absent_threshold_minutes'           => 'required|integer|min:0|max:1440',
             'work_hours_per_day'                 => 'required|numeric|min:1|max:24',
             'working_days'                       => 'required|array',
             'holiday_dates'                      => 'array',
@@ -68,6 +72,9 @@ public function index(Request $request)
                 'half_day_deduction_percentage'  => $request->half_day_deduction_percentage,
                 'late_threshold_minutes'         => $request->late_threshold_minutes,
                 'half_day_threshold_minutes'     => $request->half_day_threshold_minutes,
+
+                'absent_threshold_minutes' => $request->absent_threshold_minutes,
+
                 'work_hours_per_day'             => $request->work_hours_per_day,
                 'working_days'                   => json_encode($request->working_days),
                 'official_holidays'              => json_encode($holidays),
@@ -79,6 +86,49 @@ public function index(Request $request)
 
 return redirect()->back()->with('success', __('dashboard.attendance_rules_saved_successfully'));
     }
+
+public function uploadPolicyPdf(Request $request)
+{
+    $request->validate([
+        'company_policy_pdf' => 'required|mimes:pdf|max:20480', // 20MB max
+    ]);
+
+    $company_id = session('company_id');
+
+    if (!$company_id) {
+        return back()->with('error', 'Company ID not found in session.');
+    }
+
+    // Define custom folder path
+    $destinationPath = public_path('../../HR-Uploads/pdf_policy/');
+
+    // Create folder if it doesn't exist
+    if (!file_exists($destinationPath)) {
+        mkdir($destinationPath, 0777, true);
+    }
+
+    $setting = AttendanceRule::firstOrNew(['company_id' => $company_id]);
+
+    // Delete old PDF if exists
+    if(!empty($setting->company_policy_pdf)) {
+        $oldFile = $destinationPath . $setting->company_policy_pdf;
+        if(file_exists($oldFile)) {
+            unlink($oldFile);
+        }
+    }
+
+    // Save new PDF
+    $pdfName = 'policy_' . $company_id . '_' . time() . '.pdf';
+    $request->file('company_policy_pdf')->move($destinationPath, $pdfName);
+
+    // Update DB
+    $setting->company_policy_pdf = $pdfName;
+    $setting->save();
+
+    return back()->with('success', 'Company Policy PDF uploaded successfully!');
+}
+
+
 
     public function updateLateThreshold(Request $request)
     {
@@ -99,7 +149,7 @@ return response()->json(['message' => __('dashboard.late_arrival_threshold_updat
     public function updateHalfDayThreshold(Request $request)
     {
         $request->validate([
-            'half_day_threshold_minutes' => 'required|integer|min:60|max:480',
+            'half_day_threshold_minutes' => 'required|integer|min:0|max:480',
         ]);
 
         $company_id = session('company_id');
@@ -145,6 +195,23 @@ return response()->json(['message' => __('dashboard.late_deduction_percentage_up
 
 return response()->json(['message' => __('dashboard.half_day_deduction_percentage_updated_successfully')]);
     }
+
+
+    public function updateAbsentThreshold(Request $request)
+{
+    $request->validate([
+        'absent_threshold_minutes' => 'required|integer|min:0|max:600',
+    ]);
+
+    $company_id = session('company_id');
+
+    $rule = AttendanceRule::updateOrCreate(
+        ['company_id' => $company_id],
+        ['absent_threshold_minutes' => $request->absent_threshold_minutes]
+    );
+
+    return response()->json(['message' => __('dashboard.absent_threshold_updated_successfully')]);
+}
 
 
     // Updated method for updating individual employee work hours - now saves to users table
@@ -385,6 +452,9 @@ public function updateHolidays(Request $request)
         ], 500);
     }
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 
 

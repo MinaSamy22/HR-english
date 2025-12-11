@@ -80,10 +80,99 @@ public function AttendanceEmployeeSubmit(Request $request)
         'attendance_type' => 'nullable|string',
     ]);
 
+    // 🔹 Load existing record
+    $existing = \App\Models\Attendance::where([
+        'attendance_date' => $request->attendance_date,
+        'employee_id' => $request->employee_id,
+        'company_id' => $company_id,
+    ])->first();
+
+    $attendanceRule = \App\Models\AttendanceRule::where('company_id', $company_id)->first();
+    $user = \App\Models\User::find($request->employee_id);
+
+    // Detect field changes
+    $checkInChanged = !$existing || $existing->check_in != $request->check_in;
+    $checkOutChanged = !$existing || $existing->check_out != $request->check_out;
+    $manualTypeSelected = $request->filled('attendance_type');
+    $oldType = $existing ? $existing->attendance_type : null;
+
+    $attendanceType = $oldType;
+
+    if ($manualTypeSelected && $request->attendance_type != $oldType) {
+        // ✅ HR manually changed attendance type
+        $attendanceType = $request->attendance_type;
+    } elseif (($checkInChanged || $checkOutChanged) && $user && $attendanceRule) {
+        // ✅ Auto recalc when time changes
+        $checkIn = $request->check_in ? strtotime($request->check_in) : null;
+        $checkOut = $request->check_out ? strtotime($request->check_out) : null;
+        $workStart = $user->work_start_time ? strtotime($user->work_start_time) : null;
+        $workEnd = $user->work_end_time ? strtotime($user->work_end_time) : null;
+
+        if ($checkIn && $checkOut && $workStart && $workEnd) {
+            // 🔸 If check-in and check-out are identical → Absent
+            if ($request->check_in === $request->check_out) {
+                $attendanceType = 3; // ❌ Absent
+            } else {
+                // Calculate late minutes (arrival after work start time)
+                $lateMinutes = max(0, ($checkIn - $workStart) / 60);
+
+                // Calculate early leave minutes (leaving before work end time)
+                $earlyLeaveMinutes = max(0, ($workEnd - $checkOut) / 60);
+
+                // Calculate total absence minutes (late + early leave)
+                $totalAbsenceMinutes = $lateMinutes + $earlyLeaveMinutes;
+
+                // 🔹 Get dynamic thresholds from attendance rules
+                $lateThreshold = $attendanceRule->late_threshold_minutes ?? 15;
+                $halfDayThreshold = $attendanceRule->half_day_threshold_minutes ?? 240;
+                $absentThreshold = $attendanceRule->absent_threshold_minutes ?? 480;
+
+                // 🔹 Dynamic attendance type calculation
+                if ($totalAbsenceMinutes >= $absentThreshold) {
+                    // Total absence >= absent threshold → Absent
+                    $attendanceType = 3; // ❌ Absent
+                }
+                elseif ($totalAbsenceMinutes >= $halfDayThreshold) {
+                    // Total absence >= half day threshold → Half Day
+                    $attendanceType = 4; // ⏱ Half Day
+                }
+                elseif ($lateMinutes >= $lateThreshold && $lateMinutes < $halfDayThreshold) {
+                    // Late but not half day → Late
+                    $attendanceType = 2; // ⏰ Late
+                }
+                elseif ($lateMinutes < $lateThreshold && $earlyLeaveMinutes < $lateThreshold) {
+                    // Within acceptable range → Present
+                    $attendanceType = 1; // ✅ Present
+                }
+                else {
+                    // Default to Present if conditions don't match
+                    $attendanceType = 1; // ✅ Present
+                }
+            }
+        } elseif (is_null($checkIn) && is_null($checkOut)) {
+            // No check-in and no check-out → Absent
+            $attendanceType = 3; // ❌ Absent
+        } else {
+            // Partial data (only check-in or only check-out)
+            $attendanceType = null;
+        }
+    }
+
+    // 🔍 FEATURE: Approved early leave keeps employee present
+    $hasApprovedEarlyLeave = \App\Models\EarlyLeaveRequest::where('employee_id', $request->employee_id)
+        ->where('request_date', $request->attendance_date)
+        ->where('status', 'approved')
+        ->exists();
+
+    if ($hasApprovedEarlyLeave) {
+        $attendanceType = 1; // Force Present
+    }
+
+    // 🔹 Save or update record
     $updateData = [
         'company_id' => $company_id,
         'created_by' => $created_by,
-        'attendance_type' => $request->attendance_type ?: null,
+        'attendance_type' => $attendanceType,
         'check_in' => $request->check_in ?: null,
         'check_out' => $request->check_out ?: null,
         'updated_at' => now(),
@@ -104,6 +193,7 @@ public function AttendanceEmployeeSubmit(Request $request)
         'record' => $record
     ]);
 }
+
 
     public function exportPdf(Request $request)
     {
