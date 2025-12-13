@@ -126,6 +126,7 @@ return redirect('admin/job_history')->with('success', __('h_job_history.successf
     $user->is_role              = $history->is_role;
     $user->job_id               = $history->job_id;
     $user->department_id        = $history->department_id;
+    $user->manager_id           = $history->manager_id;
     $user->company_id           = $history->company_id;
     $user->branch_id            = $history->branch_id;
 

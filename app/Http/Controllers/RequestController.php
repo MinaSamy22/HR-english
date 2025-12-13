@@ -254,6 +254,7 @@ private function moveUserToHistory($resignation)
         'end_date'             => $user->end_date,
         'job_id'               => $user->job_id,
         'department_id'        => $user->department_id,
+        'manager_id'           => $user->manager_id,
         'company_id'           => $user->company_id,
         'branch_id'            => $user->branch_id,
 

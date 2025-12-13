@@ -55,6 +55,7 @@ class History extends Authenticatable
     'start_date',
     'end_date',
     'job_id',
+    'manager_id',
     'department_id',
     'company_id',
     'branch_id',
