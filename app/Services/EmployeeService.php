@@ -217,6 +217,7 @@ class EmployeeService
             'attendance_date' => $now->toDateString(),
             'check_in'        => $now->toTimeString(),
             'attendance_type' => $attendance_type,
+            'company_id'      => $this->employee->company_id,
         ]);
 
         return $this->sendResponse(__('dashboard.checked_in'), AttendanceResource::make($attendance), 1);
