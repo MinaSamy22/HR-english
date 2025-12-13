@@ -56,4 +56,5 @@ return [
     'normal_resignation' => 'Normal Resignation',
     'sponsorship_transfer' => 'Sponsorship Transfer',
     'final_exit' => 'Final Exit',
+
 ];

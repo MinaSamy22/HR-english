@@ -238,6 +238,7 @@
                         <div>
                             <strong>{{ $request->user->name ?? __('h_requests.unknown') }}</strong><br>
                             <small class="text-muted">{{ __('h_requests.submitted_at') }}:</small> {{ $request->created_at->format('Y-m-d') }}<br>
+                            <strong>{{ __('E_resignation.resignation') }}:</strong> {{ $request->type }}<br>
                             <strong>{{ __('h_requests.reason') }}:</strong> {{ $request->reason }}<br>
                             <small class="text-muted">{{ __('h_requests.updated') }}:</small> {{ $request->updated_at->format('Y-m-d H:i') }}
                         </div>

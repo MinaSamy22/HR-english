@@ -2,7 +2,7 @@
 
 return [
     // Page titles
-    'job_history' => 'Job History',
+    'job_history' => 'Employee Archive',
     'add_history' => 'Add History',
     'edit_history' => 'Edit Job History',
 
@@ -24,8 +24,8 @@ return [
     'delete' => 'Delete',
 
     // Form labels
-    'search_job_history' => 'Search Job History',
-    'job_history_list' => 'Job History List',
+    'search_job_history' => 'Search Former Employees',
+    'job_history_list' => 'Employee History List',
     'employee_name' => 'Employee Name',
     'from_date' => 'From Date (Start Date)',
     'start_date' => 'Start Date',
@@ -56,4 +56,6 @@ return [
 
     // Required field indicator
     'required' => '*',
+    'show_employee_data' => 'Show Employee Data',
+
 ];

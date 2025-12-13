@@ -132,6 +132,8 @@ Route::middleware('admin')->group(function () {
     route::post('admin/job_history/update/{id}', [JobHistoryController::class, 'edit_update'])->name('history_update');
     route::get('admin/job_history/delete/{id}', [JobHistoryController::class, 'delete'])->name('history_delete');
     route::get('admin/jobhistory_export', [JobHistoryController::class, 'jobs_export'])->name('history_export'); //34an roue bdl url
+    Route::get('admin/history/restore/{id}', [JobHistoryController::class, 'restoreEmployee'])->name('history.restore');
+    route::get('admin/job_history/view/{id}', [JobHistoryController::class, 'view'])->name('history_view');
 
 
     //managers    admin/manager

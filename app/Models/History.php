@@ -20,10 +20,49 @@ class History extends Authenticatable
      */
    // protected $table = 'histories'; //34an lo hnak esm elgdwal mo5tlf
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    'employee_name',
+    'employee_id',
+    'email',
+    'password',
+    'phone_number',
+    'hire_date',
+    'birth_date',
+    'nationality',
+    'country_code',
+    'residency_expiry',
+    'passport_number',
+    'passport_expiry',
+    'residency_number',
+    'iban',
+    'residency_job',
+    'salary_type',
+    'salary',
+    'work_start_time',
+    'work_end_time',
+    'shift_count',
+    'second_work_start_time',
+    'second_work_end_time',
+    'macaddress',
+    'is_biometric',
+    'main_salary',
+    'additional_salary',
+    'attachment',
+    'work_hours_per_day',
+    'working_days',
+    'vacation_balance',
+    'bonus_per_hour',
+    'is_role',
+    'start_date',
+    'end_date',
+    'job_id',
+    'department_id',
+    'company_id',
+    'branch_id',
+    'resignation_date',
+    'resignation_reason',
+    'deleted_at',
+];
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -92,13 +131,7 @@ public static function getRecord($request)
         $query->where('jobs.job_title', 'like', '%' . Request::get('job_title') . '%');
     }
 
-    if (!empty(Request::get('start_date'))) {
-        $query->where('histories.start_date', '>=', Request::get('start_date'));
-    }
 
-    if (!empty(Request::get('end_date'))) {
-        $query->where('histories.start_date', '<=', Request::get('end_date'));
-    }
 
     // Branch filter for main branch users
     if (!empty(Request::get('filter_branch_id'))) {
@@ -113,5 +146,21 @@ public function company()
 {
     return $this->belongsTo(Company::class);
 }
+
+public function manager()
+{
+    return $this->belongsTo(Manager::class, 'manager_id');
+}
+ // Job
+    public function job()
+    {
+        return $this->belongsTo(Job::class, 'job_id');
+    }
+
+    // Department
+    public function department()
+    {
+        return $this->belongsTo(Department::class, 'department_id');
+    }
 
 }

@@ -1,6 +1,8 @@
 <?php
 namespace App\Http\Controllers;
 use App\Models\Branch;
+use App\Models\History;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -206,6 +208,68 @@ public function processed(Request $request)
     ));
 }
 
+private function moveUserToHistory($resignation)
+{
+    $user = User::find($resignation->employee_id);
+
+    if (!$user) {
+        return; // لو مفيش موظف متسجل
+    }
+
+    // نقل البيانات لجداول histories
+    History::create([
+        'employee_name'        => $user->name,
+        'employee_id'          => $user->id,
+        'email'                => $user->email,
+        'password'             => $user->password,
+        'phone_number'         => $user->phone_number,
+        'hire_date'            => $user->hire_date,
+        'birth_date'           => $user->birth_date,
+        'nationality'          => $user->nationality,
+        'country_code'         => $user->country_code,
+        'residency_expiry'     => $user->residency_expiry,
+        'passport_number'      => $user->passport_number,
+        'passport_expiry'      => $user->passport_expiry,
+        'residency_number'     => $user->residency_number,
+        'iban'                 => $user->iban,
+        'residency_job'        => $user->residency_job,
+        'salary_type'          => $user->salary_type,
+        'salary'               => $user->salary,
+        'work_start_time'      => $user->work_start_time,
+        'work_end_time'        => $user->work_end_time,
+        'shift_count'          => $user->shift_count,
+        'second_work_start_time' => $user->second_work_start_time,
+        'second_work_end_time'   => $user->second_work_end_time,
+        'macaddress'           => $user->macaddress,
+        'is_biometric'         => $user->is_biometric,
+        'main_salary'          => $user->main_salary,
+        'additional_salary'    => $user->additional_salary,
+        'attachment'           => $user->attachment,
+        'work_hours_per_day'   => $user->work_hours_per_day,
+        'working_days'         => $user->working_days,
+        'vacation_balance'     => $user->vacation_balance,
+        'bonus_per_hour'       => $user->bonus_per_hour,
+        'is_role'              => $user->is_role,
+        'start_date'           => $user->start_date,
+        'end_date'             => $user->end_date,
+        'job_id'               => $user->job_id,
+        'department_id'        => $user->department_id,
+        'company_id'           => $user->company_id,
+        'branch_id'            => $user->branch_id,
+
+        // بيانات الاستقالة
+        'resignation_date'     => now(),
+        'resignation_reason'   => $resignation->reason,
+
+        // timestamps
+        'created_at'           => now(),
+        'updated_at'           => now(),
+    ]);
+
+    // حذف الموظف من جدول users
+    $user->delete();
+}
+
 public function accept($type, $id)
 {
     $model = $this->getModelInstance($type, $id);
@@ -239,8 +303,14 @@ public function accept($type, $id)
         $this->handleEarlyLeaveRequest($model);
     }
 
+    // Resignation → نقل الموظف إلى الأرشيف
+    if ($type === 'resignation') {
+        $this->moveUserToHistory($model);
+    }
+
     return back()->with('success', __('h_requests.accept message'));
 }
+
 
     public function reject($type, $id)
     {

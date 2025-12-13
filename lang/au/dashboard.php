@@ -533,4 +533,9 @@ return [
     'max_file_size' => 'زیادہ سے زیادہ فائل سائز: 5MB',
     'upload_replace_policy_pdf' => 'پالیسی PDF اپ لوڈ / تبدیل کریں',
     'view_current_policy' => 'موجودہ پالیسی دیکھیں',
+
+'restore_employee' => 'ملازم ملازم کو بحال کریں',
+'restore_employee_confirmation' => 'کیا آپ واقعی اس ملازم کو بحال کرنا چاہتے ہیں؟',
+
+
 ];

@@ -517,5 +517,10 @@ return [
     'max_file_size' => 'الحد الأقصى لحجم الملف: 5 ميغابايت',
     'upload_replace_policy_pdf' => 'تحميل / استبدال ملف السياسة',
     'view_current_policy' => 'عرض السياسة الحالية',
+
+    'restore_employee' => 'إرجاع الموظف للعمل',
+    'restore_employee_confirmation' => 'هل أنت متأكد من إرجاع هذا الموظف؟',
+
+
 ];
 

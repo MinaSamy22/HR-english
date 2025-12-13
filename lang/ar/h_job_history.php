@@ -2,7 +2,7 @@
 
 return [
     // Page titles
-    'job_history' => 'تاريخ الوظائف',
+    'job_history' => ' ارشيف الموظفين',//
     'add_history' => 'إضافة تاريخ',
     'edit_history' => 'تعديل تاريخ الوظيفة',
 
@@ -24,8 +24,8 @@ return [
     'delete' => 'حذف',
 
     // Form labels
-    'search_job_history' => 'البحث في تاريخ الوظائف',
-    'job_history_list' => 'قائمة تاريخ الوظائف',
+    'search_job_history' => 'البحث في الموظفين السابقين',//
+    'job_history_list' => 'قائمة تاريخ الموظفين', //
     'employee_name' => 'اسم الموظف',
     'from_date' => 'من تاريخ (تاريخ البداية)',
     'start_date' => 'تاريخ البداية',
@@ -56,4 +56,6 @@ return [
 
     // Required field indicator
     'required' => '*',
+    'show_employee_data' => 'عرض بيانات الموظف',
+
 ];

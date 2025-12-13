@@ -77,17 +77,7 @@
         <tr>
             <td>{{ $resignation->resignation_date }}</td>
 <td>
-    @php
-        $resignationTypes = [
-            1 => __('E_resignation.end_contract'),
-            2 => __('E_resignation.terminate_contract'),
-            3 => __('E_resignation.normal_resignation'),
-            4 => __('E_resignation.sponsorship_transfer'),
-            5 => __('E_resignation.final_exit'),
-        ];
-    @endphp
-
-    {{ $resignationTypes[$resignation->type] ?? '-' }}
+    {{ $resignation->type }}
 </td>
             <td>{{ $resignation->reason ?? __('E_resignation.no_reason') }}</td>
            <td>

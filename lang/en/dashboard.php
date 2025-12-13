@@ -534,4 +534,8 @@ return [
     'max_file_size' => 'Maximum file size: 5MB',
     'upload_replace_policy_pdf' => 'Upload / Replace Policy PDF',
     'view_current_policy' => 'View Current Policy',
+
+    'restore_employee' => 'Restore Employee',
+    'restore_employee_confirmation' => 'Are you sure you want to restore this employee?',
+
 ];

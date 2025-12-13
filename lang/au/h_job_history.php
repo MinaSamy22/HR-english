@@ -56,4 +56,6 @@ return [
 
     // Required field indicator
     'required' => '*',
+    'show_employee_data' => 'ملازم کا ڈیٹا دکھائیں',
+
 ];
