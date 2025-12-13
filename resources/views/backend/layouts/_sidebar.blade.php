@@ -445,18 +445,6 @@
                 @endif
 
 
-                <!-- Employee Archeve -->
-                @if (hr_can('job_history'))
-                    <li class="nav-item">
-                        <a href="{{ url('admin/job_history') }}"
-                            class="nav-link @if (Request::segment(2) == 'job_history') active @endif">
-                            <i class="fa fa-history nav-icon"></i>
-                            <p>{{ __('h_job_history.job_history') }}</p>
-                        </a>
-                    </li>
-                @endif
-
-
                 <li class="nav-header">{{ __('dashboard.communication') }}</li>
                 <!-- News -->
                 @if (hr_can('news'))
@@ -753,18 +741,6 @@
                     @endif
                 @endif
 
-                <!-- locations -->
-                @if (hr_can('locations'))
-                    <li class="nav-item">
-                        <a href="{{ route('locations.index') }}"
-                            class="nav-link @if (Request::segment(2) == 'locations') active @endif">
-                            <i class="nav-icon fas fa-map-marker-alt"></i>
-                            <p>{{ __('dashboard.employee-locations') }}</p>
-                        </a>
-                    </li>
-                @endif
-
-
                 <!-- Company information -->
                 @if (hr_can('company_info'))
                     @if (session('branch_id') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1)
@@ -777,6 +753,31 @@
                         </li>
                     @endif
                 @endif
+
+                <!-- locations -->
+                @if (hr_can('locations'))
+                    <li class="nav-item">
+                        <a href="{{ route('locations.index') }}"
+                            class="nav-link @if (Request::segment(2) == 'locations') active @endif">
+                            <i class="nav-icon fas fa-map-marker-alt"></i>
+                            <p>{{ __('dashboard.employee-locations') }}</p>
+                        </a>
+                    </li>
+                @endif
+
+                <!-- Employee Archeve -->
+                @if (hr_can('job_history'))
+                    <li class="nav-item">
+                        <a href="{{ url('admin/job_history') }}"
+                            class="nav-link @if (Request::segment(2) == 'job_history') active @endif">
+                            <i class="fa fa-history nav-icon"></i>
+                            <p>{{ __('h_job_history.job_history') }}</p>
+                        </a>
+                    </li>
+                @endif
+
+
+
 
 
                 <!-- My Account -->
