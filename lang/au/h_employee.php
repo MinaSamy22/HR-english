@@ -172,5 +172,17 @@ return [
     'all' => 'سب دکھائیں',
     'main_salary'=>'بنیادی تنخواہ',
 
-    'delete_confirmation' =>'کیا آپ واقعی اس ملازم کو حذف کرنا چاہتے ہیں؟'
+    'delete_confirmation' =>'کیا آپ واقعی اس ملازم کو حذف کرنا چاہتے ہیں؟',
+
+'basic_information' => 'بنیادی معلومات',
+'employment_details' => 'ملازمت کی تفصیلات',
+'salary_information' => 'تنخواہ کی معلومات',
+'nationality_residency' => 'قومیت اور رہائش',
+'work_schedule' => 'کام کا شیڈول',
+'attendance_settings' => 'حاضری کی ترتیبات',
+'attachments' => 'منسلکات اور دستاویزات',
+'account_credentials' => 'اکاؤنٹ کی تفصیلات',
+'system_information' => 'سسٹم کی معلومات',
+'shift' => 'شفٹ',
+'shifts' => 'شفٹس',
 ];

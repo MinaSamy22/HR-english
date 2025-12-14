@@ -184,6 +184,18 @@ return [
     'main_salary'=>'Main Salary',
 
 
-    'delete_confirmation' =>'Are you sure you want to delete this employee?'
+    'delete_confirmation' =>'Are you sure you want to delete this employee?',
+
+'basic_information' => 'Basic Information',
+'employment_details' => 'Employment Details',
+'salary_information' => 'Salary Information',
+'nationality_residency' => 'Nationality & Residency',
+'work_schedule' => 'Work Schedule',
+'attendance_settings' => 'Attendance Settings',
+'attachments' => 'Attachments & Documents',
+'account_credentials' => 'Account Credentials',
+'system_information' => 'System Information',
+'shift' => 'Shift',
+'shifts' => 'Shifts',
 
 ];

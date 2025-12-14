@@ -31,6 +31,12 @@
                                 {{ csrf_field() }}
                                 <div class="card-body">
 
+                                    <h5 class="border-bottom pt-2 pb-3 mb-4">
+    <i class="fas fa-user mr-2"></i>
+    {{ __('h_employee.basic_information') ?? 'Basic Information' }}
+</h5>
+
+
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-lable">{{ __('h_employee.name') }} <span
                                                 style="color: red;">{{ __('h_employee.required_field') }}</span></label>
@@ -72,6 +78,17 @@
                                         </div>
                                     </div>
 
+                                    <div class="form-group row" id="passwordField">
+                                        <label class="col-sm-2 col-form-lable">{{ __('h_employee.password') }} <span
+                                                style="color: red;">{{ __('h_employee.required_field') }}</span></label>
+                                        <div class="col-sm-5 d-flex align-items-center">
+                                            <input type="password" name="password" id="password" class="form-control"
+                                                placeholder="{{ __('h_employee.enter_password') }}" />
+                                            <i id="togglePassword" class="fa fa-eye ml-2"
+                                                style="cursor: pointer; margin-left: 10px;"></i>
+                                        </div>
+                                    </div>
+
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-lable">{{ __('h_employee.birth_date') }}<span
                                                 style="color: red;">{{ __('h_employee.required_field') }}</span></label>
@@ -80,6 +97,11 @@
                                                 class="form-control" required>
                                         </div>
                                     </div>
+
+                                    <h5 class="border-bottom pt-2 pb-3 mb-4">
+                                        <i
+                                            class="fas fa-briefcase mr-2"></i>{{ __('h_employee.employment_details') ?? 'Employment Details' }}
+                                    </h5>
 
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-lable">{{ __('h_employee.hire_date') }} <span
@@ -105,6 +127,139 @@
                                     </div>
 
                                     <div class="form-group row">
+                                        <label class="col-sm-2 col-form-lable">{{ __('h_employee.manager_name') }} <span
+                                                style="color: red;">{{ __('h_employee.required_field') }}</span></label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control" name="manager_id" required>
+                                                <option value="">{{ __('h_employee.select_manager_name') }}</option>
+                                                @foreach ($getManagers as $value_manager)
+                                                    <option value="{{ $value_manager->id }}">{{ $value_manager->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-lable">{{ __('h_employee.department_name') }}
+                                            <span style="color: red;">{{ __('h_employee.required_field') }}</span></label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control" name="department_id" required>
+                                                <option value="">{{ __('h_employee.select_department') }}</option>
+                                                @foreach ($getDepartments as $value_department)
+                                                    <option value="{{ $value_department->id }}">
+                                                        {{ $value_department->department_name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-lable">{{ __('h_employee.role') }} <span
+                                                style="color: red;">{{ __('h_employee.required_field') }}</span></label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control" name="is_role" id="roleSelect" required>
+                                                <option value="">{{ __('h_employee.select_role') }}</option>
+                                                <option value="0">{{ __('h_employee.employee') }}</option>
+                                                <option value="1">{{ __('h_employee.hrs') }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- HR Permissions Section -->
+                                    <div id="permissionsSection" class="mt-4" style="display:none;">
+
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h4>{{ __('dashboard.hr_permissions') }}</h4>
+
+                                            <!-- Select All Button -->
+                                            <button type="button" id="selectAllBtn" class="btn btn-primary btn-sm">
+                                                {{ __('dashboard.select_all') }}
+                                            </button>
+                                        </div>
+
+                                        <div class="card shadow-sm">
+                                            <div class="card-body">
+                                                <div class="row">
+
+                                                    @php
+                                                        $permissions = [
+                                                            'employees' => __('dashboard.employees'),
+                                                            'managers' => __('dashboard.managers'),
+                                                            'administrations' => __('dashboard.administrations'),
+                                                            'departments' => __('dashboard.departments'),
+                                                            'jobs' => __('dashboard.jobs'),
+                                                            'job_history' => __('dashboard.job_history'),
+                                                            'news' => __('dashboard.news'),
+                                                            'requests' => __('dashboard.requests'),
+                                                            'messages' => __('h_message.messages'),
+                                                            'performance' => __('dashboard.performance'),
+                                                            'attendance' => __('dashboard.attendance'),
+                                                            'attendance_reports' => __('dashboard.attendance_reports'),
+                                                            'biometer_excel' => __('dashboard.biometer_excel'),
+                                                            'taxes' => __('dashboard.taxes'),
+                                                            'insurance' => __('dashboard.insurance'),
+                                                            'deductions' => __('dashboard.deductions'),
+                                                            'vacations' => __('dashboard.vacations'),
+                                                            'bounas' => __('dashboard.overtime'),
+                                                            'payroll' => __('dashboard.payroll'),
+                                                            'attendance_rule' => __('dashboard.company_policy'),
+                                                            'payslip' => __('dashboard.payslip_report'),
+                                                            'branches' => __('dashboard.branches'),
+                                                            'locations' => __('dashboard.locations'),
+                                                            'company_info' => __('dashboard.company_info'),
+                                                            'my_account' => __('dashboard.my_account'),
+                                                        ];
+                                                    @endphp
+
+                                                    @foreach ($permissions as $key => $label)
+                                                        <div class="col-md-4 mb-2">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input permission-checkbox"
+                                                                    type="checkbox" name="permissions[]"
+                                                                    value="{{ $key }}"
+                                                                    id="perm_{{ $key }}">
+
+                                                                <label class="form-check-label"
+                                                                    for="perm_{{ $key }}">
+                                                                    {{ $label }}
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <script>
+                                        // Show/Hide Permission Section Based on Role
+                                        document.getElementById('roleSelect').addEventListener('change', function() {
+                                            let permissions = document.getElementById('permissionsSection');
+                                            this.value == "1" ? permissions.style.display = 'block' : permissions.style.display = 'none';
+                                        });
+
+                                        // Select All Permissions
+                                        document.getElementById('selectAllBtn').addEventListener('click', function() {
+                                            let checkboxes = document.querySelectorAll('.permission-checkbox');
+                                            let allChecked = [...checkboxes].every(ch => ch.checked);
+
+                                            checkboxes.forEach(ch => ch.checked = !allChecked);
+
+                                            // Button text changes based on state
+                                            this.innerText = allChecked ?
+                                                "{{ __('dashboard.select_all') }}" :
+                                                "{{ __('dashboard.unselect_all') }}";
+                                        });
+                                    </script>
+
+                                    <h5 class="border-bottom pt-2 pb-3 mb-4">
+                                        <i
+                                            class="fas fa-dollar-sign mr-2"></i>{{ __('h_employee.salary_information') ?? 'Salary Information' }}
+                                    </h5>
+
+                                    <div class="form-group row">
                                         <label class="col-sm-2 col-form-label">{{ __('h_employee.salary_type') }} <span
                                                 style="color: red;">{{ __('h_employee.required_field') }}</span></label>
                                         <div class="col-sm-10">
@@ -127,6 +282,7 @@
                                             <span style="color:red">{{ $errors->first('salary') }}</span>
                                         </div>
                                     </div>
+
                                     <div class="form-group row align-items-center">
                                         <label class="col-sm-2 col-form-label">
                                             {{ __('h_employee.main_salary') }}
@@ -184,6 +340,11 @@
                                             toggleAdditionalField(); // run on page load
                                         });
                                     </script>
+
+                                    <h5 class="border-bottom pt-2 pb-3 mb-4">
+                                        <i
+                                            class="fas fa-globe mr-2"></i>{{ __('h_employee.nationality_residency') ?? 'Nationality & Residency' }}
+                                    </h5>
 
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-label">
@@ -279,16 +440,12 @@
                                         });
                                     </script>
 
+                                    <h5 class="border-bottom pt-2 pb-3 mb-4">
+                                        <i
+                                            class="fas fa-clock mr-2"></i>{{ __('h_employee.work_schedule') ?? 'Work Schedule' }}
+                                    </h5>
 
 
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-lable"
-                                            for="attachment">{{ __('h_employee.attachment') }}:</label>
-                                        <div class="col-sm-10">
-                                            <input type="file" name="attachment" class="form-control"
-                                                accept="application/pdf">
-                                        </div>
-                                    </div>
 
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-lable">{{ __('h_employee.work_start_time') }}
@@ -359,8 +516,16 @@
                                     </div>
 
 
+
+                                    <h5 class="border-bottom pt-2 pb-3 mb-4">
+                                        <i
+                                            class="fas fa-fingerprint mr-2"></i>{{ __('h_employee.attendance_settings') ?? 'Attendance Settings' }}
+                                    </h5>
+
+
                                     <div class="form-group row align-items-center">
-                                        <label class="col-sm-2 col-form-label">{{ __('h_employee.free_biometric') }} <span
+                                        <label class="col-sm-2 col-form-label">{{ __('h_employee.free_biometric') }}
+                                            <span
                                                 style="color: red;">{{ __('h_employee.required_field') }}</span></label>
                                         <div class="col-sm-10">
                                             <div class="form-check form-check-inline">
@@ -380,144 +545,24 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-lable">{{ __('h_employee.manager_name') }} <span
-                                                style="color: red;">{{ __('h_employee.required_field') }}</span></label>
-                                        <div class="col-sm-10">
-                                            <select class="form-control" name="manager_id" required>
-                                                <option value="">{{ __('h_employee.select_manager_name') }}</option>
-                                                @foreach ($getManagers as $value_manager)
-                                                    <option value="{{ $value_manager->id }}">{{ $value_manager->name }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
+
+
+                                    <h5 class="border-bottom pt-2 pb-3 mb-4">
+                                        <i
+                                            class="fas fa-paperclip mr-2"></i>{{ __('h_employee.attachments') ?? 'Attachments & Documents' }}
+                                    </h5>
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-lable">{{ __('h_employee.department_name') }}
-                                            <span style="color: red;">{{ __('h_employee.required_field') }}</span></label>
+                                        <label class="col-sm-2 col-form-lable"
+                                            for="attachment">{{ __('h_employee.attachment') }}:</label>
                                         <div class="col-sm-10">
-                                            <select class="form-control" name="department_id" required>
-                                                <option value="">{{ __('h_employee.select_department') }}</option>
-                                                @foreach ($getDepartments as $value_department)
-                                                    <option value="{{ $value_department->id }}">
-                                                        {{ $value_department->department_name }}</option>
-                                                @endforeach
-                                            </select>
+                                            <input type="file" name="attachment" class="form-control"
+                                                accept="application/pdf">
                                         </div>
                                     </div>
 
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-lable">{{ __('h_employee.role') }} <span
-                                                style="color: red;">{{ __('h_employee.required_field') }}</span></label>
-                                        <div class="col-sm-10">
-                                            <select class="form-control" name="is_role" id="roleSelect" required>
-                                                <option value="">{{ __('h_employee.select_role') }}</option>
-                                                <option value="0">{{ __('h_employee.employee') }}</option>
-                                                <option value="1">{{ __('h_employee.hrs') }}</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <!-- HR Permissions Section -->
-                                    <div id="permissionsSection" class="mt-4" style="display:none;">
-
-                                        <div class="d-flex justify-content-between align-items-center mb-3">
-                                            <h4>{{ __('dashboard.hr_permissions') }}</h4>
-
-                                            <!-- Select All Button -->
-                                            <button type="button" id="selectAllBtn" class="btn btn-primary btn-sm">
-                                                {{ __('dashboard.select_all') }}
-                                            </button>
-                                        </div>
-
-                                        <div class="card shadow-sm">
-                                            <div class="card-body">
-                                                <div class="row">
-
-                                                    @php
-                                                        $permissions = [
-                                                            'employees' => __('dashboard.employees'),
-                                                            'managers' => __('dashboard.managers'),
-                                                            'administrations' => __('dashboard.administrations'),
-                                                            'departments' => __('dashboard.departments'),
-                                                            'jobs' => __('dashboard.jobs'),
-                                                            'job_history' => __('dashboard.job_history'),
-                                                            'news' => __('dashboard.news'),
-                                                            'requests' => __('dashboard.requests'),
-                                                            'messages' => __('h_message.messages'),
-                                                            'performance' => __('dashboard.performance'),
-                                                            'attendance' => __('dashboard.attendance'),
-                                                            'attendance_reports' => __('dashboard.attendance_reports'),
-                                                            'biometer_excel' => __('dashboard.biometer_excel'),
-                                                            'taxes' => __('dashboard.taxes'),
-                                                            'insurance' => __('dashboard.insurance'),
-                                                            'deductions' => __('dashboard.deductions'),
-                                                            'vacations' => __('dashboard.vacations'),
-                                                            'bounas' => __('dashboard.overtime'),
-                                                            'payroll' => __('dashboard.payroll'),
-                                                            'attendance_rule' => __('dashboard.company_policy'),
-                                                            'payslip' => __('dashboard.payslip_report'),
-                                                            'branches' => __('dashboard.branches'),
-                                                            'locations' => __('dashboard.locations'),
-                                                            'company_info' => __('dashboard.company_info'),
-                                                            'my_account' => __('dashboard.my_account'),
-                                                        ];
-                                                    @endphp
-
-                                                    @foreach ($permissions as $key => $label)
-                                                        <div class="col-md-4 mb-2">
-                                                            <div class="form-check">
-                                                                <input class="form-check-input permission-checkbox"
-                                                                    type="checkbox" name="permissions[]"
-                                                                    value="{{ $key }}"
-                                                                    id="perm_{{ $key }}">
-
-                                                                <label class="form-check-label"
-                                                                    for="perm_{{ $key }}">
-                                                                    {{ $label }}
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                    @endforeach
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <script>
-                                        // Show/Hide Permission Section Based on Role
-                                        document.getElementById('roleSelect').addEventListener('change', function() {
-                                            let permissions = document.getElementById('permissionsSection');
-                                            this.value == "1" ? permissions.style.display = 'block' : permissions.style.display = 'none';
-                                        });
-
-                                        // Select All Permissions
-                                        document.getElementById('selectAllBtn').addEventListener('click', function() {
-                                            let checkboxes = document.querySelectorAll('.permission-checkbox');
-                                            let allChecked = [...checkboxes].every(ch => ch.checked);
-
-                                            checkboxes.forEach(ch => ch.checked = !allChecked);
-
-                                            // Button text changes based on state
-                                            this.innerText = allChecked ?
-                                                "{{ __('dashboard.select_all') }}" :
-                                                "{{ __('dashboard.unselect_all') }}";
-                                        });
-                                    </script>
 
 
-                                    <div class="form-group row" id="passwordField">
-                                        <label class="col-sm-2 col-form-lable">{{ __('h_employee.password') }} <span
-                                                style="color: red;">{{ __('h_employee.required_field') }}</span></label>
-                                        <div class="col-sm-5 d-flex align-items-center">
-                                            <input type="password" name="password" id="password" class="form-control"
-                                                placeholder="{{ __('h_employee.enter_password') }}" />
-                                            <i id="togglePassword" class="fa fa-eye ml-2"
-                                                style="cursor: pointer; margin-left: 10px;"></i>
-                                        </div>
-                                    </div>
 
                                 </div>
 

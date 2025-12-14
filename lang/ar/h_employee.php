@@ -183,7 +183,17 @@ return [
     'employees_imported' => 'تم استيراد أو تحديث :count موظف بنجاح.',
     'all' => 'عرض الكل',
     'main_salary'=>'راتب اساسي',
-    'delete_confirmation' =>'هل أنت متأكد أنك تريد حذف هذا الموظف؟'
+    'delete_confirmation' =>'هل أنت متأكد أنك تريد حذف هذا الموظف؟',
 
-
+'basic_information' => 'المعلومات الأساسية',
+'employment_details' => 'تفاصيل التوظيف',
+'salary_information' => 'معلومات الراتب',
+'nationality_residency' => 'الجنسية والإقامة',
+'work_schedule' => 'جدول العمل',
+'attendance_settings' => 'إعدادات الحضور',
+'attachments' => 'المرفقات والوثائق',
+'account_credentials' => 'بيانات الحساب',
+'system_information' => 'معلومات النظام',
+'shift' => 'وردية',
+'shifts' => 'ورديات',
 ];
