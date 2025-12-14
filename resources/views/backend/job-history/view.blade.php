@@ -116,6 +116,16 @@
                                             </div>
                                         </div>
 
+                                        <!-- Resignation Type -->
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label font-weight-bold">
+                                                {{ __('E_resignation.resignation') }}
+                                            </label>
+                                            <div class="col-sm-10">
+                                                {{ $getRecord->resignation->type ?? '-' }}
+                                            </div>
+                                        </div>
+
                                         <!-- Resignation Date -->
                                         <div class="form-group row">
                                             <label class="col-sm-2 col-form-label font-weight-bold">

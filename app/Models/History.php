@@ -164,4 +164,9 @@ public function manager()
         return $this->belongsTo(Department::class, 'department_id');
     }
 
+    // In History model
+public function resignation()
+{
+    return $this->belongsTo(Resignation::class, 'employee_id', 'employee_id');
+}
 }

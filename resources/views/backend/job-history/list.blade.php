@@ -107,6 +107,7 @@
 
                                                 <th>{{ __('h_job_history.job_title') }}</th>
                                                 <th>{{ __('h_job_history.department_name') }}</th>
+                                                <th>{{ __('E_resignation.resignation') }}</th>
                                                 <th>{{ __('E_resignation.resignation_date') }}</th>
                                                 <th>{{ __('h_employee.branch') }}</th>
                                                 <th>{{ __('h_job_history.action') }}</th>{{-- buttons of crud inside it --}}
@@ -121,6 +122,7 @@
 
                                                     <td>{{ $value->job_title }}</td>
                                                     <td>{{ $value->department_name }}</td>
+                                                    <td>{{ $value->resignation->type ?? '-' }}</td>
                                                     <td>{{ $value->resignation_date }}</td>
                                                     <td>{{ $value->branch_name ?? __('h_dashboard.main_branch') }}</td>
                                                     <td>
