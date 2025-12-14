@@ -51,7 +51,7 @@
                                                 style="color: red;">*</span></label>
                                         <div class="col-sm-4">
                                             <input type="text" value="{{ $getRecord->name }}" name="name"
-                                                class="form-control" required placeholder="Enter name">
+                                                class="form-control" required placeholder="{{ __('E_myaccount.enter_name') }}">
                                             <span style="color: red;"> {{ $errors->first('name') }} </span>
                                         </div>
                                     </div>
@@ -62,7 +62,7 @@
                                                 style="color: red;">*</span></label>
                                         <div class="col-sm-4">
                                             <input type="email" value="{{ $getRecord->email }}" name="email"
-                                                class="form-control" required placeholder="Enter Email">
+                                                class="form-control" required placeholder="{{ __('E_myaccount.enter_email') }}">
                                             <span style="color: red;"> {{ $errors->first('email') }} </span>
                                         </div>
                                     </div>
@@ -73,7 +73,7 @@
                                                 style="color: red;">*</span></label>
                                         <div class="col-sm-4">
                                             <input type="text" value="{{ $getRecord->phone_number }}" name="phone_number"
-                                                class="form-control" required placeholder="Enter Phone Number">
+                                                class="form-control" required placeholder="{{ __('E_myaccount.enter_phone') }}">
                                             <span style="color: red;"> {{ $errors->first('phone_number') }} </span>
                                         </div>
                                     </div>
@@ -82,8 +82,8 @@
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-lable label-thin">{{ __('E_myaccount.Current Password') }}</label>
                                         <div class="col-sm-4">
-                                            <input type="password" name="current_password" class="form-control"
-                                                placeholder="Enter current password">
+                                            <input type="password" name="current_password"
+                                            class="form-control" placeholder="{{ __('E_myaccount.enter_current_password') }}">
                                             <span style="color: red;"> {{ $errors->first('current_password') }} </span>
                                         </div>
                                     </div>
@@ -92,8 +92,8 @@
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-lable label-thin"> {{ __('E_myaccount.New Password') }} </label>
                                         <div class="col-sm-4">
-                                            <input type="password" value="" name="password" class="form-control"
-                                                placeholder="Enter the new Password">
+                                            <input type="password" value="" name="password"
+                                             class="form-control" placeholder="{{ __('E_myaccount.enter_new_password') }}">
                                             <small class="form-text text-muted">{{ __('E_myaccount.(Leave blank if you dont want to change password)') }}</small>
                                         </div>
                                     </div>

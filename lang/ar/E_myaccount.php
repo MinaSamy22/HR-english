@@ -13,6 +13,12 @@ return [
     'My Account' => 'حسابي',
     'Enter new password' => 'ادخل كلمة السر الجديدة',
 
-    'controller message' =>'تم تحديث حسابي بنجاح!'
+    'controller message' =>'تم تحديث حسابي بنجاح!',
+
+    'enter_email' => 'ادخل البريد الإلكتروني',
+    'enter_name' => 'ادخل الاسم',
+    'enter_phone' => 'ادخل رقم الهاتف',
+    'enter_current_password' => 'ادخل كلمة المرور الحالية',
+    'enter_new_password' => 'ادخل كلمة المرور الجديدة',
 
 ];

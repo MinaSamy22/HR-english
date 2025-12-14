@@ -106,8 +106,16 @@
                                                         <td>{{ $vacation->id }}</td>
                                                         <td>{{ $vacation->name }}</td>
                                                         <td>{{ $vacation->branch_name ?? __('h_dashboard.main_branch') }}</td>
-                                                        <td>{{ $vacation->vacation_type }}</td>
-                                                        <td>{{ date('d-m-Y', strtotime($vacation->start_date)) }}</td>
+<td>
+    @php
+        $typeTranslations = [
+            'Annual' => __('h_vacation.annual_vacation'),
+            'Sick' => __('h_vacation.sick_leave'),
+            'Unpaid' => __('h_vacation.unpaid_leave'),
+        ];
+    @endphp
+    {{ $typeTranslations[$vacation->vacation_type] ?? $vacation->vacation_type }}
+</td>                                                            <td>{{ date('d-m-Y', strtotime($vacation->start_date)) }}</td>
                                                         <td>{{ date('d-m-Y', strtotime($vacation->end_date)) }}</td>
                                                         <td>{{ $vacation->total }}</td>
                                                         <td>
@@ -153,8 +161,16 @@
                                                         <td>{{ $vacation->id }}</td>
                                                         <td>{{ $vacation->name }}</td>
                                                         <td>{{ $vacation->branch_name ?? __('h_dashboard.main_branch') }}</td>
-                                                        <td>{{ $vacation->vacation_type }}</td>
-                                                        <td>{{ date('d-m-Y', strtotime($vacation->start_date)) }}</td>
+<td>
+    @php
+        $typeTranslations = [
+            'Annual' => __('h_vacation.annual_vacation'),
+            'Sick' => __('h_vacation.sick_leave'),
+            'Unpaid' => __('h_vacation.unpaid_leave'),
+        ];
+    @endphp
+    {{ $typeTranslations[$vacation->vacation_type] ?? $vacation->vacation_type }}
+</td>                                                        <td>{{ date('d-m-Y', strtotime($vacation->start_date)) }}</td>
                                                         <td>{{ date('d-m-Y', strtotime($vacation->end_date)) }}</td>
                                                         <td>{{ $vacation->total }}</td>
                                                         <td>

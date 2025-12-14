@@ -4,18 +4,18 @@
         <!-- Content Header (Page header) -->
         <div class="content-header">
             <div class="container-fluid">
-        <div class="d-flex justify-content-between align-items-center flex-wrap">
-                        <h1 class="m-0 mt-3 mb-3">{{ __('E_vacations.vacation_requests') }}</h1>
+                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                    <h1 class="m-0 mt-3 mb-3">{{ __('E_vacations.vacation_requests') }}</h1>
 
-                        <ol class="breadcrumb float-sm-right">
+                    <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="home" class="text">{{ __('Calender.home') }}</a></li>
 
-                            <li class="breadcrumb-item active">{{ __('E_vacations.vacation_requests') }}</li>
-                        </ol>
+                        <li class="breadcrumb-item active">{{ __('E_vacations.vacation_requests') }}</li>
+                    </ol>
                 </div>
             </div>
         </div>
- 
+
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
@@ -225,13 +225,14 @@
                                             {{ __('E_vacations.days') }}</span>
                                     </li>
 
-                                   <li class="list-group-item d-flex justify-content-between align-items-center">
-    <span>
-        <i class="fas fa-hourglass-half mr-2 text-warning"></i>{{ __('E_vacations.pending_requests') }}
-    </span>
-    <span class="badge badge-warning badge-pill">{{ $pendingVacations }}
-        {{ __('E_vacations.requests') }}</span>
-</li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span>
+                                            <i
+                                                class="fas fa-hourglass-half mr-2 text-warning"></i>{{ __('E_vacations.pending_requests') }}
+                                        </span>
+                                        <span class="badge badge-warning badge-pill">{{ $pendingVacations }}
+                                            {{ __('E_vacations.requests') }}</span>
+                                    </li>
 
 
                                 </ul>

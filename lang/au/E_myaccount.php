@@ -13,5 +13,11 @@ return [
     'My Account' => 'میرا اکاؤنٹ',
     'Enter new password' => 'نیا پاس ورڈ درج کریں',
 
-    'controller message' =>'میرا اکاؤنٹ کامیابی کے ساتھ اپ ڈیٹ ہو گیا!'
+    'controller message' =>'میرا اکاؤنٹ کامیابی کے ساتھ اپ ڈیٹ ہو گیا!',
+
+    'enter_email' => 'ای میل درج کریں',
+    'enter_name' => 'نام درج کریں',
+    'enter_phone' => 'فون نمبر درج کریں',
+    'enter_current_password' => 'موجودہ پاس ورڈ درج کریں',
+    'enter_new_password' => 'نیا پاس ورڈ درج کریں',
 ];

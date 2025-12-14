@@ -47,4 +47,7 @@ return [
     'thursday' => 'Thursday',
     'friday' => 'Friday',
     'saturday' => 'Saturday',
+
+        'absent_calculation' => 'Absent ',
+
 ];

@@ -47,4 +47,7 @@ return [
     'thursday' => 'الخميس',
     'friday' => 'الجمعة',
     'saturday' => 'السبت',
+
+        'absent_calculation' => ' الغياب',
+
 ];

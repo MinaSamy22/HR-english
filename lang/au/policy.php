@@ -47,4 +47,7 @@ return [
     'thursday' => 'جمعرات',
     'friday' => 'جمعہ',
     'saturday' => 'ہفتہ',
+
+        'absent_calculation' => 'غیر حاضری ',
+
 ];

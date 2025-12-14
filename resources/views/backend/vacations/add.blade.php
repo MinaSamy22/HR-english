@@ -10,9 +10,11 @@
                        <h1 class="m-0 mt-3 mb-3">{{ __('h_vacation.vacation') }}</h1>
 
                         <ol class="breadcrumb float-sm-{{ app()->getLocale() == 'ar' ? 'left' : 'right' }}">
-                            <li class="breadcrumb-item"><a href="#">{{ __('h_vacation.add') }}</a></li>
-                            <li class="breadcrumb-item active">{{ __('h_vacation.vacations') }}</li>
+                            <li class="breadcrumb-item"><a href="{{ url('admin/vacations') }}">{{ __('h_vacation.vacations') }}</a></li>
+                            <li class="breadcrumb-item active">{{ __('h_vacation.add') }}</li>
                         </ol>
+
+
                 </div><!-- /.row -->
             </div><!-- /.container-fluid -->
         </div>

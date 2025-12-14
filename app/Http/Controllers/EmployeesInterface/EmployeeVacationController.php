@@ -14,29 +14,21 @@ public function index(Request $request)
 {
     $employeeId = Auth::guard('employee')->id();
 
-    // Debug: Check if employeeId is correct
-    // dd($employeeId); // Uncomment this to debug
-
     // Get vacation requests for the authenticated employee user
     $vacationRequests = VacationRequest::where('user_id', $employeeId)
         ->orderBy('created_at', 'desc')
         ->paginate(10);
 
-    // Get the employee's company to fetch vacation rules
+    // Get the employee's data
     $employee = Auth::guard('employee')->user();
-    $companyId = $employee->company_id; // Assuming employee has company_id
 
-    // Get total vacation allowed from attendance_rules
-    $attendanceRule = DB::table('attendance_rules')
-        ->where('company_id', $companyId)
-        ->first();
+    // Get total vacation allowed from users table - vacation_balance column
+    $totalVacationAllowed = $employee->vacation_balance ?? 25; // Default to 25 if not found
 
-    $totalVacationAllowed = $attendanceRule->vacation_balance ?? 25; // Default to 25 if not found
-
-    // Get total vacations taken from vacations table (approved vacations)
-    $vacationsTaken = DB::table('vacations')
+    // Get remaining balance from vacations table - remaining_balance column
+    $vacationBalance = DB::table('vacations')
         ->where('employee_id', $employeeId)
-        ->sum('total') ?? 0;
+        ->value('remaining_balance') ?? $totalVacationAllowed;
 
     // Get count of pending vacation requests
     $pendingVacations = VacationRequest::where('user_id', $employeeId)
@@ -48,19 +40,11 @@ public function index(Request $request)
         ->where('status', 'pending')
         ->sum('total_days') ?? 0;
 
-    // Alternative debug query to see what's in the database
-    /*
-    $debugPending = VacationRequest::where('user_id', $employeeId)
-        ->where('status', 'pending')
-        ->get();
-    dd($debugPending); // Uncomment to see all pending records
-    */
-
-    // Calculate remaining vacation balance
-    $vacationBalance = $totalVacationAllowed - $vacationsTaken;
+    // Get total vacations taken (if needed for display)
+    $vacationsTaken = $totalVacationAllowed - $vacationBalance;
 
     // Calculate available balance (excluding pending requests)
-    $availableBalance = $vacationBalance - $pendingVacations;
+    $availableBalance = $vacationBalance - $pendingVacationDays;
 
     return view('EmployeeInterface.Requests.vacation.index', compact(
         'vacationRequests',
@@ -115,7 +99,6 @@ public function show($id)
 
     return response()->json($vacationRequest);
 }
-
 
 
     public function cancel($id)

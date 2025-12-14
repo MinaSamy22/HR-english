@@ -49,28 +49,28 @@
 
 
                     <div class="col-md-3">
-    <div class="card text-center border-success rounded">
-        <div class="card-body">
-<i class="fas fa-coins fa-2x text-success mb-2"></i>
-            <h3 class="text-success">
-                {{ number_format($setting->bonus_per_hour, 2) }}
-            </h3>
-            <p class="text-muted mb-0">{{ __('policy.overtime_bonus') }}</p>
-        </div>
-    </div>
-</div>
+                        <div class="card text-center border-success rounded">
+                            <div class="card-body">
+                                <i class="fas fa-coins fa-2x text-success mb-2"></i>
+                                <h3 class="text-success">
+                                    {{ number_format($setting->bonus_per_hour, 2) }}
+                                </h3>
+                                <p class="text-muted mb-0">{{ __('policy.overtime_bonus') }}</p>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="col-md-3">
-    <div class="card text-center border-warning rounded">
-        <div class="card-body">
-            <i class="fas fa-umbrella-beach fa-2x text-warning mb-2"></i>
-            <h3 class="text-warning">
-                {{ number_format($setting->vacation_balance, 2) }}
-            </h3>
-            <p class="text-muted mb-0">{{ __('policy.vacation_days_year') }}</p>
-        </div>
-    </div>
-</div>
+                    <div class="col-md-3">
+                        <div class="card text-center border-warning rounded">
+                            <div class="card-body">
+                                <i class="fas fa-umbrella-beach fa-2x text-warning mb-2"></i>
+                                <h3 class="text-warning">
+                                    {{ number_format($setting->vacation_balance, 2) }}
+                                </h3>
+                                <p class="text-muted mb-0">{{ __('policy.vacation_days_year') }}</p>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="col-md-3">
                         <div class="card text-center border-danger rounded">
@@ -97,6 +97,7 @@
                                     {{ __('policy.deduction_policies') }}
                                 </h5>
                             </div>
+
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-6">
@@ -109,6 +110,12 @@
                                                 <i class="fas fa text-muted mr-1"></i>
                                                 <strong>{{ $setting->late_deduction_percentage ?? 0 }}%</strong>
                                                 {{ __('policy.deduction_from_daily_wage') }}
+                                            </p>
+                                            <p class="mb-0">
+                                                <i class="fas fa text-muted mr-1"></i>
+                                                <strong> {{ __('dashboard.late_arrival_threshold') }}</strong>
+                                                {{ $setting->late_threshold_minutes }}
+                                                {{ __('dashboard.minutes_after_start_time') }}
                                             </p>
                                         </div>
                                     </div>
@@ -123,8 +130,40 @@
                                                 <strong>{{ $setting->half_day_deduction_percentage ?? 0 }}%</strong>
                                                 {{ __('policy.deduction_from_daily_wage') }}
                                             </p>
+                                            <p class="mb-0">
+                                                <i class="fas fa text-muted mr-1"></i>
+                                                <strong> {{ __('dashboard.half_day_threshold') }}</strong>
+                                                {{ $setting->half_day_threshold_minutes }}
+                                                {{ __('dashboard.minutes_of_absence') }}
+                                            </p>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+
+                            {{-- the new --}}
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="border-left border-danger pl-3 mb-3">
+                                            <h6>
+                                                <i class="fas fa-user-times text-danger mr-2"></i>
+                                                  {{ __('policy.absent_calculation') }}
+                                            </h6>
+                                            <p class="mb-0">
+                                                <i class="fas fa text-muted mr-1"></i>
+                                                <strong>100%</strong>
+                                                {{ __('policy.deduction_from_daily_wage') }}
+                                            </p>
+                                            <p class="mb-0">
+                                                <i class="fas fa text-muted mr-1"></i>
+                                                <strong> {{ __('dashboard.late_arrival_threshold') }}</strong>
+                                                {{ $setting->absent_threshold_minutes }}
+                                                {{ __('dashboard.minutes_after_start_time') }}
+                                            </p>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -266,8 +305,69 @@
                                     </div>
                                 @endif
                             </div>
+
                         </div>
+
+                        <!-- ✅ Company Policy Section (Grey) -->
+                        <div class="card mb-4 shadow-sm rounded">
+    <div class="card shadow-sm"
+        style="border-radius: 10px; border: none; border-inline-start: 4px solid #6c757d;">
+        <div class="card-header d-flex justify-content-between align-items-center"
+            style="background: white; color: #333; border: none; border-bottom: 1px solid #e9ecef;">
+            <h3 class="card-title" style="font-weight: 600; font-size: 1.1rem; color: #6c757d;">
+                <i class="fas fa-file-pdf mr-2"></i> {{ __('h_dashboard.company_policy') }}
+            </h3>
+        </div>
+
+        <div class="card-body" style="background: white; padding: 1.5rem;">
+
+            @if(isset($setting) && isset($setting->company_policy_pdf) && !empty($setting->company_policy_pdf))
+
+                <div class="mb-3 p-3 border rounded"
+                     style="border-inline-start: 3px solid #6c757d !important; background: #f8f9fa;">
+                    <p class="mb-2" style="font-size: 0.95rem; line-height: 1.6;">
+                        <i class="fas fa-info-circle text-secondary mr-1"></i>
+                        {{ __('h_dashboard.policy_note_text', ['default' => 'Review the company policy document to stay informed about workplace guidelines, attendance rules, and important procedures.']) }}
+                    </p>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center p-3 border rounded"
+                     style="border-inline-start: 3px solid #6c757d !important; background: #f8f9fa;">
+                    <div>
+                        <p class="mb-1 font-weight-bold" style="font-size: 0.95rem; color: #495057;">
+                            {{ __('h_dashboard.company_policy_document') }}
+                        </p>
+                        <p class="mb-0 text-muted" style="font-size: 0.85rem;">
+                            {{ __('h_dashboard.company_policy_uploaded') }}
+                        </p>
                     </div>
+
+                    <a href="{{ route('company-policy.view', $setting->company_policy_pdf) }}"
+                       target="_blank"
+                       class="btn btn-secondary btn-sm"
+                       style="font-size: 0.85rem; padding: 0.5rem 1rem;">
+                        <i class="fas fa-eye mr-1"></i> {{ __('h_dashboard.view') }}
+                    </a>
+                </div>
+
+            @else
+
+                <div class="text-center py-4">
+                    <i class="fas fa-file-pdf text-muted mb-3" style="font-size: 3rem; opacity: 0.3;"></i>
+                    <p class="text-muted mb-0" style="font-size: 0.95rem;">
+                        {{ __('h_dashboard.no_company_policy') }}
+                    </p>
+                    <small class="text-muted">{{ __('h_dashboard.policy_will_appear_here') }}</small>
+                </div>
+
+            @endif
+
+        </div>
+    </div>
+</div>
+
+                    </div>
+
                 </div>
             </div>
         </section>

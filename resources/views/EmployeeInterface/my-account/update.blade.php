@@ -41,7 +41,7 @@
                                         <label class="col-sm-2 col-form-label label-thin">{{ __('E_myaccount.Name') }} <span style="color: red;">*</span></label>
                                         <div class="col-sm-4">
                                             <input type="text" value="{{ $getRecord->name }}" name="name"
-                                                   class="form-control" required placeholder="Enter name">
+                                                   class="form-control" placeholder="{{ __('E_myaccount.enter_name') }}">
                                             <span style="color: red;">{{ $errors->first('name') }}</span>
                                         </div>
                                     </div>
@@ -51,7 +51,7 @@
                                         <label class="col-sm-2 col-form-label label-thin">{{ __('E_myaccount.Email') }} <span style="color: red;">*</span></label>
                                         <div class="col-sm-4">
                                             <input type="email" value="{{ $getRecord->email }}" name="email"
-                                                   class="form-control" required placeholder="Enter email">
+                                                   class="form-control" required placeholder="{{ __('E_myaccount.enter_email') }}">
                                             <span style="color: red;">{{ $errors->first('email') }}</span>
                                         </div>
                                     </div>
@@ -61,7 +61,7 @@
                                         <label class="col-sm-2 col-form-label label-thin">{{ __('E_myaccount.Phone Number') }}</label>
                                         <div class="col-sm-4">
                                             <input type="text" value="{{ $getRecord->phone_number }}" name="phone_number"
-                                                   class="form-control" placeholder="Enter phone number">
+                                                   class="form-control" placeholder="{{ __('E_myaccount.enter_phone') }}">
                                             <span style="color: red;">{{ $errors->first('phone_number') }}</span>
                                         </div>
                                     </div>
@@ -71,7 +71,7 @@
                                         <label class="col-sm-2 col-form-label label-thin">{{ __('E_myaccount.Current Password') }}</label>
                                         <div class="col-sm-4">
                                             <input type="password" name="current_password" class="form-control"
-                                                   placeholder="Enter current password (required if changing password)">
+                                                   placeholder="{{ __('E_myaccount.enter_current_password') }}">
                                             <span style="color: red;">{{ $errors->first('current_password') }}</span>
                                         </div>
                                     </div>
