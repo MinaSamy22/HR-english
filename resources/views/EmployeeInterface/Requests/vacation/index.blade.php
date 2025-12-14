@@ -221,6 +221,7 @@
                                             <i
                                                 class="fas fa-balance-scale mr-2 text-primary"></i>{{ __('E_vacations.remaining_balance') }}
                                         </span>
+
                                         <span class="badge badge-primary badge-pill">{{ $vacationBalance }}
                                             {{ __('E_vacations.days') }}</span>
                                     </li>
