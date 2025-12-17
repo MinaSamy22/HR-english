@@ -116,27 +116,27 @@ public function getEmployeeStatus()
         return ['text' => __('dashboard.vacation'), 'color' => '#0192c3ff'];
     }
 
-    // 2) Attendance
+ // 2) Attendance
     $attendance = \DB::table('attendances')
         ->where('employee_id', $this->id)
         ->where('company_id', $companyId)
         ->whereDate('attendance_date', $today)
-        ->orderByDesc('id') // آخر حضور اليوم
+        ->orderByDesc('id')
         ->first();
 
     if ($attendance) {
-        $check_in = $attendance->check_in;
-        $check_out = $attendance->check_out;
 
-        // حالة يعمل الآن
-        if (!empty($check_in) && (!empty($check_out) && $now >= $check_in && $now <= $check_out)) {
-                return ['text' => __('dashboard.working_now'), 'color' => '#28a745'];
-        } elseif (!empty($check_in) && empty($check_out)) {
-            // حضر وما خرجش → شغال دلوقتي
-                return ['text' => __('dashboard.working_now'), 'color' => '#28a745'];
-        } else {
-                return ['text' => __('dashboard.at_work'), 'color' => '#6c757d'];
+        // ✅ Working Now condition (UPDATED)
+        if (
+            !empty($attendance->check_in) &&
+            is_null($attendance->check_out) &&
+            $attendance->attendance_type == 1
+        ) {
+            return ['text' => __('dashboard.working_now'), 'color' => '#28a745'];
         }
+
+        // Otherwise: at work (checked out or different type)
+        return ['text' => __('dashboard.at_work'), 'color' => '#6c757d'];
     }
 
     // 3) Transfer
