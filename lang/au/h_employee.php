@@ -185,4 +185,6 @@ return [
 'system_information' => 'سسٹم کی معلومات',
 'shift' => 'شفٹ',
 'shifts' => 'شفٹس',
+
+'early_minutes' => 'جلدی حاضری کی اجازت (منٹوں میں)',
 ];

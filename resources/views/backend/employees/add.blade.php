@@ -465,6 +465,17 @@
                                         </div>
                                     </div>
 
+                                     <div class="form-group row">
+                                        <label class="col-sm-2 col-form-lable">{{ __('h_employee.early_minutes') }} <span
+                                                style="color: red;">{{ __('h_employee.required_field') }}</span></label>
+                                        <div class="col-sm-10">
+                                            <input type="number" value="{{ old('checkin_early_minutes') }}"
+                                                name="checkin_early_minutes" class="form-control" required>
+                                        </div>
+                                    </div>
+
+
+
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-label">
                                             {{ __('h_employee.shift_count') }} <span style="color: red;">*</span>
@@ -505,7 +516,7 @@
                                         </div>
                                     </div>
 
-                                   
+
 
 
 

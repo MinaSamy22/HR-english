@@ -34,7 +34,8 @@
                                     {{-- BASIC INFORMATION --}}
                                     <div class="mb-4">
                                         <h5 class="border-bottom pb-2 mb-3">
-                                            <i class="fas fa-user mr-2"></i>{{ __('h_employee.basic_information') ?? 'Basic Information' }}
+                                            <i
+                                                class="fas fa-user mr-2"></i>{{ __('h_employee.basic_information') ?? 'Basic Information' }}
                                         </h5>
 
                                         <!-- ID -->
@@ -101,7 +102,8 @@
                                     {{-- EMPLOYMENT DETAILS --}}
                                     <div class="mb-4">
                                         <h5 class="border-bottom pb-2 mb-3">
-                                            <i class="fas fa-briefcase mr-2"></i>{{ __('h_employee.employment_details') ?? 'Employment Details' }}
+                                            <i
+                                                class="fas fa-briefcase mr-2"></i>{{ __('h_employee.employment_details') ?? 'Employment Details' }}
                                         </h5>
 
                                         <!-- Hire Date -->
@@ -160,7 +162,7 @@
                                                 {{ __('h_employee.role') }}
                                             </label>
                                             <div class="col-sm-10">
-                                                @if(!empty($getRecord->is_role) && $getRecord->is_role == 1)
+                                                @if (!empty($getRecord->is_role) && $getRecord->is_role == 1)
                                                     <span class="badge bg-success">{{ __('h_employee.hrs') }}</span>
                                                 @else
                                                     <span class="badge bg-secondary">{{ __('h_employee.employee') }}</span>
@@ -172,7 +174,8 @@
                                     {{-- SALARY INFORMATION --}}
                                     <div class="mb-4">
                                         <h5 class="border-bottom pb-2 mb-3">
-                                            <i class="fas fa-dollar-sign mr-2"></i>{{ __('h_employee.salary_information') ?? 'Salary Information' }}
+                                            <i
+                                                class="fas fa-dollar-sign mr-2"></i>{{ __('h_employee.salary_information') ?? 'Salary Information' }}
                                         </h5>
 
                                         <!-- Salary Type -->
@@ -235,7 +238,8 @@
                                     {{-- NATIONALITY & RESIDENCY --}}
                                     <div class="mb-4">
                                         <h5 class="border-bottom pb-2 mb-3">
-                                            <i class="fas fa-globe mr-2"></i>{{ __('h_employee.nationality_residency') ?? 'Nationality & Residency' }}
+                                            <i
+                                                class="fas fa-globe mr-2"></i>{{ __('h_employee.nationality_residency') ?? 'Nationality & Residency' }}
                                         </h5>
 
                                         <!-- Nationality -->
@@ -245,9 +249,11 @@
                                             </label>
                                             <div class="col-sm-10">
                                                 @if ($getRecord->nationality == 'foreign')
-                                                    <span class="badge badge-info">{{ __('dashboard.nationality_foreign') }}</span>
+                                                    <span
+                                                        class="badge badge-info">{{ __('dashboard.nationality_foreign') }}</span>
                                                 @else
-                                                    <span class="badge badge-primary">{{ __('dashboard.nationality_local') }}</span>
+                                                    <span
+                                                        class="badge badge-primary">{{ __('dashboard.nationality_local') }}</span>
                                                 @endif
                                             </div>
                                         </div>
@@ -331,7 +337,8 @@
                                     {{-- WORK SCHEDULE --}}
                                     <div class="mb-4">
                                         <h5 class="border-bottom pb-2 mb-3">
-                                            <i class="fas fa-clock mr-2"></i>{{ __('h_employee.work_schedule') ?? 'Work Schedule' }}
+                                            <i
+                                                class="fas fa-clock mr-2"></i>{{ __('h_employee.work_schedule') ?? 'Work Schedule' }}
                                         </h5>
 
                                         <!-- Shift Count -->
@@ -341,7 +348,8 @@
                                             </label>
                                             <div class="col-sm-10">
                                                 @if ($getRecord->shift_count !== null)
-                                                    <span class="badge badge-info">{{ $getRecord->shift_count }} {{ $getRecord->shift_count == 1 ? __('h_employee.shift') : __('h_employee.shifts') }}</span>
+                                                    <span class="badge badge-info">{{ $getRecord->shift_count }}
+                                                        {{ $getRecord->shift_count == 1 ? __('h_employee.shift') : __('h_employee.shifts') }}</span>
                                                 @else
                                                     <span class="text-muted">{{ __('h_employee.not_set') }}</span>
                                                 @endif
@@ -406,6 +414,15 @@
                                             </div>
                                         @endif
 
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label font-weight-bold">
+                                                {{ __('h_employee.early_minutes') }}
+                                            </label>
+                                            <div class="col-sm-10">
+                                                {{ $getRecord->checkin_early_minutes ?? '—' }}
+                                            </div>
+                                        </div>
+
                                         <!-- Work Hours Per Day -->
                                         <div class="form-group row">
                                             <label class="col-sm-2 col-form-label font-weight-bold">
@@ -424,7 +441,8 @@
                                     {{-- ATTENDANCE & BIOMETRIC --}}
                                     <div class="mb-4">
                                         <h5 class="border-bottom pb-2 mb-3">
-                                            <i class="fas fa-fingerprint mr-2"></i>{{ __('h_employee.attendance_settings') ?? 'Attendance Settings' }}
+                                            <i
+                                                class="fas fa-fingerprint mr-2"></i>{{ __('h_employee.attendance_settings') ?? 'Attendance Settings' }}
                                         </h5>
 
                                         <!-- Free Biometric -->
@@ -445,10 +463,11 @@
                                     </div>
 
                                     {{-- HR PERMISSIONS (Conditional) --}}
-                                    @if(!empty($getRecord->is_role) && $getRecord->is_role == 1)
+                                    @if (!empty($getRecord->is_role) && $getRecord->is_role == 1)
                                         <div class="mb-4">
                                             <h5 class="border-bottom pb-2 mb-3">
-                                                <i class="fas fa-user-shield mr-2"></i>{{ __('dashboard.hr_permissions') }}
+                                                <i
+                                                    class="fas fa-user-shield mr-2"></i>{{ __('dashboard.hr_permissions') }}
                                             </h5>
 
                                             <div class="card shadow-sm">
@@ -456,7 +475,10 @@
                                                     <div class="row">
                                                         @php
                                                             // Retrieve HR permissions from DB
-                                                            $hrPermissions = \App\Models\HrPermission::where('user_id', $getRecord->id)
+                                                            $hrPermissions = \App\Models\HrPermission::where(
+                                                                'user_id',
+                                                                $getRecord->id,
+                                                            )
                                                                 ->where('company_id', session('company_id'))
                                                                 ->first();
 
@@ -466,8 +488,13 @@
                                                                 if (is_array($hrPermissions->permissions)) {
                                                                     $savedPermissions = $hrPermissions->permissions;
                                                                 } elseif (is_string($hrPermissions->permissions)) {
-                                                                    $decoded = json_decode($hrPermissions->permissions, true);
-                                                                    $savedPermissions = is_array($decoded) ? $decoded : [];
+                                                                    $decoded = json_decode(
+                                                                        $hrPermissions->permissions,
+                                                                        true,
+                                                                    );
+                                                                    $savedPermissions = is_array($decoded)
+                                                                        ? $decoded
+                                                                        : [];
                                                                 }
                                                             }
 
@@ -484,7 +511,9 @@
                                                                 'messages' => __('h_message.messages'),
                                                                 'performance' => __('dashboard.performance'),
                                                                 'attendance' => __('dashboard.attendance'),
-                                                                'attendance_reports' => __('dashboard.attendance_reports'),
+                                                                'attendance_reports' => __(
+                                                                    'dashboard.attendance_reports',
+                                                                ),
                                                                 'biometer_excel' => __('dashboard.biometer_excel'),
                                                                 'taxes' => __('dashboard.taxes'),
                                                                 'insurance' => __('dashboard.insurance'),
@@ -501,13 +530,15 @@
                                                             ];
                                                         @endphp
 
-                                                        @if(!empty($savedPermissions))
-                                                            @foreach($savedPermissions as $perm)
+                                                        @if (!empty($savedPermissions))
+                                                            @foreach ($savedPermissions as $perm)
                                                                 <div class="col-md-4 mb-2">
                                                                     <div class="form-check">
-                                                                        <input class="form-check-input" type="checkbox" checked disabled>
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                            checked disabled>
                                                                         <label class="form-check-label">
-                                                                            <i class="fas fa-check-circle text-success mr-1"></i>
+                                                                            <i
+                                                                                class="fas fa-check-circle text-success mr-1"></i>
                                                                             {{ $permissionLabels[$perm] ?? $perm }}
                                                                         </label>
                                                                     </div>
@@ -531,7 +562,8 @@
                                     @if ($getRecord->attachment)
                                         <div class="mb-4">
                                             <h5 class="border-bottom pb-2 mb-3">
-                                                <i class="fas fa-paperclip mr-2"></i>{{ __('h_employee.attachments') ?? 'Attachments & Documents' }}
+                                                <i
+                                                    class="fas fa-paperclip mr-2"></i>{{ __('h_employee.attachments') ?? 'Attachments & Documents' }}
                                             </h5>
 
                                             <div class="form-group row">
@@ -543,8 +575,8 @@
                                                         target="_blank" class="btn btn-primary btn-sm">
                                                         <i class="fas fa-file-pdf"></i> {{ __('h_employee.View PDF') }}
                                                     </a>
-                                                    <a href="{{ route('view.attachment', $getRecord->attachment) }}" download
-                                                        class="btn btn-success btn-sm ml-2">
+                                                    <a href="{{ route('view.attachment', $getRecord->attachment) }}"
+                                                        download class="btn btn-success btn-sm ml-2">
                                                         <i class="fas fa-download"></i> {{ __('h_employee.Download') }}
                                                     </a>
                                                 </div>
@@ -555,7 +587,8 @@
                                     {{-- SYSTEM INFORMATION --}}
                                     <div class="mb-4">
                                         <h5 class="border-bottom pb-2 mb-3">
-                                            <i class="fas fa-info-circle mr-2"></i>{{ __('h_employee.system_information') ?? 'System Information' }}
+                                            <i
+                                                class="fas fa-info-circle mr-2"></i>{{ __('h_employee.system_information') ?? 'System Information' }}
                                         </h5>
 
                                         <!-- Created Date -->
@@ -583,8 +616,7 @@
 
                                 <!-- Form Actions -->
                                 <div class="card-footer">
-                                    <a href="{{ url('admin/employees') }}"
-                                        class="btn btn-default float-left">
+                                    <a href="{{ url('admin/employees') }}" class="btn btn-default float-left">
                                         <i class="fas fa-arrow-left mr-1"></i>{{ __('h_employee.back') }}
                                     </a>
                                 </div>

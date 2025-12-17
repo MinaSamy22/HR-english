@@ -521,6 +521,23 @@ return [
     'restore_employee' => 'إرجاع الموظف للعمل',
     'restore_employee_confirmation' => 'هل أنت متأكد من إرجاع هذا الموظف؟',
 
+     'attendance_policy_visual' => 'رسم توضيحي لسياسة التأخير',
+
+    'present' => 'حاضر',
+    'late' => 'تأخير',
+    'half_day' => 'نصف يوم',
+    'absent' => 'غياب',
+
+    'late-arrival' => 'التأخير في الحضور',
+    'applied_when_an_employee_clocks_in_after_the_attend_period' => 'تطبق عندما يقوم الموظف بالتسجيل بعد فترة الحضور',
+
+    'half_day' => 'نصف يوم',
+    'applied_for_arrivals_after_the_half_day_time' => 'تطبق للحضور بعد وقت نصف اليوم',
+
+    'full_absence' => 'غياب كامل',
+    'applies_when_an_employee_doesnt_report_to_work_without_prior_approval' => 'تطبق عندما لا يحضر الموظف للعمل بدون إذن مسبق',
+    'minutes' => 'دقيقة ',
+
 
 ];
 

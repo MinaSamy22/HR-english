@@ -32,6 +32,8 @@ return new class extends Migration
             $table->string('salary')->nullable();
             $table->time('work_start_time')->nullable();
             $table->time('work_end_time')->nullable();
+            $table->integer('checkin_early_minutes')->nullable();
+
             $table->tinyInteger('shift_count')->default(1);
             $table->time('second_work_start_time')->nullable();
             $table->time('second_work_end_time')->nullable();

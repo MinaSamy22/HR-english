@@ -198,4 +198,7 @@ return [
 'shift' => 'Shift',
 'shifts' => 'Shifts',
 
+'early_minutes' => 'Early Check-in Allowance (Minutes)',
+
+
 ];

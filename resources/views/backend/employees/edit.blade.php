@@ -371,6 +371,18 @@
                                     </div>
 
                                     <div class="form-group row">
+                                        <label class="col-sm-2 col-form-lable">{{ __('h_employee.early_minutes') }} <span
+                                                style="color: red;">{{ __('h_employee.required_field') }}</span></label>
+                                        <div class="col-sm-10">
+                                            <input type="number"
+                                                value="{{ $getRecord->checkin_early_minutes }}"
+                                                name="checkin_early_minutes" class="form-control" required
+                                                placeholder="{{ __('h_employee.early_minutes') }}">
+                                            <span style="color:red">{{ $errors->first('checkin_early_minutes') }}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
                                         <label class="col-sm-2 col-form-label">{{ __('h_employee.shift_count') }}</label>
                                         <div class="col-sm-10">
                                             <select name="shift_count" id="shift_count" class="form-control" required>

@@ -538,4 +538,24 @@ return [
     'restore_employee' => 'Restore Employee',
     'restore_employee_confirmation' => 'Are you sure you want to restore this employee?',
 
+     // Visual section title
+    'attendance_policy_visual' => 'Illustrative Late Attendance Policy',
+
+    // Colored bar labels
+    'present' => 'Present',
+    'late' => 'Late',
+    'half_day' => 'Half Day',
+    'absent' => 'Absent',
+
+    // Explanations
+    'late-arrival' => 'Late Arrival',
+    'applied_when_an_employee_clocks_in_after_the_attend_period' => 'Applied when an employee clocks in after the attend period',
+
+    'half_day' => 'Half Day',
+    'applied_for_arrivals_after_the_half_day_time' => 'Applied for arrivals after the half day time',
+
+    'full_absence' => 'Full Absence',
+    'applies_when_an_employee_doesnt_report_to_work_without_prior_approval' => "Applies when an employee doesn't report to work without prior approval",
+    'minutes' => 'min ',
+
 ];

@@ -78,6 +78,7 @@ public function add_post(Request $request)
         'additional_salary'     => 'nullable|numeric|min:0',
         'work_start_time'       => 'required|date_format:H:i',
         'work_end_time'         => 'required|date_format:H:i',
+        'checkin_early_minutes' => 'nullable|numeric|min:0',
         'shift_count'           => 'required|in:1,2',
         'second_work_start_time'=> 'nullable|date_format:H:i',
         'second_work_end_time'  => 'nullable|date_format:H:i',
@@ -110,6 +111,12 @@ public function add_post(Request $request)
 
     $user->work_start_time      = trim($request->work_start_time);
     $user->work_end_time        = trim($request->work_end_time);
+
+    $user->checkin_early_minutes = trim($request->checkin_early_minutes);
+
+
+
+
 
     $user->shift_count          = $request->shift_count;
     if ($request->shift_count == 2) {
@@ -252,8 +259,9 @@ public function edit_update($id, Request $request){
     $user->salary               = trim($request->salary);
     $user->macaddress           = trim($request->macaddress);
 
-    $user->work_start_time      = trim($request->work_start_time);
-    $user->work_end_time        = trim($request->work_end_time);
+    $user->work_start_time         = trim($request->work_start_time);
+    $user->work_end_time           = trim($request->work_end_time);
+    $user->checkin_early_minutes   = trim($request->checkin_early_minutes);
 
     $user->shift_count             = $request->shift_count;
     $user->second_work_start_time  = $request->second_work_start_time;

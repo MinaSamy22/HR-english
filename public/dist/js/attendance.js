@@ -124,15 +124,45 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const result = await res.json();
 
-            if (result.success) {
-                // ✅ Automatically refresh the attendance radios for that employee
-                const type = result.record.attendance_type;
-                if (type) {
-                    const radios = document.querySelectorAll(`.attendance-radio[data-employee='${employeeId}']`);
-                    radios.forEach(r => {
-                        r.checked = (r.value == type);
-                    });
-                }
+           if (result.success) {
+
+    const radios = document.querySelectorAll(
+        `.attendance-radio[data-employee='${employeeId}']`
+    );
+
+    const type = result.record.attendance_type;
+
+    if (type === null) {
+        // ❌ NULL → uncheck all radios (no reload)
+        radios.forEach(r => r.checked = false);
+
+        // Optional UI hint
+        radios.forEach(r => r.closest('.attendance-radio-group')
+            ?.classList.add('needs-review'));
+
+        setTimeout(() => {
+            radios.forEach(r => r.closest('.attendance-radio-group')
+                ?.classList.remove('needs-review'));
+        }, 2000);
+
+    } else {
+        // ✅ Normal behavior
+        radios.forEach(r => {
+            r.checked = (r.value == type);
+        });
+    }
+
+    // ✅ Visual feedback
+    if (element) {
+        if (element.classList.contains('attendance-radio-group')) {
+            element.classList.add('save-success-radio');
+            setTimeout(() => element.classList.remove('save-success-radio'), 1200);
+        } else {
+            element.classList.add('save-success');
+            setTimeout(() => element.classList.remove('save-success'), 1200);
+        }
+    }
+
 
                 // ✅ Visual feedback
                 if (element) {

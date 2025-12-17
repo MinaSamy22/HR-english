@@ -196,4 +196,8 @@ return [
 'system_information' => 'معلومات النظام',
 'shift' => 'وردية',
 'shifts' => 'ورديات',
+'shifts' => 'ورديات',
+
+'early_minutes' => 'دقائق السماح بالحضور المبكر',
+
 ];

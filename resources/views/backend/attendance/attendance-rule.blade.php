@@ -593,36 +593,107 @@
                         <!-- /.card -->
                     </div>
 
-                    <div class="col-md-4">
-                        <div class="card card-info card-outline">
-                            <div class="card-header">
-                                <h3 class="card-title">
-                                    <i class="fas fa-info-circle mr-1"></i>
-                                    {{ __('dashboard.help_information') }}
-                                </h3>
-                            </div>
-                            <div class="card-body">
-                                <div class="callout callout-warning">
-                                    <h5><i class="fas fa-exclamation-triangle"></i>
-                                        {{ __('dashboard.important_notes') }}:
-                                    </h5>
-                                    <p>{{ __('dashboard.changes_to_attendance_rules_will_make_effect_in_payroll_calculation_but_you_must_click_save_policy_at_the_end') }}
-                                    </p>
-                                </div>
+                  <div class="col-md-4">
+    <div class="card card-info card-outline">
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="fas fa-info-circle mr-1"></i>
+                {{ __('dashboard.help_information') }}
+            </h3>
+        </div>
+        <div class="card-body">
+            <div class="callout callout-warning">
+                <h5><i class="fas fa-exclamation-triangle"></i>
+                    {{ __('dashboard.important_notes') }}:
+                </h5>
+                <p>{{ __('dashboard.changes_to_attendance_rules_will_make_effect_in_payroll_calculation_but_you_must_click_save_policy_at_the_end') }}
+                </p>
+            </div>
 
-                                <div class="text-muted mt-3">
-                                    <p><strong>{{ __('dashboard.late-arrival') }}</strong>
-                                        {{ __('dashboard.applied_when_an_employee_clocks_in_after_the_attend_period') }}.
-                                    </p>
-                                    <p><strong>{{ __('dashboard.half_day') }}:</strong>
-                                        {{ __('dashboard.applied_for_arrivals_after_the_half_day_time') }} .</p>
-                                    <p><strong>{{ __('dashboard.full_absence') }}:</strong>
-                                        {{ __('dashboard.applies_when_an_employee_doesnt_report_to_work_without_prior_approval') }}.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+<!-- Attendance Policy Visual -->
+<div class="mt-4 mb-3">
+    <h6 class="text-muted mb-2">{{ __('dashboard.attendance_policy_visual') }}</h6>
+
+    <!-- Simple colored bar -->
+    <div style="display: flex; height: 50px; border-radius: 5px; overflow: hidden;">
+        <div id="green" style="background: #28a745; flex: 1; display: flex; align-items: center; justify-content: center; color: white; font-size: 13px; font-weight: 500;">
+            <span id="greenText">0-15 min</span>
+        </div>
+        <div id="yellow" style="background: #ffc107; flex: 1; display: flex; align-items: center; justify-content: center; color: white; font-size: 13px; font-weight: 500;">
+            <span id="yellowText">16-30 min</span>
+        </div>
+        <div id="orange" style="background: #fd7e14; flex: 1; display: flex; align-items: center; justify-content: center; color: white; font-size: 13px; font-weight: 500;">
+            <span id="orangeText">31-60 min</span>
+        </div>
+        <div id="red" style="background: #dc3545; flex: 1; display: flex; align-items: center; justify-content: center; color: white; font-size: 13px; font-weight: 500;">
+            <span id="redText">60+ min</span>
+        </div>
+    </div>
+
+    <!-- Labels below -->
+    <div style="display: flex; justify-content: space-around; margin-top: 8px; font-size: 12px; color: #495057;">
+        <span>{{ __('dashboard.present') }}</span>
+        <span>{{ __('dashboard.late') }}</span>
+        <span>{{ __('dashboard.half_day') }}</span>
+        <span>{{ __('dashboard.absent') }}</span>
+    </div>
+</div>
+
+<hr>
+
+<div class="text-muted mt-3">
+    <p><strong>{{ __('dashboard.late-arrival') }}</strong>
+        {{ __('dashboard.applied_when_an_employee_clocks_in_after_the_attend_period') }}.
+    </p>
+    <p><strong>{{ __('dashboard.half_day') }}:</strong>
+        {{ __('dashboard.applied_for_arrivals_after_the_half_day_time') }}.
+    </p>
+    <p><strong>{{ __('dashboard.full_absence') }}:</strong>
+        {{ __('dashboard.applies_when_an_employee_doesnt_report_to_work_without_prior_approval') }}.
+    </p>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Function to update the visual bar labels dynamically
+    function updateAttendanceVisual() {
+        const lateThreshold = parseInt(document.querySelector('input[name="late_threshold_minutes"]').value) || 15;
+        const halfDayThreshold = parseInt(document.querySelector('input[name="half_day_threshold_minutes"]').value) || 30;
+        const absentThreshold = parseInt(document.querySelector('input[name="absent_threshold_minutes"]').value) || 60;
+
+        const minText = "{{ __('dashboard.minutes') }}";
+
+document.getElementById('greenText').textContent = `0 - ${lateThreshold} ${minText}`;
+document.getElementById('yellowText').textContent = `${lateThreshold + 1} - ${halfDayThreshold} ${minText}`;
+document.getElementById('orangeText').textContent = `${halfDayThreshold + 1} - ${absentThreshold} ${minText}`;
+document.getElementById('redText').textContent = `${absentThreshold}+ ${minText}`;
+   }
+
+    // Initial update
+    updateAttendanceVisual();
+
+    // Listen for changes on the threshold input fields to update dynamically
+    const lateInput = document.querySelector('input[name="late_threshold_minutes"]');
+    const halfDayInput = document.querySelector('input[name="half_day_threshold_minutes"]');
+    const absentInput = document.querySelector('input[name="absent_threshold_minutes"]');
+
+    if (lateInput) {
+        lateInput.addEventListener('input', updateAttendanceVisual);
+        lateInput.addEventListener('change', updateAttendanceVisual);
+    }
+
+    if (halfDayInput) {
+        halfDayInput.addEventListener('input', updateAttendanceVisual);
+        halfDayInput.addEventListener('change', updateAttendanceVisual);
+    }
+
+    if (absentInput) {
+        absentInput.addEventListener('input', updateAttendanceVisual);
+        absentInput.addEventListener('change', updateAttendanceVisual);
+    }
+});
+</script>
+
                 </div>
             </div>
         </section>

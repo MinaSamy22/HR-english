@@ -537,5 +537,22 @@ return [
 'restore_employee' => 'ملازم ملازم کو بحال کریں',
 'restore_employee_confirmation' => 'کیا آپ واقعی اس ملازم کو بحال کرنا چاہتے ہیں؟',
 
+'attendance_policy_visual' => 'تاخیر کی پالیسی کی وضاحتی تصویر ',
+
+    'present' => 'حاضر',
+    'late' => 'دیر سے آنا',
+    'half_day' => 'آدھا دن',
+    'absent' => 'غیر حاضر',
+
+    'late-arrival' => 'دیر سے آمد',
+    'applied_when_an_employee_clocks_in_after_the_attend_period' => 'جب ملازم حاضری کے وقت کے بعد آتا ہے تو لاگو ہوتا ہے',
+
+    'half_day' => 'آدھا دن',
+    'applied_for_arrivals_after_the_half_day_time' => 'آدھے دن کے وقت کے بعد آنے والوں کے لیے لاگو',
+
+    'full_absence' => 'مکمل غیر حاضری',
+    'applies_when_an_employee_doesnt_report_to_work_without_prior_approval' => 'جب ملازم بغیر اجازت کے کام پر حاضر نہ ہو تو لاگو',
+    'minutes' => 'منٹ',
+
 
 ];
