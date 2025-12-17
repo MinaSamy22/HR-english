@@ -18,7 +18,7 @@ class User extends Authenticatable implements JWTSubject
     'job_id', 'salary_type', 'salary', 'work_start_time', 'work_end_time',
     'company_id', 'manager_id', 'department_id', 'is_role', 'password' ,'branch_id','macaddress','work_hours_per_day', 'working_days', 'shifts','second_start_time','second_end_time','main_salary'
 
-]; 
+];
 
     public function getJWTIdentifier() {
         return $this->getKey();

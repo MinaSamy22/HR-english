@@ -72,6 +72,26 @@
                     </div>
                     <hr><br>
 
+                                        {{-- Branch Filter --}}
+                    @if (session('branch_id') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1)
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">{{ __('h_employee.branch') }}</label>
+                            <div class="col-sm-9">
+                                <select name="filter_branch_id" id="filter_branch_id" class="form-control"
+                                    style="background-color: rgba(255, 255, 255, 0.9); border: 1px solid rgba(0, 0, 0, 0.2);">
+                                    <option value="">{{ __('h_employee.all') }}</option>
+                                    @foreach ($branches as $branch)
+                                        <option value="{{ $branch->id }}"
+                                            {{ old('filter_branch_id') == $branch->id ? 'selected' : '' }}>
+                                            {{ $branch->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    @endif
+
+
                     <div class="form-group row">
                         <label class="col-sm-3 col-form-label">{{ __('dashboard.start_date') }}<span style="color: red;">*</span></label>
                         <div class="col-sm-9">
@@ -103,7 +123,7 @@
                                         </div>
                                         <div class="employee-list">
                                             @foreach ($getEmployees->where('salary_type', 3) as $employee)
-                                                <div class="checkbox-item">
+                                                <div class="checkbox-item employee-item" data-branch-id="{{ $employee->branch_id }}">
                                                     <input type="checkbox" name="employee_ids[]" value="{{ $employee->id }}"
                                                         id="employee-{{ $employee->id }}" class="employee-checkbox daily-employee"
                                                         {{ in_array($employee->id, old('employee_ids', [])) ? 'checked' : '' }}>
@@ -127,7 +147,7 @@
                                         </div>
                                         <div class="employee-list">
                                             @foreach ($getEmployees->where('salary_type', 2) as $employee)
-                                                <div class="checkbox-item">
+                                                <div class="checkbox-item employee-item" data-branch-id="{{ $employee->branch_id }}">
                                                     <input type="checkbox" name="employee_ids[]" value="{{ $employee->id }}"
                                                         id="employee-{{ $employee->id }}" class="employee-checkbox weekly-employee"
                                                         {{ in_array($employee->id, old('employee_ids', [])) ? 'checked' : '' }}>
@@ -151,7 +171,7 @@
                                         </div>
                                         <div class="employee-list">
                                             @foreach ($getEmployees->where('salary_type', 1) as $employee)
-                                                <div class="checkbox-item">
+                                                <div class="checkbox-item employee-item" data-branch-id="{{ $employee->branch_id }}">
                                                     <input type="checkbox" name="employee_ids[]" value="{{ $employee->id }}"
                                                         id="employee-{{ $employee->id }}" class="employee-checkbox monthly-employee"
                                                         {{ in_array($employee->id, old('employee_ids', [])) ? 'checked' : '' }}>
@@ -176,4 +196,63 @@
 <!-- Link to the new JavaScript file -->
 <script src="{{ url('dist/js/payrollcreate.js')}}?v=3"></script>
 
+<script>
+// Branch filter functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const branchFilter = document.getElementById('filter_branch_id');
+
+    if (branchFilter) {
+        branchFilter.addEventListener('change', function() {
+            const selectedBranchId = this.value;
+            const employeeItems = document.querySelectorAll('.employee-item');
+
+            employeeItems.forEach(function(item) {
+                const checkbox = item.querySelector('.employee-checkbox');
+                const employeeBranchId = item.getAttribute('data-branch-id');
+
+                if (selectedBranchId === '' || employeeBranchId === selectedBranchId) {
+                    // Show employee
+                    item.style.display = 'block';
+                    checkbox.disabled = false;
+                } else {
+                    // Hide employee and uncheck
+                    item.style.display = 'none';
+                    checkbox.checked = false;
+                    checkbox.disabled = true;
+                }
+            });
+
+            // Update counts after filtering
+            updateEmployeeCounts();
+        });
+    }
+
+    // Function to update employee counts
+    function updateEmployeeCounts() {
+        // Update daily count
+        const dailyVisible = document.querySelectorAll('#daily-employees .employee-item[style="display: block;"], #daily-employees .employee-item:not([style*="display: none"])').length;
+        const dailyChecked = document.querySelectorAll('#daily-employees .employee-checkbox:checked:not(:disabled)').length;
+        const dailyCountEl = document.getElementById('daily-count');
+        if (dailyCountEl) {
+            dailyCountEl.textContent = `(${dailyChecked}/${dailyVisible})`;
+        }
+
+        // Update weekly count
+        const weeklyVisible = document.querySelectorAll('#weekly-employees .employee-item[style="display: block;"], #weekly-employees .employee-item:not([style*="display: none"])').length;
+        const weeklyChecked = document.querySelectorAll('#weekly-employees .employee-checkbox:checked:not(:disabled)').length;
+        const weeklyCountEl = document.getElementById('weekly-count');
+        if (weeklyCountEl) {
+            weeklyCountEl.textContent = `(${weeklyChecked}/${weeklyVisible})`;
+        }
+
+        // Update monthly count
+        const monthlyVisible = document.querySelectorAll('#monthly-employees .employee-item[style="display: block;"], #monthly-employees .employee-item:not([style*="display: none"])').length;
+        const monthlyChecked = document.querySelectorAll('#monthly-employees .employee-checkbox:checked:not(:disabled)').length;
+        const monthlyCountEl = document.getElementById('monthly-count');
+        if (monthlyCountEl) {
+            monthlyCountEl.textContent = `(${monthlyChecked}/${monthlyVisible})`;
+        }
+    }
+});
+</script>
 @endsection

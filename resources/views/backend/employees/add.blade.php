@@ -505,15 +505,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group row">
-                                        <label
-                                            class="col-sm-2 col-form-label">{{ __('h_employee.work_hours_per_day') }}</label>
-                                        <div class="col-sm-10">
-                                            <input type="number" name="work_hours_per_day"
-                                                value="{{ old('work_hours_per_day', $getRecord->work_hours_per_day ?? '') }}"
-                                                class="form-control">
-                                        </div>
-                                    </div>
+                                   
 
 
 

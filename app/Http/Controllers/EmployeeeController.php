@@ -78,7 +78,6 @@ public function add_post(Request $request)
         'additional_salary'     => 'nullable|numeric|min:0',
         'work_start_time'       => 'required|date_format:H:i',
         'work_end_time'         => 'required|date_format:H:i',
-        'work_hours_per_day'    => 'required|numeric|min:1|max:24',
         'shift_count'           => 'required|in:1,2',
         'second_work_start_time'=> 'nullable|date_format:H:i',
         'second_work_end_time'  => 'nullable|date_format:H:i',
@@ -111,7 +110,6 @@ public function add_post(Request $request)
 
     $user->work_start_time      = trim($request->work_start_time);
     $user->work_end_time        = trim($request->work_end_time);
-    $user->work_hours_per_day   = trim($request->work_hours_per_day);
 
     $user->shift_count          = $request->shift_count;
     if ($request->shift_count == 2) {
@@ -145,7 +143,7 @@ public function add_post(Request $request)
     // Handle company/branch assignment
     if (session()->has('branch_id')) {
         $user->branch_id = session('branch_id');
-    } 
+    }
 
     // Handle attachment
     if ($request->hasFile('attachment')) {
@@ -247,7 +245,6 @@ public function edit_update($id, Request $request){
 
     $user->name                 = trim($request->name);
     $user->email                = trim($request->email);
-    $user->password             = trim($request->password);
     $user->phone_number         = trim($request->phone_number);
     $user->birth_date           = trim($request->birth_date);
     $user->job_id               = trim($request->job_id);
@@ -261,7 +258,6 @@ public function edit_update($id, Request $request){
     $user->shift_count             = $request->shift_count;
     $user->second_work_start_time  = $request->second_work_start_time;
     $user->second_work_end_time    = $request->second_work_end_time;
-    $user->work_hours_per_day      = $request->work_hours_per_day;
 
     $user->is_biometric         = $request->is_biometric;
     $user->main_salary          = $request->main_salary;
@@ -283,6 +279,9 @@ public function edit_update($id, Request $request){
     $user->department_id        = trim($request->department_id);
     $user->is_role              = $request->is_role;
 
+    if ($request->filled('password')) {
+    $user->password = bcrypt($request->password);
+}
     $user->save();
 
 return redirect('admin/employees')->with('success', __('h_employee.employee_updated'));

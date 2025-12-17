@@ -426,16 +426,7 @@
                                         });
                                     </script>
 
-                                    <div class="form-group row">
-                                        <label
-                                            class="col-sm-2 col-form-lable">{{ __('h_employee.work_hours_per_day') }}</label>
-                                        <div class="col-sm-10">
-                                            <input type="number" name="work_hours_per_day" class="form-control"
-                                                value="{{ old('work_hours_per_day', $getRecord->work_hours_per_day) }}"
-                                                placeholder="{{ __('h_employee.enter_work_hours') }}">
-                                            <span style="color:red">{{ $errors->first('work_hours_per_day') }}</span>
-                                        </div>
-                                    </div>
+
 
 
                                     <div class="form-group row">

@@ -68,6 +68,14 @@ public function index(Request $request)
         }
     }
 
+
+    // Add branches data for the filter dropdown
+    $data['branches'] = \DB::table('branches')
+        ->where('company_id', $company_id)
+        ->select('id', 'name', 'is_main')
+        ->orderBy('name')
+        ->get();
+
     $data['getPayrolls'] = Payroll::get(); // Optional, depending on your needs
     return view('backend.payrolls.create', $data);
 }

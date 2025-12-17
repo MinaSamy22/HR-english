@@ -17,7 +17,8 @@ class Payroll extends Model
         'deductions',
         'taxes',
         'net_pay',
-        'pay_date'
+        'pay_date',
+        'branch_id',
     ];
 
     public function employee()
@@ -25,68 +26,84 @@ class Payroll extends Model
         return $this->belongsTo(User::class);
     }
 
-    static public function getRecord($company_id)
-    {
-        // Get the company_id from the session or request
-        $company_id = session('company_id');
-        $branch_id = session('branch_id');
+public static function getRecord()
+{
+    $company_id = session('company_id');
+    $branch_id  = session('branch_id');
 
-        $return = self::select(
+    $query = self::select(
             'payrolls.*',
             'users.name',
             \DB::raw("COALESCE(insurances.apply_to_payroll, 0) as is_insured")
         )
-            ->join('users', 'users.id', '=', 'payrolls.employee_id')
-            ->leftJoin('insurances', function ($join) {
-                $join->on('insurances.employee_id', '=', 'users.id')
-                    ->where('insurances.apply_to_payroll', 1);
-            })
+        ->join('users', 'users.id', '=', 'payrolls.employee_id')
+        ->leftJoin('insurances', function ($join) {
+            $join->on('insurances.employee_id', '=', 'users.id')
+                 ->where('insurances.apply_to_payroll', 1);
+        });
 
-            ->where('users.company_id', $company_id)
-            ->orderBy('payrolls.id', 'desc');
+    /* ===============================
+       🔍 Branch & Company Logic
+       (EXACT SAME PATTERN AS USERS)
+    ================================ */
 
-        // 🔍 Filter by branch_id if available, otherwise fallback to company_id or main branch
-        if (!empty($branch_id)) {
-            $currentBranch = \DB::table('branches')
-                ->where('id', $branch_id)
-                ->select('is_main')
-                ->first();
+    if (!empty($branch_id)) {
 
-            if ($currentBranch && $currentBranch->is_main == 1) {
-                $return->where('payrolls.company_id', $company_id);
-            } else {
-                $return->where('payrolls.branch_id', $branch_id);
-            }
+        $currentBranch = \DB::table('branches')
+            ->where('id', $branch_id)
+            ->select('is_main')
+            ->first();
+
+        if ($currentBranch && $currentBranch->is_main == 1) {
+            // Main branch → all company payrolls
+            $query->where('users.company_id', $company_id);
         } else {
-            $return->where('payrolls.company_id', $company_id);
+            // Normal branch → only its payrolls
+            $query->where('users.branch_id', $branch_id);
         }
 
-        // Apply search filters
-        if (!empty(Request::get('name'))) {
-            $return = $return->where('users.name', 'like', '%' . Request::get('name') . '%');
-        }
-
-       if (!empty(Request::get('month'))) {
-    $return = $return->whereMonth('payrolls.start_date', Request::get('month'));
-}
-
-if (!empty(Request::get('year'))) {
-    $return = $return->whereYear('payrolls.start_date', Request::get('year'));
-}
-
-        if (!empty(Request::get('payroll_type'))) {
-            $return = $return->where('payrolls.payroll_type', Request::get('payroll_type'));
-        }
-
-        // 🆕 Add branch filter (same pattern as other modules)
-        if (!empty(Request::get('filter_branch_id'))) {
-            $return = $return->where('payrolls.branch_id', Request::get('filter_branch_id'));
-        }
-
-        $return = $return->paginate(15);
-
-        return $return;
+    } else {
+        // No branch in session → company wide
+        $query->where('users.company_id', $company_id);
     }
+
+    /* ===============================
+       🔎 Search Filters
+    ================================ */
+
+    if (!empty(Request::get('name'))) {
+        $query->where('users.name', 'like', '%' . Request::get('name') . '%');
+    }
+
+    if (!empty(Request::get('month'))) {
+        $query->whereMonth('payrolls.start_date', Request::get('month'));
+    }
+
+    if (!empty(Request::get('year'))) {
+        $query->whereYear('payrolls.start_date', Request::get('year'));
+    }
+
+    if (!empty(Request::get('payroll_type'))) {
+        $query->where('payrolls.payroll_type', Request::get('payroll_type'));
+    }
+
+    // 🆕 Branch dropdown filter (manual override)
+    if (!empty(Request::get('filter_branch_id'))) {
+        $query->where('users.branch_id', Request::get('filter_branch_id'));
+    }
+
+    /* ===============================
+       📄 Pagination
+    ================================ */
+
+    $query->orderBy('payrolls.id', 'desc');
+
+    $result = $query->paginate(15);
+    $result->appends(Request::all());
+
+    return $result;
+}
+
 
 
     // NEW METHOD: Fixed payslip search with proper pay_date filtering
