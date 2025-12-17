@@ -151,8 +151,6 @@ public function getEmployeeStatus()
 
 
 
-
-
     public static function getAllRecordsForExport($request)
     {
         $company_id = session('company_id');
