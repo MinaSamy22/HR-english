@@ -51,15 +51,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 inField.value = inTime || '';
                 outField.value = outTime || '';
 
-                // Get selected attendance type for this employee
-                const selectedRadio = document.querySelector(`.attendance-radio[data-employee='${empId}']:checked`);
-                const attendanceType = selectedRadio ? selectedRadio.value : null;
-
+                // 🔹 Automatic calculation - no manual_override flag
                 await saveData(empId, {
                     attendance_date: date,
                     check_in: inTime ? `${inTime.length === 5 ? inTime + ':00' : inTime}` : null,
                     check_out: outTime ? `${outTime.length === 5 ? outTime + ':00' : outTime}` : null,
-                    attendance_type: attendanceType
+                    manual_override: false // Automatic
                 });
             }
 
@@ -69,25 +66,27 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Save attendance type (radio)
+    // Save attendance type (radio) - MANUAL OVERRIDE
     function saveAttendance(event) {
         const empId = event.target.dataset.employee;
         const date = attendanceDateInput.value;
         const attendanceType = event.target.value;
 
-        // Read existing time values
+        // Read existing time values (don't change them)
         const inTime = document.querySelector(`.check-in-input[data-employee='${empId}']`)?.value || null;
         const outTime = document.querySelector(`.check-out-input[data-employee='${empId}']`)?.value || null;
 
+        // 🔹 Send with manual_override flag
         saveData(empId, {
             attendance_date: date,
             attendance_type: attendanceType,
             check_in: inTime || null,
-            check_out: outTime || null
+            check_out: outTime || null,
+            manual_override: true // ✅ Manual selection
         }, event.target.closest('.attendance-radio-group'));
     }
 
-    // Save check-in / check-out
+    // Save check-in / check-out - AUTOMATIC CALCULATION
     function saveCheckTime(event) {
         const empId = event.target.dataset.employee;
         const date = attendanceDateInput.value;
@@ -96,15 +95,12 @@ document.addEventListener('DOMContentLoaded', function () {
         const inTime = document.querySelector(`.check-in-input[data-employee='${empId}']`)?.value || null;
         const outTime = document.querySelector(`.check-out-input[data-employee='${empId}']`)?.value || null;
 
-        // Read selected attendance type (if any)
-        const selectedRadio = document.querySelector(`.attendance-radio[data-employee='${empId}']:checked`);
-        const attendanceType = selectedRadio ? selectedRadio.value : null;
-
+        // 🔹 Don't send attendance_type - let backend calculate it
         saveData(empId, {
             attendance_date: date,
             check_in: inTime ? `${inTime.length === 5 ? inTime + ':00' : inTime}` : null,
             check_out: outTime ? `${outTime.length === 5 ? outTime + ':00' : outTime}` : null,
-            attendance_type: attendanceType
+            manual_override: false // ✅ Automatic calculation
         }, event.target);
     }
 
@@ -124,45 +120,32 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const result = await res.json();
 
-           if (result.success) {
+            if (result.success) {
+                const radios = document.querySelectorAll(
+                    `.attendance-radio[data-employee='${employeeId}']`
+                );
 
-    const radios = document.querySelectorAll(
-        `.attendance-radio[data-employee='${employeeId}']`
-    );
+                const type = result.record.attendance_type;
 
-    const type = result.record.attendance_type;
+                if (type === null) {
+                    // ❌ NULL → uncheck all radios
+                    radios.forEach(r => r.checked = false);
 
-    if (type === null) {
-        // ❌ NULL → uncheck all radios (no reload)
-        radios.forEach(r => r.checked = false);
+                    // Optional UI hint
+                    radios.forEach(r => r.closest('.attendance-radio-group')
+                        ?.classList.add('needs-review'));
 
-        // Optional UI hint
-        radios.forEach(r => r.closest('.attendance-radio-group')
-            ?.classList.add('needs-review'));
+                    setTimeout(() => {
+                        radios.forEach(r => r.closest('.attendance-radio-group')
+                            ?.classList.remove('needs-review'));
+                    }, 2000);
 
-        setTimeout(() => {
-            radios.forEach(r => r.closest('.attendance-radio-group')
-                ?.classList.remove('needs-review'));
-        }, 2000);
-
-    } else {
-        // ✅ Normal behavior
-        radios.forEach(r => {
-            r.checked = (r.value == type);
-        });
-    }
-
-    // ✅ Visual feedback
-    if (element) {
-        if (element.classList.contains('attendance-radio-group')) {
-            element.classList.add('save-success-radio');
-            setTimeout(() => element.classList.remove('save-success-radio'), 1200);
-        } else {
-            element.classList.add('save-success');
-            setTimeout(() => element.classList.remove('save-success'), 1200);
-        }
-    }
-
+                } else {
+                    // ✅ Update radio selection based on backend response
+                    radios.forEach(r => {
+                        r.checked = (r.value == type);
+                    });
+                }
 
                 // ✅ Visual feedback
                 if (element) {

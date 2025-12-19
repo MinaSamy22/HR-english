@@ -70,12 +70,14 @@ public function add_post(Request $request)
         'job_id'                => 'required',
         'salary'                => 'required',
         'salary_type'           => 'required',
+        'housing_allowance'     => 'nullable|numeric',
+        'transportation_allowance'=> 'nullable|numeric',
+        'other_allowances'      => 'nullable|numeric',
+
         'manager_id'            => 'required',
         'department_id'         => 'required',
         'is_role'               => 'required|in:0,1',
         'is_biometric'          => 'required|in:0,1',
-        'main_salary'           => 'required|in:0,1',
-        'additional_salary'     => 'nullable|numeric|min:0',
         'work_start_time'       => 'required|date_format:H:i',
         'work_end_time'         => 'required|date_format:H:i',
         'checkin_early_minutes' => 'nullable|numeric|min:0',
@@ -98,27 +100,32 @@ public function add_post(Request $request)
     ]);
 
     // Create a new user
-    $user                       = new User;
-    $user->name                 = trim($request->name);
-    $user->email                = trim($request->email);
-    $user->phone_number         = trim($request->phone_number);
-    $user->hire_date            = trim($request->hire_date);
-    $user->birth_date           = trim($request->birth_date);
-    $user->job_id               = trim($request->job_id);
-    $user->salary_type          = trim($request->salary_type);
-    $user->salary               = trim($request->salary);
-    $user->macaddress           = trim($request->macaddress);
+    $user                            = new User;
+    $user->name                      = trim($request->name);
+    $user->email                     = trim($request->email);
+    $user->phone_number              = trim($request->phone_number);
+    $user->hire_date                 = trim($request->hire_date);
+    $user->birth_date                = trim($request->birth_date);
+    $user->job_id                    = trim($request->job_id);
+    $user->salary_type               = trim($request->salary_type);
+    $user->salary                    = trim($request->salary);
 
-    $user->work_start_time      = trim($request->work_start_time);
-    $user->work_end_time        = trim($request->work_end_time);
+    $user->housing_allowance         = $request->housing_allowance ;
+    $user->transportation_allowance  = $request->transportation_allowance ;
+    $user->other_allowances          = $request->other_allowances ;
 
-    $user->checkin_early_minutes = trim($request->checkin_early_minutes);
+    $user->macaddress                = trim($request->macaddress);
+
+    $user->work_start_time           = trim($request->work_start_time);
+    $user->work_end_time             = trim($request->work_end_time);
+
+    $user->checkin_early_minutes     = trim($request->checkin_early_minutes);
 
 
 
 
 
-    $user->shift_count          = $request->shift_count;
+    $user->shift_count                = $request->shift_count;
     if ($request->shift_count == 2) {
         $user->second_work_start_time = $request->second_work_start_time;
         $user->second_work_end_time   = $request->second_work_end_time;
@@ -128,8 +135,6 @@ public function add_post(Request $request)
     $user->department_id        = trim($request->department_id);
     $user->is_role              = $request->is_role;
     $user->is_biometric         = $request->is_biometric;
-    $user->main_salary          = $request->main_salary;
-    $user->additional_salary = $request->additional_salary ?? 0;
 
     //new
     $user->nationality       =     $request->nationality;
@@ -142,7 +147,7 @@ public function add_post(Request $request)
     $user->residency_job     =     $request->residency_job;
 
 
-    $user->company_id           = session('company_id');
+    $user->company_id        = session('company_id');
 
     // Password
     $user->password = bcrypt($request->password);
@@ -250,26 +255,28 @@ public function edit_update($id, Request $request){
         $user->attachment = $filename;
     }
 
-    $user->name                 = trim($request->name);
-    $user->email                = trim($request->email);
-    $user->phone_number         = trim($request->phone_number);
-    $user->birth_date           = trim($request->birth_date);
-    $user->job_id               = trim($request->job_id);
-    $user->salary_type          = trim($request->salary_type);
-    $user->salary               = trim($request->salary);
-    $user->macaddress           = trim($request->macaddress);
+    $user->name                      = trim($request->name);
+    $user->email                     = trim($request->email);
+    $user->phone_number              = trim($request->phone_number);
+    $user->birth_date                = trim($request->birth_date);
+    $user->job_id                    = trim($request->job_id);
+    $user->salary_type               = trim($request->salary_type);
+    $user->salary                    = trim($request->salary);
+    $user->housing_allowance         = $request->housing_allowance ;
+    $user->transportation_allowance  = $request->transportation_allowance ;
+    $user->other_allowances          = $request->other_allowances ;
 
-    $user->work_start_time         = trim($request->work_start_time);
-    $user->work_end_time           = trim($request->work_end_time);
-    $user->checkin_early_minutes   = trim($request->checkin_early_minutes);
+    $user->macaddress                = trim($request->macaddress);
 
-    $user->shift_count             = $request->shift_count;
-    $user->second_work_start_time  = $request->second_work_start_time;
-    $user->second_work_end_time    = $request->second_work_end_time;
+    $user->work_start_time           = trim($request->work_start_time);
+    $user->work_end_time             = trim($request->work_end_time);
+    $user->checkin_early_minutes     = trim($request->checkin_early_minutes);
 
-    $user->is_biometric         = $request->is_biometric;
-    $user->main_salary          = $request->main_salary;
-    $user->additional_salary    = $request->additional_salary;
+    $user->shift_count               = $request->shift_count;
+    $user->second_work_start_time    = $request->second_work_start_time;
+    $user->second_work_end_time      = $request->second_work_end_time;
+
+    $user->is_biometric              = $request->is_biometric;
 
     //new
     $user->nationality       =     $request->nationality;

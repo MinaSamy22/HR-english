@@ -78,6 +78,8 @@ class AttendanceController extends Controller
             'check_in' => 'nullable',
             'check_out' => 'nullable',
             'attendance_type' => 'nullable|string',
+            'manual_override' => 'nullable|boolean', // 🔹 NEW: Flag for manual changes
+
         ]);
 
         // 🔹 Load existing record
@@ -96,88 +98,99 @@ class AttendanceController extends Controller
         $workStart = $user->work_start_time ? strtotime($user->work_start_time) : null;
         $workEnd = $user->work_end_time ? strtotime($user->work_end_time) : null;
 
-        // FEATURES Start
+        // 🔹 NEW: Check if this is a manual override
+        $isManualOverride = $request->has('manual_override') && $request->manual_override == true;
 
-        // 🔍 FEATURE 1: Approved early leave keeps employee present
-        $hasApprovedEarlyLeave = \App\Models\EarlyLeaveRequest::where('employee_id', $request->employee_id)
-            ->where('request_date', $request->attendance_date)
-            ->where('status', 'approved')
-            ->exists();
+        if ($isManualOverride) {
+            // ✅ Manual selection → use the provided attendance_type directly
+            $attendanceType = $request->attendance_type;
 
-        if ($hasApprovedEarlyLeave) {
-            $attendanceType = 1; // Force Present
-        }
 
-        // 🔍 FEATURE 2: mark as present if no data at chekout
-        // 🔹 If check-in is correct and no check-out yet → Present
-        if ($checkIn && is_null($checkOut) && $workStart) {
+        } else {
+            // ✅ Automatic calculation based on check-in/check-out
+            // FEATURES Start
 
-            $earlyMinutes = max(0, ($workStart - $checkIn) / 60);
-            $allowedEarlyMinutes = $user->checkin_early_minutes ?? 0;
+            // 🔍 FEATURE 1: Approved early leave keeps employee present
+            $hasApprovedEarlyLeave = \App\Models\EarlyLeaveRequest::where('employee_id', $request->employee_id)
+                ->where('request_date', $request->attendance_date)
+                ->where('status', 'approved')
+                ->exists();
 
-            // ✔️ Present only if NOT before allowed early minutes
-            if ($earlyMinutes <= $allowedEarlyMinutes) {
-                $attendanceType = 1; // Present
-            } else {
-                $attendanceType = null;
+            if ($hasApprovedEarlyLeave) {
+                $attendanceType = 1; // Force Present
             }
-        }
 
-        // 🔍 FEATURE 3: Start Automatic choosing (late - halfday - absent)
-        //bdayt el automatic choosing
+            // 🔍 FEATURE 2: mark as present if no data at chekout
+            // 🔹 If check-in is correct and no check-out yet → Present
+            if ($checkIn && is_null($checkOut) && $workStart) {
 
-        if ($checkIn && $workStart) {
+                $earlyMinutes = max(0, ($workStart - $checkIn) / 60);
+                $allowedEarlyMinutes = $user->checkin_early_minutes ?? 0;
 
-            // 🔹 Early check-in minutes
-            $earlyMinutes = max(0, ($workStart - $checkIn) / 60);
-            $allowedEarlyMinutes = $user->checkin_early_minutes ?? 0;
-
-            if ($earlyMinutes > $allowedEarlyMinutes) {
-                $attendanceType = null;
-            } else {
-
-                // 🔹 Late minutes
-                $lateMinutes = max(0, ($checkIn - $workStart) / 60);
-
-                $lateThreshold = $attendanceRule->late_threshold_minutes ?? 15;
-                $halfDayThreshold = $attendanceRule->half_day_threshold_minutes ?? 30;
-                $absentThreshold = $attendanceRule->absent_threshold_minutes ?? 60;
-
-                if ($lateMinutes > $absentThreshold) {
-                    $attendanceType = 3; // Absent
-                } elseif ($lateMinutes > $halfDayThreshold) {
-                    $attendanceType = 4; // Half Day
-                } elseif ($lateMinutes > $lateThreshold) {
-                    $attendanceType = 2; // Late
-                } else {
+                // ✔️ Present only if NOT before allowed early minutes
+                if ($earlyMinutes <= $allowedEarlyMinutes) {
                     $attendanceType = 1; // Present
+                } else {
+                    $attendanceType = null;
                 }
             }
 
-        } elseif (is_null($checkIn) && is_null($checkOut)) {
-            $attendanceType = 3; // Absent
-        }
+            // 🔍 FEATURE 3: Start Automatic choosing (late - halfday - absent)
+            //bdayt el automatic choosing
 
+            if ($checkIn && $workStart) {
 
-        // 🔍 FEATURE 4: when we save the attendance_type as NULL
-        if ($checkIn && $checkOut && $workEnd) {
+                // 🔹 Early check-in minutes
+                $earlyMinutes = max(0, ($workStart - $checkIn) / 60);
+                $allowedEarlyMinutes = $user->checkin_early_minutes ?? 0;
 
-            // check-in == check-out
-            if ($checkIn === $checkOut) {
-                $attendanceType = null;
+                if ($earlyMinutes > $allowedEarlyMinutes) {
+                    $attendanceType = null;
+                } else {
+
+                    // 🔹 Late minutes
+                    $lateMinutes = max(0, ($checkIn - $workStart) / 60);
+
+                    $lateThreshold = $attendanceRule->late_threshold_minutes ?? 15;
+                    $halfDayThreshold = $attendanceRule->half_day_threshold_minutes ?? 30;
+                    $absentThreshold = $attendanceRule->absent_threshold_minutes ?? 60;
+
+                    if ($lateMinutes > $absentThreshold) {
+                        $attendanceType = 3; // Absent
+                    } elseif ($lateMinutes > $halfDayThreshold) {
+                        $attendanceType = 4; // Half Day
+                    } elseif ($lateMinutes > $lateThreshold) {
+                        $attendanceType = 2; // Late
+                    } else {
+                        $attendanceType = 1; // Present
+                    }
+                }
+
+            } elseif (is_null($checkIn) && is_null($checkOut)) {
+                $attendanceType = 3; // Absent
             }
 
-            // Minutes difference from work end
-            $checkoutDiffMinutes = ($checkOut - $workEnd) / 60;
 
-            // 🔹 Check-out before work end → invalid
-            if ($checkoutDiffMinutes < 0) {
-                $attendanceType = null;
-            }
+            // 🔍 FEATURE 4: when we save the attendance_type as NULL
+            if ($checkIn && $checkOut && $workEnd) {
 
-            // 🔹 Check-out after work end more than 45 minutes → invalid
-            if ($checkoutDiffMinutes > 45) {
-                $attendanceType = null;
+                // check-in == check-out
+                if ($checkIn === $checkOut) {
+                    $attendanceType = null;
+                }
+
+                // Minutes difference from work end
+                $checkoutDiffMinutes = ($checkOut - $workEnd) / 60;
+
+                // 🔹 Check-out before work end → invalid
+                if ($checkoutDiffMinutes < 0) {
+                    $attendanceType = null;
+                }
+
+                // 🔹 Check-out after work end more than 45 minutes → invalid
+                if ($checkoutDiffMinutes > 45) {
+                    $attendanceType = null;
+                }
             }
         }
 

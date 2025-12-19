@@ -187,4 +187,15 @@ return [
 'shifts' => 'شفٹس',
 
 'early_minutes' => 'جلدی حاضری کی اجازت (منٹوں میں)',
+
+'housing_allowance' => 'ہاؤسنگ الاؤنس',
+'enter_housing' => 'ہاؤسنگ الاؤنس درج کریں',
+
+'transportation_allowance' => 'ٹرانسپورٹ الاؤنس',
+'enter_transportation' => 'ٹرانسپورٹ الاؤنس درج کریں',
+
+'other_allowances' => 'دیگر الاؤنسز',
+'enter_other_allowances' => 'دیگر الاؤنسز درج کریں',
+
+
 ];

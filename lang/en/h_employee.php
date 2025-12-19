@@ -200,5 +200,15 @@ return [
 
 'early_minutes' => 'Early Check-in Allowance (Minutes)',
 
+'housing_allowance' => 'Housing Allowance',
+'enter_housing' => 'Enter housing allowance',
+
+'transportation_allowance' => 'Transportation Allowance',
+'enter_transportation' => 'Enter transportation allowance',
+
+'other_allowances' => 'Other Allowances',
+'enter_other_allowances' => 'Enter other allowances',
+
+
 
 ];

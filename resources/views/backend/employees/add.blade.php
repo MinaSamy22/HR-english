@@ -32,9 +32,9 @@
                                 <div class="card-body">
 
                                     <h5 class="border-bottom pt-2 pb-3 mb-4">
-    <i class="fas fa-user mr-2"></i>
-    {{ __('h_employee.basic_information') ?? 'Basic Information' }}
-</h5>
+                                        <i class="fas fa-user mr-2"></i>
+                                        {{ __('h_employee.basic_information') ?? 'Basic Information' }}
+                                    </h5>
 
 
                                     <div class="form-group row">
@@ -283,63 +283,38 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group row align-items-center">
-                                        <label class="col-sm-2 col-form-label">
-                                            {{ __('h_employee.main_salary') }}
-                                            <span style="color: red;">{{ __('h_employee.required_field') }}</span>
-                                        </label>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-lable">{{ __('h_employee.housing_allowance') }} </label>
                                         <div class="col-sm-10">
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="main_salary"
-                                                    id="main_salary_yes" value="1"
-                                                    {{ old('main_salary') == '1' ? 'checked' : '' }}>
-                                                <label class="form-check-label" for="main_salary_yes">
-                                                    {{ __('h_employee.yes') }}
-                                                </label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="main_salary"
-                                                    id="main_salary_no" value="0"
-                                                    {{ old('main_salary') == '0' ? 'checked' : '' }}>
-                                                <label class="form-check-label" for="main_salary_no">
-                                                    {{ __('h_employee.no') }}
-                                                </label>
-                                            </div>
+                                            <input type="number" value="{{ old('housing_allowance') }}" name="housing_allowance"
+                                                class="form-control" 
+                                                placeholder="{{ __('h_employee.enter_housing') }}">
+                                            <span style="color:red">{{ $errors->first('housing_allowance') }}</span>
                                         </div>
                                     </div>
 
-                                    <!-- Additional Salary field -->
-                                    <div class="form-group row align-items-center" id="additional_salary_field"
-                                        style="display:none;">
-                                        <label class="col-sm-2 col-form-label">
-                                            {{ __('dashboard.additional_salary') }}
-                                        </label>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-lable">{{ __('h_employee.transportation_allowance') }} </label>
                                         <div class="col-sm-10">
-                                            <input type="number" name="additional_salary" class="form-control"
-                                                placeholder="{{ __('dashboard.enter_additional_salary') }}"
-                                                step="0.01">
+                                            <input type="number" value="{{ old('transportation_allowance') }}" name="transportation_allowance"
+                                                class="form-control"
+                                                placeholder="{{ __('h_employee.enter_transportation') }}">
+                                            <span style="color:red">{{ $errors->first('transportation_allowance') }}</span>
                                         </div>
                                     </div>
 
-                                    <script>
-                                        document.addEventListener('DOMContentLoaded', function() {
-                                            const yesRadio = document.getElementById('main_salary_yes');
-                                            const noRadio = document.getElementById('main_salary_no');
-                                            const additionalSalaryField = document.getElementById('additional_salary_field');
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-lable">{{ __('h_employee.other_allowances') }} </label>
+                                        <div class="col-sm-10">
+                                            <input type="number" value="{{ old('other_allowances') }}" name="other_allowances"
+                                                class="form-control"
+                                                placeholder="{{ __('h_employee.enter_other_allowances') }}">
+                                            <span style="color:red">{{ $errors->first('other_allowances') }}</span>
+                                        </div>
+                                    </div>
 
-                                            function toggleAdditionalField() {
-                                                if (noRadio.checked) {
-                                                    additionalSalaryField.style.display = 'flex';
-                                                } else {
-                                                    additionalSalaryField.style.display = 'none';
-                                                }
-                                            }
 
-                                            yesRadio.addEventListener('change', toggleAdditionalField);
-                                            noRadio.addEventListener('change', toggleAdditionalField);
-                                            toggleAdditionalField(); // run on page load
-                                        });
-                                    </script>
+
 
                                     <h5 class="border-bottom pt-2 pb-3 mb-4">
                                         <i
@@ -465,7 +440,7 @@
                                         </div>
                                     </div>
 
-                                     <div class="form-group row">
+                                    <div class="form-group row">
                                         <label class="col-sm-2 col-form-lable">{{ __('h_employee.early_minutes') }} <span
                                                 style="color: red;">{{ __('h_employee.required_field') }}</span></label>
                                         <div class="col-sm-10">

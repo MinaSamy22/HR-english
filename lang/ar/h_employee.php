@@ -200,4 +200,14 @@ return [
 
 'early_minutes' => 'دقائق السماح بالحضور المبكر',
 
+'housing_allowance' => 'بدل سكن',
+'enter_housing' => 'أدخل بدل السكن',
+
+'transportation_allowance' => 'بدل نقل',
+'enter_transportation' => 'أدخل بدل النقل',
+
+'other_allowances' => 'بدلات أخرى',
+'enter_other_allowances' => 'أدخل البدلات الأخرى',
+
+
 ];
