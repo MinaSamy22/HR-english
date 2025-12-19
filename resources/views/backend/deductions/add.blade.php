@@ -33,7 +33,8 @@
 
                                     {{-- Employee Selection --}}
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-lable">{{ __('h_deduction.employee_name') }}</label>
+                                        <label class="col-sm-2 col-form-lable">{{ __('h_deduction.employee_name') }} <span
+                                                style="color: red;">{{ __('h_employee.required_field') }}</span></label>
                                         <div class="col-sm-10">
                                             <select class="form-control" name="employee_id" id="employeeSelect" required>
                                                 <option value="">{{ __('h_deduction.select_employee') }}</option>
@@ -51,7 +52,8 @@
                                     {{-- Deduction Reason --}}
                                     <div class="form-group row">
                                         <label
-                                            class="col-sm-2 col-form-lable">{{ __('h_deduction.deduction_reason') }}</label>
+                                            class="col-sm-2 col-form-lable">{{ __('h_deduction.deduction_reason') }} <span
+                                                style="color: red;">{{ __('h_employee.required_field') }}</span> </label>
                                         <div class="col-sm-10">
                                             <input type="text" value="{{ old('deduction_type') }}" name="deduction_type"
                                                 class="form-control" placeholder="{{ __('h_deduction.enter_reason') }}">
@@ -70,7 +72,8 @@
                                     {{-- Deduction Amount --}}
                                     <div class="form-group row">
                                         <label
-                                            class="col-sm-2 col-form-lable">{{ __('h_deduction.money_deduction') }}</label>
+                                            class="col-sm-2 col-form-lable">{{ __('h_deduction.money_deduction') }} <span
+                                                style="color: red;">{{ __('h_employee.required_field') }}</span></label>
                                         <div class="col-sm-10">
                                             <input type="decimal" value="{{ old('money_deduction') }}"
                                                 name="money_deduction" id="money_deduction" class="form-control"
@@ -80,7 +83,8 @@
 
                                     {{-- Date --}}
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-lable">{{ __('h_deduction.date') }}</label>
+                                        <label class="col-sm-2 col-form-lable">{{ __('h_deduction.date') }} <span
+                                                style="color: red;">{{ __('h_employee.required_field') }}</span></label>
                                         <div class="col-sm-10">
                                             <input type="datetime-local" value="{{ old('created_at') }}" name="created_at"
                                                 class="form-control">

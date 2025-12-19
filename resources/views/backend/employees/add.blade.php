@@ -287,11 +287,11 @@
                                         <label class="col-sm-2 col-form-lable">{{ __('h_employee.housing_allowance') }} </label>
                                         <div class="col-sm-10">
                                             <input type="number" value="{{ old('housing_allowance') }}" name="housing_allowance"
-                                                class="form-control" 
+                                                class="form-control"
                                                 placeholder="{{ __('h_employee.enter_housing') }}">
                                             <span style="color:red">{{ $errors->first('housing_allowance') }}</span>
                                         </div>
-                                    </div>
+                                    </div> 
 
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-lable">{{ __('h_employee.transportation_allowance') }} </label>

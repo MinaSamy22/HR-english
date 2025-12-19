@@ -30,6 +30,11 @@ return new class extends Migration
             $table->unsignedBigInteger('job_id')->nullable()->index();
             $table->integer('salary_type')->nullable();
             $table->string('salary')->nullable();
+
+            $table->integer('housing_allowance')->nullable();
+            $table->integer('transportation_allowance')->nullable();
+            $table->integer('other_allowances')->nullable();
+
             $table->time('work_start_time')->nullable();
             $table->time('work_end_time')->nullable();
             $table->integer('checkin_early_minutes')->nullable();
@@ -39,8 +44,6 @@ return new class extends Migration
             $table->time('second_work_end_time')->nullable();
             $table->string('macaddress')->nullable();
             $table->boolean('is_biometric')->nullable();
-            $table->tinyInteger('main_salary')->nullable();
-            $table->decimal('additional_salary', 10, 2)->nullable();
             $table->unsignedBigInteger('manager_id')->nullable()->index();
             $table->unsignedBigInteger('department_id')->nullable()->index();
             $table->string('attachment')->nullable();
