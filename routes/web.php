@@ -36,6 +36,7 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\MyAccountController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\OverTimeController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\PerformanceController;
 use App\Http\Controllers\PerformanceCriteriaController;
@@ -170,7 +171,6 @@ Route::middleware('admin')->group(function () {
     route::get('admin/department_info', [DepartmentController::class, 'info'])->name('department_info');
 
     //Employee Requests   admin/Requests
-
     Route::get('admin/Requests', [RequestController::class, 'index'])->name('Requests');
     Route::get('admin/Requests/processed', [RequestController::class, 'processed'])->name('Requests.processed');
     Route::post('admin/Requests/accept/{type}/{id}', [RequestController::class, 'accept'])->name('Requests.accept');
@@ -294,6 +294,19 @@ Route::middleware('admin')->group(function () {
     // PDF download payslip
     Route::post('admin/payslip/download-pdf', [PayrollController::class, 'downloadSinglePayslip'])->name('payslip.download.single');
     Route::post('admin/payslip/download-all-pdf', [PayrollController::class, 'downloadAllPayslips'])->name('payslip.download.all');
+    // Salary Payment
+    // Route::get('admin/salary-payment', [PayrollController::class, 'salary_payment'])->name('salary_payment');
+    // Route::get('admin/salary-payment/add', [PayrollController::class, 'salary_payment_add'])->name('salary_payment_add');
+
+
+
+    // Payment Routes
+    Route::get('admin/salary-payment', [PaymentController::class, 'index'])->name('payments.index');
+    Route::get('admin/payments/create', [PaymentController::class, 'create'])->name('payments.create');
+    Route::get('admin/payments/get-payrolls', [PaymentController::class, 'getPayrolls'])->name('payments.getPayrolls');
+    Route::post('admin/payments/store', [PaymentController::class, 'store'])->name('payments.store');
+    Route::get('admin/payments/delete/{id}', [PaymentController::class, 'delete'])->name('payments.delete');
+    Route::post('admin/payments/delete-multiple', [PaymentController::class, 'deleteMultiple'])->name('payments.deleteMultiple');
 
 
     // Taxes

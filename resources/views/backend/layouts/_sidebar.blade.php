@@ -659,9 +659,13 @@
 
 
                 {{-- Payroll --}}
-                @if (hr_can('payroll') || hr_can('payslip'))
-                    <li class="nav-item has-treeview @if (in_array(Request::segment(2), ['payroll', 'payslip'])) menu-open @endif">
-                        <a href="#" class="nav-link @if (in_array(Request::segment(2), ['payroll', 'payslip'])) active @endif">
+                @if (hr_can('payroll') || hr_can('payslip') || hr_can('salary_payment'))
+                    <li class="nav-item has-treeview
+        @if (in_array(Request::segment(2), ['payroll', 'payslip', 'salary-payment'])) menu-open @endif">
+
+                        <a href="#"
+                            class="nav-link
+            @if (in_array(Request::segment(2), ['payroll', 'payslip', 'salary-payment'])) active @endif">
                             <i class="nav-icon fa fa-coins"></i>
                             <p>
                                 {{ __('dashboard.payroll') }}
@@ -693,9 +697,21 @@
                                 </li>
                             @endif
 
+                            {{-- Salary Payment --}}
+                            @if (hr_can('salary_payment'))
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/salary-payment') }}"
+                                        class="nav-link @if (Request::segment(2) == 'salary-payment') active @endif">
+                                        <i class="fa fa-money-bill-wave nav-icon"></i>
+                                        <p>{{ __('dashboard.salary_payment') }}</p>
+                                    </a>
+                                </li>
+                            @endif 
+
                         </ul>
                     </li>
                 @endif
+
 
 
 
@@ -775,8 +791,6 @@
                         </a>
                     </li>
                 @endif
-
-
 
 
 

@@ -554,5 +554,12 @@ return [
     'applies_when_an_employee_doesnt_report_to_work_without_prior_approval' => 'جب ملازم بغیر اجازت کے کام پر حاضر نہ ہو تو لاگو',
     'minutes' => 'منٹ',
 
+    'salary_payment' => 'تنخواہ کی ادائیگی',
+
+
+
+
+
+
 
 ];

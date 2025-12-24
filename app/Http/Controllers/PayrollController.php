@@ -44,6 +44,8 @@ public function index(Request $request)
 
 
 
+
+
     public function add(Request $request)
 {
     $company_id = session('company_id');
@@ -169,21 +171,29 @@ public function add_post(Request $request)
         $totalTaxes                                            = $taxAmount + $insuranceAmount;
 
         // Final payroll record
-        $payroll = new Payroll();
-        $payroll->employee_id = $employee->id;
-        $payroll->start_date = $startDate;
-        $payroll->end_date = $endDate;
-        $payroll->basic_salary = $salary;
-        $payroll->bounas = $bonus;
-        $payroll->deductions = $totalDeductions;
-        $payroll->attendance_deduction = $attendanceDeductions;
-        $payroll->taxes = $totalTaxes;
-        $payroll->rest_vacancy = $restVacancy;
-        $payroll->payroll_type = $payrollType;
+        $payroll                                      = new Payroll();
+        $payroll->employee_id                         = $employee->id;
+        $payroll->start_date                          = $startDate;
+        $payroll->end_date                            = $endDate;
 
-        $payroll->net_pay = $salary - ($totalDeductions + $totalTaxes + $attendanceDeductions) + $bonus;
-        $payroll->daily_wage = $dailyWage;
-        $payroll->days_absent = $daysAbsent;
+        //new
+        $housingAllowance                             = $employee->housing_allowance ?? 0;
+        $transportationAllowance                      = $employee->transportation_allowance ?? 0;
+        $otherAllowances                              = $employee->other_allowances ?? 0;
+
+        $totalAllowances = $housingAllowance + $transportationAllowance + $otherAllowances;
+
+        $payroll->basic_salary                        = $salary;
+        $payroll->bounas                              = $bonus;
+        $payroll->deductions                          = $totalDeductions;
+        $payroll->attendance_deduction                = $attendanceDeductions;
+        $payroll->taxes                               = $totalTaxes;
+        $payroll->rest_vacancy                        = $restVacancy;
+        $payroll->payroll_type                        = $payrollType;
+
+        $payroll->net_pay                             = $salary - ($totalDeductions + $totalTaxes + $attendanceDeductions) + $bonus + $totalAllowances;
+        $payroll->daily_wage                          = $dailyWage;
+        $payroll->days_absent                         = $daysAbsent;
 
         // Handle company/branch assignment
         $payroll->company_id = session('company_id') ?: $companyId;
@@ -296,6 +306,60 @@ return response()->json(['success' => true, 'message' => __('h_payroll.selected_
         return $pdf->download('payroll-report.pdf');
     }
 
+
+
+    public function salary_payment (Request $request)
+{
+    $company_id = session('company_id');
+
+    // Pass the company_id to the getRecord method for filtering
+    $data['getRecord'] = Payroll::getRecord($company_id);
+
+    // Add branches data like in your other controllers
+    $data['branches'] = \DB::table('branches')
+        ->where('company_id', session('company_id'))
+        ->select('id', 'name', 'is_main')
+        ->orderBy('name')
+        ->get();
+
+    return view('backend.payrolls.Salary Payment.salary-payment', $data);
+}
+
+    public function salary_payment_add(Request $request)
+{
+    $company_id = session('company_id');
+    $branch_id = session('branch_id');
+
+    // If branch_id is null, show all employees for the company
+    if (empty($branch_id)) {
+        $data['getEmployees'] = User::where('company_id', $company_id)->get();
+    } else {
+        // Check if the current branch is the main branch
+        $currentBranch = \DB::table('branches')
+            ->where('id', $branch_id)
+            ->select('is_main')
+            ->first();
+
+        // If it's the main branch (is_main == 1), show all employees for the company
+        if ($currentBranch && $currentBranch->is_main == 1) {
+            $data['getEmployees'] = User::where('company_id', $company_id)->get();
+        } else {
+            // Otherwise, filter by the specific branch_id
+            $data['getEmployees'] = User::where('branch_id', $branch_id)->get();
+        }
+    }
+
+
+    // Add branches data for the filter dropdown
+    $data['branches'] = \DB::table('branches')
+        ->where('company_id', $company_id)
+        ->select('id', 'name', 'is_main')
+        ->orderBy('name')
+        ->get();
+
+    $data['getPayrolls'] = Payroll::get(); // Optional, depending on your needs
+    return view('backend.payrolls.Salary Payment.create', $data);
+}
 
 
     public function payslip(Request $request)

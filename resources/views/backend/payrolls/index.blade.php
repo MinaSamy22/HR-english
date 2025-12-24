@@ -98,13 +98,17 @@
                         <label>{{ __('h_payroll.month') }}</label>
                         <select name="month" class="form-control"
                             style="background-color: rgba(255, 255, 255, 0.5); border: 1px solid rgba(255, 255, 255, 0.8);">
+
                             <option value="">{{ __('h_payroll.select_month') }}</option>
+
                             @for ($i = 1; $i <= 12; $i++)
                                 <option value="{{ $i }}" {{ Request::get('month') == $i ? 'selected' : '' }}>
-                                    {{ date('F', mktime(0, 0, 0, $i, 1)) }}</option>
+                                    {{ __('h_payroll.months.' . $i) }}
+                                </option>
                             @endfor
                         </select>
                     </div>
+
 
                     <div class="form-group col-md-2 col-sm-6">
                         <label>{{ __('h_payroll.year') }}</label>
@@ -174,6 +178,7 @@
                             <th>{{ __('h_payroll.employee_name') }}</th>
                             <th>{{ __('h_payroll.basic_salary') }}</th>
                             <th>{{ __('h_payroll.bonus') }}</th>
+                            {{-- <th>{{ __('h_payroll.total_allowance') }}</th> --}}
                             <th>{{ __('h_payroll.deductions') }}</th>
                             <th>{{ __('h_payroll.attendance_deduction') }}</th>
                             <th>{{ __('h_payroll.taxes_insurance') }}</th>
@@ -194,6 +199,7 @@
                                 <td>{{ $value->name }}</td>
                                 <td>{{ $value->basic_salary }}</td>
                                 <td>{{ $value->bounas }}</td>
+                                {{-- <td>{{ $value->other_allowances }}</td> --}}
                                 <td>{{ $value->deductions }}</td>
                                 <td>{{ $value->attendance_deduction }}</td>
                                 <td>{{ $value->taxes }}</td>
@@ -239,9 +245,9 @@
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <button type="button" class="btn btn-danger rounded-pill delete-btn"
-                                                data-id="{{ $value->id }}" title="{{ __('h_payroll.delete') }}">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
+                                        data-id="{{ $value->id }}" title="{{ __('h_payroll.delete') }}">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
 
                                 </td>
                             </tr>
@@ -262,132 +268,132 @@
     </section>
     </div>
 
- @endsection
+@endsection
 
 @section('script')
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<script>
-    // Individual delete functionality with SweetAlert2
-    $(document).on('click', '.delete-btn', function () {
-        let deleteId = $(this).data('id');
+    <script>
+        // Individual delete functionality with SweetAlert2
+        $(document).on('click', '.delete-btn', function() {
+            let deleteId = $(this).data('id');
 
-        Swal.fire({
-            title: "{{ __('dashboard.delete') }}",
-            text: "{{ __('dashboard.delete_confirmation') }}",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#6c757d",
-            confirmButtonText: "{{ __('dashboard.delete') }}",
-            cancelButtonText: "{{ __('dashboard.cancel') }}"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: "{{ url('admin/payroll/delete') }}/" + deleteId,
-                    type: 'GET',
-                    success: function () {
-                        $('button.delete-btn[data-id="' + deleteId + '"]').closest('tr').fadeOut();
-
-                        Swal.fire({
-                            title: "{{ __('dashboard.deleted') }}!",
-                            text: "{{ __('dashboard.delete_success') }}",
-                            icon: "success",
-                            timer: 2000,
-                            showConfirmButton: false
-                        });
-                    },
-                    error: function () {
-                        Swal.fire({
-                            title: "{{ __('dashboard.error') }}",
-                            text: "{{ __('dashboard.delete_failed') }}",
-                            icon: "error",
-                                confirmButtonText: "{{ __('dashboard.ok') }}"
-                        });
-                    }
-                });
-            }
-        });
-    });
-
-    // Bulk delete functionality with SweetAlert2
-    $('#deleteSelected').click(function() {
-        var selectedIds = [];
-        $('.payrollCheckbox:checked').each(function() {
-            selectedIds.push($(this).val());
-        });
-
-        if (selectedIds.length === 0) {
             Swal.fire({
-                title: "{{ __('dashboard.no_selection') }}",
-                text: "{{ __('dashboard.select_items_first') }}",
+                title: "{{ __('dashboard.delete') }}",
+                text: "{{ __('dashboard.delete_confirmation') }}",
                 icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#6c757d",
+                confirmButtonText: "{{ __('dashboard.delete') }}",
+                cancelButtonText: "{{ __('dashboard.cancel') }}"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ url('admin/payroll/delete') }}/" + deleteId,
+                        type: 'GET',
+                        success: function() {
+                            $('button.delete-btn[data-id="' + deleteId + '"]').closest('tr')
+                                .fadeOut();
+
+                            Swal.fire({
+                                title: "{{ __('dashboard.deleted') }}!",
+                                text: "{{ __('dashboard.delete_success') }}",
+                                icon: "success",
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+                        },
+                        error: function() {
+                            Swal.fire({
+                                title: "{{ __('dashboard.error') }}",
+                                text: "{{ __('dashboard.delete_failed') }}",
+                                icon: "error",
                                 confirmButtonText: "{{ __('dashboard.ok') }}"
+                            });
+                        }
+                    });
+                }
             });
-            return;
-        }
+        });
 
-        Swal.fire({
-            title: "{{ __('dashboard.delete_selected') }}",
-            text: "{{ __('dashboard.delete_selected_confirm') }}",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#6c757d",
-            confirmButtonText: "{{ __('dashboard.delete') }}",
-            cancelButtonText: "{{ __('dashboard.cancel') }}"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: "{{ url('admin/payrolls/delete-multiple') }}",
-                    type: 'POST',
-                    data: {
-                        ids: selectedIds,
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function(response) {
-                        // Remove selected rows with fade effect
-                        $('.payrollCheckbox:checked').each(function() {
-                            $(this).closest('tr').fadeOut();
-                        });
+        // Bulk delete functionality with SweetAlert2
+        $('#deleteSelected').click(function() {
+            var selectedIds = [];
+            $('.payrollCheckbox:checked').each(function() {
+                selectedIds.push($(this).val());
+            });
 
-                        // Uncheck select all
-                        $('#selectAll').prop('checked', false);
-
-                        Swal.fire({
-                            title: "{{ __('dashboard.deleted') }}!",
-                            text: "{{ __('dashboard.bulk_delete_success') }}",
-                            icon: "success",
-                            timer: 2000,
-                            showConfirmButton: false
-                        });
-                    },
-                    error: function() {
-                        Swal.fire({
-                            title: "{{ __('dashboard.error') }}",
-                            text: "{{ __('dashboard.bulk_delete_failed') }}",
-                            icon: "error",
-                                confirmButtonText: "{{ __('dashboard.ok') }}"
-                        });
-                    }
+            if (selectedIds.length === 0) {
+                Swal.fire({
+                    title: "{{ __('dashboard.no_selection') }}",
+                    text: "{{ __('dashboard.select_items_first') }}",
+                    icon: "warning",
+                    confirmButtonText: "{{ __('dashboard.ok') }}"
                 });
+                return;
+            }
+
+            Swal.fire({
+                title: "{{ __('dashboard.delete_selected') }}",
+                text: "{{ __('dashboard.delete_selected_confirm') }}",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#6c757d",
+                confirmButtonText: "{{ __('dashboard.delete') }}",
+                cancelButtonText: "{{ __('dashboard.cancel') }}"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ url('admin/payrolls/delete-multiple') }}",
+                        type: 'POST',
+                        data: {
+                            ids: selectedIds,
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            // Remove selected rows with fade effect
+                            $('.payrollCheckbox:checked').each(function() {
+                                $(this).closest('tr').fadeOut();
+                            });
+
+                            // Uncheck select all
+                            $('#selectAll').prop('checked', false);
+
+                            Swal.fire({
+                                title: "{{ __('dashboard.deleted') }}!",
+                                text: "{{ __('dashboard.bulk_delete_success') }}",
+                                icon: "success",
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+                        },
+                        error: function() {
+                            Swal.fire({
+                                title: "{{ __('dashboard.error') }}",
+                                text: "{{ __('dashboard.bulk_delete_failed') }}",
+                                icon: "error",
+                                confirmButtonText: "{{ __('dashboard.ok') }}"
+                            });
+                        }
+                    });
+                }
+            });
+        });
+
+        // Select all functionality
+        $('#selectAll').change(function() {
+            $('.payrollCheckbox').prop('checked', this.checked);
+        });
+
+        // Update select all when individual checkboxes change
+        $(document).on('change', '.payrollCheckbox', function() {
+            if ($('.payrollCheckbox:checked').length === $('.payrollCheckbox').length) {
+                $('#selectAll').prop('checked', true);
+            } else {
+                $('#selectAll').prop('checked', false);
             }
         });
-    });
-
-    // Select all functionality
-    $('#selectAll').change(function() {
-        $('.payrollCheckbox').prop('checked', this.checked);
-    });
-
-    // Update select all when individual checkboxes change
-    $(document).on('change', '.payrollCheckbox', function() {
-        if ($('.payrollCheckbox:checked').length === $('.payrollCheckbox').length) {
-            $('#selectAll').prop('checked', true);
-        } else {
-            $('#selectAll').prop('checked', false);
-        }
-    });
-</script>
-
+    </script>
 @endsection

@@ -538,6 +538,8 @@ return [
     'applies_when_an_employee_doesnt_report_to_work_without_prior_approval' => 'تطبق عندما لا يحضر الموظف للعمل بدون إذن مسبق',
     'minutes' => 'دقيقة ',
 
+    'salary_payment' => 'دفع الرواتب',
+
 
 ];
 
