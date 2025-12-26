@@ -105,4 +105,7 @@ return [
         11 => 'November',
         12 => 'December',
     ],
+
+    'total_allowance' => 'Total Allowances',
+
 ];

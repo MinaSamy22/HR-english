@@ -178,7 +178,7 @@
                             <th>{{ __('h_payroll.employee_name') }}</th>
                             <th>{{ __('h_payroll.basic_salary') }}</th>
                             <th>{{ __('h_payroll.bonus') }}</th>
-                            {{-- <th>{{ __('h_payroll.total_allowance') }}</th> --}}
+                            <th>{{ __('h_payroll.total_allowance') }}</th>
                             <th>{{ __('h_payroll.deductions') }}</th>
                             <th>{{ __('h_payroll.attendance_deduction') }}</th>
                             <th>{{ __('h_payroll.taxes_insurance') }}</th>
@@ -199,7 +199,7 @@
                                 <td>{{ $value->name }}</td>
                                 <td>{{ $value->basic_salary }}</td>
                                 <td>{{ $value->bounas }}</td>
-                                {{-- <td>{{ $value->other_allowances }}</td> --}}
+<td>{{ $value->total_allowances }}</td>
                                 <td>{{ $value->deductions }}</td>
                                 <td>{{ $value->attendance_deduction }}</td>
                                 <td>{{ $value->taxes }}</td>

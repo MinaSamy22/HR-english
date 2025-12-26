@@ -229,8 +229,8 @@
                             <option value="">{{ __('h_payroll.select_year') }}</option>
                             @php
                                 $currentYear = date('Y');
-                                $endYear = $currentYear + 1;
-                                $startYear = $currentYear - 3;
+                                $endYear = $currentYear + 5;
+                                $startYear = $currentYear - 1;
                             @endphp
                             @for ($i = $startYear; $i <= $endYear; $i++)
                                 <option value="{{ $i }}" {{ $i == $currentYear ? 'selected' : '' }}>
