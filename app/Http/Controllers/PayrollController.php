@@ -70,7 +70,6 @@ public function index(Request $request)
         }
     }
 
-
     // Add branches data for the filter dropdown
     $data['branches'] = \DB::table('branches')
         ->where('company_id', $company_id)

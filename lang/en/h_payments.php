@@ -19,7 +19,7 @@ return [
     'paid_amount' => 'Paid Amount',
     'paid_amount_desc' => 'The total amount that has already been paid to the employee',
 
-    'remaining_amount' => 'Remaining Amount',
+    'remaining_amount' => 'Remaining',
     'remaining_amount_desc' => 'The amount that is still unpaid (Net Pay - Paid Amount)',
 
     'payment_status' => 'Payment Status',
@@ -60,7 +60,7 @@ return [
     // Create / List
     'create_payment' => 'Create New Payment',
     'payment_list' => 'Payments List',
-    'save_payments' => 'Save Payments',
+    'save_payments' => 'Pay',
     'no_payrolls_found' => 'No payrolls found',
     'select_filters_to_see_payrolls' => 'Please select branch, month, and year to view payrolls',
     'please_select_month_year' => 'Please select month and year',
@@ -83,10 +83,15 @@ return [
     'amount_exceeds_remaining' => 'Amount exceeds remaining balance',
     'payment_deleted_successfully' => 'Payment deleted successfully',
     'payments_deleted_successfully' => 'Payments deleted successfully',
+     // New translations for success messages
+    'skipped_fully_paid' => 'Skipped (Already Fully Paid)',
+    'no_payments_processed' => 'No payments were processed',
+    'all_payrolls_fully_paid' => 'All payrolls for this period are already fully paid',
+
 
     // Notes
     'note_title' => 'Important Note:',
-    'note_all_paid' => '✓ If you click Save without selection: all salaries will be paid in full.',
+    'note_all_paid' => '✓ If you click Pay without selection: all salaries will be paid in full.',
     'note_partial_paid' => '✓ If some employees are selected for partial payment: they will be partially paid and the rest will be paid in full.',
     'note_ignore_fully_paid' => '✓ When completing payments for partially paid employees: fully paid employees will be automatically ignored.',
 

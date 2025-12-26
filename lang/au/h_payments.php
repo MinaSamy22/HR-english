@@ -19,7 +19,7 @@ return [
     'paid_amount' => 'ادا شدہ رقم',
     'paid_amount_desc' => 'وہ کل رقم جو اب تک ملازم کو ادا کی جا چکی ہے',
 
-    'remaining_amount' => 'باقی رقم',
+    'remaining_amount' => 'باقی',
     'remaining_amount_desc' => 'وہ رقم جو ابھی ادا نہیں کی گئی (خالص تنخواہ - ادا شدہ رقم)',
 
     'payment_status' => 'ادائیگی کی حیثیت',
@@ -60,7 +60,7 @@ return [
     // Create / List
     'create_payment' => 'نئی ادائیگی بنائیں',
     'payment_list' => 'ادائیگیوں کی فہرست',
-    'save_payments' => 'ادائیگیاں محفوظ کریں',
+    'save_payments' => 'ادا شدہ',
     'no_payrolls_found' => 'کوئی پے رول موجود نہیں',
     'select_filters_to_see_payrolls' => 'براہ کرم پے رول دیکھنے کے لیے برانچ، مہینہ اور سال منتخب کریں',
     'please_select_month_year' => 'براہ کرم مہینہ اور سال منتخب کریں',
@@ -84,6 +84,11 @@ return [
     'amount_exceeds_remaining' => 'رقم باقی رقم سے زیادہ ہے',
     'payment_deleted_successfully' => 'ادائیگی کامیابی سے حذف ہو گئی',
     'payments_deleted_successfully' => 'ادائیگیاں کامیابی سے حذف ہو گئیں',
+
+      // New translations for success messages
+    'skipped_fully_paid' => 'چھوڑ دیا گیا (پہلے سے مکمل طور پر ادا شدہ)',
+    'no_payments_processed' => 'کوئی ادائیگی عمل میں نہیں لائی گئی',
+    'all_payrolls_fully_paid' => 'اس مدت کی تمام تنخواہیں پہلے سے ہی مکمل طور پر ادا شدہ ہیں',
 
     // Notes
     'note_title' => 'اہم نوٹ:',

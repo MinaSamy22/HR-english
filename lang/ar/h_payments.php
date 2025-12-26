@@ -19,7 +19,7 @@ return [
     'paid_amount' => 'المبلغ المدفوع',
     'paid_amount_desc' => 'إجمالي المبلغ الذي تم دفعه للموظف حتى الآن',
 
-    'remaining_amount' => 'المبلغ المتبقي',
+    'remaining_amount' => 'المتبقي',
     'remaining_amount_desc' => 'المبلغ الذي لم يتم دفعه بعد (صافي الراتب - المبلغ المدفوع)',
 
     'payment_status' => 'حالة الدفع',
@@ -62,7 +62,7 @@ return [
 
     'create_payment' => 'إنشاء عملية دفع جديدة',
     'payment_list' => 'قائمة المدفوعات',
-    'save_payments' => 'حفظ المدفوعات',
+    'save_payments' => 'دفع',
     'no_payrolls_found' => 'لا توجد كشوف رواتب',
     'select_filters_to_see_payrolls' => 'الرجاء تحديد الفرع والشهر والسنة لعرض كشوف الرواتب',
     'please_select_month_year' => 'الرجاء تحديد الشهر والسنة',
@@ -85,10 +85,14 @@ return [
     'amount_exceeds_remaining' => 'المبلغ يتجاوز المتبقي',
     'payment_deleted_successfully' => 'تم حذف الدفعة بنجاح',
     'payments_deleted_successfully' => 'تم حذف الدفعات بنجاح',
+     // New translations for success messages
+    'skipped_fully_paid' => 'تم التجاوز (مدفوع بالكامل مسبقاً)',
+    'no_payments_processed' => 'لم يتم معالجة أي مدفوعات',
+    'all_payrolls_fully_paid' => 'جميع كشوف الرواتب لهذه الفترة مدفوعة بالكامل بالفعل',
 
 
     'note_title' => 'ملاحظة هامة:',
-    'note_all_paid' => '✓ عند الضغط على حفظ بدون تحديد: سيتم دفع جميع الرواتب كاملة.',
+    'note_all_paid' => '✓ عند الضغط على دفع بدون تحديد: سيتم دفع جميع الرواتب كاملة.',
     'note_partial_paid' => '✓ عند تحديد موظفين بدفع جزئي: سيتم دفعهم جزئياً والباقي كاملاً.',
     'note_ignore_fully_paid' => '✓ عند استكمال دفع الرواتب للموظفين الذين تم الدفع لهم جزئياً: سيتم تجاهل الموظفين الذين تم دفع رواتبهم كاملة تلقائياً.',
 

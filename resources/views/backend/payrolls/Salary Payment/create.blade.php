@@ -192,27 +192,6 @@
             </div>
         </div>
 
-        @if (session('error'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="fas fa-exclamation-triangle"></i>
-                <strong>{{ __('dashboard.error') }}!</strong>
-                <div style="white-space: pre-line; margin-top: 8px;">{!! session('error') !!}</div>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        @endif
-
-        @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="fas fa-check-circle"></i>
-                <strong>{{ __('dashboard.success') }}!</strong>
-                <div style="white-space: pre-line; margin-top: 8px;">{!! session('success') !!}</div>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        @endif
 
         <!-- Filter Section -->
         <div class="filter-section">
@@ -330,307 +309,300 @@
 @section('script')
     <script>
         $(document).ready(function() {
-    let totalEmployees = 0;
-    let paidEmployees = 0;
+            let totalEmployees = 0;
+            let paidEmployees = 0;
 
-    $('#searchPayrolls').on('click', function() {
-        const branchId = $('#filter_branch_id').val();
-        const month = $('#month').val();
-        const year = $('#year').val();
+            $('#searchPayrolls').on('click', function() {
+                const branchId = $('#filter_branch_id').val();
+                const month = $('#month').val();
+                const year = $('#year').val();
 
-        if (!month || !year) {
-            Swal.fire({
-                icon: 'warning',
-                title: '{{ __('dashboard.warning') }}',
-                text: '{{ __('h_payments.please_select_month_year') }}'
-            });
-            return;
-        }
-
-        $('#selected_month').val(month);
-        $('#selected_year').val(year);
-        $('#selected_branch').val(branchId);
-
-        $.ajax({
-            url: '{{ url('admin/payments/get-payrolls') }}',
-            type: 'GET',
-            data: {
-                branch_id: branchId,
-                month: month,
-                year: year
-            },
-            success: function(response) {
-                if (response.success && response.payrolls.length > 0) {
-                    displayPayrolls(response.payrolls);
-                    $('#payrollsSection').show();
-                    $('#noPayrolls').hide();
-                } else {
-                    $('#payrollsSection').hide();
-                    $('#noPayrolls').show();
+                if (!month || !year) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: '{{ __('dashboard.warning') }}',
+                        text: '{{ __('h_payments.please_select_month_year') }}'
+                    });
+                    return;
                 }
-            },
-            error: function() {
-                Swal.fire({
-                    icon: 'error',
-                    title: '{{ __('dashboard.error') }}',
-                    text: '{{ __('dashboard.something_went_wrong') }}'
+
+                $('#selected_month').val(month);
+                $('#selected_year').val(year);
+                $('#selected_branch').val(branchId);
+
+                $.ajax({
+                    url: '{{ url('admin/payments/get-payrolls') }}',
+                    type: 'GET',
+                    data: {
+                        branch_id: branchId,
+                        month: month,
+                        year: year
+                    },
+                    success: function(response) {
+                        if (response.success && response.payrolls.length > 0) {
+                            displayPayrolls(response.payrolls);
+                            $('#payrollsSection').show();
+                            $('#noPayrolls').hide();
+                        } else {
+                            $('#payrollsSection').hide();
+                            $('#noPayrolls').show();
+                        }
+                    },
+                    error: function() {
+                        Swal.fire({
+                            icon: 'error',
+                            title: '{{ __('dashboard.error') }}',
+                            text: '{{ __('dashboard.something_went_wrong') }}'
+                        });
+                    }
+                });
+            });
+
+            function displayPayrolls(payrolls) {
+                let html = '';
+                totalEmployees = payrolls.length;
+                paidEmployees = 0;
+
+                payrolls.forEach(function(payroll) {
+                    const totalPaid = parseInt(payroll.total_paid) || 0;
+                    const remaining = payroll.net_pay - totalPaid;
+                    const isPaidFull = remaining <= 0;
+
+                    if (isPaidFull) {
+                        paidEmployees++;
+                    }
+
+                    // Start payroll card
+                    html += '<div class="payroll-card ' + (isPaidFull ? 'already-paid' : '') + '" data-payroll-id="' + payroll.id + '">';
+
+                    // Employee info header
+                    html += '<div class="employee-info">';
+                    html += '<div>';
+                    html += '<span class="employee-name">' + payroll.employee_name + '</span>';
+                    html += '<span class="badge badge-info ml-2">' + payroll.payroll_type_label + '</span>';
+
+                    if (isPaidFull) {
+                        html += '<span class="badge badge-success ml-2">';
+                        html += '<i class="fas fa-check"></i> {{ __('h_payments.fully_paid_badge') }}';
+                        html += '</span>';
+                    }
+
+                    html += '</div>';
+                    html += '<div>';
+
+                    if (!isPaidFull) {
+                        html += '<input type="checkbox" class="payroll-checkbox" data-payroll-id="' + payroll.id + '">';
+                    }
+
+                    html += '</div>';
+                    html += '</div>';
+
+                    // Salary info grid
+                    html += '<div class="salary-info">';
+
+                    html += '<div class="info-item">';
+                    html += '<div class="info-label">{{ __('h_payroll.basic_salary') }}</div>';
+                    html += '<div class="info-value">' + payroll.basic_salary + '</div>';
+                    html += '</div>';
+
+                    html += '<div class="info-item">';
+                    html += '<div class="info-label">{{ __('h_payroll.net_pay') }}</div>';
+                    html += '<div class="info-value" style="color: #4caf50;">' + payroll.net_pay + '</div>';
+                    html += '</div>';
+
+                    html += '<div class="info-item ' + (totalPaid > 0 ? 'already-paid' : '') + '">';
+                    html += '<div class="info-label">{{ __('h_payments.total_paid') }}</div>';
+                    html += '<div class="info-value" style="color: #2196f3;">' + totalPaid + '</div>';
+                    html += '</div>';
+
+                    html += '<div class="info-item">';
+                    html += '<div class="info-label">{{ __('h_payments.remaining') }}</div>';
+                    html += '<div class="info-value" style="color: ' + (remaining > 0 ? '#ff9800' : '#4caf50') + ';">' + remaining + '</div>';
+                    html += '</div>';
+
+                    html += '</div>';
+
+                    // Payment input section (only if not fully paid)
+                    if (!isPaidFull) {
+                        html += '<div class="payment-input-section" id="payment-section-' + payroll.id + '">';
+
+                        // Partial payment toggle
+                        html += '<div class="partial-payment-toggle">';
+                        html += '<label>';
+                        html += '<input type="checkbox" class="partial-payment-checkbox" data-payroll="' + payroll.id + '">';
+                        html += '<i class="fas fa-coins"></i> {{ __('h_payments.partial_payment') }}';
+                        html += '</label>';
+                        html += '</div>';
+
+                        // Partial payment inputs
+                        html += '<div class="partial-payment-inputs" id="partial-inputs-' + payroll.id + '" style="display: none;">';
+                        html += '<div class="form-group">';
+                        html += '<label>{{ __('h_payments.amount_to_pay') }} <span style="color: red;">*</span></label>';
+                        html += '<input type="number" class="form-control payment-amount" data-payroll="' + payroll.id + '" min="0" max="' + remaining + '" placeholder="{{ __('h_payments.enter_amount') }}">';
+                        html += '</div>';
+                        html += '</div>';
+
+                        // Full payment inputs
+                        html += '<div class="full-payment-inputs" id="full-inputs-' + payroll.id + '">';
+                        html += '<input type="hidden" class="full-amount-input" data-payroll="' + payroll.id + '" data-amount="' + remaining + '">';
+                        html += '<div class="alert alert-info">';
+                        html += '<i class="fas fa-info-circle"></i> {{ __('h_payments.full_remaining_amount_notice') }}: <strong>' + remaining + '</strong>';
+                        html += '</div>';
+                        html += '</div>';
+
+                        // Payment date
+                        html += '<div class="form-group">';
+                        html += '<label>{{ __('h_payments.payment_date') }} <span style="color: red;">*</span></label>';
+                        html += '<input type="date" class="form-control payment-date-input" data-payroll="' + payroll.id + '" value="{{ date('Y-m-d') }}">';
+                        html += '</div>';
+
+                        // Hidden inputs
+                        html += '<input type="hidden" class="payroll-id-input" value="' + payroll.id + '">';
+                        html += '<input type="hidden" class="employee-id-input" value="' + payroll.employee_id + '">';
+
+                        html += '</div>';
+                    }
+
+                    html += '</div>';
+                });
+
+                $('#payrollsList').html(html);
+                updateProgressCounter();
+                attachEventHandlers();
+            }
+
+            function updateProgressCounter() {
+                $('#paidCount').text(paidEmployees);
+                $('#totalCount').text(totalEmployees);
+
+                const progressDiv = $('#paymentProgress');
+                const submitBtn = $('#submitPaymentBtn');
+
+                if (paidEmployees === totalEmployees && totalEmployees > 0) {
+                    progressDiv.addClass('all-paid');
+                    submitBtn.prop('disabled', true).html('<i class="fas fa-check-circle"></i> {{ __('h_payments.all_salaries_paid') }}');
+                } else {
+                    progressDiv.removeClass('all-paid');
+                    submitBtn.prop('disabled', false).html('<i class="fas fa-check-circle"></i> {{ __('h_payments.save_payments') }}');
+                }
+            }
+
+            function attachEventHandlers() {
+                $('.payroll-checkbox').on('change', function() {
+                    const payrollId = $(this).data('payroll-id');
+                    const card = $(this).closest('.payroll-card');
+                    const section = $('#payment-section-' + payrollId);
+
+                    if ($(this).is(':checked')) {
+                        card.addClass('selected');
+                        section.addClass('active');
+                    } else {
+                        card.removeClass('selected');
+                        section.removeClass('active');
+                        $('.partial-payment-checkbox[data-payroll="' + payrollId + '"]').prop('checked', false);
+                        $('#partial-inputs-' + payrollId).hide();
+                        $('#full-inputs-' + payrollId).show();
+                        $('.payment-amount[data-payroll="' + payrollId + '"]').prop('required', false).val('');
+                    }
+                });
+
+                $('.partial-payment-checkbox').on('change', function() {
+                    const payrollId = $(this).data('payroll');
+                    const partialInputs = $('#partial-inputs-' + payrollId);
+                    const fullInputs = $('#full-inputs-' + payrollId);
+                    const amountInput = $('.payment-amount[data-payroll="' + payrollId + '"]');
+
+                    if ($(this).is(':checked')) {
+                        fullInputs.hide();
+                        partialInputs.show();
+                        amountInput.prop('required', true);
+                    } else {
+                        partialInputs.hide();
+                        fullInputs.show();
+                        amountInput.prop('required', false).val('');
+                    }
                 });
             }
-        });
-    });
 
-    function displayPayrolls(payrolls) {
-        let html = '';
-        totalEmployees = payrolls.length;
-        paidEmployees = 0;
+            // NEW: Non-AJAX form submission with validation
+            $('#paymentForm').on('submit', function(e) {
+                const selectedPayrolls = $('.payroll-checkbox:checked');
 
-        payrolls.forEach(function(payroll) {
-            const totalPaid = parseInt(payroll.total_paid) || 0;
-            const remaining = payroll.net_pay - totalPaid;
-            const isPaidFull = remaining <= 0;
+                // Only validate if there are selected payrolls
+                if (selectedPayrolls.length > 0) {
+                    let isValid = true;
+                    let errorMessage = '';
 
-            if (isPaidFull) {
-                paidEmployees++;
-            }
+                    selectedPayrolls.each(function() {
+                        const payrollId = $(this).data('payroll-id');
+                        const isPartial = $('.partial-payment-checkbox[data-payroll="' + payrollId + '"]').is(':checked');
 
-            // Start payroll card
-            html += '<div class="payroll-card ' + (isPaidFull ? 'already-paid' : '') + '" data-payroll-id="' + payroll.id + '">';
+                        if (isPartial) {
+                            const amount = $('.payment-amount[data-payroll="' + payrollId + '"]').val();
+                            if (!amount || parseFloat(amount) <= 0) {
+                                isValid = false;
+                                errorMessage = '{{ __('h_payments.partial_amount_required') }}';
+                                return false;
+                            }
+                        }
+                    });
 
-            // Employee info header
-            html += '<div class="employee-info">';
-            html += '<div>';
-            html += '<span class="employee-name">' + payroll.employee_name + '</span>';
-            html += '<span class="badge badge-info ml-2">' + payroll.payroll_type_label + '</span>';
+                    if (!isValid) {
+                        e.preventDefault();
+                        Swal.fire({
+                            icon: 'warning',
+                            title: '{{ __('dashboard.warning') }}',
+                            text: errorMessage
+                        });
+                        return false;
+                    }
 
-            if (isPaidFull) {
-                html += '<span class="badge badge-success ml-2">';
-                html += '<i class="fas fa-check"></i> {{ __('h_payments.fully_paid_badge') }}';
-                html += '</span>';
-            }
+                    // Build form inputs for selected payrolls
+                    selectedPayrolls.each(function(index) {
+                        const payrollId = $(this).data('payroll-id');
+                        const section = $('#payment-section-' + payrollId);
+                        const isPartial = $('.partial-payment-checkbox[data-payroll="' + payrollId + '"]').is(':checked');
 
-            html += '</div>'; // Close employee name div
-            html += '<div>';
+                        let amount;
+                        if (isPartial) {
+                            amount = $('.payment-amount[data-payroll="' + payrollId + '"]').val();
+                        } else {
+                            amount = $('.full-amount-input[data-payroll="' + payrollId + '"]').data('amount');
+                        }
 
-            if (!isPaidFull) {
-                html += '<input type="checkbox" class="payroll-checkbox" data-payroll-id="' + payroll.id + '">';
-            }
+                        const paymentDate = $('.payment-date-input[data-payroll="' + payrollId + '"]').val();
+                        const employeeId = section.find('.employee-id-input').val();
 
-            html += '</div>'; // Close checkbox div
-            html += '</div>'; // Close employee-info
+                        // Create hidden inputs for form submission
+                        $('<input>').attr({
+                            type: 'hidden',
+                            name: 'payments[' + index + '][payroll_id]',
+                            value: payrollId
+                        }).appendTo('#paymentForm');
 
-            // Salary info grid
-            html += '<div class="salary-info">';
+                        $('<input>').attr({
+                            type: 'hidden',
+                            name: 'payments[' + index + '][employee_id]',
+                            value: employeeId
+                        }).appendTo('#paymentForm');
 
-            html += '<div class="info-item">';
-            html += '<div class="info-label">{{ __('h_payroll.basic_salary') }}</div>';
-            html += '<div class="info-value">' + payroll.basic_salary + '</div>';
-            html += '</div>';
+                        $('<input>').attr({
+                            type: 'hidden',
+                            name: 'payments[' + index + '][amount]',
+                            value: amount
+                        }).appendTo('#paymentForm');
 
-            html += '<div class="info-item">';
-            html += '<div class="info-label">{{ __('h_payroll.net_pay') }}</div>';
-            html += '<div class="info-value" style="color: #4caf50;">' + payroll.net_pay + '</div>';
-            html += '</div>';
-
-            html += '<div class="info-item ' + (totalPaid > 0 ? 'already-paid' : '') + '">';
-            html += '<div class="info-label">{{ __('h_payments.total_paid') }}</div>';
-            html += '<div class="info-value" style="color: #2196f3;">' + totalPaid + '</div>';
-            html += '</div>';
-
-            html += '<div class="info-item">';
-            html += '<div class="info-label">{{ __('h_payments.remaining') }}</div>';
-            html += '<div class="info-value" style="color: ' + (remaining > 0 ? '#ff9800' : '#4caf50') + ';">' + remaining + '</div>';
-            html += '</div>';
-
-            html += '</div>'; // Close salary-info
-
-            // Payment input section (only if not fully paid)
-            if (!isPaidFull) {
-                html += '<div class="payment-input-section" id="payment-section-' + payroll.id + '">';
-
-                // Partial payment toggle
-                html += '<div class="partial-payment-toggle">';
-                html += '<label>';
-                html += '<input type="checkbox" class="partial-payment-checkbox" data-payroll="' + payroll.id + '">';
-                html += '<i class="fas fa-coins"></i> {{ __('h_payments.partial_payment') }}';
-                html += '</label>';
-                html += '</div>';
-
-                // Partial payment inputs
-                html += '<div class="partial-payment-inputs" id="partial-inputs-' + payroll.id + '" style="display: none;">';
-                html += '<div class="form-group">';
-                html += '<label>{{ __('h_payments.amount_to_pay') }} <span style="color: red;">*</span></label>';
-                html += '<input type="number" class="form-control payment-amount" data-payroll="' + payroll.id + '" min="0" max="' + remaining + '" placeholder="{{ __('h_payments.enter_amount') }}">';
-                html += '</div>';
-                html += '</div>';
-
-                // Full payment inputs
-                html += '<div class="full-payment-inputs" id="full-inputs-' + payroll.id + '">';
-                html += '<input type="hidden" class="full-amount-input" data-payroll="' + payroll.id + '" data-amount="' + remaining + '">';
-                html += '<div class="alert alert-info">';
-                html += '<i class="fas fa-info-circle"></i> {{ __('h_payments.full_remaining_amount_notice') }}: <strong>' + remaining + '</strong>';
-                html += '</div>';
-                html += '</div>';
-
-                // Payment date
-                html += '<div class="form-group">';
-                html += '<label>{{ __('h_payments.payment_date') }} <span style="color: red;">*</span></label>';
-                html += '<input type="date" class="form-control payment-date-input" data-payroll="' + payroll.id + '" value="{{ date('Y-m-d') }}">';
-                html += '</div>';
-
-                // Hidden inputs
-                html += '<input type="hidden" class="payroll-id-input" value="' + payroll.id + '">';
-                html += '<input type="hidden" class="employee-id-input" value="' + payroll.employee_id + '">';
-
-                html += '</div>'; // Close payment-input-section
-            }
-
-            html += '</div>'; // Close payroll-card
-        });
-
-        $('#payrollsList').html(html);
-        updateProgressCounter();
-        attachEventHandlers();
-    }
-
-    function updateProgressCounter() {
-        $('#paidCount').text(paidEmployees);
-        $('#totalCount').text(totalEmployees);
-
-        const progressDiv = $('#paymentProgress');
-        const submitBtn = $('#submitPaymentBtn');
-
-        if (paidEmployees === totalEmployees && totalEmployees > 0) {
-            progressDiv.addClass('all-paid');
-            submitBtn.prop('disabled', true).html('<i class="fas fa-check-circle"></i> {{ __('h_payments.all_salaries_paid') }}');
-        } else {
-            progressDiv.removeClass('all-paid');
-            submitBtn.prop('disabled', false).html('<i class="fas fa-check-circle"></i> {{ __('h_payments.save_payments') }}');
-        }
-    }
-
-    function attachEventHandlers() {
-        $('.payroll-checkbox').on('change', function() {
-            const payrollId = $(this).data('payroll-id');
-            const card = $(this).closest('.payroll-card');
-            const section = $('#payment-section-' + payrollId);
-
-            if ($(this).is(':checked')) {
-                card.addClass('selected');
-                section.addClass('active');
-            } else {
-                card.removeClass('selected');
-                section.removeClass('active');
-                $('.partial-payment-checkbox[data-payroll="' + payrollId + '"]').prop('checked', false);
-                $('#partial-inputs-' + payrollId).hide();
-                $('#full-inputs-' + payrollId).show();
-                $('.payment-amount[data-payroll="' + payrollId + '"]').prop('required', false).val('');
-            }
-        });
-
-        $('.partial-payment-checkbox').on('change', function() {
-            const payrollId = $(this).data('payroll');
-            const partialInputs = $('#partial-inputs-' + payrollId);
-            const fullInputs = $('#full-inputs-' + payrollId);
-            const amountInput = $('.payment-amount[data-payroll="' + payrollId + '"]');
-
-            if ($(this).is(':checked')) {
-                fullInputs.hide();
-                partialInputs.show();
-                amountInput.prop('required', true);
-            } else {
-                partialInputs.hide();
-                fullInputs.show();
-                amountInput.prop('required', false).val('');
-            }
-        });
-    }
-
-    $('#paymentForm').on('submit', function(e) {
-        e.preventDefault();
-
-        const selectedPayrolls = $('.payroll-checkbox:checked');
-        let isValid = true;
-        let errorMessage = '';
-
-        selectedPayrolls.each(function() {
-            const payrollId = $(this).data('payroll-id');
-            const isPartial = $('.partial-payment-checkbox[data-payroll="' + payrollId + '"]').is(':checked');
-
-            if (isPartial) {
-                const amount = $('.payment-amount[data-payroll="' + payrollId + '"]').val();
-                if (!amount || parseFloat(amount) <= 0) {
-                    isValid = false;
-                    errorMessage = '{{ __('h_payments.partial_amount_required') }}';
-                    return false;
+                        $('<input>').attr({
+                            type: 'hidden',
+                            name: 'payments[' + index + '][payment_date]',
+                            value: paymentDate
+                        }).appendTo('#paymentForm');
+                    });
                 }
-            }
-        });
 
-        if (!isValid) {
-            Swal.fire({
-                icon: 'warning',
-                title: '{{ __('dashboard.warning') }}',
-                text: errorMessage
+                // Let the form submit normally (no preventDefault here)
+                return true;
             });
-            return false;
-        }
-
-        const form = $(this);
-        const formData = new FormData();
-
-        formData.append('_token', '{{ csrf_token() }}');
-        formData.append('selected_month', $('#selected_month').val());
-        formData.append('selected_year', $('#selected_year').val());
-        formData.append('selected_branch', $('#selected_branch').val());
-
-        if (selectedPayrolls.length > 0) {
-            let index = 0;
-            selectedPayrolls.each(function() {
-                const payrollId = $(this).data('payroll-id');
-                const section = $('#payment-section-' + payrollId);
-                const isPartial = $('.partial-payment-checkbox[data-payroll="' + payrollId + '"]').is(':checked');
-
-                let amount;
-                if (isPartial) {
-                    amount = $('.payment-amount[data-payroll="' + payrollId + '"]').val();
-                } else {
-                    amount = $('.full-amount-input[data-payroll="' + payrollId + '"]').data('amount');
-                }
-
-                const paymentDate = $('.payment-date-input[data-payroll="' + payrollId + '"]').val();
-                const employeeId = section.find('.employee-id-input').val();
-
-                formData.append('payments[' + index + '][payroll_id]', payrollId);
-                formData.append('payments[' + index + '][employee_id]', employeeId);
-                formData.append('payments[' + index + '][amount]', amount);
-                formData.append('payments[' + index + '][payment_date]', paymentDate);
-
-                index++;
-            });
-        }
-
-        $.ajax({
-            url: form.attr('action'),
-            method: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                window.location.href = '{{ url('admin/salary-payment') }}';
-            },
-            error: function(xhr) {
-                let errorMsg = '{{ __('dashboard.something_went_wrong') }}';
-                if (xhr.responseJSON && xhr.responseJSON.message) {
-                    errorMsg = xhr.responseJSON.message;
-                }
-                Swal.fire({
-                    icon: 'error',
-                    title: '{{ __('dashboard.error') }}',
-                    text: errorMsg
-                });
-            }
         });
-    });
-});
     </script>
 @endsection

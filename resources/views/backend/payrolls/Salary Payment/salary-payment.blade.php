@@ -22,8 +22,8 @@
                             </div>
                             <div id="collapseOne" class="collapse" data-parent="#accordion">
                                 <div class="card-body">
-                                    ⚠️ <strong>{{ __('h_payments.important_notice') }}</strong>
-                                    {{ __('h_payments.notice_text') }}<br><br>
+                                    {{-- ⚠️ <strong>{{ __('h_payments.important_notice') }}</strong>
+                                    {{ __('h_payments.notice_text') }}<br><br> --}}
 
                                     <strong>{{ __('h_payments.clarification_title') }}</strong><br><br>
 
@@ -41,6 +41,9 @@
                 </div>
             </div>
         </div>
+
+        @include('_message')
+
 
         <!-- Filter Form -->
         <form method="get" action="">
@@ -115,7 +118,6 @@
             </div>
         </form>
 
-        @include('_message')
 
         <!-- Payments Table -->
         <div class="card"
@@ -135,9 +137,20 @@
                         <tr>
                             <th><input type="checkbox" id="selectAll"></th>
                             <th>{{ __('h_payments.employee_name') }}</th>
-                            <th>{{ __('h_payroll.net_pay') }}</th>
-                            <th>{{ __('h_payments.paid_amount') }}</th>
-                            <th>{{ __('h_payments.remaining_amount') }}</th>
+                            {{-- Net Pay --}}
+            <th class="text-primary">
+                {{ __('h_payroll.net_pay') }}
+            </th>
+
+            {{-- Paid --}}
+            <th class="text-success">
+                {{ __('h_payments.paid_amount') }}
+            </th>
+
+            {{-- Remaining --}}
+            <th class="text-danger">
+                {{ __('h_payments.remaining_amount') }}
+            </th>
                             <th>{{ __('h_payments.payment_date') }}</th>
                             <th>{{ __('h_payments.action') }}</th>
                         </tr>
@@ -147,19 +160,21 @@
                             <tr>
                                 <td><input type="checkbox" class="paymentCheckbox" value="{{ $payment->id }}"></td>
                                 <td>{{ $payment->employee->name ?? 'N/A' }}</td>
-                                <td>
-                                    @if ($payment->total_amount < 0)
-                                        0
-                                    @else
-                                        {{ number_format($payment->total_amount, 2) }}
-                                    @endif
-                                </td>
-                                <td>{{ number_format($payment->paid_amount, 2) }}</td>
-                                <td>
-                                    <span class="{{ $payment->remaining_amount > 0 ? 'text-danger' : 'text-success' }}" style="font-weight: bold;">
-                                        {{ number_format($payment->remaining_amount, 2) }}
-                                    </span>
-                                </td>
+                                {{-- Net Pay --}}
+                <td class="text-primary font-weight-bold">
+                    {{ $payment->total_amount < 0 ? 0 : number_format($payment->total_amount, 2) }}
+                </td>
+
+                {{-- Paid Amount --}}
+                <td class="text-success font-weight-bold">
+                    {{ number_format($payment->paid_amount, 2) }}
+                </td>
+
+                {{-- Remaining Amount --}}
+                <td style="font-weight: bold;"
+                    class="{{ $payment->remaining_amount > 0 ? 'text-danger' : 'text-success' }}">
+                    {{ number_format($payment->remaining_amount, 2) }}
+                </td>
                                 <td>{{ date('d-m-Y', strtotime($payment->payment_date)) }}</td>
                                 <td>
                                     <button type="button" class="btn btn-danger rounded-pill delete-btn"
