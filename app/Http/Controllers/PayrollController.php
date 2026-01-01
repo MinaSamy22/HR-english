@@ -42,10 +42,6 @@ public function index(Request $request)
     return view('backend.payrolls.index', $data);
 }
 
-
-
-
-
     public function add(Request $request)
 {
     $company_id = session('company_id');
@@ -160,7 +156,7 @@ public function add_post(Request $request)
         $salary = $employee->salary;
 
         // Calculate components and retrieve from service file
-        [$attendanceDeductions, $dailyWage, $daysAbsent]       = $this->payrollService->calculateAttendanceDeductions($employee, $salary, $startDate, $endDate, $companyId, $payrollType);
+        [$attendanceDeductions, $dailyWage, $daysAbsent, $netPayFromAttendance]       = $this->payrollService->calculateAttendanceDeductions($employee, $salary, $startDate, $endDate, $companyId, $payrollType);
         $leaveDeductions                                       = $this->payrollService->calculateDeductions($employee, $startDate, $endDate);
         [$restVacancy, $vacationDeductions]                    = $this->payrollService->calculateVacationDeductions($employee, $startDate, $endDate);
         $bonus                                                 = $this->payrollService->calculateBonus($employee, $startDate, $endDate);
@@ -193,6 +189,15 @@ public function add_post(Request $request)
         $payroll->net_pay                             = $salary - ($totalDeductions + $totalTaxes + $attendanceDeductions) + $bonus + $totalAllowances;
         $payroll->daily_wage                          = $dailyWage;
         $payroll->days_absent                         = $daysAbsent;
+
+        // ✅ New: Use $netPayFromAttendance for daily payroll
+        if ($payrollType === 'daily') {
+            // For daily: use the calculated net pay from attendance (present days × salary)
+            $payroll->net_pay = $netPayFromAttendance - ($totalDeductions + $totalTaxes) + $bonus + $totalAllowances;
+        } else {
+            // For monthly/weekly: use the original calculation
+            $payroll->net_pay = $salary - ($totalDeductions + $totalTaxes + $attendanceDeductions) + $bonus + $totalAllowances;
+        }
 
         // Handle company/branch assignment
         $payroll->company_id = session('company_id') ?: $companyId;

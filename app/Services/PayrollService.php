@@ -100,8 +100,9 @@ class PayrollService
         }
 
         // 2. حساب الأجر اليومي
+        // ✅ For daily payroll: salary IS the daily wage (salary per day)
         if ($payrollType === 'daily') {
-            $dailyWage = floatval($salary);
+            $dailyWage = null; // لا نحتاج حساب أجر يومي للراتب اليومي
         } elseif ($payrollType === 'weekly') {
             $dailyWage = round($salary / 7, 2);
         } else {
@@ -142,6 +143,46 @@ class PayrollService
         }
 
         // 6. الحساب
+        // New for daily calculation
+            if ($payrollType === 'daily') {
+        // ✅ For daily payroll: Only count days where attendance_type = '1' (Present)
+        $presentDays = 0;
+        $daysAbsent = 0;
+
+        $period = new \DatePeriod(
+            new \DateTime($startDate),
+            new \DateInterval('P1D'),
+            (new \DateTime($endDate))->modify('+1 day')
+        );
+
+        foreach ($period as $dt) {
+            $dayName = $dt->format('l');
+            $formattedDate = $dt->format('Y-m-d');
+
+            // Skip non-working days, holidays, and vacations
+            if (!in_array($dayName, $workingDays)) continue;
+            if (in_array($formattedDate, $officialHolidays)) continue;
+            if (in_array($formattedDate, $vacationDates)) continue;
+
+            $record = $attendanceCollection->get($formattedDate);
+
+            // Check if attendance_type is '1' (varchar comparison)
+            if ($record && ($record->attendance_type == '1' || $record->attendance_type === '1')) {
+                $presentDays++;
+            } else {
+                $daysAbsent++;
+            }
+        }
+
+        // ✅ Net pay = number of present days × salary (from users table)
+        $netPay = $presentDays * $salary;
+        $deduction = null; // لا يوجد خصم في حالة الراتب اليومي
+
+        return [$deduction, $dailyWage, $daysAbsent, $netPay];
+
+    } else {
+
+        // Original logic for monthly/weekly payroll
         $deduction = 0.0;
         $daysAbsent = 0;
         $attendedDays = 0;
@@ -188,25 +229,28 @@ class PayrollService
             }
         }
 
-        // تطبيق الشروط الجديدة بناءً على عدد أيام الحضور
-        if ($attendedDays < 15) {
-            // إذا كان الحضور أقل من 15 يوم
-            if ($attendedDays == 0) {
-                // إذا لم يحضر إطلاقاً
-                $netPay = 0;
-                $deduction = $salary; // الخصم يساوي الراتب بالكامل
+            // For monthly/weekly: Apply the existing logic
+            if ($attendedDays < 15) {
+                // إذا كان الحضور أقل من 15 يوم
+                if ($attendedDays == 0) {
+                    // إذا لم يحضر إطلاقاً
+                    $netPay = 0;
+                    $deduction = $salary; // الخصم يساوي الراتب بالكامل
+                } else {
+                    // إذا حضر أقل من 15 يوم
+                    $netPay = $attendedDays * $dailyWage;
+                    $deduction = $salary - $netPay; // الخصم هو الفرق بين الراتب الأساسي والأجر المستحق
+                }
             } else {
-                // إذا حضر أقل من 15 يوم
-                $netPay = $attendedDays * $dailyWage;
-                $deduction = $salary - $netPay; // الخصم هو الفرق بين الراتب الأساسي والأجر المستحق
+                // إذا حضر 15 يوم أو أكثر
+                $netPay = $salary - $deduction;
             }
-        } else {
-            // إذا حضر 15 يوم أو أكثر
-            $netPay = $salary - $deduction;
-        }
+
 
         return [$deduction, $dailyWage, $daysAbsent, $netPay];
     }
+}
+
 
 
 

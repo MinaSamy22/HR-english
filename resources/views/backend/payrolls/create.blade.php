@@ -194,6 +194,16 @@
     </div>
 
 <!-- Link to the new JavaScript file -->
+<!-- Pass translations to JavaScript -->
+<script>
+    window.payrollTranslations = {
+        select_payroll_type: "{{ __('h_payroll.select_payroll_type') }}",
+        daily_exceeds_limit: "{{ __('h_payroll.daily_exceeds_limit') }}",
+        weekly_exceeds_limit: "{{ __('h_payroll.weekly_exceeds_limit') }}",
+        monthly_minimum_days: "{{ __('h_payroll.monthly_minimum_days') }}",
+        monthly_exceeds_limit: "{{ __('h_payroll.monthly_exceeds_limit') }}"
+    };
+</script>
 <script src="{{ url('dist/js/payrollcreate.js')}}?v=3"></script>
 
 <script>

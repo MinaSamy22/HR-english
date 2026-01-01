@@ -108,4 +108,10 @@ return [
 
     'total_allowance' => 'Total Allowances',
 
+    'select_payroll_type' => 'Please select a payroll type.',
+    'daily_exceeds_limit' => 'Daily payroll cannot exceed 31 days.',
+    'weekly_exceeds_limit' => 'Weekly payroll cannot exceed 7 days.',
+    'monthly_minimum_days' => 'Monthly payroll must exceed 7 days.',
+    'monthly_exceeds_limit' => 'Monthly payroll cannot exceed 31 days.',
+
 ];
