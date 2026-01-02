@@ -78,4 +78,6 @@ return [
     'employee_already_has_insurance_with_names' =>
     'مندرجہ ذیل ملازمین کے پاس پہلے سے انشورنس موجود ہے: :names',
 
+    'update_code_first' => '✓ اگر ترمیم کرنا ہو تو پہلے کوڈ کو اپ ڈیٹ کرنا ضروری ہے۔',
+
 ];

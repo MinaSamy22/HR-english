@@ -79,4 +79,6 @@ return [
     'employee_already_has_insurance_with_names' =>
     'The following employee(s) already have insurance: :names',
 
+    'update_code_first' => '✓ If you want to make changes, you must update the code both.',
+
 ];

@@ -34,6 +34,17 @@
 the secound spam that not closed any thing you write in the place of close whill appear in red mess
 value = old for not rebeating the input  --}}
 
+                                    <!-- Payment Rules Banner -->
+                                    <div class="card-body">
+                                        <div class="alert alert-info mb-3">
+                                            <i class="fas fa-info-circle"></i>
+                                            <strong>{{ __('h_payments.note_title') }}</strong>
+                                            <ul class="mb-0 mt-2" style="list-style: none; padding-right: 0;">
+                                              <li>{{ __('h_insurance.update_code_first') }}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-lable">{{ __('h_tax.tax_name') }} <span
                                                 style="color: red;">{{ __('h_tax.required') }}</span></label>
@@ -73,7 +84,7 @@ value = old for not rebeating the input  --}}
                                                     {{ $getRecord->apply_to_payroll == 1 ? 'checked' : '' }}>
                                                 <label class="form-check-label"
                                                     for="apply_yes">{{ __('h_tax.yes') }}</label>
-                                            </div> 
+                                            </div>
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" name="apply_to_payroll"
                                                     id="apply_no" value="0"

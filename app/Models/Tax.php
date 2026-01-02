@@ -10,6 +10,7 @@ class Tax extends Model
     'code',
     'name',
     'percent',
+    'apply_to_payroll',
     'from_basic',
     'from_transportation',
     'from_housing',

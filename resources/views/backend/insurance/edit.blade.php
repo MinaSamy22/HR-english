@@ -31,6 +31,17 @@
                                 {{ csrf_field() }}
                                 <div class="card-body">
 
+                                    <!-- Payment Rules Banner -->
+                                    <div class="card-body">
+                                        <div class="alert alert-info mb-3">
+                                            <i class="fas fa-info-circle"></i>
+                                            <strong>{{ __('h_payments.note_title') }}</strong>
+                                            <ul class="mb-0 mt-2" style="list-style: none; padding-right: 0;">
+                                              <li>{{ __('h_insurance.update_code_first') }}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-lable">{{ __('h_insurance.insurance_name') }} <span
                                                 style="color: red;">*</span></label>
@@ -111,8 +122,9 @@
                                             </div>
 
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="from_other_allowances"
-                                                    value="1" id="from_other_allowances"
+                                                <input class="form-check-input" type="checkbox"
+                                                    name="from_other_allowances" value="1"
+                                                    id="from_other_allowances"
                                                     {{ $getRecord->from_other_allowances ? 'checked' : '' }}>
                                                 <label class="form-check-label"
                                                     for="from_other_allowances">{{ __('h_insurance.other_allowances') }}</label>

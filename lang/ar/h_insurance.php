@@ -81,5 +81,7 @@ return [
     'employee_already_has_insurance_with_names' =>
     'الموظفون التاليون لديهم تأمين مسجل بالفعل: :names',
 
+    'update_code_first' => '✓ في حالة الرغبة في التعديل، يجب تحديث الكود معاً.',
+
 
 ];
