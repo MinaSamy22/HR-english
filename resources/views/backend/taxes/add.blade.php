@@ -2,17 +2,18 @@
 @section('content')
     <link rel="stylesheet" href="{{ url('dist/css/payrollcreate.css') }}">
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper" style="background-image: url('{{ asset('/dist/img/additional.jpg') }}'); background-size: cover; background-position: center;">
+    <div class="content-wrapper"
+        style="background-image: url('{{ asset('/dist/img/additional.jpg') }}'); background-size: cover; background-position: center;">
         <!-- Content Header (Page header) -->
+
         <div class="content-header">
             <div class="container-fluid">
-        <div class="d-flex justify-content-between align-items-center flex-wrap">
-                        <h1 class="m-0 mt-3 mb-3">{{ __('h_tax.taxes') }}</h1>
-
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">{{ __('h_tax.add') }}</a></li>
-                            <li class="breadcrumb-item active">{{ __('h_tax.taxes') }}</li>
-                        </ol>
+                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                    <h1 class="m-0 mt-3 mb-3">{{ __('h_tax.taxes') }}</h1>
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item "><a href="{{ url('admin/taxes') }}">{{ __('h_tax.taxes') }}</a></li>
+                        <li class="breadcrumb-item active">{{ __('h_tax.add') }}</li>
+                    </ol>
                 </div><!-- /.row -->
             </div><!-- /.container-fluid -->
         </div>
@@ -36,31 +37,30 @@
                                         <label class="col-sm-2 col-form-label">{{ __('h_tax.employee_name') }} <span
                                                 style="color: red;">{{ __('h_tax.required') }}</span></label>
                                         <div class="col-sm-6">
-    <div id="employee-list"
-         style="max-height: 300px; overflow-y: auto; border: 1px solid #ddd; border-radius: 5px; padding: 10px;">
+                                            <div id="employee-list"
+                                                style="max-height: 300px; overflow-y: auto; border: 1px solid #ddd; border-radius: 5px; padding: 10px;">
 
-        <!-- Select All -->
-        <div class="form-check mb-2">
-            <input type="checkbox" id="select-all" class="form-check-input">
-            <label for="select-all" class="form-check-label">
-                {{ __('h_tax.select_all') }}
-            </label>
-        </div>
+                                                <!-- Select All -->
+                                                <div class="form-check mb-2">
+                                                    <input type="checkbox" id="select-all" class="form-check-input">
+                                                    <label for="select-all" class="form-check-label">
+                                                        {{ __('h_tax.select_all') }}
+                                                    </label>
+                                                </div>
 
-        <!-- Employees -->
-        @foreach ($getEmployees as $employee)
-            <div class="form-check mb-2 employee-item">
-                <input type="checkbox" name="employee_ids[]"
-                       value="{{ $employee->id }}"
-                       id="employee-{{ $employee->id }}"
-                       class="form-check-input employee-checkbox">
-                <label for="employee-{{ $employee->id }}" class="form-check-label">
-                    {{ $employee->name }}
-                </label>
-            </div>
-        @endforeach
-    </div>
-</div>
+                                                <!-- Employees -->
+                                                @foreach ($getEmployees as $employee)
+                                                    <div class="form-check mb-2 employee-item">
+                                                        <input type="checkbox" name="employee_ids[]"
+                                                            value="{{ $employee->id }}" id="employee-{{ $employee->id }}"
+                                                            class="form-check-input employee-checkbox">
+                                                        <label for="employee-{{ $employee->id }}" class="form-check-label">
+                                                            {{ $employee->name }}
+                                                        </label>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
 
                                     </div>
 
@@ -108,6 +108,48 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">
+                                            {{ __('h_tax.deduct_from') }}
+                                        </label>
+
+                                        <div class="col-sm-10">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="from_basic"
+                                                    value="1" id="from_basic">
+                                                <label class="form-check-label" for="from_basic">
+                                                    {{ __('h_tax.basic_salary') }}
+                                                </label>
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox"
+                                                    name="from_transportation" value="1" id="from_transportation">
+                                                <label class="form-check-label" for="from_transportation">
+                                                    {{ __('h_tax.transportation_allowance') }}
+                                                </label>
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="from_housing"
+                                                    value="1" id="from_housing">
+                                                <label class="form-check-label" for="from_housing">
+                                                    {{ __('h_tax.housing_allowance') }}
+                                                </label>
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox"
+                                                    name="from_other_allowances" value="1"
+                                                    id="from_other_allowances">
+                                                <label class="form-check-label" for="from_other_allowances">
+                                                    {{ __('h_tax.other_allowances') }}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
 
 
                                 </div>

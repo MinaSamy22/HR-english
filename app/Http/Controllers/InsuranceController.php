@@ -60,7 +60,6 @@ public function index(Request $request)
 
 public function add_post(Request $request)
 {
-    // Validate the request data
     $validated = $request->validate([
         'employee_ids'      => 'required|array|min:1',
         'employee_ids.*'    => 'exists:users,id',
@@ -70,15 +69,42 @@ public function add_post(Request $request)
         'apply_to_payroll'  => 'required|in:0,1',
     ]);
 
-    foreach ($validated['employee_ids'] as $employeeId) {
-        $insurance                 = new Insurance;
-        $insurance->employee_id    = $employeeId;
-        $insurance->code           = trim($request->code);
-        $insurance->name           = trim($request->name);
-        $insurance->percent        = trim($request->percent);
-        $insurance->apply_to_payroll = $request->apply_to_payroll; // ✅ Save radio
-        $insurance->company_id     = session('company_id');
+    // 🔴 Get employees who already have insurance (with names)
+    $insuredEmployees = Insurance::with('employee')
+        ->whereIn('employee_id', $validated['employee_ids'])
+        ->get();
 
+    if ($insuredEmployees->isNotEmpty()) {
+
+        $employeeNames = $insuredEmployees
+            ->pluck('employee.name')
+            ->filter()
+            ->implode(', ');
+
+        return redirect()->back()
+            ->withInput()
+            ->withErrors([
+                'employee_ids' => __('h_insurance.employee_already_has_insurance_with_names', [
+                    'names' => $employeeNames
+                ]),
+            ]);
+    }
+
+    foreach ($validated['employee_ids'] as $employeeId) {
+        $insurance = new Insurance();
+        $insurance->employee_id = $employeeId;
+        $insurance->code = trim($request->code);
+        $insurance->name = trim($request->name);
+        $insurance->percent = $request->percent;
+        $insurance->apply_to_payroll = $request->apply_to_payroll;
+
+        // Deduction sources
+        $insurance->from_basic = $request->has('from_basic');
+        $insurance->from_transportation = $request->has('from_transportation');
+        $insurance->from_housing = $request->has('from_housing');
+        $insurance->from_other_allowances = $request->has('from_other_allowances');
+
+        $insurance->company_id = session('company_id');
         if (session()->has('branch_id')) {
             $insurance->branch_id = session('branch_id');
         }
@@ -86,7 +112,8 @@ public function add_post(Request $request)
         $insurance->save();
     }
 
-    return redirect('admin/insurance')->with('success', __('h_insurance.insurance_added_success'));
+    return redirect('admin/insurance')
+        ->with('success', __('h_insurance.insurance_added_success'));
 }
 
 
@@ -111,6 +138,13 @@ public function add_post(Request $request)
     $insurance->name             = $request->name;
     $insurance->percent          = $request->percent;
     $insurance->apply_to_payroll = $request->apply_to_payroll; // ✅ Save radio value
+
+    // ✅ Update checkbox fields safely (unchecked = false)
+    $insurance->from_basic             = $request->has('from_basic');
+    $insurance->from_transportation    = $request->has('from_transportation');
+    $insurance->from_housing           = $request->has('from_housing');
+    $insurance->from_other_allowances  = $request->has('from_other_allowances');
+
     $insurance->company_id       = session('company_id');
 
     if (session()->has('branch_id')) {

@@ -76,5 +76,11 @@ return [
 
     'apply_to_payroll' => 'پے رول پر لاگو کریں',
     'yes' => 'جی ہاں',
-    'no' => 'نہیں'
+    'no' => 'نہیں',
+
+    'deduct_from' => 'ٹیکس مندرجہ ذیل سے کاٹا جائے',
+    'basic_salary' => 'بنیادی تنخواہ',
+    'transportation_allowance' => 'سفر الاؤنس',
+    'housing_allowance' => 'رہائش الاؤنس',
+    'other_allowances' => 'دیگر الاؤنسز',
 ];

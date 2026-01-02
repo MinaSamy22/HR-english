@@ -9,12 +9,12 @@
                 <div class="">
                     <h1 class="m-0">{{ __('dashboard.company_news') }}</h1>
                 </div>
-                <div class="">
+                {{-- <div class="">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="dashboard" class="text">{{ __('Calender.home') }}</a></li>
                         <li class="breadcrumb-item active">{{ __('dashboard.news') }}</li>
                     </ol>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>

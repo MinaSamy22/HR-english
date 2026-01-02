@@ -67,5 +67,15 @@ return [
     ],
     'apply_to_payroll' =>'پے رول پر لاگو کریں',
     'yes' =>'جی ہاں',
-    'no' => 'نہیں'
+    'no' => 'نہیں',
+
+    'deduct_from' => 'انشورنس درج ذیل سے کاٹی جائے',
+    'basic_salary' => 'بنیادی تنخواہ',
+    'transportation_allowance' => 'سفر الاؤنس',
+    'housing_allowance' => 'رہائش الاؤنس',
+    'other_allowances' => 'دیگر الاؤنسز',
+
+    'employee_already_has_insurance_with_names' =>
+    'مندرجہ ذیل ملازمین کے پاس پہلے سے انشورنس موجود ہے: :names',
+
 ];

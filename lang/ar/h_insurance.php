@@ -70,6 +70,16 @@ return [
 
     'apply_to_payroll' =>'تطبيق علي الرواتب',
     'yes' =>'نعم',
-    'no' => 'لا'
+    'no' => 'لا',
+
+    'deduct_from' => 'خصم التأمين من',
+    'basic_salary' => 'الراتب الأساسي',
+    'transportation_allowance' => 'بدل المواصلات',
+    'housing_allowance' => 'بدل السكن',
+    'other_allowances' => 'بدلات أخرى',
+
+    'employee_already_has_insurance_with_names' =>
+    'الموظفون التاليون لديهم تأمين مسجل بالفعل: :names',
+
 
 ];

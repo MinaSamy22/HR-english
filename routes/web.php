@@ -1,6 +1,5 @@
 <?php
 
-
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdministrationController;
 use App\Http\Controllers\AttendanceController;
@@ -40,7 +39,6 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\PerformanceController;
 use App\Http\Controllers\PerformanceCriteriaController;
-use App\Http\Controllers\PerformanceEvaluationController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\TaxController;
 use App\Http\Controllers\TodoController;
@@ -75,7 +73,7 @@ Route::post('login_post', [AuthController::class, 'login_post'])->name('login_po
 Route::get('view/news/image/{filename}', [NewsController::class, 'viewImage'])->name('view.news.image');
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //middlware 1 (HR interface)
 Route::middleware('admin')->group(function () {
@@ -147,7 +145,6 @@ Route::middleware('admin')->group(function () {
     route::get('admin/manager/delete/{id}', [ManagerController::class, 'delete'])->name('manager_delete');
 
     route::get('admin/manager_info', [ManagerController::class, 'info'])->name('manager_info');
-
 
     //Administration   admin/administration
     Route::get('admin/administration', [AdministrationController::class, 'index'])->name('administration');
@@ -441,13 +438,12 @@ Route::middleware('admin')->group(function () {
     Route::delete('admin/messages/{message}', [MessageController::class, 'destroy'])->name('messages.destroy');
 
     // Financial Analysis Routes
-      Route::get('admin/financial-analysis', [FinancialAnalysisController::class, 'index'])
-        ->name('financial.analysis');
+    Route::get('admin/financial-analysis', [FinancialAnalysisController::class, 'index']) ->name('financial.analysis');
 
 });
 
 
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //middlware 2 (Admin interface)
 Route::middleware('SuperAdmin')->group(function () {
 
@@ -466,7 +462,7 @@ Route::middleware('SuperAdmin')->group(function () {
     Route::post('register', [AuthController::class, 'register_post'])->name('register_post');
 });
 
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //middlware 3 (Employee interface)
 Route::middleware('employee')->group(function () {
 
@@ -536,8 +532,6 @@ Route::middleware('employee')->group(function () {
     Route::get('employee/messages', [MessageController::class, 'employeeInbox'])->name('employee.messages.inbox');
     Route::get('employee/messages/{message}', [MessageController::class, 'employeeShow'])->name('employee.messages.show');
     Route::post('employee/messages/{message}/mark-read', [MessageController::class, 'markAsRead'])->name('employee.messages.mark-read');
-
-
 
 });
 

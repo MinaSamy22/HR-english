@@ -91,13 +91,127 @@
                     <div class="col-md-8">
                         <!-- Deduction Policies -->
                         <div class="card mb-4 shadow-sm rounded">
+
                             <div class="card-header bg-light">
                                 <h5 class="mb-0">
                                     <i class="fas fa-minus-circle text-danger mr-2"></i>
                                     {{ __('policy.deduction_policies') }}
                                 </h5>
                             </div>
+                            <div class="card-body">
 
+                                @php
+                                    // Get threshold values from setting or use defaults
+                                    $lateThreshold = $setting->late_threshold_minutes ?? 15;
+                                    $halfDayThreshold = $setting->half_day_threshold_minutes ?? 240;
+                                    $absentThreshold = $setting->absent_threshold_minutes ?? 480;
+                                @endphp
+
+                                <!-- Attendance Policy Visual -->
+                                <div class="mb-4">
+                                    <h6 class="text-muted mb-3">{{ __('dashboard.attendance_policy_visual') }}</h6>
+
+                                    <!-- Simple colored bar -->
+                                    <div style="display: flex; height: 50px; border-radius: 5px; overflow: hidden;">
+                                        <div id="green"
+                                            style="background: #28a745; flex: 1; display: flex; align-items: center; justify-content: center; color: white; font-size: 13px; font-weight: 500;">
+                                            <span id="greenText">0-{{ $lateThreshold }}
+                                                {{ __('dashboard.minutes') }}</span>
+                                        </div>
+                                        <div id="yellow"
+                                            style="background: #ffc107; flex: 1; display: flex; align-items: center; justify-content: center; color: white; font-size: 13px; font-weight: 500;">
+                                            <span id="yellowText">{{ $lateThreshold + 1 }}-{{ $halfDayThreshold }}
+                                                {{ __('dashboard.minutes') }}</span>
+                                        </div>
+                                        <div id="orange"
+                                            style="background: #fd7e14; flex: 1; display: flex; align-items: center; justify-content: center; color: white; font-size: 13px; font-weight: 500;">
+                                            <span id="orangeText">{{ $halfDayThreshold + 1 }}-{{ $absentThreshold }}
+                                                {{ __('dashboard.minutes') }}</span>
+                                        </div>
+                                        <div id="red"
+                                            style="background: #dc3545; flex: 1; display: flex; align-items: center; justify-content: center; color: white; font-size: 13px; font-weight: 500;">
+                                            <span id="redText">{{ $absentThreshold }}+
+                                                {{ __('dashboard.minutes') }}</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Labels below -->
+                                    <div
+                                        style="display: flex; justify-content: space-around; margin-top: 8px; font-size: 12px; color: #495057;">
+                                        <span>{{ __('dashboard.present') }}</span>
+                                        <span>{{ __('dashboard.late') }}</span>
+                                        <span>{{ __('dashboard.half_day') }}</span>
+                                        <span>{{ __('dashboard.absent') }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+
+
+
+                            @push('scripts')
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        // Function to update the visual bar labels dynamically
+                                        function updateAttendanceVisual() {
+                                            // Get the actual input elements
+                                            const lateInput = document.querySelector('input[name="late_threshold_minutes"]');
+                                            const halfDayInput = document.querySelector('input[name="half_day_threshold_minutes"]');
+                                            const absentInput = document.querySelector('input[name="absent_threshold_minutes"]');
+
+                                            // Check if inputs exist before reading values
+                                            if (!lateInput || !halfDayInput || !absentInput) {
+                                                console.warn('Attendance threshold inputs not found - visual will not update dynamically');
+                                                return;
+                                            }
+
+                                            // Read actual values from inputs
+                                            const lateThreshold = parseInt(lateInput.value) || {{ $lateThreshold }};
+                                            const halfDayThreshold = parseInt(halfDayInput.value) || {{ $halfDayThreshold }};
+                                            const absentThreshold = parseInt(absentInput.value) || {{ $absentThreshold }};
+
+                                            const minText = "{{ __('dashboard.minutes') }}";
+
+                                            // Update the visual bar with actual threshold values
+                                            const greenText = document.getElementById('greenText');
+                                            const yellowText = document.getElementById('yellowText');
+                                            const orangeText = document.getElementById('orangeText');
+                                            const redText = document.getElementById('redText');
+
+                                            if (greenText) greenText.textContent = `0-${lateThreshold} ${minText}`;
+                                            if (yellowText) yellowText.textContent = `${lateThreshold + 1}-${halfDayThreshold} ${minText}`;
+                                            if (orangeText) orangeText.textContent = `${halfDayThreshold + 1}-${absentThreshold} ${minText}`;
+                                            if (redText) redText.textContent = `${absentThreshold}+ ${minText}`;
+                                        }
+
+                                        // Initial update on page load
+                                        updateAttendanceVisual();
+
+                                        // Listen for changes on the threshold input fields to update dynamically
+                                        const lateInput = document.querySelector('input[name="late_threshold_minutes"]');
+                                        const halfDayInput = document.querySelector('input[name="half_day_threshold_minutes"]');
+                                        const absentInput = document.querySelector('input[name="absent_threshold_minutes"]');
+
+                                        if (lateInput) {
+                                            lateInput.addEventListener('input', updateAttendanceVisual);
+                                            lateInput.addEventListener('change', updateAttendanceVisual);
+                                            lateInput.addEventListener('blur', updateAttendanceVisual);
+                                        }
+
+                                        if (halfDayInput) {
+                                            halfDayInput.addEventListener('input', updateAttendanceVisual);
+                                            halfDayInput.addEventListener('change', updateAttendanceVisual);
+                                            halfDayInput.addEventListener('blur', updateAttendanceVisual);
+                                        }
+
+                                        if (absentInput) {
+                                            absentInput.addEventListener('input', updateAttendanceVisual);
+                                            absentInput.addEventListener('change', updateAttendanceVisual);
+                                            absentInput.addEventListener('blur', updateAttendanceVisual);
+                                        }
+                                    });
+                                </script>
+                            @endpush
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-6">
@@ -148,7 +262,7 @@
                                         <div class="border-left border-danger pl-3 mb-3">
                                             <h6>
                                                 <i class="fas fa-user-times text-danger mr-2"></i>
-                                                  {{ __('policy.absent_calculation') }}
+                                                {{ __('policy.absent_calculation') }}
                                             </h6>
                                             <p class="mb-0">
                                                 <i class="fas fa text-muted mr-1"></i>
@@ -166,6 +280,9 @@
 
                                 </div>
                             </div>
+
+
+
                         </div>
 
                         <!-- Working Schedule -->
@@ -310,61 +427,59 @@
 
                         <!-- ✅ Company Policy Section (Grey) -->
                         <div class="card mb-4 shadow-sm rounded">
-    <div class="card shadow-sm"
-        style="border-radius: 10px; border: none; border-inline-start: 4px solid #6c757d;">
-        <div class="card-header d-flex justify-content-between align-items-center"
-            style="background: white; color: #333; border: none; border-bottom: 1px solid #e9ecef;">
-            <h3 class="card-title" style="font-weight: 600; font-size: 1.1rem; color: #6c757d;">
-                <i class="fas fa-file-pdf mr-2"></i> {{ __('h_dashboard.company_policy') }}
-            </h3>
-        </div>
+                            <div class="card shadow-sm"
+                                style="border-radius: 10px; border: none; border-inline-start: 4px solid #6c757d;">
+                                <div class="card-header d-flex justify-content-between align-items-center"
+                                    style="background: white; color: #333; border: none; border-bottom: 1px solid #e9ecef;">
+                                    <h3 class="card-title" style="font-weight: 600; font-size: 1.1rem; color: #6c757d;">
+                                        <i class="fas fa-file-pdf mr-2"></i> {{ __('h_dashboard.company_policy') }}
+                                    </h3>
+                                </div>
 
-        <div class="card-body" style="background: white; padding: 1.5rem;">
+                                <div class="card-body" style="background: white; padding: 1.5rem;">
 
-            @if(isset($setting) && isset($setting->company_policy_pdf) && !empty($setting->company_policy_pdf))
+                                    @if (isset($setting) && isset($setting->company_policy_pdf) && !empty($setting->company_policy_pdf))
+                                        <div class="mb-3 p-3 border rounded"
+                                            style="border-inline-start: 3px solid #6c757d !important; background: #f8f9fa;">
+                                            <p class="mb-2" style="font-size: 0.95rem; line-height: 1.6;">
+                                                <i class="fas fa-info-circle text-secondary mr-1"></i>
+                                                {{ __('h_dashboard.policy_note_text', ['default' => 'Review the company policy document to stay informed about workplace guidelines, attendance rules, and important procedures.']) }}
+                                            </p>
+                                        </div>
 
-                <div class="mb-3 p-3 border rounded"
-                     style="border-inline-start: 3px solid #6c757d !important; background: #f8f9fa;">
-                    <p class="mb-2" style="font-size: 0.95rem; line-height: 1.6;">
-                        <i class="fas fa-info-circle text-secondary mr-1"></i>
-                        {{ __('h_dashboard.policy_note_text', ['default' => 'Review the company policy document to stay informed about workplace guidelines, attendance rules, and important procedures.']) }}
-                    </p>
-                </div>
+                                        <div class="d-flex justify-content-between align-items-center p-3 border rounded"
+                                            style="border-inline-start: 3px solid #6c757d !important; background: #f8f9fa;">
+                                            <div>
+                                                <p class="mb-1 font-weight-bold"
+                                                    style="font-size: 0.95rem; color: #495057;">
+                                                    {{ __('h_dashboard.company_policy_document') }}
+                                                </p>
+                                                <p class="mb-0 text-muted" style="font-size: 0.85rem;">
+                                                    {{ __('h_dashboard.company_policy_uploaded') }}
+                                                </p>
+                                            </div>
 
-                <div class="d-flex justify-content-between align-items-center p-3 border rounded"
-                     style="border-inline-start: 3px solid #6c757d !important; background: #f8f9fa;">
-                    <div>
-                        <p class="mb-1 font-weight-bold" style="font-size: 0.95rem; color: #495057;">
-                            {{ __('h_dashboard.company_policy_document') }}
-                        </p>
-                        <p class="mb-0 text-muted" style="font-size: 0.85rem;">
-                            {{ __('h_dashboard.company_policy_uploaded') }}
-                        </p>
-                    </div>
+                                            <a href="{{ route('company-policy.view', $setting->company_policy_pdf) }}"
+                                                target="_blank" class="btn btn-secondary btn-sm"
+                                                style="font-size: 0.85rem; padding: 0.5rem 1rem;">
+                                                <i class="fas fa-eye mr-1"></i> {{ __('h_dashboard.view') }}
+                                            </a>
+                                        </div>
+                                    @else
+                                        <div class="text-center py-4">
+                                            <i class="fas fa-file-pdf text-muted mb-3"
+                                                style="font-size: 3rem; opacity: 0.3;"></i>
+                                            <p class="text-muted mb-0" style="font-size: 0.95rem;">
+                                                {{ __('h_dashboard.no_company_policy') }}
+                                            </p>
+                                            <small
+                                                class="text-muted">{{ __('h_dashboard.policy_will_appear_here') }}</small>
+                                        </div>
+                                    @endif
 
-                    <a href="{{ route('company-policy.view', $setting->company_policy_pdf) }}"
-                       target="_blank"
-                       class="btn btn-secondary btn-sm"
-                       style="font-size: 0.85rem; padding: 0.5rem 1rem;">
-                        <i class="fas fa-eye mr-1"></i> {{ __('h_dashboard.view') }}
-                    </a>
-                </div>
-
-            @else
-
-                <div class="text-center py-4">
-                    <i class="fas fa-file-pdf text-muted mb-3" style="font-size: 3rem; opacity: 0.3;"></i>
-                    <p class="text-muted mb-0" style="font-size: 0.95rem;">
-                        {{ __('h_dashboard.no_company_policy') }}
-                    </p>
-                    <small class="text-muted">{{ __('h_dashboard.policy_will_appear_here') }}</small>
-                </div>
-
-            @endif
-
-        </div>
-    </div>
-</div>
+                                </div>
+                            </div>
+                        </div>
 
                     </div>
 

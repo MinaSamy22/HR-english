@@ -76,7 +76,13 @@ return [
 
     'apply_to_payroll' =>'Apply To Payroll',
     'yes' =>'Yes',
-    'no' => 'No'
+    'no' => 'No',
+
+    'deduct_from' => 'Deduct tax from',
+    'basic_salary' => 'Basic Salary',
+    'transportation_allowance' => 'Transportation Allowance',
+    'housing_allowance' => 'Housing Allowance',
+    'other_allowances' => 'Other Allowances',
 
 
 ];

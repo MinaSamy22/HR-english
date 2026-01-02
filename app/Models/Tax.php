@@ -6,7 +6,17 @@ use Illuminate\Http\Request;
 
 class Tax extends Model
 {
-    protected $fillable = ['code', 'name', 'percent', 'company_id','employee_id'];
+    protected $fillable = [
+    'code',
+    'name',
+    'percent',
+    'from_basic',
+    'from_transportation',
+    'from_housing',
+    'from_other_allowances',
+    'company_id',
+    'employee_id'
+];
 
     // You can define relationships if needed, for example:
 
@@ -17,7 +27,7 @@ static public function getRecord($request, $company_id)
     $branch_id = session('branch_id');
 
     $query = self::select(
-                'taxes.*', 
+                'taxes.*',
                 'users.name as employee_name',
                 'branches.name as branch_name'  // Add this line to select branch name
             )

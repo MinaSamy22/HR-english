@@ -8,10 +8,10 @@
         <div class="d-flex justify-content-between align-items-center flex-wrap">
                         <h1 class="m-0 mt-3 mb-3">{{ __('dashboard.employee_payslips_report') }}</h1>
 
-                        <ol class="breadcrumb float-sm-right">
+                        {{-- <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{ url('admin/payroll') }}">{{ __('dashboard.payroll') }}</a></li>
                             <li class="breadcrumb-item active">{{ __('dashboard.employee_payslips') }}</li>
-                        </ol>
+                        </ol> --}}
                     </div>
             </div>
         </section>

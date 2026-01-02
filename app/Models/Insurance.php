@@ -6,67 +6,81 @@ use Illuminate\Http\Request;
 
 class Insurance extends Model
 {
-    protected $fillable = ['code', 'name', 'percent', 'company_id','employee_id'];
+    protected $fillable = [
+    'code',
+    'name',
+    'percent',
+    'company_id',
+    'employee_id',
+    'from_basic',
+    'from_transportation',
+    'from_housing',
+    'from_other_allowances'];
 
     // You can define relationships if needed, for example:
 
-static public function getRecord($request, $company_id)
-{
-    // Get the company_id from the session or request
-    $company_id = session('company_id');  // You can adjust this to get from request if needed.
-    $branch_id = session('branch_id');
+    static public function getRecord($request, $company_id)
+    {
+        // Get the company_id from the session or request
+        $company_id = session('company_id');  // You can adjust this to get from request if needed.
+        $branch_id = session('branch_id');
 
-    $query = self::select(
-                'insurances.*', 
-                'users.name as employee_name',
-                'branches.name as branch_name'  // Add this line to select branch name
-            )
-                ->join('users', 'users.id', '=', 'insurances.employee_id')
-                ->leftJoin('branches', 'insurances.branch_id', '=', 'branches.id')  // Add this line
-                ->where('users.company_id', $company_id)
-                ->orderBy('insurances.id', 'desc');
+        $query = self::select(
+            'insurances.*',
+            'users.name as employee_name',
+            'branches.name as branch_name'  // Add this line to select branch name
+        )
+            ->join('users', 'users.id', '=', 'insurances.employee_id')
+            ->leftJoin('branches', 'insurances.branch_id', '=', 'branches.id')  // Add this line
+            ->where('users.company_id', $company_id)
+            ->orderBy('insurances.id', 'desc');
 
-    // 🔍 Filter by branch_id if available, otherwise fallback to company_id or main branch
-    if (!empty($branch_id)) {
-        // Get the current branch info to check if it's main
-        $currentBranch = \DB::table('branches')
-            ->where('id', $branch_id)
-            ->select('is_main')
-            ->first();
+        // 🔍 Filter by branch_id if available, otherwise fallback to company_id or main branch
+        if (!empty($branch_id)) {
+            // Get the current branch info to check if it's main
+            $currentBranch = \DB::table('branches')
+                ->where('id', $branch_id)
+                ->select('is_main')
+                ->first();
 
-        if ($currentBranch && $currentBranch->is_main == 1) {
-            // If current branch is main branch, show all in the company
-            $query->where('insurances.company_id', $company_id);
+            if ($currentBranch && $currentBranch->is_main == 1) {
+                // If current branch is main branch, show all in the company
+                $query->where('insurances.company_id', $company_id);
+            } else {
+                // If current branch is not main, show only of this specific branch
+                $query->where('insurances.branch_id', $branch_id);
+            }
         } else {
-            // If current branch is not main, show only of this specific branch
-            $query->where('insurances.branch_id', $branch_id);
+            // If no branch_id in session, show all in the company
+            $query->where('insurances.company_id', $company_id);
         }
-    } else {
-        // If no branch_id in session, show all in the company
-        $query->where('insurances.company_id', $company_id);
-    }
 
-    if (!empty($request->name)) {
-        $query->where('insurances.name', 'like', '%' . $request->name . '%');
-    }
+        if (!empty($request->name)) {
+            $query->where('insurances.name', 'like', '%' . $request->name . '%');
+        }
 
-    if (!empty($request->code)) {
-        $query->where('insurances.code', 'like', '%' . $request->code . '%');
-    }
+        if (!empty($request->code)) {
+            $query->where('insurances.code', 'like', '%' . $request->code . '%');
+        }
 
-    // 🆕 Add branch filter (optional - same pattern as taxes module)
-    if (!empty($request->filter_branch_id)) {
-        $query->where('insurances.branch_id', $request->filter_branch_id);
-    }
+        // 🆕 Add branch filter (optional - same pattern as taxes module)
+        if (!empty($request->filter_branch_id)) {
+            $query->where('insurances.branch_id', $request->filter_branch_id);
+        }
 
-    return $query->paginate(6);
-}
+        return $query->paginate(6);
+    }
 
 
     public function employees()
     {
         return $this->belongsToMany(User::class, 'insurance_user', 'insurance_id', 'user_id');
     }
+    public function employee()
+{
+    return $this->belongsTo(User::class, 'employee_id');
+}
+
     public function user()
     {
         return $this->belongsTo(User::class, 'employee_id');

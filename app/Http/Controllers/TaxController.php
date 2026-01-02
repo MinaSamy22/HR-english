@@ -82,6 +82,12 @@ public function add()
         $tax->percent             = trim($request->percent);
         $tax->apply_to_payroll    = $request->apply_to_payroll; // <--- save here
 
+        // ✅ Deduction sources (checkboxes)
+        $tax->from_basic             = $request->has('from_basic');
+        $tax->from_transportation    = $request->has('from_transportation');
+        $tax->from_housing           = $request->has('from_housing');
+        $tax->from_other_allowances  = $request->has('from_other_allowances');
+
         $tax->company_id          = session('company_id'); // Use session like the previous pattern
 
         if (session()->has('branch_id')) {
@@ -116,7 +122,15 @@ public function add()
     $tax->name             = $request->name;
     $tax->percent          = $request->percent;
     $tax->apply_to_payroll = $request->apply_to_payroll; // ✅ save radio button value
-    $tax->company_id       = session('company_id');
+
+    // ✅ Update checkbox fields safely (unchecked = false)
+    $tax->from_basic             = $request->has('from_basic');
+    $tax->from_transportation    = $request->has('from_transportation');
+    $tax->from_housing           = $request->has('from_housing');
+    $tax->from_other_allowances  = $request->has('from_other_allowances');
+
+
+    $tax->company_id             = session('company_id');
 
     if (session()->has('branch_id')) {
         $tax->branch_id = session('branch_id');

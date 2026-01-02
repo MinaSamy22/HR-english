@@ -68,6 +68,15 @@ return [
     ],
     'apply_to_payroll' =>'Apply To Payroll',
     'yes' =>'Yes',
-    'no' => 'No'
+    'no' => 'No',
+
+    'deduct_from' => 'Deduct insurance from',
+    'basic_salary' => 'Basic Salary',
+    'transportation_allowance' => 'Transportation Allowance',
+    'housing_allowance' => 'Housing Allowance',
+    'other_allowances' => 'Other Allowances',
+
+    'employee_already_has_insurance_with_names' =>
+    'The following employee(s) already have insurance: :names',
 
 ];
