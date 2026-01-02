@@ -99,7 +99,7 @@
                                         <label class="col-sm-2 col-form-lable">{{ __('h_insurance.percentage') }} <span
                                                 style="color: red;">*</span></label>
                                         <div class="col-sm-10">
-                                            <input type="number" value="{{ old('percent') }}" name="percent"
+                                            <input type="number" value="{{ old('i_percent') }}" name="i_percent"
                                                 class="form-control" required
                                                 placeholder="{{ __('h_insurance.enter_percent') }}">
                                         </div>

@@ -129,7 +129,6 @@ public function add()
     $tax->from_housing           = $request->has('from_housing');
     $tax->from_other_allowances  = $request->has('from_other_allowances');
 
-
     $tax->company_id             = session('company_id');
 
     if (session()->has('branch_id')) {

@@ -53,9 +53,9 @@
 
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-lable">{{ __('h_insurance.percentage') }} <span
-                                                style="color: red;">*</span></label>
+                                                style="color: red;">{{ __('h_tax.required') }}</span></label>
                                         <div class="col-sm-10">
-                                            <input type="number" value="{{ $getRecord->percent }}" name="percent"
+                                            <input type="number" value="{{ $getRecord->i_percent }}" name="i_percent"
                                                 class="form-control" required
                                                 placeholder="{{ __('h_insurance.enter_percent') }}">
                                         </div>
@@ -120,8 +120,6 @@
 
                                         </div>
                                     </div>
-
-
 
 
                                 </div>

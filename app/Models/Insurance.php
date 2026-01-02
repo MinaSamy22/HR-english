@@ -9,7 +9,8 @@ class Insurance extends Model
     protected $fillable = [
     'code',
     'name',
-    'percent',
+    'i_percent',
+    'apply_to_payroll',
     'company_id',
     'employee_id',
     'from_basic',

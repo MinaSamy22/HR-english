@@ -132,7 +132,7 @@
                                                     </td>
                                                     <td>{{ $value->branch_name ?? __('h_dashboard.main_branch') }}</td>
 
-                                                    <td>{{ $value->percent }}%</td>
+                                                    <td>{{ $value->i_percent }}%</td>
                                                     <td>
                                                         <a href="{{ url('admin/insurance/edit/' . $value->id) }}"
                                                             class="btn btn-primary rounded-pill"

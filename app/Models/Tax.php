@@ -70,7 +70,6 @@ static public function getRecord($request, $company_id)
 }
 
 
-
     public function employees()
     {
         return $this->belongsToMany(User::class, 'tax_user', 'tax_id', 'user_id');

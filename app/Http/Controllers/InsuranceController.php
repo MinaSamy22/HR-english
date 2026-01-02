@@ -65,7 +65,7 @@ public function add_post(Request $request)
         'employee_ids.*'    => 'exists:users,id',
         'code'              => 'required',
         'name'              => 'required',
-        'percent'           => 'required|numeric|min:0|max:100',
+        'i_percent'           => 'required|numeric|min:0|max:100',
         'apply_to_payroll'  => 'required|in:0,1',
     ]);
 
@@ -95,7 +95,7 @@ public function add_post(Request $request)
         $insurance->employee_id = $employeeId;
         $insurance->code = trim($request->code);
         $insurance->name = trim($request->name);
-        $insurance->percent = $request->percent;
+        $insurance->i_percent = $request->i_percent;
         $insurance->apply_to_payroll = $request->apply_to_payroll;
 
         // Deduction sources
@@ -129,14 +129,14 @@ public function add_post(Request $request)
     $request->validate([
         'code'             => 'required|unique:insurances,code,' . $id,
         'name'             => 'required',
-        'percent'          => 'required|numeric|min:0|max:100',
+        'i_percent'          => 'required|numeric|min:0|max:100',
         'apply_to_payroll' => 'required|in:0,1',
     ]);
 
-    $insurance = Insurance::findOrFail($id);
+    $insurance                   = Insurance::findOrFail($id);
     $insurance->code             = $request->code;
     $insurance->name             = $request->name;
-    $insurance->percent          = $request->percent;
+    $insurance->i_percent      = $request->i_percent;
     $insurance->apply_to_payroll = $request->apply_to_payroll; // ✅ Save radio value
 
     // ✅ Update checkbox fields safely (unchecked = false)
@@ -145,7 +145,7 @@ public function add_post(Request $request)
     $insurance->from_housing           = $request->has('from_housing');
     $insurance->from_other_allowances  = $request->has('from_other_allowances');
 
-    $insurance->company_id       = session('company_id');
+    $insurance->company_id             = session('company_id');
 
     if (session()->has('branch_id')) {
         $insurance->branch_id = session('branch_id');
