@@ -222,5 +222,5 @@
             </div>
         </section>
     </div>
-    <script src="{{ url('dist/js/insurance.js') }}"></script>
+    <script src="{{ url('dist/js/insurance.js') }}?v=1"></script>
 @endsection

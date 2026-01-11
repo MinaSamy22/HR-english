@@ -202,5 +202,5 @@
             </div>
         </section>
     </div>
-    <script src="{{ url('dist/js/tax.js') }}"></script>
+    <script src="{{ url('dist/js/tax.js') }}?v=1"></script>
 @endsection
