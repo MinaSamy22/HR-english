@@ -306,23 +306,92 @@ class PayrollService
 
 
     public function calculateTaxes($employee, $companyId, $salary)
-    {
-        if (!Tax::where('company_id', $companyId)->where('apply_to_payroll', true)->exists())
-            return 0;
+{
+    $taxes = $employee->taxes()
+        ->where('company_id', $companyId)
+        ->where('apply_to_payroll', 1)
+        ->get();
 
-        return $employee->taxes()->where('company_id', $companyId)
-            ->orWhereNull('employee_id')
-            ->get()
-            ->sum(fn($tax) => $salary * $tax->percent / 100);
+    if ($taxes->isEmpty()) {
+        return 0;
     }
 
-    public function calculateInsurance($employee, $companyId, $salary)
-    {
-        if (!Insurance::where('company_id', $companyId)->where('apply_to_payroll', true)->exists())
-            return 0;
+    $totalTax = 0;
 
-        return $employee->insurances()->where('company_id', $companyId)->orWhereNull('employee_id')
-            ->get()
-            ->sum(fn($insurance) => $salary * $insurance->percent / 100);
+    foreach ($taxes as $tax) {
+
+        $basicSalary        = $salary;
+        $housingAllowance   = $employee->housing_allowance ?? 0;
+        $transportAllowance = $employee->transportation_allowance ?? 0;
+        $otherAllowances    = $employee->other_allowances ?? 0;
+
+        // ✅ Basic salary tax
+        if ($tax->from_basic && $tax->basic_percent) {
+            $totalTax += $basicSalary * ($tax->basic_percent / 100);
+        }
+
+        // ✅ Housing allowance tax
+        if ($tax->from_housing && $tax->housing_percent) {
+            $totalTax += $housingAllowance * ($tax->housing_percent / 100);
+        }
+
+        // ✅ Transportation allowance tax
+        if ($tax->from_transportation && $tax->transportation_percent) {
+            $totalTax += $transportAllowance * ($tax->transportation_percent / 100);
+        }
+
+        // ✅ Other allowances tax
+        if ($tax->from_other_allowances && $tax->other_allowances_percent) {
+            $totalTax += $otherAllowances * ($tax->other_allowances_percent / 100);
+        }
     }
+
+    return round($totalTax, 2);
+}
+
+
+public function calculateInsurance($employee, $companyId, $salary)
+{
+    $insurances = $employee->insurances()
+        ->where('company_id', $companyId)
+        ->where('apply_to_payroll', 1)
+        ->get();
+
+    if ($insurances->isEmpty()) {
+        return 0;
+    }
+
+    $totalInsurance = 0;
+
+    foreach ($insurances as $insurance) {
+
+        $basicSalary        = $salary;
+        $housingAllowance   = $employee->housing_allowance ?? 0;
+        $transportAllowance = $employee->transportation_allowance ?? 0;
+        $otherAllowances    = $employee->other_allowances ?? 0;
+
+        // ✅ Basic salary insurance
+        if ($insurance->from_basic && $insurance->basic_percent) {
+            $totalInsurance += $basicSalary * ($insurance->basic_percent / 100);
+        }
+
+        // ✅ Housing allowance insurance
+        if ($insurance->from_housing && $insurance->housing_percent) {
+            $totalInsurance += $housingAllowance * ($insurance->housing_percent / 100);
+        }
+
+        // ✅ Transportation allowance insurance
+        if ($insurance->from_transportation && $insurance->transportation_percent) {
+            $totalInsurance += $transportAllowance * ($insurance->transportation_percent / 100);
+        }
+
+        // ✅ Other allowances insurance
+        if ($insurance->from_other_allowances && $insurance->other_allowances_percent) {
+            $totalInsurance += $otherAllowances * ($insurance->other_allowances_percent / 100);
+        }
+    }
+
+    return round($totalInsurance, 2);
+}
+
 }

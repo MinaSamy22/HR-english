@@ -33,38 +33,44 @@ public function map($payroll): array
         $payroll->name,
         $payroll->basic_salary,
         $payroll->bounas,
+        $payroll->total_allowances,
         $payroll->deductions,
         $payroll->attendance_deduction,
-        $payroll->taxes,
-        $payroll->is_insured,
+        $payroll->taxes + $payroll->insurance,
+        $payroll->is_insured == 1 ? __('h_payroll.yes') : __('h_payroll.no'),
+        $payroll->rest_vacancy,
 
-        $payroll->net_pay,
-        $payroll->payroll_type,
+        $payroll->net_pay < 0 ? 0 : $payroll->net_pay,
+
+        __('h_payroll.payroll_types.' . strtolower($payroll->payroll_type)),
         $createdAtFormat, // Pay Date
-        $startMonth,
+
+
+date('m', strtotime($payroll->start_date))
     ];
 }
 
 
 public function headings():array{  //this is the names that will show in the head of excel sheet
 return [
-    'Employee ID',
-    'Employee Name',
-    'Basic Salary',
-    'Bounas',
-    'Deductions',
-    'Attendance Deductions',
-    'Taxes/Insurance',
-    'Is insuranced?',
-    'Vacation Balance',
-    'Net Pay',
-    'Payroll Type',
-    'Pay Date',
-    'Month',
+        __('h_payroll.employee_id'),
+        __('h_payroll.employee_name'),
+        __('h_payroll.basic_salary'),
+        __('h_payroll.bonus'),
+        __('h_payroll.total_allowance'),
+        __('h_payroll.deductions'),
+        __('h_payroll.attendance_deduction'),
+        __('h_payroll.taxes_insurance'),
+        __('h_payroll.is_insure'),
+        __('h_payroll.vacation_balance'),
+        __('h_payroll.net_pay'),
+        __('h_payroll.payroll_type'),
+        __('h_payroll.pay_date'),
+        __('h_payroll.month'),
+    ];
 
 
 
-];
 }
 
 }

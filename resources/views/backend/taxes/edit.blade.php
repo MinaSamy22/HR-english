@@ -40,8 +40,20 @@ value = old for not rebeating the input  --}}
                                             <i class="fas fa-info-circle"></i>
                                             <strong>{{ __('h_payments.note_title') }}</strong>
                                             <ul class="mb-0 mt-2" style="list-style: none; padding-right: 0;">
-                                              <li>{{ __('h_insurance.update_code_first') }}</li>
+                                                <li>{{ __('h_insurance.update_code_first') }}</li>
                                             </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">
+                                            {{ __('h_tax.employee_name') }}
+                                        </label>
+
+                                        <div class="col-sm-10 pt-2">
+                                            <strong class="text-dark">
+                                                {{ $getRecord->employee->name }}
+                                            </strong>
                                         </div>
                                     </div>
 
@@ -54,6 +66,8 @@ value = old for not rebeating the input  --}}
                                                 placeholder="{{ __('h_tax.enter_tax_name') }}">
                                         </div>
                                     </div>
+
+
 
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-lable">{{ __('h_tax.tax_code') }} <span
@@ -96,41 +110,76 @@ value = old for not rebeating the input  --}}
 
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-label">{{ __('h_tax.deduct_from') }}</label>
+
                                         <div class="col-sm-10">
 
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="from_basic"
-                                                    value="1" id="from_basic"
-                                                    {{ $getRecord->from_basic ? 'checked' : '' }}>
-                                                <label class="form-check-label"
-                                                    for="from_basic">{{ __('h_tax.basic_salary') }}</label>
+                                            {{-- BASIC --}}
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input tax-source" type="checkbox"
+                                                    data-target="basic_percent"
+                                                    {{ $getRecord->basic_percent > 0 ? 'checked' : '' }}>
+                                                <label class="form-check-label">{{ __('h_tax.basic_salary') }}</label>
+
+                                                <input type="number" step="0.01" min="0" name="basic_percent"
+                                                    id="basic_percent" value="{{ $getRecord->basic_percent }}"
+                                                    class="form-control mt-2 tax-input {{ $getRecord->basic_percent > 0 ? '' : 'd-none' }}">
                                             </div>
 
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="from_transportation"
-                                                    value="1" id="from_transportation"
-                                                    {{ $getRecord->from_transportation ? 'checked' : '' }}>
-                                                <label class="form-check-label"
-                                                    for="from_transportation">{{ __('h_tax.transportation_allowance') }}</label>
+                                            {{-- TRANSPORTATION --}}
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input tax-source" type="checkbox"
+                                                    data-target="transportation_percent"
+                                                    {{ $getRecord->transportation_percent > 0 ? 'checked' : '' }}>
+                                                <label
+                                                    class="form-check-label">{{ __('h_tax.transportation_allowance') }}</label>
+
+                                                <input type="number" step="0.01" min="0"
+                                                    name="transportation_percent" id="transportation_percent"
+                                                    value="{{ $getRecord->transportation_percent }}"
+                                                    class="form-control mt-2 tax-input {{ $getRecord->transportation_percent > 0 ? '' : 'd-none' }}">
                                             </div>
 
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="from_housing"
-                                                    value="1" id="from_housing"
-                                                    {{ $getRecord->from_housing ? 'checked' : '' }}>
-                                                <label class="form-check-label"
-                                                    for="from_housing">{{ __('h_tax.housing_allowance') }}</label>
+                                            {{-- HOUSING --}}
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input tax-source" type="checkbox"
+                                                    data-target="housing_percent"
+                                                    {{ $getRecord->housing_percent > 0 ? 'checked' : '' }}>
+                                                <label
+                                                    class="form-check-label">{{ __('h_tax.housing_allowance') }}</label>
+
+                                                <input type="number" step="0.01" min="0"
+                                                    name="housing_percent" id="housing_percent"
+                                                    value="{{ $getRecord->housing_percent }}"
+                                                    class="form-control mt-2 tax-input {{ $getRecord->housing_percent > 0 ? '' : 'd-none' }}">
                                             </div>
 
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="from_other_allowances"
-                                                    value="1" id="from_other_allowances"
-                                                    {{ $getRecord->from_other_allowances ? 'checked' : '' }}>
-                                                <label class="form-check-label"
-                                                    for="from_other_allowances">{{ __('h_tax.other_allowances') }}</label>
+                                            {{-- OTHER --}}
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input tax-source" type="checkbox"
+                                                    data-target="other_allowances_percent"
+                                                    {{ $getRecord->other_allowances_percent > 0 ? 'checked' : '' }}>
+                                                <label class="form-check-label">{{ __('h_tax.other_allowances') }}</label>
+
+                                                <input type="number" step="0.01" min="0"
+                                                    name="other_allowances_percent" id="other_allowances_percent"
+                                                    value="{{ $getRecord->other_allowances_percent }}"
+                                                    class="form-control mt-2 tax-input {{ $getRecord->other_allowances_percent > 0 ? '' : 'd-none' }}">
                                             </div>
+
+                                            <small class="text-danger d-none" id="percent-error">
+                                                {{ __('h_tax.percent_must_equal_total') }}
+                                            </small>
 
                                         </div>
+                                    </div>
+
+                                    <div class="mt-2">
+                                        <small class="text-info">
+                                            {{ __('h_tax.remaining_percent') }}:
+                                            <strong>
+                                                <span id="remaining-percent">0</span> %
+                                            </strong>
+                                        </small>
                                     </div>
 
 
@@ -152,4 +201,6 @@ value = old for not rebeating the input  --}}
             </div>
         </section>
     </div>
+
+    <script src="{{ url('dist/js/tax.js') }}"></script>
 @endsection

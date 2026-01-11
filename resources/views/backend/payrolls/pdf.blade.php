@@ -92,6 +92,7 @@
                 <th>{{ __('h_payroll_report.name') }}</th>
                 <th>{{ __('h_payroll_report.basic_salary') }}</th>
                 <th>{{ __('h_payroll_report.bonuses') }}</th>
+                <th>{{ __('h_payroll.total_allowance') }}</th>
                 <th>{{ __('h_payroll_report.deductions') }}</th>
                 <th>{{ __('h_payroll_report.attendance_deduction') }}</th>
                 <th>{{ __('h_payroll_report.taxes_insurance') }}</th>
@@ -108,11 +109,12 @@
                 <tr>
                     <td>{{ $value->employee_id }}</td>
                     <td>{{ $value->name }}</td>
-                    <td>{{ number_format($value->basic_salary, 2) }}</td>
-                    <td>{{ number_format($value->bounas, 2) }}</td>
-                    <td>{{ number_format($value->deductions, 2) }}</td>
-                    <td>{{ number_format($value->attendance_deduction, 2) }}</td>
-                    <td>{{ number_format($value->taxes, 2) }}</td>
+                    <td>{{ number_format($value->basic_salary) }}</td>
+                    <td>{{ number_format($value->bounas) }}</td>
+                    <td>{{ number_format($value->total_allowances) }}</td>
+                    <td>{{ number_format($value->deductions) }}</td>
+                    <td>{{ number_format($value->attendance_deduction) }}</td>
+                    <td>{{ number_format($value->taxes + $value->insurance) }}</td>
                     <td class="text-center">
                         @if ($value->is_insured == 1)
                             <span title="مؤمن عليه" style="color: green">{{ __('h_payroll.yes') }}</span>
@@ -127,10 +129,16 @@
                             0
                         @endif
                     </td>
-                    <td>{{ number_format($value->net_pay, 2) }}</td>
+                    <td>
+                                    @if ($value->net_pay < 0)
+                                        0
+                                    @else
+                                        {{ $value->net_pay }}
+                                    @endif
+                    </td>
                     <td>{{ __('h_payroll_report.' . $value->payroll_type) }}</td>
                     <td>{{ date('d-m-Y h:i', strtotime($value->created_at)) }}</td>
-                    <td>{{ date('M Y', strtotime($value->start_date)) }}</td>
+                    <td>{{ date('m', strtotime($value->start_date)) }}</td>
                 </tr>
             @endforeach
         </tbody>

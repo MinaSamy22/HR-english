@@ -199,10 +199,14 @@
                                 <td>{{ $value->name }}</td>
                                 <td>{{ $value->basic_salary }}</td>
                                 <td>{{ $value->bounas }}</td>
-<td>{{ $value->total_allowances }}</td>
+                                <td>{{ $value->total_allowances }}</td>
                                 <td>{{ $value->deductions }}</td>
                                 <td>{{ $value->attendance_deduction }}</td>
-                                <td>{{ $value->taxes }}</td>
+
+                                <td>
+                                    {{ ($value->taxes + $value->insurance) }}
+                                </td>
+
                                 <td class="text-center">
                                     @if ($value->is_insured == 1)
                                         <span title="مؤمن عليه" style="color: green; font-size: 18px;">✅</span>

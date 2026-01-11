@@ -14,7 +14,7 @@ return [
     'code' => 'الكود',
     'insurance_name' => 'اسم التأمين',
     'name' => 'الاسم',
-    'percentage' => 'النسبة المئوية',
+    'percentage' => 'اجمالي النسبة المئوية',
 
     // Placeholders
     'enter_code' => 'أدخل الكود',
@@ -83,5 +83,7 @@ return [
 
     'update_code_first' => '✓ في حالة الرغبة في التعديل، يجب تحديث الكود معاً.',
 
+    'remaining_percent' => 'نسبة التأمين المتبقية',
+    'percent_must_equal_total' => 'يجب أن تساوي نسب التأمين 100٪.',
 
 ];

@@ -61,7 +61,6 @@
                                                 @endforeach
                                             </div>
                                         </div>
-
                                     </div>
 
                                     <div class="form-group row">
@@ -115,42 +114,76 @@
                                         </label>
 
                                         <div class="col-sm-10">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="from_basic"
-                                                    value="1" id="from_basic">
+
+                                            {{-- BASIC --}}
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input tax-source" type="checkbox"
+                                                    data-target="basic_percent" id="from_basic">
                                                 <label class="form-check-label" for="from_basic">
                                                     {{ __('h_tax.basic_salary') }}
                                                 </label>
+
+                                                <input type="number" step="0.01" min="0" name="basic_percent"
+                                                    class="form-control mt-2 d-none tax-input" id="basic_percent"
+                                                    placeholder="{{ __('h_tax.enter_percent') }}">
                                             </div>
 
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox"
-                                                    name="from_transportation" value="1" id="from_transportation">
+                                            {{-- TRANSPORTATION --}}
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input tax-source" type="checkbox"
+                                                    data-target="transportation_percent" id="from_transportation">
                                                 <label class="form-check-label" for="from_transportation">
                                                     {{ __('h_tax.transportation_allowance') }}
                                                 </label>
+
+                                                <input type="number" step="0.01" min="0"
+                                                    name="transportation_percent"
+                                                    class="form-control mt-2 d-none tax-input"
+                                                    id="transportation_percent">
                                             </div>
 
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="from_housing"
-                                                    value="1" id="from_housing">
+                                            {{-- HOUSING --}}
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input tax-source" type="checkbox"
+                                                    data-target="housing_percent" id="from_housing">
                                                 <label class="form-check-label" for="from_housing">
                                                     {{ __('h_tax.housing_allowance') }}
                                                 </label>
+
+                                                <input type="number" step="0.01" min="0"
+                                                    name="housing_percent" class="form-control mt-2 d-none tax-input"
+                                                    id="housing_percent">
                                             </div>
 
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox"
-                                                    name="from_other_allowances" value="1"
-                                                    id="from_other_allowances">
-                                                <label class="form-check-label" for="from_other_allowances">
+                                            {{-- OTHER --}}
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input tax-source" type="checkbox"
+                                                    data-target="other_allowances_percent" id="from_other">
+                                                <label class="form-check-label" for="from_other">
                                                     {{ __('h_tax.other_allowances') }}
                                                 </label>
+
+                                                <input type="number" step="0.01" min="0"
+                                                    name="other_allowances_percent"
+                                                    class="form-control mt-2 d-none tax-input"
+                                                    id="other_allowances_percent">
                                             </div>
+
+                                            <small class="text-danger d-none" id="percent-error">
+                                                {{ __('h_tax.percent_must_equal_total') }}
+                                            </small>
+
+                                            <div class="mt-2">
+                                                <small class="text-info">
+                                                    {{ __('h_tax.remaining_percent') }}:
+                                                    <strong>
+                                                        <span id="remaining-percent">0</span> %
+                                                    </strong>
+                                                </small>
+                                            </div>
+
                                         </div>
                                     </div>
-
-
 
                                 </div>
 

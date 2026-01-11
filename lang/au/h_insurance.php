@@ -14,7 +14,7 @@ return [
     'code' => 'کوڈ',
     'insurance_name' => 'انشورنس کا نام',
     'name' => 'نام',
-    'percentage' => 'فیصد',
+    'percent' => 'کل فیصد',
 
     // Placeholders
     'enter_code' => 'کوڈ درج کریں',
@@ -79,5 +79,8 @@ return [
     'مندرجہ ذیل ملازمین کے پاس پہلے سے انشورنس موجود ہے: :names',
 
     'update_code_first' => '✓ اگر ترمیم کرنا ہو تو پہلے کوڈ کو اپ ڈیٹ کرنا ضروری ہے۔',
+
+    'remaining_percent' => 'باقی انشورنس کی فیصد',
+    'percent_must_equal_total' => 'انشورنس کی فیصد کا مجموعہ 100٪ ہونا چاہیے۔',
 
 ];

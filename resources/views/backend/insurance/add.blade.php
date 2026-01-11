@@ -126,46 +126,123 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">
-                                            {{ __('h_insurance.deduct_from') }}
-                                        </label>
+      <div class="form-group row">
+    <label class="col-sm-2 col-form-label">
+        {{ __('h_insurance.deduct_from') }}
+    </label>
 
-                                        <div class="col-sm-10">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="from_basic"
-                                                    value="1" id="from_basic">
-                                                <label class="form-check-label" for="from_basic">
-                                                    {{ __('h_insurance.basic_salary') }}
-                                                </label>
-                                            </div>
+    <div class="col-sm-10">
 
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox"
-                                                    name="from_transportation" value="1" id="from_transportation">
-                                                <label class="form-check-label" for="from_transportation">
-                                                    {{ __('h_insurance.transportation_allowance') }}
-                                                </label>
-                                            </div>
+        {{-- BASIC SALARY --}}
+        <div class="form-check mb-2">
+            <input type="hidden" name="from_basic" value="0">
 
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="from_housing"
-                                                    value="1" id="from_housing">
-                                                <label class="form-check-label" for="from_housing">
-                                                    {{ __('h_insurance.housing_allowance') }}
-                                                </label>
-                                            </div>
+            <input class="form-check-input insurance-source"
+                   type="checkbox"
+                   name="from_basic"
+                   value="1"
+                   data-target="basic_percent"
+                   id="from_basic">
 
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox"
-                                                    name="from_other_allowances" value="1"
-                                                    id="from_other_allowances">
-                                                <label class="form-check-label" for="from_other_allowances">
-                                                    {{ __('h_insurance.other_allowances') }}
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
+            <label class="form-check-label" for="from_basic">
+                {{ __('h_insurance.basic_salary') }}
+            </label>
+
+            <input type="number"
+                   step="0.01"
+                   min="0"
+                   name="basic_percent"
+                   class="form-control mt-2 d-none insurance-input"
+                   id="basic_percent"
+                   placeholder="{{ __('h_insurance.enter_percent') }}">
+        </div>
+
+        {{-- TRANSPORTATION --}}
+        <div class="form-check mb-2">
+            <input type="hidden" name="from_transportation" value="0">
+
+            <input class="form-check-input insurance-source"
+                   type="checkbox"
+                   name="from_transportation"
+                   value="1"
+                   data-target="transportation_percent"
+                   id="from_transportation">
+
+            <label class="form-check-label" for="from_transportation">
+                {{ __('h_insurance.transportation_allowance') }}
+            </label>
+
+            <input type="number"
+                   step="0.01"
+                   min="0"
+                   name="transportation_percent"
+                   class="form-control mt-2 d-none insurance-input"
+                   id="transportation_percent">
+        </div>
+
+        {{-- HOUSING --}}
+        <div class="form-check mb-2">
+            <input type="hidden" name="from_housing" value="0">
+
+            <input class="form-check-input insurance-source"
+                   type="checkbox"
+                   name="from_housing"
+                   value="1"
+                   data-target="housing_percent"
+                   id="from_housing">
+
+            <label class="form-check-label" for="from_housing">
+                {{ __('h_insurance.housing_allowance') }}
+            </label>
+
+            <input type="number"
+                   step="0.01"
+                   min="0"
+                   name="housing_percent"
+                   class="form-control mt-2 d-none insurance-input"
+                   id="housing_percent">
+        </div>
+
+        {{-- OTHER ALLOWANCES --}}
+        <div class="form-check mb-2">
+            <input type="hidden" name="from_other_allowances" value="0">
+
+            <input class="form-check-input insurance-source"
+                   type="checkbox"
+                   name="from_other_allowances"
+                   value="1"
+                   data-target="other_allowances_percent"
+                   id="from_other_allowances">
+
+            <label class="form-check-label" for="from_other_allowances">
+                {{ __('h_insurance.other_allowances') }}
+            </label>
+
+            <input type="number"
+                   step="0.01"
+                   min="0"
+                   name="other_allowances_percent"
+                   class="form-control mt-2 d-none insurance-input"
+                   id="other_allowances_percent">
+        </div>
+
+        <small class="text-danger d-none" id="insurance-percent-error">
+            {{ __('h_insurance.percent_must_equal_total') }}
+        </small>
+
+        <div class="mt-2">
+            <small class="text-info">
+                {{ __('h_insurance.remaining_percent') }}:
+                <strong>
+                    <span id="insurance-remaining-percent">0</span> %
+                </strong>
+            </small>
+        </div>
+
+    </div>
+</div>
+
+
 
                                 </div>
 
@@ -185,5 +262,4 @@
         </section>
     </div>
     <script src="{{ url('dist/js/insurance.js') }}"></script>
-    <script src="{{ url('dist/js/insurancecreate.js') }}"></script>
 @endsection

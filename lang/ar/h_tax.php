@@ -17,7 +17,7 @@ return [
     'tax_code' => 'كود الضريبة',
     'tax_name' => 'اسم الضريبة',
     'employee_name' => 'اسم الموظف',
-    'percentage' => 'النسبة المئوية',
+    'percentage' => 'اجمالي النسبة المئوية',
     'code' => 'الكود',
     'name' => 'الاسم',
     'percent' => 'النسبة',
@@ -83,4 +83,9 @@ return [
     'transportation_allowance' => 'بدل المواصلات',
     'housing_allowance' => 'بدل السكن',
     'other_allowances' => 'بدلات أخرى',
+
+    'remaining_percent' => 'نسبة الضريبة المتبقية',
+    'percent_must_equal_total' => 'يجب أن تساوي نسب الضريبة 100٪.',
+
+
 ];

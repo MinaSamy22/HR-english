@@ -20,7 +20,7 @@ return [
     'percentage' => 'فیصد',
     'code' => 'کوڈ',
     'name' => 'نام',
-    'percent' => 'فیصد',
+    'percent' => 'کل فیصد',
 
     // فارم پلیس ہولڈرز
     'enter_code' => 'کوڈ درج کریں',
@@ -83,4 +83,8 @@ return [
     'transportation_allowance' => 'سفر الاؤنس',
     'housing_allowance' => 'رہائش الاؤنس',
     'other_allowances' => 'دیگر الاؤنسز',
+
+    'remaining_percent' => 'باقی ٹیکس کی فیصد',
+    'percent_must_equal_total' => 'ٹیکس کی فیصد کا مجموعہ 100٪ ہونا چاہیے۔',
+
 ];

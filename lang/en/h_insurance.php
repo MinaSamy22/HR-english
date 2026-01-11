@@ -14,7 +14,7 @@ return [
     'code' => 'Code',
     'insurance_name' => 'Insurance Name',
     'name' => 'Name',
-    'percentage' => 'Percentage',
+    'percent' => 'Total Percent',
 
     // Placeholders
     'enter_code' => 'Enter Code',
@@ -81,4 +81,6 @@ return [
 
     'update_code_first' => '✓ If you want to make changes, you must update the code both.',
 
+    'remaining_percent' => 'Remaining Insurance Percentage',
+    'percent_must_equal_total' => 'The insurance percentages must equal 100%.',
 ];

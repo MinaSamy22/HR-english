@@ -24,6 +24,11 @@ return new class extends Migration {
             $table->boolean('from_transportation')->default(0);
             $table->boolean('from_other')->default(0);
 
+            $table->decimal('basic_percent', 5, 2)->default(0);
+            $table->decimal('transportation_percent', 5, 2)->default(0);
+            $table->decimal('housing_percent', 5, 2)->default(0);
+            $table->decimal('other_allowances_percent', 5, 2)->default(0);
+
 
             $table->tinyInteger('apply_to_payroll')->default(false);
 

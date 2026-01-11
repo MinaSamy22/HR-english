@@ -1,74 +1,90 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const selectAllCheckbox = document.getElementById('select-all');
-    const employeeCheckboxes = document.querySelectorAll('.employee-checkbox');
+document.addEventListener('DOMContentLoaded', function () {
 
-    if (selectAllCheckbox) {
-        selectAllCheckbox.addEventListener('change', function() {
-            employeeCheckboxes.forEach(checkbox => {
-                checkbox.checked = selectAllCheckbox.checked;
-            });
+    const taxSources = document.querySelectorAll('.tax-source');
+    const taxInputs  = document.querySelectorAll('.tax-input');
+    const totalInput = document.querySelector('input[name="percent"]');
+    const taxForm    = document.querySelector('form');
+    const errorMsg   = document.getElementById('percent-error');
+    const remainingEl = document.getElementById('remaining-percent');
+
+    if (!taxSources.length || !taxForm || !totalInput) return;
+
+    /* ===============================
+       TOGGLE INPUTS
+    ================================ */
+    taxSources.forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+            const input = document.getElementById(this.dataset.target);
+            if (!input) return;
+
+            if (this.checked) {
+                input.classList.remove('d-none');
+                if (!input.value) input.focus();
+            } else {
+                input.classList.add('d-none');
+                input.value = '';
+            }
+
+            updateRemaining();
         });
-    }
-});
+    });
 
-document.addEventListener('DOMContentLoaded', function() {
-    const selectAllCheckbox = document.getElementById('selectAll');
-    const deleteSelectedButton = document.getElementById('deleteSelected');
+    /* ===============================
+       LIVE INPUT LISTENER
+    ================================ */
+    taxInputs.forEach(input => {
+        input.addEventListener('input', updateRemaining);
+    });
 
-    if (selectAllCheckbox) {
-        selectAllCheckbox.addEventListener('click', toggleAllCheckboxes);
-    }
+    /* ===============================
+       SUBMIT VALIDATION
+    ================================ */
+    taxForm.addEventListener('submit', function (e) {
+        if (!validateTotal()) {
+            e.preventDefault();
+        }
+    });
 
-    if (deleteSelectedButton) {
-        deleteSelectedButton.addEventListener('click', deleteSelectedRecords);
-    }
-
-    function toggleAllCheckboxes() {
-        const checkboxes = document.querySelectorAll('.taxCheckbox');
-        checkboxes.forEach((checkbox) => {
-            checkbox.checked = selectAllCheckbox.checked;
+    /* ===============================
+       FUNCTIONS
+    ================================ */
+    function getCurrentSum() {
+        let sum = 0;
+        taxInputs.forEach(input => {
+            if (!input.classList.contains('d-none')) {
+                sum += Number(input.value || 0);
+            }
         });
+        return sum;
     }
 
-    function deleteSelectedRecords() {
-        const selectedIds = Array.from(document.querySelectorAll('.taxCheckbox:checked'))
-            .map(checkbox => checkbox.value);
+    function updateRemaining() {
+        const total = Number(totalInput.value || 0);
+        const used  = getCurrentSum();
+        const remaining = (total - used).toFixed(2);
 
-        if (selectedIds.length === 0) {
-            // Get the localized message from the blade template
-            const noRowSelectedMsg = document.querySelector('meta[name="no-row-selected"]')?.getAttribute('content') || 'No row selected.';
-            alert(noRowSelectedMsg);
-            return;
+        if (remainingEl) {
+            remainingEl.textContent = remaining >= 0 ? remaining : 0;
+            remainingEl.style.color = remaining < 0 ? 'red' : 'green';
         }
 
-        // Get the localized message from the blade template
-        const deleteConfirmationMsg = document.querySelector('meta[name="delete-selection-confirmation"]')?.getAttribute('content') || 'Are you sure you want to delete the selection?';
+        validateTotal();
+    }
 
-        if (confirm(deleteConfirmationMsg)) {
-            fetch("/admin/taxes/delete-multiple", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({ ids: selectedIds })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    location.reload();
-                } else {
-                    // Get the localized message from the blade template
-                    const errorMsg = document.querySelector('meta[name="error-occurred"]')?.getAttribute('content') || 'An error occurred. Please try again.';
-                    alert(errorMsg);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                // Get the localized message from the blade template
-                const errorMsg = document.querySelector('meta[name="error-occurred"]')?.getAttribute('content') || 'An error occurred. Please try again.';
-                alert(errorMsg);
-            });
+    function validateTotal() {
+        const total = Number(totalInput.value || 0);
+        const used  = getCurrentSum();
+
+        if (used !== total) {
+            errorMsg?.classList.remove('d-none');
+            return false;
+        } else {
+            errorMsg?.classList.add('d-none');
+            return true;
         }
     }
-});
+
+    // ✅ Initial calculation for EDIT page
+    updateRemaining();
+
+}); 

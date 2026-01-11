@@ -61,45 +61,65 @@ public function add()
     return view('backend.taxes.add', $data);
 }
 
-    public function add_post(Request $request)
+public function add_post(Request $request)
 {
-    // Validate first before saving to the database
-    $validated = $request->validate([
-        'employee_ids'             => 'required|array|min:1',
-        'employee_ids.*'           => 'exists:users,id',
-        'code'                     => 'required',
-        'name'                     => 'required',
-        'percent'                  => 'required|numeric|min:0|max:100',
-        'apply_to_payroll'         => 'required|in:0,1', // validate radio
+    $request->validate([
+        'employee_ids' => 'required|array|min:1',
+        'employee_ids.*' => 'exists:users,id',
 
+        'code' => 'required',
+        'name' => 'required',
+        'percent' => 'required|numeric|min:0|max:100',
+
+        'basic_percent' => 'nullable|numeric|min:0',
+        'housing_percent' => 'nullable|numeric|min:0',
+        'transportation_percent' => 'nullable|numeric|min:0',
+        'other_allowances_percent' => 'nullable|numeric|min:0',
     ]);
 
-    foreach ($validated['employee_ids'] as $employeeId) {
-        $tax                      = new Tax;
-        $tax->employee_id         = $employeeId;
-        $tax->code                = trim($request->code);
-        $tax->name                = trim($request->name);
-        $tax->percent             = trim($request->percent);
-        $tax->apply_to_payroll    = $request->apply_to_payroll; // <--- save here
+    $total =
+        ($request->basic_percent ?? 0) +
+        ($request->housing_percent ?? 0) +
+        ($request->transportation_percent ?? 0) +
+        ($request->other_allowances_percent ?? 0);
 
-        // ✅ Deduction sources (checkboxes)
-        $tax->from_basic             = $request->has('from_basic');
-        $tax->from_transportation    = $request->has('from_transportation');
-        $tax->from_housing           = $request->has('from_housing');
-        $tax->from_other_allowances  = $request->has('from_other_allowances');
-
-        $tax->company_id          = session('company_id'); // Use session like the previous pattern
-
-        if (session()->has('branch_id')) {
-            $tax->branch_id = session('branch_id');
-        }
-
-        $tax->save();
+    if ($total != $request->percent) {
+        return back()->withErrors([
+            'percent' => __('h_tax.percent_must_equal_total')
+        ])->withInput();
     }
 
-        return redirect('admin/taxes')->with('success', __('h_tax.tax_added_success'));
+    foreach ($request->employee_ids as $employeeId) {
+
+        Tax::create([
+            'employee_id' => $employeeId,
+            'company_id'  => session('company_id'),
+            'branch_id'   => session('branch_id'),
+
+            'code'    => trim($request->code),
+            'name'    => trim($request->name),
+            'percent' => $request->percent,
+
+            'apply_to_payroll' => $request->apply_to_payroll,
+
+            // ✅ checkbox flags
+            'from_basic'            => $request->filled('basic_percent'),
+            'from_housing'          => $request->filled('housing_percent'),
+            'from_transportation'   => $request->filled('transportation_percent'),
+            'from_other_allowances' => $request->filled('other_allowances_percent'),
+
+            // ✅ percent values
+            'basic_percent'            => $request->basic_percent ?? 0,
+            'housing_percent'          => $request->housing_percent ?? 0,
+            'transportation_percent'   => $request->transportation_percent ?? 0,
+            'other_allowances_percent' => $request->other_allowances_percent ?? 0,
+        ]);
+    }
+
+    return redirect('admin/taxes')->with('success', __('h_tax.tax_added_success'));
 }
 
+ 
 
 
     public function edit($id)
@@ -108,37 +128,62 @@ public function add()
         return view('backend.taxes.edit', $data);
     }
 
-    public function edit_update($id, Request $request)
+public function edit_update($id, Request $request)
 {
     $request->validate([
-        'code'             => 'required|unique:taxes,code,' . $id,
-        'name'             => 'required',
-        'percent'          => 'required|numeric|min:0|max:100',
+        'code'    => 'required|unique:taxes,code,' . $id,
+        'name'    => 'required',
+        'percent' => 'required|numeric|min:0|max:100',
+
+        'basic_percent' => 'nullable|numeric|min:0',
+        'housing_percent' => 'nullable|numeric|min:0',
+        'transportation_percent' => 'nullable|numeric|min:0',
+        'other_allowances_percent' => 'nullable|numeric|min:0',
+
         'apply_to_payroll' => 'required|in:0,1',
     ]);
 
-    $tax                   = Tax::findOrFail($id);
-    $tax->code             = $request->code;
-    $tax->name             = $request->name;
-    $tax->percent          = $request->percent;
-    $tax->apply_to_payroll = $request->apply_to_payroll; // ✅ save radio button value
+    // ✅ validate sum
+    $total =
+        ($request->basic_percent ?? 0) +
+        ($request->housing_percent ?? 0) +
+        ($request->transportation_percent ?? 0) +
+        ($request->other_allowances_percent ?? 0);
 
-    // ✅ Update checkbox fields safely (unchecked = false)
-    $tax->from_basic             = $request->has('from_basic');
-    $tax->from_transportation    = $request->has('from_transportation');
-    $tax->from_housing           = $request->has('from_housing');
-    $tax->from_other_allowances  = $request->has('from_other_allowances');
-
-    $tax->company_id             = session('company_id');
-
-    if (session()->has('branch_id')) {
-        $tax->branch_id = session('branch_id');
+    if ($total != $request->percent) {
+        return back()->withErrors([
+            'percent' => __('h_tax.percent_must_equal_total')
+        ])->withInput();
     }
 
-    $tax->save();
+    $tax = Tax::findOrFail($id);
 
-    return redirect()->route('taxes')->with('success', __('h_tax.tax_updated_success'));
+    $tax->update([
+        'code'    => trim($request->code),
+        'name'    => trim($request->name),
+        'percent' => $request->percent,
+
+        'apply_to_payroll' => $request->apply_to_payroll,
+
+        // ✅ checkbox flags (auto true if percent exists)
+        'from_basic'            => $request->filled('basic_percent'),
+        'from_housing'          => $request->filled('housing_percent'),
+        'from_transportation'   => $request->filled('transportation_percent'),
+        'from_other_allowances' => $request->filled('other_allowances_percent'),
+
+        // ✅ stored percent values
+        'basic_percent'            => $request->basic_percent ?? 0,
+        'housing_percent'          => $request->housing_percent ?? 0,
+        'transportation_percent'   => $request->transportation_percent ?? 0,
+        'other_allowances_percent' => $request->other_allowances_percent ?? 0,
+
+        'company_id' => session('company_id'),
+        'branch_id'  => session('branch_id'),
+    ]);
+
+    return redirect('admin/taxes')->with('success', __('h_tax.tax_updated_success'));
 }
+
 
     public function delete($id)
     {

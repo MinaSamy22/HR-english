@@ -160,10 +160,11 @@ public function add_post(Request $request)
         $leaveDeductions                                       = $this->payrollService->calculateDeductions($employee, $startDate, $endDate);
         [$restVacancy, $vacationDeductions]                    = $this->payrollService->calculateVacationDeductions($employee, $startDate, $endDate);
         $bonus                                                 = $this->payrollService->calculateBonus($employee, $startDate, $endDate);
+
         $taxAmount                                             = $this->payrollService->calculateTaxes($employee, $companyId, $salary);
         $insuranceAmount                                       = $this->payrollService->calculateInsurance($employee, $companyId, $salary);
+
         $totalDeductions                                       = $leaveDeductions + $vacationDeductions;
-        $totalTaxes                                            = $taxAmount + $insuranceAmount;
 
         // Final payroll record
         $payroll                                      = new Payroll();
@@ -176,27 +177,33 @@ public function add_post(Request $request)
         $transportationAllowance                      = $employee->transportation_allowance ?? 0;
         $otherAllowances                              = $employee->other_allowances ?? 0;
 
-        $totalAllowances = $housingAllowance + $transportationAllowance + $otherAllowances;
+        $totalAllowances                              = $housingAllowance + $transportationAllowance + $otherAllowances;
 
         $payroll->basic_salary                        = $salary;
         $payroll->bounas                              = $bonus;
         $payroll->deductions                          = $totalDeductions;
         $payroll->attendance_deduction                = $attendanceDeductions;
-        $payroll->taxes                               = $totalTaxes;
+
+        $payroll->taxes                               = $taxAmount;
+        $payroll->insurance                           = $insuranceAmount;
+
         $payroll->rest_vacancy                        = $restVacancy;
         $payroll->payroll_type                        = $payrollType;
 
-        $payroll->net_pay                             = $salary - ($totalDeductions + $totalTaxes + $attendanceDeductions) + $bonus + $totalAllowances;
+        $payroll->net_pay = $salary - ($totalDeductions + $taxAmount + $insuranceAmount + $attendanceDeductions)
+        + $bonus
+        + $totalAllowances;
+
         $payroll->daily_wage                          = $dailyWage;
         $payroll->days_absent                         = $daysAbsent;
 
         // ✅ New: Use $netPayFromAttendance for daily payroll
         if ($payrollType === 'daily') {
             // For daily: use the calculated net pay from attendance (present days × salary)
-            $payroll->net_pay = $netPayFromAttendance - ($totalDeductions + $totalTaxes) + $bonus + $totalAllowances;
+            $payroll->net_pay = $netPayFromAttendance - ($totalDeductions + $taxAmount + $insuranceAmount) + $bonus + $totalAllowances;
         } else {
             // For monthly/weekly: use the original calculation
-            $payroll->net_pay = $salary - ($totalDeductions + $totalTaxes + $attendanceDeductions) + $bonus + $totalAllowances;
+            $payroll->net_pay = $salary - ($totalDeductions + $taxAmount + $insuranceAmount + $attendanceDeductions) + $bonus + $totalAllowances;
         }
 
         // Handle company/branch assignment

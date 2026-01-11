@@ -20,7 +20,7 @@ return [
     'percentage' => 'Percentage',
     'code' => 'Code',
     'name' => 'Name',
-    'percent' => 'Percent',
+    'percent' => 'Total Percent',
 
     // Form placeholders
     'enter_code' => 'Enter Code',
@@ -84,5 +84,6 @@ return [
     'housing_allowance' => 'Housing Allowance',
     'other_allowances' => 'Other Allowances',
 
-
+    'remaining_percent' => 'Remaining Tax Percentage',
+    'percent_must_equal_total' => 'The tax percentages must equal 100%.',
 ];

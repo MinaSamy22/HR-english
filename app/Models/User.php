@@ -248,6 +248,7 @@ public function getEmployeeStatus()
     {
         return $this->hasMany(Tax::class, 'employee_id');
     }
+   
     public function insurances(){
         return $this->hasMany(Insurance::class, 'employee_id');
     }

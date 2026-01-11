@@ -1,78 +1,91 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const selectAllCheckbox = document.getElementById('select-all');
-    const employeeCheckboxes = document.querySelectorAll('.employee-checkbox');
+document.addEventListener('DOMContentLoaded', function () {
 
-    if (selectAllCheckbox) {
-        selectAllCheckbox.addEventListener('change', function() {
-            employeeCheckboxes.forEach(checkbox => {
-                checkbox.checked = selectAllCheckbox.checked;
-            });
+    const insuranceSources = document.querySelectorAll('.insurance-source');
+    const insuranceInputs  = document.querySelectorAll('.insurance-input');
+    const totalInput       = document.querySelector('input[name="i_percent"]'); // نفس input percentage الرئيسي
+    const insuranceForm    = document.querySelector('form');
+    const errorMsg         = document.getElementById('insurance-percent-error');
+    const remainingEl      = document.getElementById('insurance-remaining-percent');
+
+    if (!insuranceSources.length || !insuranceForm || !totalInput) return;
+
+    /* ===============================
+       TOGGLE INPUTS
+    ================================ */
+    insuranceSources.forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+            const input = document.getElementById(this.dataset.target);
+            if (!input) return;
+
+            if (this.checked) {
+                input.classList.remove('d-none');
+                if (!input.value) input.focus();
+            } else {
+                input.classList.add('d-none');
+                input.value = '';
+            }
+
+            updateRemaining();
         });
-    }
-});
+    });
 
-document.addEventListener('DOMContentLoaded', function() {
-    const selectAllCheckbox = document.getElementById('selectAll');
-    const deleteSelectedButton = document.getElementById('deleteSelected');
+    /* ===============================
+       LIVE INPUT LISTENER
+    ================================ */
+    insuranceInputs.forEach(input => {
+        input.addEventListener('input', updateRemaining);
+    });
 
-    if (selectAllCheckbox) {
-        selectAllCheckbox.addEventListener('click', toggleAllCheckboxes);
-    }
+    /* ===============================
+       SUBMIT VALIDATION
+    ================================ */
+    insuranceForm.addEventListener('submit', function (e) {
+        if (!validateTotal()) {
+            e.preventDefault();
+            alert('{{ __("h_insurance.percent_must_equal_total") }}');
+        }
+    });
 
-    if (deleteSelectedButton) {
-        deleteSelectedButton.addEventListener('click', deleteSelectedRecords);
-    }
-
-    function toggleAllCheckboxes() {
-        const checkboxes = document.querySelectorAll('.insuranceCheckbox');
-        checkboxes.forEach((checkbox) => {
-            checkbox.checked = selectAllCheckbox.checked;
+    /* ===============================
+       FUNCTIONS
+    ================================ */
+    function getCurrentSum() {
+        let sum = 0;
+        insuranceInputs.forEach(input => {
+            if (!input.classList.contains('d-none')) {
+                sum += parseFloat(input.value) || 0;
+            }
         });
+        return sum;
     }
 
-    function deleteSelectedRecords() {
-        const selectedIds = Array.from(document.querySelectorAll('.insuranceCheckbox:checked'))
-            .map(checkbox => checkbox.value);
+    function updateRemaining() {
+        const total = parseFloat(totalInput.value) || 100; // default 100%
+        const used  = getCurrentSum();
+        const remaining = (total - used).toFixed(2);
 
-        if (selectedIds.length === 0) {
-            // Get the current language to show appropriate message
-            const currentLang = document.documentElement.lang || 'en';
-            const noRowMessage = currentLang === 'ar' ? 'لم يتم تحديد أي صف.' : 'No row selected.';
-            alert(noRowMessage);
-            return;
+        if (remainingEl) {
+            remainingEl.textContent = remaining >= 0 ? remaining : 0;
+            remainingEl.style.color = remaining < 0 ? 'red' : 'green';
         }
 
-        // Get the current language for confirmation message
-        const currentLang = document.documentElement.lang || 'en';
-        const confirmMessage = currentLang === 'ar' ?
-            'هل أنت متأكد أنك تريد حذف المحدد؟' :
-            'Are you sure you want to delete the selection?';
+        validateTotal();
+    }
 
-        const errorMessage = currentLang === 'ar' ?
-            'حدث خطأ. يرجى المحاولة مرة أخرى.' :
-            'An error occurred. Please try again.';
+    function validateTotal() {
+        const total = parseFloat(totalInput.value) || 100;
+        const used  = getCurrentSum();
 
-        if (confirm(confirmMessage)) {
-            fetch("/admin/insurance/delete-multiple", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({ ids: selectedIds })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    location.reload();
-                } else {
-                    alert(errorMessage);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert(errorMessage);
-            });
+        if (used > total) {
+            errorMsg?.classList.remove('d-none');
+            return false;
+        } else {
+            errorMsg?.classList.add('d-none');
+            return true;
         }
     }
+
+    // ✅ Initial calculation for EDIT page
+    updateRemaining();
+
 });

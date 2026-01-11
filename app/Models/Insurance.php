@@ -16,7 +16,13 @@ class Insurance extends Model
     'from_basic',
     'from_transportation',
     'from_housing',
-    'from_other_allowances'];
+    'from_other_allowances',
+
+    'basic_percent',
+        'housing_percent',
+        'transportation_percent',
+        'other_allowances_percent',
+    ];
 
     // You can define relationships if needed, for example:
 
@@ -81,6 +87,7 @@ class Insurance extends Model
 {
     return $this->belongsTo(User::class, 'employee_id');
 }
+
 
     public function user()
     {

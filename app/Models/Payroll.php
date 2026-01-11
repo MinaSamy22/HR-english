@@ -16,6 +16,7 @@ class Payroll extends Model
         'bonuses',
         'deductions',
         'taxes',
+        'insurance',
         'net_pay',
         'pay_date',
         'branch_id',

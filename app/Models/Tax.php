@@ -15,6 +15,10 @@ class Tax extends Model
     'from_transportation',
     'from_housing',
     'from_other_allowances',
+        'basic_percent',
+        'housing_percent',
+        'transportation_percent',
+        'other_allowances_percent',
     'company_id',
     'employee_id'
 ];
@@ -75,4 +79,10 @@ static public function getRecord($request, $company_id)
     {
         return $this->belongsToMany(User::class, 'tax_user', 'tax_id', 'user_id');
     }
+
+    public function employee()
+{
+    return $this->belongsTo(User::class, 'employee_id');
+}
+
 }
