@@ -14,23 +14,22 @@ return new class extends Migration {
             $table->id();
             $table->string('code');
             $table->string('name');
-            $table->decimal('percent', 5, 2); // e.g. 10.00%
+            $table->decimal('i_percent', 5, 2); // e.g. 10.00%
             $table->foreignId('company_id')->nullable()->constrained('companies')->onDelete('cascade');
-            $table->foreignId('employee_id')->constrained('users')->onDelete('cascade'); //on delete cascade de 34an lma ams7 al employee da from employees a3rf ams7o o kmaaan etms7 kman mn hna
             $table->unsignedBigInteger('branch_id')->nullable();
+            $table->foreignId('employee_id')->constrained('users')->onDelete('cascade'); //on delete cascade de 34an lma ams7 al employee da from employees a3rf ams7o o kmaaan etms7 kman mn hna
 
-            $table->boolean('from_basic')->default(0);
-            $table->boolean('from_housing')->default(0);
-            $table->boolean('from_transportation')->default(0);
-            $table->boolean('from_other')->default(0);
+            $table->tinyInteger('apply_to_payroll')->default(false);
+
+            $table->tinyInteger('from_basic')->default(0);
+            $table->tinyInteger('from_housing')->default(0);
+            $table->tinyInteger('from_transportation')->default(0);
+            $table->tinyInteger('from_other_allowances')->default(0);
 
             $table->decimal('basic_percent', 5, 2)->default(0);
             $table->decimal('transportation_percent', 5, 2)->default(0);
             $table->decimal('housing_percent', 5, 2)->default(0);
             $table->decimal('other_allowances_percent', 5, 2)->default(0);
-
-
-            $table->tinyInteger('apply_to_payroll')->default(false);
 
             $table->timestamps();
         });

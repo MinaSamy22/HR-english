@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('news', function (Blueprint $table) {
+
             $table->id();
             $table->string('title')->nullable();
             $table->string('description')->nullable();
@@ -20,7 +21,6 @@ return new class extends Migration
             $table->unsignedBigInteger('company_id');
             $table->timestamps();
 
-            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
         });
 
     }

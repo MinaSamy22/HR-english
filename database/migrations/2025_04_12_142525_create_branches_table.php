@@ -15,11 +15,10 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->string('location')->nullable();
-            $table->boolean('is_main')->default(false);
-            $table->unsignedBigInteger('company_id');
-            $table->timestamps(); 
+            $table->tinyInteger('is_main')->default(false);
+            $table->unsignedBigInteger('company_id')->nullable();
+            $table->timestamps();
 
-            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
         });
 
     }

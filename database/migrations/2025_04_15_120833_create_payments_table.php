@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 class CreatePaymentsTable extends Migration
 {
    public function up()
-    {
+    {//the table at db made by this migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('payroll_id');
@@ -15,8 +15,6 @@ class CreatePaymentsTable extends Migration
             $table->integer('total_amount')->comment('Net pay from payroll');
             $table->integer('paid_amount')->comment('Amount paid in this payment');
             $table->integer('remaining_amount')->comment('Amount remaining after payment');
-            $table->string('payment_method')->nullable()->comment('cash, bank_transfer, check, etc.');
-            $table->text('notes')->nullable();
             $table->date('payment_date');
             $table->unsignedBigInteger('company_id')->nullable();
             $table->unsignedBigInteger('branch_id')->nullable();

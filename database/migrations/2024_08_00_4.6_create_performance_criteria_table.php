@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('performance_criteria', function (Blueprint $table) {
+        Schema::create('performance_criterias', function (Blueprint $table) {
             $table->id();
             $table->foreignId('company_id')->constrained()->onDelete('cascade');
             $table->string('name'); // e.g., "Quality of Work", "Communication"

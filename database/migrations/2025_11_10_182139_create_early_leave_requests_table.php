@@ -13,6 +13,7 @@ return new class extends Migration
 {
     Schema::create('early_leave_requests', function (Blueprint $table) {
         $table->id();
+        
         $table->unsignedBigInteger('employee_id');
         $table->date('request_date');
         $table->time('requested_leave_time');

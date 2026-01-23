@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('job_title')->nullable();
             $table->integer('min_salary')->nullable();
             $table->integer('max_salary')->nullable();
-            $table->foreignId('department_id')->nullable()->constrained('departments')->onDelete('set null');
-            $table->foreignId('company_id')->nullable()->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('department_id')->nullable()->constrained('departments')->onDelete('set null');
+            $table->unsignedBigInteger('company_id')->nullable()->constrained()->onDelete('cascade');
             $table->unsignedBigInteger('branch_id')->nullable();
 
             $table->timestamps();

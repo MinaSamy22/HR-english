@@ -14,18 +14,19 @@ return new class extends Migration
     Schema::create('vacation_requests', function (Blueprint $table) {
         $table->id();
         $table->unsignedBigInteger('user_id');
-        $table->string('vacation_type');
-        $table->date('start_date');
+        $table->string('vacation_type')->nullable();
+        $table->date('start_date')->nullable();
         $table->date('end_date')->nullable();
-        $table->integer('total')->nullable();
-        $table->text('reason');
+
+        $table->string('reason')->nullable();
         $table->string('emergency_contact')->nullable();
-        $table->boolean('is_urgent')->default(false);
+        $table->tinyInteger('is_urgent')->default(false);
         $table->string('status')->default('pending'); // pending, approved, rejected
-        $table->boolean('is_seen')->default(false);
+        $table->tinyInteger('is_seen')->default(false);
+        $table->integer('total_days')->nullable();
+
         $table->timestamps();
 
-        $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
     });
 }
 

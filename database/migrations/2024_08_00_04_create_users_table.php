@@ -13,12 +13,14 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email')->nullable()->index();
+            $table->string('email')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->string('phone_number')->nullable();
+
             $table->date('hire_date')->nullable();
             $table->date('birth_date')->nullable();
+
             $table->enum('nationality', ['local', 'foreign'])->default('local');
             $table->string('country_code')->nullable();
             $table->date('residency_expiry')->nullable();
@@ -27,7 +29,7 @@ return new class extends Migration
             $table->string('residency_number')->nullable();
             $table->string('iban')->nullable();
             $table->string('residency_job')->nullable();
-            $table->unsignedBigInteger('job_id')->nullable()->index();
+            $table->unsignedBigInteger('job_id')->nullable();
             $table->integer('salary_type')->nullable();
             $table->string('salary')->nullable();
 
@@ -42,8 +44,9 @@ return new class extends Migration
             $table->tinyInteger('shift_count')->default(1);
             $table->time('second_work_start_time')->nullable();
             $table->time('second_work_end_time')->nullable();
+
             $table->string('macaddress')->nullable();
-            $table->boolean('is_biometric')->nullable();
+            $table->tinyInteger('is_biometric')->nullable();
             $table->unsignedBigInteger('manager_id')->nullable()->index();
             $table->unsignedBigInteger('department_id')->nullable()->index();
             $table->string('attachment')->nullable();
@@ -54,7 +57,7 @@ return new class extends Migration
             $table->decimal('vacation_balance', 8, 2)->nullable();
             $table->decimal('bonus_per_hour', 8, 2)->nullable();
             $table->rememberToken();
-            $table->boolean('is_role')->default(1);
+            $table->tinyInteger('is_role')->default(1);
             $table->timestamps();
         });
 

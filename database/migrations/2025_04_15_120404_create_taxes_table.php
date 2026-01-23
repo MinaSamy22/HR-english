@@ -21,15 +21,15 @@ return new class extends Migration {
             $table->boolean('from_basic')->default(0);
             $table->boolean('from_housing')->default(0);
             $table->boolean('from_transportation')->default(0);
-            $table->boolean('from_other')->default(0);
+            $table->boolean('from_other_allowances')->default(0);
 
             $table->decimal('basic_percent', 5, 2)->default(0);
             $table->decimal('transportation_percent', 5, 2)->default(0);
             $table->decimal('housing_percent', 5, 2)->default(0);
             $table->decimal('other_allowances_percent', 5, 2)->default(0);
 
-            $table->foreignId('employee_id')->constrained('users')->onDelete('cascade'); //on delete cascade de 34an lma ams7 al employee da from employees a3rf ams7o o kmaaan etms7 kman mn hna
-            $table->foreignId('company_id')->nullable()->constrained('companies')->onDelete('cascade');
+            $table->unsignedBigInteger('employee_id')->constrained('users')->onDelete('cascade'); //on delete cascade de 34an lma ams7 al employee da from employees a3rf ams7o o kmaaan etms7 kman mn hna
+            $table->unsignedBigInteger('company_id')->nullable()->constrained('companies')->onDelete('cascade');
             $table->unsignedBigInteger('branch_id')->nullable();
 
             $table->timestamps();

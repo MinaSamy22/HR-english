@@ -10,10 +10,10 @@ class CreateAttendancesTable extends Migration
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
             $table->date('attendance_date')->nullable();
-            $table->foreignId('employee_id')->constrained('users')->onDelete('cascade'); //on delete cascade de 34an lma ams7 al employee da from employees a3rf ams7o o kmaaan etms7 kman mn hna
+            $table->unsignedBigInteger('employee_id')->constrained('users')->onDelete('cascade'); //on delete cascade de 34an lma ams7 al employee da from employees a3rf ams7o o kmaaan etms7 kman mn hna
             $table->string('attendance_type')->nullable(); // by ajax 1 -> present , 2 -> late , 3 -> absent , 4 -> half day
             $table->integer('created_by')->nullable();
-            $table->foreignId('company_id')->nullable()->constrained('companies')->onDelete('cascade');
+            $table->unsignedBigInteger('company_id')->nullable()->constrained('companies')->onDelete('cascade');
             $table->time('check_in')->nullable();
             $table->time('check_out')->nullable();
 

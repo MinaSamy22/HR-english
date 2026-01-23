@@ -16,14 +16,20 @@ class CreatePayrollsTable extends Migration
             $table->integer('deductions')->nullable();
             $table->integer('attendance_deduction')->nullable();
             $table->integer('taxes')->nullable();
+
+            $table->decimal('insurance', 10, 2)->nullable();
+
             $table->integer('rest_vacancy')->nullable();
             $table->integer('days_absent')->nullable();
             $table->integer('daily_wage')->nullable();
+
             $table->string('payroll_type')->nullable();
             $table->integer('net_pay')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
-            $table->foreignId('company_id')->nullable()->constrained('companies')->onDelete('cascade');
+
+            $table->unsignedBigInteger('company_id')->nullable();
+            $table->unsignedBigInteger('branch_id')->nullable();
 
             $table->timestamps();
 

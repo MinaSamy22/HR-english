@@ -16,7 +16,7 @@ return new class extends Migration
         $table->unsignedBigInteger('user_id'); // user_id of HR
         $table->json('permissions')->nullable();
         $table->unsignedBigInteger('company_id'); // user_id of HR
-        $table->timestamps();
+        $table->timestamps(); 
 
         $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
     });

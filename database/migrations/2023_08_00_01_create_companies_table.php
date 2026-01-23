@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('logo')->nullable();
             $table->string('country')->nullable();
             $table->string('address')->nullable();
-            $table->integer('phone_number')->nullable();
+            $table->bigInteger('phone_number')->nullable();
             $table->string('commercial_registration')->nullable();
             $table->string('tax_card')->nullable();
             $table->string('google_key')->nullable();

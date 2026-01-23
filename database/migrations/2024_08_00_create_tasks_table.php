@@ -16,10 +16,11 @@ return new class extends Migration
             $table->id();
             $table->string('task')->nullable();
             $table->string('completed')->nullable();
+            $table->unsignedBigInteger('company_id')->nullable()->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('branch_id')->nullable();
+
             $table->timestamps();
-            $table->foreignId('company_id')->nullable()->constrained('companies')->onDelete('cascade');
-
-
+ 
         });
     }
 

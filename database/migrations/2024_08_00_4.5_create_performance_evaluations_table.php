@@ -20,10 +20,8 @@ return new class extends Migration
             $table->json('criteria_scores')->nullable(); // Store custom criteria scores
             $table->boolean('uses_custom_criteria')->default(false);
 
-            // Overall Score (calculated average)
             $table->decimal('overall_score', 3, 2)->default(0.00);
 
-            // Comments (General comments for the entire evaluation)
             $table->text('strengths')->nullable();
             $table->text('areas_for_improvement')->nullable();
             $table->text('goals_for_next_period')->nullable();

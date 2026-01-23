@@ -12,8 +12,8 @@ return new class extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->string('code')->nullable();
-            $table->foreignId('manager_id')->nullable()->constrained()->onDelete('set null');
-            $table->foreignId('company_id')->nullable()->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('manager_id')->nullable()->constrained()->onDelete('set null');
+            $table->unsignedBigInteger('company_id')->nullable()->constrained()->onDelete('cascade');
             $table->unsignedBigInteger('branch_id')->nullable();
 
             $table->timestamps();
