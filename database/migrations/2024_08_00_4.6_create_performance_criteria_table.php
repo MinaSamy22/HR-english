@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('performance_criterias', function (Blueprint $table) {
+        Schema::create('performance_criteria', function (Blueprint $table) {
             $table->id();
             $table->foreignId('company_id')->constrained()->onDelete('cascade');
             $table->string('name'); // e.g., "Quality of Work", "Communication"
@@ -23,11 +23,6 @@ return new class extends Migration
             $table->index(['company_id', 'is_active']);
         });
 
-        // Add criteria_scores JSON column to performance_evaluations table
-        Schema::table('performance_evaluations', function (Blueprint $table) {
-            $table->json('criteria_scores')->nullable()->after('initiative');
-            $table->boolean('uses_custom_criteria')->default(false)->after('criteria_scores');
-        });
     }
 
     /**

@@ -11,15 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Create locations table
-        Schema::create('locations', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->json('polygon')->nullable(); // polygon points
-            $table->foreignId('company_id')->nullable()->constrained('companies')->onDelete('cascade');
-            $table->foreignId('branch_id')->nullable()->constrained('branches')->onDelete('cascade');
-            $table->timestamps();
-        });
 
         // Create pivot table for employees & locations
         Schema::create('employee_location', function (Blueprint $table) {
