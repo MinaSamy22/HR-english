@@ -6,6 +6,9 @@
     <div class="content-wrapper dashboard"
         style="background-image: url('{{ asset('/dist/img/dashboard.jpg') }}'); background-size: cover; background-position: center;">
 
+        {{-- <div class="content-wrapper"
+        style="background-color: #fcfcfc;"> --}}
+
         <!-- Content Header (Page header) -->
         <div class="content-header">
             <div class="container-fluid">

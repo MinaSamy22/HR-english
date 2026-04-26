@@ -1,10 +1,14 @@
 <!-- Preloader -->
-
 <!-- CSS Link (add inside <head>) -->
 <link rel="stylesheet" href="{{ asset('dist/css/darkmode.css') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css">
+<!-- Inter Font -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+<!-- FontAwesome 5 (if not already loaded) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <style>
     .dropdown-item.active,
     .dropdown-item:active {
@@ -346,7 +350,7 @@
 
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <!-- Brand Logo -->
+        <!-- Brand Logo -->
     <a class="brand-link">
         <img src="{{ url('/dist/img/hr_logo-.png') }}" alt="AdminLTE Logo"
             class="brand-image img-circle elevation-3" style="opacity: .8">
@@ -706,7 +710,7 @@
                                         <p>{{ __('dashboard.salary_payment') }}</p>
                                     </a>
                                 </li>
-                            @endif 
+                            @endif
 
                         </ul>
                     </li>
