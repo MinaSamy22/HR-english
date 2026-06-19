@@ -83,7 +83,7 @@ return [
     |
     */
 
-    'locale' => 'ar', //defult start lang
+    'locale' => 'en', //defult start lang
 
     /*
     |--------------------------------------------------------------------------
