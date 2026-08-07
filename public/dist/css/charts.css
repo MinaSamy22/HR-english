@@ -1,0 +1,153 @@
+/* Clean & Simple Styles for HR Analytics Charts Blade */
+
+:root {
+    --simple-bg: #ffffff;
+    --simple-border: #e2e8f0;
+    --simple-text: #1e293b;
+    --simple-text-muted: #64748b;
+    --simple-radius: 12px;
+    --simple-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04);
+    --simple-shadow-hover: 0 4px 12px 0 rgba(0, 0, 0, 0.06);
+}
+
+.dark-mode {
+    --simple-bg: #1e293b;
+    --simple-border: #334155;
+    --simple-text: #f8fafc;
+    --simple-text-muted: #94a3b8;
+    --simple-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+    --simple-shadow-hover: 0 4px 12px 0 rgba(0, 0, 0, 0.4);
+}
+
+/* Page Header */
+.simple-header-title {
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--simple-text);
+    margin: 0;
+}
+
+.simple-section-title {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--simple-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.85rem;
+}
+
+/* Minimal Stat Cards */
+.simple-stat-card {
+    background: var(--simple-bg);
+    border: 1px solid var(--simple-border);
+    border-radius: var(--simple-radius);
+    padding: 1.15rem 1.25rem;
+    box-shadow: var(--simple-shadow);
+    transition: all 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.simple-stat-card:hover {
+    box-shadow: var(--simple-shadow-hover);
+    border-color: #cbd5e1;
+    transform: translateY(-2px);
+}
+
+.simple-stat-label {
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--simple-text-muted);
+    margin-bottom: 0.25rem;
+}
+
+.simple-stat-number {
+    font-size: 1.75rem;
+    font-weight: 550;
+    color: var(--simple-text);
+    line-height: 1.1;
+}
+
+.simple-stat-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+/* Subtle Icon Backgrounds */
+.icon-blue { background: #eff6ff; color: #3b82f6; }
+.icon-green { background: #f0fdf4; color: #16a34a; }
+.icon-amber { background: #fffbeb; color: #d97706; }
+.icon-purple { background: #faf5ff; color: #9333ea; }
+
+.dark-mode .icon-blue { background: rgba(59, 130, 246, 0.12); color: #60a5fa; }
+.dark-mode .icon-green { background: rgba(22, 163, 74, 0.12); color: #4ade80; }
+.dark-mode .icon-amber { background: rgba(217, 119, 6, 0.12); color: #fbbf24; }
+.dark-mode .icon-purple { background: rgba(147, 51, 234, 0.12); color: #c084fc; }
+
+/* Minimal Chart Card */
+.simple-chart-card {
+    background: var(--simple-bg);
+    border: 1px solid var(--simple-border);
+    border-radius: var(--simple-radius);
+    box-shadow: var(--simple-shadow);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.simple-chart-header {
+    padding: 0.9rem 1.25rem;
+    border-bottom: 1px solid var(--simple-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.simple-chart-title {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--simple-text);
+    margin: 0;
+}
+
+.simple-chart-body {
+    padding: 1.25rem;
+    flex: 1;
+    position: relative;
+}
+
+.simple-canvas-container {
+    position: relative;
+    width: 100%;
+    height: 300px;
+}
+
+/* RTL Support */
+html[dir="rtl"] .simple-stat-card {
+    text-align: right;
+}
+
+html[dir="rtl"] .simple-chart-header {
+    text-align: right;
+}
+
+/* Responsive */
+@media (max-width: 575.98px) {
+    .simple-stat-card {
+        padding: 1rem;
+    }
+    .simple-stat-number {
+        font-size: 1.45rem;
+    }
+    .simple-canvas-container {
+        height: 240px;
+    }
+}

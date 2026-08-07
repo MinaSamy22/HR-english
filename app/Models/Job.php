@@ -80,4 +80,9 @@ if (!empty(Request::get('filter_branch_id'))) {
     {
         return $this->belongsTo(Company::class);
     }
+
+    public function users()
+    {
+        return $this->hasMany(User::class, 'job_id');
+    }
 }
