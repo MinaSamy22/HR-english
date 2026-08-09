@@ -632,23 +632,26 @@
 
                     {{-- Slide 1 --}}
                     <div class="panel-slide active">
-                        <div class="panel-title">HR Management<br>System</div>
-                        <p class="panel-subtitle">Manage your entire workforce from a single, unified dashboard built
-                            for modern HR teams.</p>
+                        <div class="panel-title">Company Policy<br>& Deductions</div>
+                        <p class="panel-subtitle">Set your company policy, deductions system, and working days for your employees.</p>
                     </div>
 
                     {{-- Slide 2 --}}
                     <div class="panel-slide">
-                        <div class="panel-title">Track Attendance<br>Effortlessly</div>
-                        <p class="panel-subtitle">Real-time attendance monitoring with smart alerts, shift scheduling,
-                            and detailed reports.</p>
+                        <div class="panel-title">Manage Employee<br>Requests</div>
+                        <p class="panel-subtitle">Review and manage your employees' requests quickly and efficiently.</p>
                     </div>
 
                     {{-- Slide 3 --}}
                     <div class="panel-slide">
-                        <div class="panel-title">Payroll Made<br>Simple</div>
-                        <p class="panel-subtitle">Automate payroll calculations, generate payslips, and ensure accurate,
-                            on-time payments.</p>
+                        <div class="panel-title">Attendance &<br>Performance</div>
+                        <p class="panel-subtitle">Track the attendance and set your employees performance with ease.</p>
+                    </div>
+
+                    {{-- Slide 4 --}}
+                    <div class="panel-slide">
+                        <div class="panel-title">Create<br>Payroll</div>
+                        <p class="panel-subtitle">Generate accurate payrolls and payslips for all your employees in just a few clicks.</p>
                     </div>
 
                 </div>
@@ -658,6 +661,7 @@
                     <button type="button" class="dot active" onclick="goToSlide(0)"></button>
                     <button type="button" class="dot" onclick="goToSlide(1)"></button>
                     <button type="button" class="dot" onclick="goToSlide(2)"></button>
+                    <button type="button" class="dot" onclick="goToSlide(3)"></button>
                 </div>
 
             </div>
