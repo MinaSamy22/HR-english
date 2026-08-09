@@ -30,6 +30,10 @@ return [
     'add_admin' => 'إضافة مسؤول جديد',
     'manage_companies' => 'إدارة الشركات',
     'manage_admins' => 'إدارة المسؤولين',
+
+    // Management headings
+    'companies_management' => ' الشركات',
+    'admins_management' => ' المسؤولين',
  // Admins Page
     'delete_admin_system' => 'حذف مسؤول من النظام',
     'name' => 'الاسم',

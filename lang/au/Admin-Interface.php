@@ -31,6 +31,10 @@ return [
     'manage_companies' => 'کمپنیوں کا انتظام',
     'manage_admins' => 'منتظمین کا انتظام',
 
+    // Management headings
+    'companies_management' => 'کمپنیوں  ',
+    'admins_management' => 'منتظمین  ',
+
 'all_companies' => 'تمام کمپنیاں',
 'manage_delete_companies' => 'کمپنیوں کا انتظام اور حذف کریں',
 'company_name' => 'کمپنی کا نام',

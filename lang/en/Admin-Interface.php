@@ -24,6 +24,8 @@ return [
     'quick_actions' => 'Quick Actions',
     'create_new' => 'Create New',
     'management' => 'Management',
+    'companies_management' => 'Companies ',
+    'admins_management' => 'Admins ',
 
     // Buttons
     'add_company' => 'Add New Company',

@@ -62,35 +62,35 @@
 
             <div class="action-group">
                 <h3>
-                    <i class="fas fa-plus-circle" style="margin-right: 4px;"></i>
-                    {{ __('Admin-Interface.create_new') }}
+                    <i class="fas fa-building" style="margin-right: 4px;"></i>
+                    {{ __('Admin-Interface.companies_management') }}
                 </h3>
                 <div class="action-buttons">
                     <a href="{{ route('register') }}" class="btn btn-primary">
                         <i class="fas fa-building"></i>
                         {{ __('Admin-Interface.add_company') }}
                     </a>
-                    <a href="{{ route('admin.register') }}" class="btn btn-success">
-                        <i class="fas fa-user-shield"></i>
-                        {{ __('Admin-Interface.add_admin') }}
+                    <a href="{{ route('admin.companies') }}" class="btn btn-danger">
+                        <i class="fas fa-building"></i>
+                        {{ __('Admin-Interface.manage_companies') }}
                     </a>
                 </div>
             </div>
 
             <div class="action-group">
                 <h3>
-                    <i class="fas fa-cogs" style="margin-right: 4px;"></i>
-                    {{ __('Admin-Interface.management') }}
+                    <i class="fas fa-user-shield" style="margin-right: 4px;"></i>
+                    {{ __('Admin-Interface.admins_management') }}
                 </h3>
                 <div class="action-buttons">
-                    <a href="{{ route('admin.companies') }}" class="btn btn-danger">
-                        <i class="fas fa-building"></i>
-                        {{ __('Admin-Interface.manage_companies') }}
+                    <a href="{{ route('admin.register') }}" class="btn btn-success">
+                        <i class="fas fa-user-shield"></i>
+                        {{ __('Admin-Interface.add_admin') }}
                     </a>
                     <a href="{{ route('admin.admins.manage') }}" class="btn btn-danger">
                         <i class="fas fa-user-cog"></i>
                         {{ __('Admin-Interface.manage_admins') }}
-                    </a>
+                    </a>   
                 </div>
             </div>
         </div>
