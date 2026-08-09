@@ -5,7 +5,7 @@ Hello {{ $user->name }}
 Your Password:   <b> {{ $user->random_pass }} </b>
 
 <br>
-
+<br>
 Thank you, <br>
 
 {{ config('app.name') }}
