@@ -95,6 +95,35 @@
             </div>
         </div>
     </div>
+
+    <!-- Additional Charts Row -->
+    <div class="charts-row charts-row--full">
+        <!-- Line Chart: System Growth Trend -->
+        <div class="chart-container">
+            <div class="chart-header-row">
+                <h2>
+                    <i class="fas fa-chart-line" style="margin-right: 6px; color: #43e97b;"></i>
+                    {{ __("Admin-Interface.system_growth_trend") }} ({{ $selectedYear }})
+                </h2>
+                <form action="{{ route('admin.landing') }}" method="GET" class="year-filter-form">
+                    <label for="yearSelect" class="year-filter-label">
+                        <i class="fas fa-calendar-alt"></i> {{ __("Admin-Interface.select_year") }}:
+                    </label>
+                    <select name="year" id="yearSelect" class="year-filter-select" onchange="this.form.submit()">
+                        @foreach($availableYears as $year)
+                            <option value="{{ $year }}" {{ $selectedYear == $year ? 'selected' : '' }}>
+                                {{ $year }}
+                            </option>
+                        @endforeach
+                    </select>
+                </form>
+            </div>
+            <div class="chart-wrapper" style="height: 320px;">
+                <canvas id="growthLineChart"></canvas>
+            </div>
+            <div class="growth-legend-row" id="growthLegend"></div>
+        </div>
+    </div>
 @endsection
 
 @section('scripts')
@@ -105,7 +134,8 @@
             employees: @json($getEmployeeCount),
             admins: @json($totalAdmins),
             hrs: @json($totalHRs),
-            employeesByCompany: @json($employeesByCompany ?? [])
+            employeesByCompany: @json($employeesByCompany ?? []),
+            monthlyGrowth: @json($monthlyGrowth ?? ['labels' => [], 'employees' => [], 'companies' => []])
         };
 
         // Update statistics
@@ -116,7 +146,7 @@
             document.getElementById('hrsCount').textContent = dashboardData.hrs;
         }
 
-        // Create bar chart
+        // Create bar chart (employees per company)
         function createChart() {
             const ctx = document.getElementById('employeeChart').getContext('2d');
             const isRTL = document.documentElement.dir === 'rtl';
@@ -149,20 +179,15 @@
                         },
                         tooltip: {
                             backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                            titleFont: {
-                                family: isRTL ? 'Cairo' : 'Inter',
-                                size: 14
-                            },
-                            bodyFont: {
-                                family: isRTL ? 'Cairo' : 'Inter',
-                                size: 12
-                            },
+                            titleFont: { family: isRTL ? 'Cairo' : 'Inter', size: 14 },
+                            bodyFont:  { family: isRTL ? 'Cairo' : 'Inter', size: 12 },
                             rtl: isRTL,
                             textDirection: isRTL ? 'rtl' : 'ltr',
                             callbacks: {
                                 label: function(context) {
                                     const value = context.parsed.y;
-                                    const percentage = ((value / dashboardData.employees) * 100).toFixed(1);
+                                    const total = dashboardData.employees || 1;
+                                    const percentage = ((value / total) * 100).toFixed(1);
                                     return `${value} {{ __("Admin-Interface.employees_text") }} (${percentage}%)`;
                                 }
                             }
@@ -171,53 +196,138 @@
                     scales: {
                         y: {
                             beginAtZero: true,
+                            position: isRTL ? 'right' : 'left',
                             title: {
                                 display: true,
                                 text: '{{ __("Admin-Interface.number_of_employees") }}',
-                                font: {
-                                    family: isRTL ? 'Cairo' : 'Inter',
-                                    size: 13
-                                }
+                                font: { family: isRTL ? 'Cairo' : 'Inter', size: 13 }
                             },
-                            ticks: {
-                                font: {
-                                    family: isRTL ? 'Cairo' : 'Inter'
-                                }
-                            }
+                            ticks: { font: { family: isRTL ? 'Cairo' : 'Inter' } }
                         },
                         x: {
                             title: {
                                 display: true,
                                 text: '{{ __("Admin-Interface.company") }}',
-                                font: {
-                                    family: isRTL ? 'Cairo' : 'Inter',
-                                    size: 13
-                                }
+                                font: { family: isRTL ? 'Cairo' : 'Inter', size: 13 }
                             },
-                            ticks: {
-                                font: {
-                                    family: isRTL ? 'Cairo' : 'Inter',
-                                    size: 12
-                                }
-                            }
+                            ticks: { font: { family: isRTL ? 'Cairo' : 'Inter', size: 12 } },
+                            reverse: isRTL
                         }
                     }
                 }
             });
         }
 
+        // ── NEW CHART: Line — System Growth Trend ───────────────────────────
+        function createGrowthChart() {
+            const ctx = document.getElementById('growthLineChart').getContext('2d');
+            const isRTL = document.documentElement.dir === 'rtl';
+
+            const labels = dashboardData.monthlyGrowth.labels || [];
+            const empData = dashboardData.monthlyGrowth.employees || [];
+            const compData = dashboardData.monthlyGrowth.companies || [];
+
+            // Create gradients for background fills
+            const empGradient = ctx.createLinearGradient(0, 0, 0, 250);
+            empGradient.addColorStop(0, 'rgba(102, 126, 234, 0.35)');
+            empGradient.addColorStop(1, 'rgba(102, 126, 234, 0.01)');
+
+            const compGradient = ctx.createLinearGradient(0, 0, 0, 250);
+            compGradient.addColorStop(0, 'rgba(237, 137, 54, 0.35)');
+            compGradient.addColorStop(1, 'rgba(237, 137, 54, 0.01)');
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: '{{ __("Admin-Interface.new_employees") }}',
+                            data: empData,
+                            borderColor: '#667eea',
+                            backgroundColor: empGradient,
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            pointBackgroundColor: '#667eea',
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 2,
+                            pointRadius: 4,
+                            pointHoverRadius: 6
+                        },
+                        {
+                            label: '{{ __("Admin-Interface.new_companies") }}',
+                            data: compData,
+                            borderColor: '#ed8936',
+                            backgroundColor: compGradient,
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            pointBackgroundColor: '#ed8936',
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 2,
+                            pointRadius: 4,
+                            pointHoverRadius: 6
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(0,0,0,0.82)',
+                            titleFont: { family: isRTL ? 'Cairo' : 'Inter', size: 13 },
+                            bodyFont:  { family: isRTL ? 'Cairo' : 'Inter', size: 12 },
+                            rtl: isRTL
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { precision: 0, font: { family: isRTL ? 'Cairo' : 'Inter' } },
+                            position: isRTL ? 'right' : 'left'
+                        },
+                        x: {
+                            ticks: { font: { family: isRTL ? 'Cairo' : 'Inter', size: 11 } },
+                            reverse: isRTL
+                        }
+                    }
+                }
+            });
+
+            // Build custom legend for growth chart
+            const legend = document.getElementById('growthLegend');
+            const totalEmps = empData.reduce((a, b) => a + b, 0);
+            const totalComps = compData.reduce((a, b) => a + b, 0);
+
+            legend.innerHTML = `
+                <div class="donut-legend-item">
+                    <span class="donut-legend-dot" style="background:#667eea"></span>
+                    <span class="donut-legend-label">{{ __("Admin-Interface.new_employees") }}</span>
+                    <span class="donut-legend-value">${totalEmps} <em>({{ __("Admin-Interface.total_registrations") }})</em></span>
+                </div>
+                <div class="donut-legend-item">
+                    <span class="donut-legend-dot" style="background:#ed8936"></span>
+                    <span class="donut-legend-label">{{ __("Admin-Interface.new_companies") }}</span>
+                    <span class="donut-legend-value">${totalComps} <em>({{ __("Admin-Interface.total_registrations") }})</em></span>
+                </div>
+            `;
+        }
+
         // Initialize dashboard
         document.addEventListener('DOMContentLoaded', function() {
             updateStats();
             createChart();
+            createGrowthChart();
         });
 
-        // Add interactive animations
+        // Add interactive animations to stat cards
         document.querySelectorAll('.stat-card').forEach(card => {
             card.addEventListener('mouseenter', function() {
                 this.style.transform = 'translateY(-8px) scale(1.02)';
             });
-
             card.addEventListener('mouseleave', function() {
                 this.style.transform = 'translateY(0) scale(1)';
             });

@@ -20,6 +20,18 @@ return [
     'number_of_employees' => 'ملازمین کی تعداد',
     'company' => 'کمپنی',
 
+    // New Charts
+    'users_distribution' => 'سسٹم صارفین کی تقسیم',
+    'companies_ranking'  => 'ملازمین کے لحاظ سے سرفہرست کمپنیاں',
+    'system_growth_trend' => 'سسٹم کی ترقی کا رجحان',
+    'select_year'        => 'سال',
+    'new_employees'      => 'نئے ملازمین',
+    'new_companies'      => 'نئی کمپنیاں',
+    'total_registrations' => 'کل',
+    'label_admins'       => 'منتظمین',
+    'label_hrs'          => 'ایچ آر مینیجرز',
+    'label_employees'    => 'ملازمین',
+
     // Quick Actions
     'quick_actions' => 'فوری اقدامات',
     'create_new' => 'نیا بنائیں',

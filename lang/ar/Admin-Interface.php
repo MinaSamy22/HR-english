@@ -20,7 +20,18 @@ return [
     'number_of_employees' => 'عدد الموظفين',
     'company' => 'الشركة',
 
-    // Quick Actions
+    // New Charts
+    'users_distribution' => 'توزيع مستخدمي النظام',
+    'companies_ranking'  => 'أعلى الشركات من حيث الموظفين',
+    'system_growth_trend' => 'اتجاه نمو النظام',
+    'select_year'        => 'السنة',
+    'new_employees'      => 'موظفون جدد',
+    'new_companies'      => 'شركات جديدة',
+    'total_registrations' => 'الإجمالي',
+    'label_admins'       => 'المسؤولون',
+    'label_hrs'          => 'مديرو الموارد البشرية',
+    'label_employees'    => 'الموظفون',
+
     'quick_actions' => 'إجراءات سريعة',
     'create_new' => 'إنشاء جديد',
     'management' => 'الإدارة',

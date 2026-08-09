@@ -20,6 +20,18 @@ return [
     'number_of_employees' => 'Number of Employees',
     'company' => 'Company',
 
+    // New Charts
+    'users_distribution' => 'System Users Distribution',
+    'companies_ranking'  => 'Top Companies by Headcount',
+    'system_growth_trend' => 'System Growth Trend',
+    'select_year'        => 'Year',
+    'new_employees'      => 'New Employees',
+    'new_companies'      => 'New Companies',
+    'total_registrations' => 'Total',
+    'label_admins'       => 'Admins',
+    'label_hrs'          => 'HR Managers',
+    'label_employees'    => 'Employees',
+
     // Quick Actions
     'quick_actions' => 'Quick Actions',
     'create_new' => 'Create New',

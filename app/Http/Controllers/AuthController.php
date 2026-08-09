@@ -163,7 +163,7 @@ public function login_post(Request $request)
 return redirect('/')->with('success', __('auth.admin_registered_successfully'));
     }
 
-    public function adminLanding()
+    public function adminLanding(Request $request)
     {
         $data['getEmployeeCount'] = User::count();
         $data['totalCompanies'] = Company::count();
@@ -180,6 +180,39 @@ return redirect('/')->with('success', __('auth.admin_registered_successfully'));
                 ];
             })
             ->toArray();
+
+        // Filter Year configuration (2026 to 2030)
+        $currentYear = (int) \Carbon\Carbon::now()->year;
+        $selectedYear = (int) $request->get('year', $currentYear);
+        $availableYears = range(2026, 2030);
+
+        $months = [];
+        $monthlyEmployees = [];
+        $monthlyCompanies = [];
+
+        for ($m = 1; $m <= 12; $m++) {
+            $date = \Carbon\Carbon::createFromDate($selectedYear, $m, 1);
+            $months[] = $date->format('M');
+
+            $empCount = User::whereYear('created_at', $selectedYear)
+                ->whereMonth('created_at', $m)
+                ->count();
+            $monthlyEmployees[] = $empCount;
+
+            $compCount = Company::whereYear('created_at', $selectedYear)
+                ->whereMonth('created_at', $m)
+                ->count();
+            $monthlyCompanies[] = $compCount;
+        }
+
+        $data['selectedYear'] = $selectedYear;
+        $data['availableYears'] = $availableYears;
+        $data['monthlyGrowth'] = [
+            'labels' => $months,
+            'employees' => $monthlyEmployees,
+            'companies' => $monthlyCompanies,
+        ];
+
         return view('admins.home.admin_home', $data);
     }
 
