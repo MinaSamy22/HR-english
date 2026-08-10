@@ -53,4 +53,13 @@ return [
 
         'confirm_delete_company' => 'Are you sure you want to delete this company?',
 
+    'register_admin_headline_before' => 'Manage Your',
+    'register_admin_headline_highlight' => 'Admin Team',
+    'register_admin_headline_after' => 'with Confidence',
+    'register_admin_tagline' => 'Create and manage administrator accounts with full control over system access, roles, and security.',
+
+    'register_company_headline_before' => 'Onboard Your',
+    'register_company_headline_highlight' => 'Company',
+    'register_company_headline_after' => 'in Minutes',
+    'register_company_tagline' => 'Register your company and get instant access to the full HR platform — payroll, employees, attendance, and more.',
 ];

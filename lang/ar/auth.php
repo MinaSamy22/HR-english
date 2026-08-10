@@ -55,5 +55,13 @@ return [
 
         'confirm_delete_company' => 'هل أنت متأكد أنك تريد حذف هذه الشركة؟',
 
+    'register_admin_headline_before' => 'أدِر',
+    'register_admin_headline_highlight' => 'فريق المسؤولين',
+    'register_admin_headline_after' => 'بثقة',
+    'register_admin_tagline' => 'إنشاء وإدارة حسابات المسؤولين مع التحكم الكامل في الوصول إلى النظام والأدوار والأمان.',
 
+    'register_company_headline_before' => 'سجّل',
+    'register_company_headline_highlight' => 'شركتك',
+    'register_company_headline_after' => 'في دقائق',
+    'register_company_tagline' => 'سجّل شركتك واحصل على وصول فوري إلى منصة الموارد البشرية الكاملة — الرواتب، الموظفين، الحضور، والمزيد.',
 ];

@@ -7,7 +7,7 @@
     <title>{{ __('auth.register-company') }}</title>
     <link rel="icon" type="image/x-icon" href="{{ url('dist/img/hr_logo-.png') }}" />
 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap">
 
     @if(app()->getLocale() == 'ar' || app()->getLocale() == 'au')
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -16,148 +16,180 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css">
     <link rel="stylesheet" href="{{ url('plugins/fontawesome-free/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ url('plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url('dist/css/login.css') }}">
     <link rel="stylesheet" href="{{ url('dist/css/adminlte.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('dist/css/mina.css') }}">
-
-    <style>
-        body {
-            font-family: {{ app()->getLocale() == 'ar' || app()->getLocale() == 'au' ? "'Cairo', sans-serif" : "'Source Sans Pro', sans-serif" }};
-        }
-        .login-logo { margin-bottom: 10px; }
-        .login-logo img { max-width: 120px; height: auto; }
-        .card { border: none; border-radius: 16px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12); backdrop-filter: blur(10px); background: rgba(255, 255, 255, 0.95); }
-        .login-card-body { padding: 35px; }
-        .login-box-msg { font-size: 16px; font-weight: 500; color: #495057; margin-bottom: 30px; }
-        .form-control { border: 2px solid #e9ecef; border-radius: 10px; padding: 12px 45px 12px 15px; height: auto; font-size: 15px; transition: all 0.3s; }
-        [dir="rtl"] .form-control { padding: 12px 15px 12px 45px; }
-        .form-control:focus { border-color: #667eea; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); }
-        .input-icon { position: absolute; top: 50%; right: 15px; transform: translateY(-50%); color: #6c757d; font-size: 16px; }
-        [dir="rtl"] .input-icon { right: auto; left: 15px; }
-        .password-toggle { cursor: pointer; z-index: 10; }
-        .btn-primary { background: linear-gradient(135deg, #0084ff 0%, #0091ff 100%); border: none; border-radius: 10px; padding: 12px; font-weight: 600; font-size: 16px; transition: transform 0.2s, box-shadow 0.2s; }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4); }
-        .language-switcher { position: relative; display: flex; justify-content: center; z-index: 9999; margin-bottom: 20px; }
-        .lang-dropdown-wrapper { position: relative; display: inline-block; width: auto; min-width: 150px; }
-        .lang-dropdown-btn { background: white; color: #4a5568; padding: 0; border: none; cursor: pointer; font-size: 14px; font-weight: 500; display: flex; align-items: center; transition: all 0.3s ease; white-space: nowrap; width: 100%; }
-        .custom-badge { background: #f8f9fa; color: #4a5568; padding: 10px 16px; border-radius: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); transition: all 0.3s ease; width: 100%; }
-        .lang-dropdown-btn:hover .custom-badge { border-color: #cbd5e0; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); background: #e9ecef; }
-        .lang-dropdown-content { display: none; position: absolute; top: calc(100% + 8px); left: 0; right: 0; background-color: white; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15); border-radius: 12px; z-index: 10000; overflow: hidden; animation: slideDown 0.3s ease; border: 1px solid rgba(0, 0, 0, .15); }
-        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        .lang-dropdown-content.show { display: block; }
-        .lang-option { display: flex; align-items: center; padding: 12px 16px; text-decoration: none; color: #2d3748; transition: all 0.2s ease; gap: 10px; font-size: 14px; font-weight: 500; border: none; width: 100%; background: white; cursor: pointer; }
-        .lang-option:hover { background-color: #f8f9fa; color: #667eea; }
-        .lang-option.active { background-color: #e3f2fd; color: #1976d2; font-weight: 600; }
-        [dir="rtl"] .input-group-append { margin-left: 0; margin-right: -1px; }
-        .error-msg { color: #dc3545; font-size: 13px; margin-top: 5px; display: block; }
-    </style>
 </head>
 
-<body class="hold-transition login-page">
-    <div class="login-box">
-        <div class="login-logo">
-            <img src="{{ url('dist/img/hr_logo-.png') }}" alt="HR Logo">
+<body class="auth-body">
+    <div class="auth-page-bg">
+        <div class="info-grid"></div>
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <div class="language-switcher">
+        <div class="lang-dropdown-wrapper">
+            <button class="lang-dropdown-btn" onclick="toggleLangDropdown(event)" type="button" aria-label="Language">
+                <div class="custom-badge">
+                    @if (app()->getLocale() == 'ar')
+                        <span class="flag-icon flag-icon-sa"></span>
+                        <span>{{ __('auth.lang_arabic') }}</span>
+                    @elseif(app()->getLocale() == 'au')
+                        <span class="flag-icon flag-icon-pk"></span>
+                        <span>{{ __('auth.lang_urdu') }}</span>
+                    @else
+                        <span class="flag-icon flag-icon-gb"></span>
+                        <span>{{ __('auth.lang_english') }}</span>
+                    @endif
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </button>
+            <div class="lang-dropdown-content" id="langDropdown">
+                <a href="{{ url('lang/en') }}" class="lang-option {{ app()->getLocale() == 'en' ? 'active' : '' }}">
+                    <span class="flag-icon flag-icon-gb"></span>
+                    <span>{{ __('auth.lang_english') }}</span>
+                    @if (app()->getLocale() == 'en')<i class="fas fa-check text-success"></i>@endif
+                </a>
+                <a href="{{ url('lang/ar') }}" class="lang-option {{ app()->getLocale() == 'ar' ? 'active' : '' }}">
+                    <span class="flag-icon flag-icon-sa"></span>
+                    <span>{{ __('auth.lang_arabic') }}</span>
+                    @if (app()->getLocale() == 'ar')<i class="fas fa-check text-success"></i>@endif
+                </a>
+                <a href="{{ url('lang/au') }}" class="lang-option {{ app()->getLocale() == 'au' ? 'active' : '' }}">
+                    <span class="flag-icon flag-icon-pk"></span>
+                    <span>{{ __('auth.lang_urdu') }}</span>
+                    @if (app()->getLocale() == 'au')<i class="fas fa-check text-success"></i>@endif
+                </a>
+            </div>
         </div>
+    </div>
 
-        <div class="card">
-            <div class="card-body login-card-body">
-                <p class="login-box-msg">{{ __('auth.register_new_company') }}</p>
+    <div class="auth-layout {{ in_array(app()->getLocale(), ['ar', 'au']) ? 'auth-layout-rtl' : 'auth-layout-ltr' }}">
 
-                <div class="language-switcher">
-                    <div class="lang-dropdown-wrapper">
-                        <button class="lang-dropdown-btn" onclick="toggleLangDropdown(event)" type="button">
-                            <div class="custom-badge">
-                                @if(app()->getLocale() == 'ar')
-                                    <span class="flag-icon flag-icon-sa"></span>
-                                    <span class="font-weight-bold">عربي</span>
-                                @elseif(app()->getLocale() == 'au')
-                                    <span class="flag-icon flag-icon-pk"></span>
-                                    <span class="font-weight-bold">اردو</span>
-                                @else
-                                    <span class="flag-icon flag-icon-gb"></span>
-                                    <span class="font-weight-bold">English</span>
-                                @endif
-                                <i class="fas fa-chevron-down" style="font-size: 12px; margin-left: auto;"></i>
-                            </div>
-                        </button>
-                        <div class="lang-dropdown-content" id="langDropdown">
-                            <a href="{{ url('lang/en') }}" class="lang-option {{ app()->getLocale() == 'en' ? 'active' : '' }}">
-                                <span class="flag-icon flag-icon-gb"></span>
-                                <span>English</span>
-                                @if(app()->getLocale() == 'en')
-                                    <i class="fas fa-check text-success" style="margin-left: auto;"></i>
-                                @endif
-                            </a>
-                            <a href="{{ url('lang/ar') }}" class="lang-option {{ app()->getLocale() == 'ar' ? 'active' : '' }}">
-                                <span class="flag-icon flag-icon-sa"></span>
-                                <span>العربية</span>
-                                @if(app()->getLocale() == 'ar')
-                                    <i class="fas fa-check text-success" style="margin-left: auto;"></i>
-                                @endif
-                            </a>
-                            <a href="{{ url('lang/au') }}" class="lang-option {{ app()->getLocale() == 'au' ? 'active' : '' }}">
-                                <span class="flag-icon flag-icon-pk"></span>
-                                <span>اردو</span>
-                                @if(app()->getLocale() == 'au')
-                                    <i class="fas fa-check text-success" style="margin-left: auto;"></i>
-                                @endif
-                            </a>
-                        </div>
+        {{-- Left info panel --}}
+        <aside class="info-panel">
+            <div class="info-inner">
+                <div class="info-brand">
+                    <img src="{{ url('dist/img/hr_logo-.png') }}" alt="HR Logo">
+                    <div class="info-brand-text">
+                        <span>{{ __('auth.login_brand_subtitle') }}</span>
+                        <strong>{{ __('auth.login_brand_title') }}</strong>
                     </div>
                 </div>
 
-                <form action="{{ route('register_post') }}" method="post">
-                    @csrf
-
-                    <div class="form-group position-relative mb-3">
-                        <input type="text" name="name" class="form-control" placeholder="{{ __('auth.hr_name') }}" required value="{{ old('name') }}">
-                        <span class="input-icon"><i class="fas fa-user"></i></span>
-                        @if($errors->has('name'))<span class="error-msg">{{ $errors->first('name') }}</span>@endif
-                    </div>
-
-                    <div class="form-group position-relative mb-3">
-                        <input type="email" name="email" class="form-control" placeholder="{{ __('auth.email') }}" required value="{{ old('email') }}">
-                        <span class="input-icon"><i class="fas fa-envelope"></i></span>
-                        @if($errors->has('email'))<span class="error-msg">{{ $errors->first('email') }}</span>@endif
-                    </div>
-
-                    <div class="form-group position-relative mb-3">
-                        <input type="password" id="password" name="password" class="form-control" placeholder="{{ __('auth.password') }}" required>
-                        <span class="input-icon password-toggle" onclick="togglePassword('password', 'eyeIcon1')"><i id="eyeIcon1" class="fa fa-eye"></i></span>
-                        @if($errors->has('password'))<span class="error-msg">{{ $errors->first('password') }}</span>@endif
-                    </div>
-
-                    <div class="form-group position-relative mb-3">
-                        <input type="password" id="confirm_password" name="confirm_password" class="form-control" placeholder="{{ __('auth.confirm_password') }}" required>
-                        <span class="input-icon password-toggle" onclick="togglePassword('confirm_password', 'eyeIcon2')"><i id="eyeIcon2" class="fa fa-eye"></i></span>
-                        @if($errors->has('confirm_password'))<span class="error-msg">{{ $errors->first('confirm_password') }}</span>@endif
-                    </div>
-
-                    <div class="form-group position-relative mb-3">
-                        <input type="text" name="company_name" class="form-control" placeholder="{{ __('auth.company_name') }}" required value="{{ old('company_name') }}">
-                        <span class="input-icon"><i class="fas fa-building"></i></span>
-                        @if($errors->has('company_name'))<span class="error-msg">{{ $errors->first('company_name') }}</span>@endif
-                    </div>
-
-                    <div class="form-group position-relative mb-3">
-                        <input type="text" name="country" class="form-control" placeholder="{{ __('auth.country') }}" required value="{{ old('country') }}">
-                        <span class="input-icon"><i class="fas fa-globe"></i></span>
-                        @if($errors->has('country'))<span class="error-msg">{{ $errors->first('country') }}</span>@endif
-                    </div>
-
-                    <div class="form-group position-relative mb-4">
-                        <input type="text" name="address" class="form-control" placeholder="{{ __('auth.address') }}" required value="{{ old('address') }}">
-                        <span class="input-icon"><i class="fas fa-map-marker-alt"></i></span>
-                        @if($errors->has('address'))<span class="error-msg">{{ $errors->first('address') }}</span>@endif
-                    </div>
-
-                    <button type="submit" class="btn btn-primary btn-block">{{ __('auth.register') }}</button>
-                </form>
-
-                <p class="text-center mt-3 mb-0">
-                    <a href="{{ url('/') }}">{{ __('auth.sign_in') }}</a>
+                <h2 class="info-headline">
+                    {{ __('auth.register_company_headline_before') }}
+                    <em>{{ __('auth.register_company_headline_highlight') }}</em>@if (filled(__('auth.register_company_headline_after')))
+                    {{ ' ' . __('auth.register_company_headline_after') }}@endif
+                </h2>
+                <p class="info-tagline">
+                    {{ __('auth.register_company_tagline') }}
                 </p>
             </div>
-        </div>
+        </aside>
+
+        {{-- Right register form --}}
+        <main class="login-side">
+            <div class="login-card-wrap">
+                <div class="login-card">
+                    <div class="login-header">
+                        <h1>{{ __('auth.register_new_company') }}</h1>
+                        <p>{{ __('auth.register') }}</p>
+                    </div>
+
+                    @if ($errors->any())
+                        <div class="alert alert-danger" role="alert">
+                            {{ $errors->first() }}
+                        </div>
+                    @endif
+
+                    <form action="{{ route('register_post') }}" method="post">
+                        @csrf
+
+                        <div class="form-group">
+                            <label class="form-label">{{ __('auth.hr_name') }}</label>
+                            <div class="input-wrap">
+                                <input type="text" name="name" class="form-control"
+                                    placeholder="{{ __('auth.hr_name') }}" required value="{{ old('name') }}">
+                                <span class="input-icon"><i class="fas fa-user"></i></span>
+                            </div>
+                            @if($errors->has('name'))<span class="error-msg" style="color:#dc3545;font-size:13px;margin-top:5px;display:block;">{{ $errors->first('name') }}</span>@endif
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">{{ __('auth.email') }}</label>
+                            <div class="input-wrap">
+                                <input type="email" name="email" class="form-control"
+                                    placeholder="{{ __('auth.email') }}" required value="{{ old('email') }}">
+                                <span class="input-icon"><i class="fas fa-envelope"></i></span>
+                            </div>
+                            @if($errors->has('email'))<span class="error-msg" style="color:#dc3545;font-size:13px;margin-top:5px;display:block;">{{ $errors->first('email') }}</span>@endif
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">{{ __('auth.password') }}</label>
+                            <div class="input-wrap">
+                                <input type="password" id="password" name="password" class="form-control"
+                                    placeholder="{{ __('auth.password') }}" required>
+                                <span class="input-icon password-toggle" onclick="togglePassword('password', 'eyeIcon1')">
+                                    <i id="eyeIcon1" class="fa fa-eye"></i>
+                                </span>
+                            </div>
+                            @if($errors->has('password'))<span class="error-msg" style="color:#dc3545;font-size:13px;margin-top:5px;display:block;">{{ $errors->first('password') }}</span>@endif
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">{{ __('auth.confirm_password') }}</label>
+                            <div class="input-wrap">
+                                <input type="password" id="confirm_password" name="confirm_password" class="form-control"
+                                    placeholder="{{ __('auth.confirm_password') }}" required>
+                                <span class="input-icon password-toggle" onclick="togglePassword('confirm_password', 'eyeIcon2')">
+                                    <i id="eyeIcon2" class="fa fa-eye"></i>
+                                </span>
+                            </div>
+                            @if($errors->has('confirm_password'))<span class="error-msg" style="color:#dc3545;font-size:13px;margin-top:5px;display:block;">{{ $errors->first('confirm_password') }}</span>@endif
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">{{ __('auth.company_name') }}</label>
+                            <div class="input-wrap">
+                                <input type="text" name="company_name" class="form-control"
+                                    placeholder="{{ __('auth.company_name') }}" required value="{{ old('company_name') }}">
+                                <span class="input-icon"><i class="fas fa-building"></i></span>
+                            </div>
+                            @if($errors->has('company_name'))<span class="error-msg" style="color:#dc3545;font-size:13px;margin-top:5px;display:block;">{{ $errors->first('company_name') }}</span>@endif
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">{{ __('auth.country') }}</label>
+                            <div class="input-wrap">
+                                <input type="text" name="country" class="form-control"
+                                    placeholder="{{ __('auth.country') }}" required value="{{ old('country') }}">
+                                <span class="input-icon"><i class="fas fa-globe"></i></span>
+                            </div>
+                            @if($errors->has('country'))<span class="error-msg" style="color:#dc3545;font-size:13px;margin-top:5px;display:block;">{{ $errors->first('country') }}</span>@endif
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">{{ __('auth.address') }}</label>
+                            <div class="input-wrap">
+                                <input type="text" name="address" class="form-control"
+                                    placeholder="{{ __('auth.address') }}" required value="{{ old('address') }}">
+                                <span class="input-icon"><i class="fas fa-map-marker-alt"></i></span>
+                            </div>
+                            @if($errors->has('address'))<span class="error-msg" style="color:#dc3545;font-size:13px;margin-top:5px;display:block;">{{ $errors->first('address') }}</span>@endif
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block">{{ __('auth.register') }}</button>
+                    </form>
+
+                    <div class="login-footer">
+                        <a href="{{ url('/') }}" style="color:#2563eb;">{{ __('auth.sign_in') }}</a>
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
 
     <script src="{{ url('plugins/jquery/jquery.min.js') }}"></script>
@@ -171,10 +203,9 @@
             document.getElementById('langDropdown').classList.toggle('show');
         }
         document.addEventListener('click', function(event) {
-            const dropdown = document.getElementById('langDropdown');
             const switcher = document.querySelector('.language-switcher');
-            if (!switcher.contains(event.target)) {
-                dropdown.classList.remove('show');
+            if (switcher && !switcher.contains(event.target)) {
+                document.getElementById('langDropdown').classList.remove('show');
             }
         });
         document.getElementById('langDropdown').addEventListener('click', function(event) {

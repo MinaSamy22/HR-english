@@ -58,6 +58,13 @@ return [
     'confirm_delete_company' => 'کیا آپ واقعی اس کمپنی کو حذف کرنا چاہتے ہیں؟',
     'confirm_delete_admin' => 'کیا آپ واقعی اس ایڈمن کو حذف کرنا چاہتے ہیں؟',
 
+    'register_admin_headline_before' => 'اپنی',
+    'register_admin_headline_highlight' => 'ایڈمن ٹیم',
+    'register_admin_headline_after' => 'اعتماد کے ساتھ منظم کریں',
+    'register_admin_tagline' => 'سسٹم تک رسائی، کرداروں اور سیکیورٹی پر مکمل کنٹرول کے ساتھ ایڈمنسٹریٹر اکاؤنٹس بنائیں اور منظم کریں۔',
 
-
+    'register_company_headline_before' => 'منٹوں میں اپنی',
+    'register_company_headline_highlight' => 'کمپنی',
+    'register_company_headline_after' => 'رجسٹر کریں',
+    'register_company_tagline' => 'اپنی کمپنی کو رجسٹر کریں اور مکمل ایچ آر پلیٹ فارم تک فوری رسائی حاصل کریں — پے رول، ملازمین، حاضری اور مزید بہت کچھ۔',
 ];
