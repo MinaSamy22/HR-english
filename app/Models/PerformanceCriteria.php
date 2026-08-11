@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class PerformanceCriteria extends Model
 {
     use HasFactory;
+    protected $table = 'performance_criteria'; // matches your actual migration
 
     protected $fillable = [
         'company_id',

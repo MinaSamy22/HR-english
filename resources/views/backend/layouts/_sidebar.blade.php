@@ -437,6 +437,19 @@
                     </li>
                 @endif
 
+                <!-- Branches -->
+                @if (hr_can('branches'))
+                    @if (session('branch_id') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1)
+                        <li class="nav-item">
+                            <a href="{{ url('admin/branches') }}"
+                                class="nav-link @if (Request::segment(2) == 'branches') active @endif">
+                                <i class="nav-icon fas fa-code-branch text-white"></i>
+                                <p>{{ __('dashboard.branches') }}</p>
+                            </a>
+                        </li>
+                    @endif
+                @endif
+
                 <!-- Jobs -->
                 @if (hr_can('jobs'))
                     <li class="nav-item">
@@ -746,19 +759,6 @@
                             <p>{{ __('dashboard.company_policy') }}</p>
                         </a>
                     </li>
-                @endif
-
-                <!-- Branches -->
-                @if (hr_can('branches'))
-                    @if (session('branch_id') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1)
-                        <li class="nav-item">
-                            <a href="{{ url('admin/branches') }}"
-                                class="nav-link @if (Request::segment(2) == 'branches') active @endif">
-                                <i class="nav-icon fas fa-code-branch text-white"></i>
-                                <p>{{ __('dashboard.branches') }}</p>
-                            </a>
-                        </li>
-                    @endif
                 @endif
 
                 <!-- Company information -->

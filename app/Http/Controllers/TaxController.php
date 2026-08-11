@@ -95,7 +95,7 @@ public function add_post(Request $request)
             'employee_id' => $employeeId,
             'company_id'  => session('company_id'),
             'branch_id'   => session('branch_id'),
-
+ 
             'code'    => trim($request->code),
             'name'    => trim($request->name),
             'percent' => $request->percent,

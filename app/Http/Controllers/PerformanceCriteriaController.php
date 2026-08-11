@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class PerformanceCriteriaController extends Controller
 {
-    public function index()
+    public function index() 
     {
         $companyId = Auth::user()->company_id;
 
@@ -18,7 +18,6 @@ class PerformanceCriteriaController extends Controller
 
         return view('backend.performance-criteria.index', compact('criteria'));
     }
-
     public function create()
     {
         return view('backend.performance-criteria.create');

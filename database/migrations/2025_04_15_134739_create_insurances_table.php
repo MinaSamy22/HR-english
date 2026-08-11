@@ -21,10 +21,6 @@ return new class extends Migration {
 
             $table->tinyInteger('apply_to_payroll')->default(false);
 
-            $table->tinyInteger('from_basic')->default(0);
-            $table->tinyInteger('from_housing')->default(0);
-            $table->tinyInteger('from_transportation')->default(0);
-            $table->tinyInteger('from_other_allowances')->default(0);
 
             $table->decimal('basic_percent', 5, 2)->default(0);
             $table->decimal('transportation_percent', 5, 2)->default(0);
