@@ -173,14 +173,14 @@ value = old for not rebeating the input  --}}
                                         </div>
                                     </div>
 
-                                    <div class="mt-2">
+                                    {{-- <div class="mt-2">
                                         <small class="text-info">
                                             {{ __('h_tax.remaining_percent') }}:
                                             <strong>
                                                 <span id="remaining-percent">0</span> %
                                             </strong>
                                         </small>
-                                    </div>
+                                    </div> --}}
 
 
 

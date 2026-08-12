@@ -59,8 +59,8 @@ class JobHistoryController extends Controller
         $user->second_work_end_time    = $history->second_work_end_time;
         $user->macaddress              = $history->macaddress;
         $user->is_biometric            = $history->is_biometric;
-        $user->main_salary             = $history->main_salary;
-        $user->additional_salary       = $history->additional_salary;
+        // $user->main_salary             = $history->main_salary;
+        // $user->additional_salary       = $history->additional_salary;
         $user->attachment              = $history->attachment;
         $user->work_hours_per_day      = $history->work_hours_per_day;
         $user->working_days            = $history->working_days;
@@ -72,6 +72,10 @@ class JobHistoryController extends Controller
         $user->manager_id              = $history->manager_id;
         $user->company_id              = $history->company_id;
         $user->branch_id               = $history->branch_id;
+        $user->housing_allowance       = $history->housing_allowance;
+        $user->transportation_allowance = $history->transportation_allowance;
+        $user->other_allowances         = $history->other_allowances;
+        $user->checkin_early_minutes    = $history->checkin_early_minutes;
 
         $user->save();
 

@@ -75,7 +75,7 @@
                                         </div>
 
                                         <div class="form-group row">
-                                            <label class="col-sm-2 col-form-lable">{{ __('h_insurance.percentage') }} <span
+                                            <label class="col-sm-2 col-form-lable">{{ __('h_tax.percentage') }} <span
                                                     style="color: red;">{{ __('h_tax.required') }}</span></label>
                                             <div class="col-sm-10">
                                                 <input type="number" value="{{ $getRecord->i_percent }}" name="i_percent"
@@ -191,14 +191,14 @@
                                                     {{ __('h_insurance.percent_must_equal_total') }}
                                                 </small>
 
-                                                <div class="mt-2">
+                                                {{-- <div class="mt-2">
                                                     <small class="text-info">
                                                         {{ __('h_insurance.remaining_percent') }}:
                                                         <strong>
                                                             <span id="insurance-remaining-percent">0</span> %
                                                         </strong>
                                                     </small>
-                                                </div>
+                                                </div> --}}
 
                                             </div>
                                         </div>

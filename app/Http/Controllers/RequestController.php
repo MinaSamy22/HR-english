@@ -158,27 +158,27 @@ public function processed(Request $request)
     if ($searchName) {
         $processedVacationsQuery->whereHas('user', function($query) use ($searchName, $companyId) {
             $query->where('name', 'LIKE', '%' . $searchName . '%')
-                  ->where('company_id', $companyId);
+                    ->where('company_id', $companyId);
         });
 
         $processedExtraTimesQuery->whereHas('user', function($query) use ($searchName, $companyId) {
             $query->where('name', 'LIKE', '%' . $searchName . '%')
-                  ->where('company_id', $companyId);
+                    ->where('company_id', $companyId);
         });
 
         $processedResignationsQuery->whereHas('user', function($query) use ($searchName, $companyId) {
             $query->where('name', 'LIKE', '%' . $searchName . '%')
-                  ->where('company_id', $companyId);
+                    ->where('company_id', $companyId);
         });
 
         $processedLateRemovalsQuery->whereHas('user', function($query) use ($searchName, $companyId) {
             $query->where('name', 'LIKE', '%' . $searchName . '%')
-                  ->where('company_id', $companyId);
+                    ->where('company_id', $companyId);
         });
 
         $processedEarlyLeavesQuery->whereHas('user', function($query) use ($searchName, $companyId) {
             $query->where('name', 'LIKE', '%' . $searchName . '%')
-                  ->where('company_id', $companyId);
+                    ->where('company_id', $companyId);
         });
     }
 
@@ -242,12 +242,11 @@ private function moveUserToHistory($resignation)
         'second_work_end_time'   => $user->second_work_end_time,
         'macaddress'           => $user->macaddress,
         'is_biometric'         => $user->is_biometric,
-        'main_salary'          => $user->main_salary,
-        'additional_salary'    => $user->additional_salary,
+        
         'attachment'           => $user->attachment,
         'work_hours_per_day'   => $user->work_hours_per_day,
         'working_days'         => $user->working_days,
-        'vacation_balance'     => $user->vacation_balance,
+        'vacation_balance'     => $user->vacation_balance, 
         'bonus_per_hour'       => $user->bonus_per_hour,
         'is_role'              => $user->is_role,
         'start_date'           => $user->start_date,
@@ -257,6 +256,10 @@ private function moveUserToHistory($resignation)
         'manager_id'           => $user->manager_id,
         'company_id'           => $user->company_id,
         'branch_id'            => $user->branch_id,
+        'housing_allowance'    => $user->housing_allowance,
+        'transportation_allowance'=> $user->transportation_allowance,
+        'other_allowances'     => $user->other_allowances,
+        'checkin_early_minutes'=> $user->checkin_early_minutes,
 
         // بيانات الاستقالة
         'resignation_date'     => now(),

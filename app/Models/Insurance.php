@@ -7,22 +7,65 @@ use Illuminate\Http\Request;
 class Insurance extends Model
 {
     protected $fillable = [
-    'code',
-    'name',
-    'i_percent',
-    'apply_to_payroll',
-    'company_id',
-    'employee_id',
-    'from_basic',
-    'from_transportation',
-    'from_housing',
-    'from_other_allowances',
+        'code',
+        'name',
+        'i_percent',
+        'apply_to_payroll',
+        'company_id',
+        'employee_id',
+        'from_basic',
+        'from_transportation',
+        'from_housing',
+        'from_other_allowances',
 
-    'basic_percent',
+        'basic_percent',
         'housing_percent',
         'transportation_percent',
         'other_allowances_percent',
     ];
+
+    protected $casts = [
+        'apply_to_payroll' => 'boolean',
+        'from_basic' => 'boolean',
+        'from_transportation' => 'boolean',
+        'from_housing' => 'boolean',
+        'from_other_allowances' => 'boolean',
+        'basic_percent' => 'float',
+        'housing_percent' => 'float',
+        'transportation_percent' => 'float',
+        'other_allowances_percent' => 'float',
+    ];
+
+    protected $attributes = [
+        'from_basic' => 0,
+        'from_transportation' => 0,
+        'from_housing' => 0,
+        'from_other_allowances' => 0,
+        'basic_percent' => 0,
+        'housing_percent' => 0,
+        'transportation_percent' => 0,
+        'other_allowances_percent' => 0,
+    ];
+
+    public function setBasicPercentAttribute($value)
+    {
+        $this->attributes['basic_percent'] = is_numeric($value) ? (float) $value : 0;
+    }
+
+    public function setHousingPercentAttribute($value)
+    {
+        $this->attributes['housing_percent'] = is_numeric($value) ? (float) $value : 0;
+    }
+
+    public function setTransportationPercentAttribute($value)
+    {
+        $this->attributes['transportation_percent'] = is_numeric($value) ? (float) $value : 0;
+    }
+
+    public function setOtherAllowancesPercentAttribute($value)
+    {
+        $this->attributes['other_allowances_percent'] = is_numeric($value) ? (float) $value : 0;
+    }
 
     // You can define relationships if needed, for example:
 

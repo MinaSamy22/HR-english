@@ -118,6 +118,14 @@ public function add_post(Request $request)
     }
 
     // ===============================
+    // Normalize percent inputs
+    // ===============================
+    $basicPercent = is_numeric($request->input('basic_percent')) ? (float) $request->input('basic_percent') : 0;
+    $housingPercent = is_numeric($request->input('housing_percent')) ? (float) $request->input('housing_percent') : 0;
+    $transportationPercent = is_numeric($request->input('transportation_percent')) ? (float) $request->input('transportation_percent') : 0;
+    $otherAllowancesPercent = is_numeric($request->input('other_allowances_percent')) ? (float) $request->input('other_allowances_percent') : 0;
+
+    // ===============================
     // Create Insurance
     // ===============================
     foreach ($validated['employee_ids'] as $employeeId) {
@@ -134,10 +142,10 @@ public function add_post(Request $request)
             'from_housing' => $request->boolean('from_housing'),
             'from_other_allowances' => $request->boolean('from_other_allowances'),
 
-            'basic_percent' => $request->input('basic_percent', 0),
-            'housing_percent' => $request->input('housing_percent', 0),
-            'transportation_percent' => $request->input('transportation_percent', 0),
-            'other_allowances_percent' => $request->input('other_allowances_percent', 0),
+            'basic_percent' => $basicPercent,
+            'housing_percent' => $housingPercent,
+            'transportation_percent' => $transportationPercent,
+            'other_allowances_percent' => $otherAllowancesPercent,
 
             'company_id' => session('company_id'),
             'branch_id' => session('branch_id'),
@@ -184,13 +192,21 @@ public function edit_update($id, Request $request)
     $insurance = Insurance::findOrFail($id);
 
     // ===============================
+    // Normalize percent inputs
+    // ===============================
+    $basicPercent = is_numeric($request->input('basic_percent')) ? (float) $request->input('basic_percent') : 0;
+    $housingPercent = is_numeric($request->input('housing_percent')) ? (float) $request->input('housing_percent') : 0;
+    $transportationPercent = is_numeric($request->input('transportation_percent')) ? (float) $request->input('transportation_percent') : 0;
+    $otherAllowancesPercent = is_numeric($request->input('other_allowances_percent')) ? (float) $request->input('other_allowances_percent') : 0;
+
+    // ===============================
     // Validate total percentage
     // ===============================
     $totalSources =
-        (float) $request->input('basic_percent', 0) +
-        (float) $request->input('housing_percent', 0) +
-        (float) $request->input('transportation_percent', 0) +
-        (float) $request->input('other_allowances_percent', 0);
+        $basicPercent +
+        $housingPercent +
+        $transportationPercent +
+        $otherAllowancesPercent;
 
     if (round($totalSources, 2) !== round((float) $request->i_percent, 2)) {
         return back()->withErrors([
@@ -214,10 +230,10 @@ public function edit_update($id, Request $request)
         'from_other_allowances' => $request->boolean('from_other_allowances'),
 
         // ✅ percentages
-        'basic_percent' => $request->input('basic_percent', 0),
-        'housing_percent' => $request->input('housing_percent', 0),
-        'transportation_percent' => $request->input('transportation_percent', 0),
-        'other_allowances_percent' => $request->input('other_allowances_percent', 0),
+        'basic_percent' => $basicPercent,
+        'housing_percent' => $housingPercent,
+        'transportation_percent' => $transportationPercent,
+        'other_allowances_percent' => $otherAllowancesPercent,
 
         'company_id' => session('company_id'),
         'branch_id' => session('branch_id'),

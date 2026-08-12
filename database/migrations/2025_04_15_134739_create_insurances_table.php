@@ -20,7 +20,10 @@ return new class extends Migration {
             $table->foreignId('employee_id')->constrained('users')->onDelete('cascade'); //on delete cascade de 34an lma ams7 al employee da from employees a3rf ams7o o kmaaan etms7 kman mn hna
 
             $table->tinyInteger('apply_to_payroll')->default(false);
-
+            $table->tinyInteger('from_basic')->default(0);
+            $table->tinyInteger('from_transportation')->default(0);
+            $table->tinyInteger('from_housing')->default(0);
+            $table->tinyInteger('from_other_allowances')->default(0);
 
             $table->decimal('basic_percent', 5, 2)->default(0);
             $table->decimal('transportation_percent', 5, 2)->default(0);

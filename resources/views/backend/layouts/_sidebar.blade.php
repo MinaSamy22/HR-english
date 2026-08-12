@@ -415,6 +415,28 @@
                     </li>
                 @endif
 
+                                <!-- Departments -->
+                @if (hr_can('departments'))
+                    <li class="nav-item">
+                        <a href="{{ url('admin/department') }}"
+                            class="nav-link @if (Request::segment(2) == 'department') active @endif">
+                            <i class="nav-icon fa fa-building"></i>
+                            <p>{{ __('dashboard.departments') }}</p>
+                        </a>
+                    </li>
+                @endif
+
+                <!-- Jobs -->
+                @if (hr_can('jobs'))
+                    <li class="nav-item">
+                        <a href="{{ url('admin/jobs') }}"
+                            class="nav-link @if (Request::segment(2) == 'jobs') active @endif">
+                            <i class="nav-icon fa fa-briefcase"></i>
+                            <p>{{ __('dashboard.jobs') }}</p>
+                        </a>
+                    </li>
+                @endif
+
                 <!-- Administration -->
                 @if (hr_can('administrations'))
                     <li class="nav-item">
@@ -422,17 +444,6 @@
                             class="nav-link @if (Request::segment(2) == 'administration') active @endif">
                             <i class="nav-icon fas fa-sitemap"></i>
                             <p>{{ __('dashboard.administrations') }}</p>
-                        </a>
-                    </li>
-                @endif
-
-                <!-- Departments -->
-                @if (hr_can('departments'))
-                    <li class="nav-item">
-                        <a href="{{ url('admin/department') }}"
-                            class="nav-link @if (Request::segment(2) == 'department') active @endif">
-                            <i class="nav-icon fa fa-building"></i>
-                            <p>{{ __('dashboard.departments') }}</p>
                         </a>
                     </li>
                 @endif
@@ -450,16 +461,7 @@
                     @endif
                 @endif
 
-                <!-- Jobs -->
-                @if (hr_can('jobs'))
-                    <li class="nav-item">
-                        <a href="{{ url('admin/jobs') }}"
-                            class="nav-link @if (Request::segment(2) == 'jobs') active @endif">
-                            <i class="nav-icon fa fa-briefcase"></i>
-                            <p>{{ __('dashboard.jobs') }}</p>
-                        </a>
-                    </li>
-                @endif
+                
 
 
                 <li class="nav-header">{{ __('dashboard.communication') }}</li>

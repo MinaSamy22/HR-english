@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const insuranceSources = document.querySelectorAll('.insurance-source');
     const insuranceInputs  = document.querySelectorAll('.insurance-input');
-    const totalInput       = document.querySelector('input[name="i_percent"]'); // نفس input percentage الرئيسي
+    const totalInput       = document.querySelector('input[name="i_percent"]');
     const insuranceForm    = document.querySelector('form');
     const errorMsg         = document.getElementById('insurance-percent-error');
     const remainingEl      = document.getElementById('insurance-remaining-percent');
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     /* ===============================
        TOGGLE INPUTS
-    ================================ */
+    =============================== */
     insuranceSources.forEach(checkbox => {
         checkbox.addEventListener('change', function () {
             const input = document.getElementById(this.dataset.target);
@@ -31,36 +31,35 @@ document.addEventListener('DOMContentLoaded', function () {
 
     /* ===============================
        LIVE INPUT LISTENER
-    ================================ */
+    =============================== */
     insuranceInputs.forEach(input => {
         input.addEventListener('input', updateRemaining);
     });
 
     /* ===============================
        SUBMIT VALIDATION
-    ================================ */
+    =============================== */
     insuranceForm.addEventListener('submit', function (e) {
         if (!validateTotal()) {
             e.preventDefault();
-            alert('{{ __("h_insurance.percent_must_equal_total") }}');
         }
     });
 
     /* ===============================
        FUNCTIONS
-    ================================ */
+    =============================== */
     function getCurrentSum() {
         let sum = 0;
         insuranceInputs.forEach(input => {
             if (!input.classList.contains('d-none')) {
-                sum += parseFloat(input.value) || 0;
+                sum += Number(input.value || 0);
             }
         });
         return sum;
     }
 
     function updateRemaining() {
-        const total = parseFloat(totalInput.value) || 100; // default 100%
+        const total = Number(totalInput.value || 0);
         const used  = getCurrentSum();
         const remaining = (total - used).toFixed(2);
 
@@ -73,10 +72,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function validateTotal() {
-        const total = parseFloat(totalInput.value) || 100;
+        const total = Number(totalInput.value || 0);
         const used  = getCurrentSum();
 
-        if (used > total) {
+        if (used !== total) {
             errorMsg?.classList.remove('d-none');
             return false;
         } else {

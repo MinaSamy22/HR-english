@@ -96,7 +96,7 @@
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-lable">{{ __('h_insurance.percentage') }} <span
+                                        <label class="col-sm-2 col-form-lable">{{ __('h_tax.percentage') }} <span
                                                 style="color: red;">*</span></label>
                                         <div class="col-sm-10">
                                             <input type="number" value="{{ old('i_percent') }}" name="i_percent"
