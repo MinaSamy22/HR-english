@@ -489,11 +489,22 @@ public function showProcessedRequest($type, $id)
                        $vacationRequest->user->branch_id ??
                        null;
 
+            $vacationLimit = $vacationRequest->user->vacation_balance;
+            $usedDays = Vacation::where('employee_id', $vacationRequest->user_id)->sum('total');
+            $remainingAfterVacation = null;
+
+            if (is_numeric($vacationLimit) && $vacationLimit > 0) {
+                $remainingAfterVacation = max(0, $vacationLimit - ($usedDays + $totalDays));
+            } else {
+                $remainingAfterVacation = -($usedDays + $totalDays);
+            }
+
             Vacation::create([
                 'employee_id' => $vacationRequest->user_id,
                 'start_date' => $vacationRequest->start_date,
                 'end_date' => $vacationRequest->end_date,
                 'total' => $totalDays,
+                'remaining_balance' => $remainingAfterVacation,
                 'vacation_type' => $vacationRequest->vacation_type,
                 'company_id' => $companyId,
                 'branch_id' => $branchId,

@@ -119,25 +119,26 @@ public function add_post(Request $request)
         return back()->withErrors(['error' => 'Invalid employee.']);
     }
 
-    // ✅ Get vacation balance from users table (default 25 if null)
-    $vacationLimit = $employee->vacation_balance ?? 25;
+    // Get vacation balance from users table. If null or zero, we keep remaining_balance null.
+    $vacationLimit = $employee->vacation_balance;
 
-    // Calculate already used days
+    // Calculate already used days only when employee has a tracked balance.
     $totalUsed = Vacation::where('employee_id', $employee->id)->sum('total');
 
-    // Remaining balance BEFORE this request
-    $remainingBalance = max(0, $vacationLimit - $totalUsed);
+    if (is_numeric($vacationLimit) && $vacationLimit > 0) {
+        // Remaining balance BEFORE this request
+        $remainingBalance = max(0, $vacationLimit - $totalUsed);
 
-    if ($remainingBalance <= 0) {
-        return back()->withErrors(['error' => 'You have exhausted your allowed vacation balance.']);
+        if ($totalDays > $remainingBalance) {
+            return back()->withErrors(['error' => "You are trying to request $totalDays days, but the remaining balance is only $remainingBalance days. Vacation request denied."]);
+        }
+
+        // Update remaining balance AFTER this request
+        $remainingAfterVacation = $remainingBalance - $totalDays;
+    } else {
+        // Employee has no tracked vacation balance, save a negative remaining balance.
+        $remainingAfterVacation = -($totalUsed + $totalDays);
     }
-
-    if ($totalDays > $remainingBalance) {
-        return back()->withErrors(['error' => "You are trying to request $totalDays days, but the remaining balance is only $remainingBalance days. Vacation request denied."]);
-    }
-
-    // ✅ Update remaining balance AFTER this request
-    $remainingAfterVacation = $remainingBalance - $totalDays;
 
     // Save vacation request
     $vacation = new Vacation();

@@ -19,9 +19,11 @@ return new class extends Migration
 
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
-            $table->integer('total')->nullable();
+            $table->integer('total')->nullable(); 
+            $table->integer('remaining_balance')->nullable(); 
             $table->string('vacation_type')->nullable();
             $table->foreignId('company_id')->nullable()->constrained('companies')->onDelete('cascade');
+            $table->unsignedBigInteger('branch_id')->nullable();
 
             $table->timestamps();
 
