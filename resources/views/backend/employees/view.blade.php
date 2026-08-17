@@ -204,7 +204,7 @@
                                             <div class="col-sm-10">
                                                 {{ $getRecord->salary ?? '—' }}
                                             </div>
-                                        </div>
+                                        </div> 
 
                                         <!-- housing allowance -->
                                         <div class="form-group row">
@@ -420,14 +420,7 @@
                                             </div>
                                         @endif
 
-                                        <div class="form-group row">
-                                            <label class="col-sm-2 col-form-label font-weight-bold">
-                                                {{ __('h_employee.early_minutes') }}
-                                            </label>
-                                            <div class="col-sm-10">
-                                                {{ $getRecord->checkin_early_minutes ?? '—' }}
-                                            </div>
-                                        </div>
+
 
                                         <!-- Work Hours Per Day -->
                                         <div class="form-group row">
@@ -450,6 +443,15 @@
                                             <i
                                                 class="fas fa-fingerprint mr-2"></i>{{ __('h_employee.attendance_settings') ?? 'Attendance Settings' }}
                                         </h5>
+
+                                                                                <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label font-weight-bold">
+                                                {{ __('h_employee.early_minutes') }}
+                                            </label>
+                                            <div class="col-sm-10">
+                                                {{ $getRecord->checkin_early_minutes ?? '—' }}
+                                            </div>
+                                        </div>
 
                                         <!-- Free Biometric -->
                                         <div class="form-group row">

@@ -25,8 +25,8 @@
     <svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
         <defs>
             <linearGradient id="silkFill1" x1="0%" y1="0%" x2="100%" y2="60%">
-                <stop offset="0%"   stop-color="#c9cdd3" />
-                <stop offset="60%"  stop-color="#e8e9ec" />
+                <stop offset="0%"   stop-color="#eef0f2" />
+                <stop offset="60%"  stop-color="#f7f8f9" />
                 <stop offset="100%" stop-color="#ffffff" />
             </linearGradient>
             <linearGradient id="silkFill2" x1="0%" y1="20%" x2="100%" y2="80%">
@@ -40,8 +40,8 @@
             </linearGradient>
             <!-- soft blob gradient, fully round, no rectangular container -->
             <radialGradient id="cornerBlob" cx="50%" cy="50%" r="50%">
-                <stop offset="0%"   stop-color="#cdd0d6" stop-opacity="0.5" />
-                <stop offset="55%"  stop-color="#e6e8eb" stop-opacity="0.25" />
+                <stop offset="0%"   stop-color="#eef0f2" stop-opacity="0.22" />
+                <stop offset="55%"  stop-color="#f7f8f9" stop-opacity="0.12" />
                 <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
             </radialGradient>
             <filter id="softBlur" x="-50%" y="-50%" width="200%" height="200%">
@@ -58,7 +58,7 @@
                  C 400,600 700,650 1100,500 
                  C 1500,350 1700,200 1920,280 
                  L 1920,-50 Z" 
-              fill="url(#silkFill1)" opacity="0.5" />
+              fill="url(#silkFill1)" opacity="0.4" />
 
         <!-- second ribbon layer, offset lower -->
         <path d="M -100,150 

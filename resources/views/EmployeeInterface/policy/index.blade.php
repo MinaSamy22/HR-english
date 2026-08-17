@@ -228,7 +228,7 @@
                                             <p class="mb-0">
                                                 <i class="fas fa text-muted mr-1"></i>
                                                 <strong> {{ __('dashboard.late_arrival_threshold') }}</strong>
-                                                {{ $setting->late_threshold_minutes }}
+                                                {{ $setting->late_threshold_minutes ?? 0 }}
                                                 {{ __('dashboard.minutes_after_start_time') }}
                                             </p>
                                         </div>
@@ -247,7 +247,7 @@
                                             <p class="mb-0">
                                                 <i class="fas fa text-muted mr-1"></i>
                                                 <strong> {{ __('dashboard.half_day_threshold') }}</strong>
-                                                {{ $setting->half_day_threshold_minutes }}
+                                                {{ $setting->half_day_threshold_minutes ?? 0 }}
                                                 {{ __('dashboard.minutes_of_absence') }}
                                             </p>
                                         </div>
@@ -272,7 +272,7 @@
                                             <p class="mb-0">
                                                 <i class="fas fa text-muted mr-1"></i>
                                                 <strong> {{ __('dashboard.late_arrival_threshold') }}</strong>
-                                                {{ $setting->absent_threshold_minutes }}
+                                                {{ $setting->absent_threshold_minutes ?? 0 }}
                                                 {{ __('dashboard.minutes_after_start_time') }}
                                             </p>
                                         </div>

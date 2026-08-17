@@ -47,9 +47,28 @@
     <!-- Custom style for RTL -->
     <link rel="stylesheet" href="{{url('dist/css/custom.css')}}">
 @endif
+
+    @stack('style')
+
+    <style>
+        /* Premium Background — ensure body is off-white so orbs render correctly */
+        body.hold-transition {
+            background: #f8fafc !important;
+        }
+        /* Keep content-wrapper above the fixed premium bg */
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+            background: transparent !important;
+        }
+        .wrapper {
+            position: relative;
+        }
+    </style>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
+    @include('premium-bg')
     <div class="wrapper">
 
 @include('EmployeeInterface.layouts._sidebar')

@@ -18,7 +18,7 @@ class ResignationController extends Controller
         ->get();
 
     $hasApprovedResignation = Resignation::where('employee_id', $employeeId)
-        ->where('status', 'approved')
+        ->whereIn('status', ['pending', 'approved'])
         ->exists();
 
     return view('EmployeeInterface.Requests.resignation.index', compact(
@@ -36,7 +36,7 @@ class ResignationController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'resignation_date' => 'required|date|after:today',
+            'resignation_date' => 'required|date|after_or_equal:today',
             'reason' => 'nullable|string|max:500',
         ]);
 

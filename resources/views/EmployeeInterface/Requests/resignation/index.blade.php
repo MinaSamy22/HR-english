@@ -14,7 +14,7 @@
 
                             <div class="form-group">
                                 <label for="resignation_date">{{ __('E_resignation.resignation_date') }}</label>
-                                <input type="date" name="resignation_date" class="form-control" required>
+                                <input type="date" id="resignation_date" name="resignation_date" class="form-control" required>
                                 @error('resignation_date')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -186,4 +186,22 @@
             </div>
         </div>
     </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set minimum date to today for resignation date input
+        const resignationDateInput = document.getElementById('resignation_date');
+        if (resignationDateInput) {
+            // Get today's date in YYYY-MM-DD format
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            const minDate = `${year}-${month}-${day}`;
+            
+            // Set the min attribute to prevent selection of past dates
+            resignationDateInput.setAttribute('min', minDate);
+        }
+    });
+</script>
 @endsection

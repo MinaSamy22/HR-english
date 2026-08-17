@@ -21,7 +21,7 @@ public function index()
     }
 
     // Get performance criteria for the company
-    $performanceCriteria = DB::table('performance_criterias')
+    $performanceCriteria = DB::table('performance_criteria')
         ->where('company_id', $companyId)
         ->where('is_active', 1)
         ->orderBy('sort_order')

@@ -259,6 +259,7 @@ public function edit_update($id, Request $request){
     $user->email                     = trim($request->email);
     $user->phone_number              = trim($request->phone_number);
     $user->birth_date                = trim($request->birth_date);
+    $user->hire_date                 = trim($request->hire_date);
     $user->job_id                    = trim($request->job_id);
     $user->salary_type               = trim($request->salary_type);
     $user->salary                    = trim($request->salary);

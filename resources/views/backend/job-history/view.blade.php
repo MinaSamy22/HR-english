@@ -226,33 +226,39 @@
                                             </div>
                                         </div>
 
-                                        <!-- Main Salary -->
+                                        <!-- housing allowance -->
                                         <div class="form-group row">
                                             <label class="col-sm-2 col-form-label font-weight-bold">
-                                                {{ __('h_employee.main_salary') }}
+                                                {{ __('h_employee.housing_allowance') }}
                                             </label>
                                             <div class="col-sm-10">
-                                                @if ($getRecord->main_salary === 1)
-                                                    <span class="badge badge-success">{{ __('h_employee.yes') }}</span>
-                                                @elseif($getRecord->main_salary === 0)
-                                                    <span class="badge badge-warning">{{ __('h_employee.no') }}</span>
-                                                @else
-                                                    {{ __('h_employee.not_set') }}
-                                                @endif
+                                                {{ $getRecord->housing_allowance ?? '—' }}
                                             </div>
                                         </div>
 
-                                        <!-- Additional Salary (Conditional) -->
-                                        @if ($getRecord->main_salary == 0)
-                                            <div class="form-group row">
-                                                <label class="col-sm-2 col-form-label font-weight-bold">
-                                                    {{ __('dashboard.additional_salary') }}
-                                                </label>
-                                                <div class="col-sm-10">
-                                                    {{ $getRecord->additional_salary ?? '—' }}
-                                                </div>
+                                        <!-- transportation allowance -->
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label font-weight-bold">
+                                                {{ __('h_employee.transportation_allowance') }}
+                                            </label>
+                                            <div class="col-sm-10">
+                                                {{ $getRecord->transportation_allowance ?? '—' }}
                                             </div>
-                                        @endif
+                                        </div>
+
+                                        <!-- other allowance -->
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label font-weight-bold">
+                                                {{ __('h_employee.other_allowances') }}
+                                            </label>
+                                            <div class="col-sm-10">
+                                                {{ $getRecord->other_allowances ?? '—' }}
+                                            </div>
+                                        </div>
+
+
+
+
                                     </div>
 
                                     {{-- NATIONALITY & RESIDENCY --}}
@@ -455,6 +461,15 @@
                                             <i
                                                 class="fas fa-fingerprint mr-2"></i>{{ __('h_employee.attendance_settings') ?? 'Attendance Settings' }}
                                         </h5>
+
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label font-weight-bold">
+                                                {{ __('h_employee.early_minutes') }}
+                                            </label>
+                                            <div class="col-sm-10">
+                                                {{ $getRecord->checkin_early_minutes ?? '—' }}
+                                            </div>
+                                        </div>
 
                                         <!-- Free Biometric -->
                                         <div class="form-group row">

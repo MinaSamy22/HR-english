@@ -387,7 +387,6 @@
             </div>
         </section>
     </div>
-    </div>
 
     @push('scripts')
         <script>

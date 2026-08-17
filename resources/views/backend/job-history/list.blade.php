@@ -122,7 +122,7 @@
 
                                                     <td>{{ $value->job_title }}</td>
                                                     <td>{{ $value->department_name }}</td>
-                                                    <td>{{ $value->resignation->type ?? '-' }}</td>
+                                                    <td>{{ $value->resignation_reason ?? '-' }}</td>
                                                     <td>{{ $value->resignation_date }}</td>
                                                     <td>{{ $value->branch_name ?? __('h_dashboard.main_branch') }}</td>
                                                     <td>
