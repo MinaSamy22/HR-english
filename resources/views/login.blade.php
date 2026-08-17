@@ -177,7 +177,7 @@
                         </div>
                     @endif
 
-                    <form action="{{ url('login_post') }}" method="post">
+                    <form action="{{ url('login_post') }}" method="post" id="loginForm">
                         @csrf
 
                         <div class="form-group">
@@ -201,7 +201,7 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary btn-block">{{ __('auth.sign_in') }}</button>
+                        <button type="submit" class="btn btn-primary btn-block" id="submitBtn">{{ __('auth.sign_in') }}</button>
                     </form>
 
                     <div class="login-footer">
@@ -259,6 +259,35 @@
         }
 
         resetAutoSlide();
+
+        // Prevent double submit on login form
+        const loginForm = document.getElementById('loginForm');
+        const submitBtn = document.getElementById('submitBtn');
+        let isSubmitting = false;
+
+        loginForm.addEventListener('submit', function(e) {
+            if (isSubmitting) {
+                e.preventDefault();
+                return;
+            }
+
+            isSubmitting = true;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {{ __("auth.sign_in") }}...';
+            submitBtn.style.opacity = '0.7';
+            submitBtn.style.cursor = 'not-allowed';
+        });
+
+        // Re-enable button if user goes back
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted) {
+                isSubmitting = false;
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '{{ __("auth.sign_in") }}';
+                submitBtn.style.opacity = '1';
+                submitBtn.style.cursor = 'pointer';
+            }
+        });
     </script>
 </body>
 
