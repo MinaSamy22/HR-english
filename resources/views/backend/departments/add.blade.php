@@ -26,7 +26,7 @@
                                 <h3 class="card-title">{{ __('h_department.add_department') }}</h3>
                             </div>
                             <form class="form-horizontal" method="post" action="{{ url('admin/department/add') }}"
-                                enctype="multipart/form-data">
+                                enctype="multipart/form-data" id="addForm">
                                 {{ csrf_field() }}
                                 <div class="card-body">
 
@@ -80,7 +80,7 @@ value = old for not rebeating the input  --}}
                                 <div class="card-footer">
                                     <a href="{{ url('admin/department') }}" class="btn btn-default float-left">{{ __('h_department.back') }}</a>
                                     {{-- float for the place of the button --}}
-                                    <button type="submit" class="btn btn-primary float-right">{{ __('h_department.submit') }}</button>
+                                    <button type="submit" id="submitBtn" class="btn btn-primary float-right">{{ __('h_department.submit') }}</button>
                                 </div>
                             </form>
 
@@ -90,4 +90,35 @@ value = old for not rebeating the input  --}}
             </div>
         </section>
     </div>
+
+    <script>
+        // Prevent double submit on add form
+        const addForm = document.getElementById('addForm');
+        const submitBtn = document.getElementById('submitBtn');
+        let isSubmitting = false;
+
+        addForm.addEventListener('submit', function(e) {
+            if (isSubmitting) {
+                e.preventDefault();
+                return;
+            }
+
+            isSubmitting = true;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {{ __('h_department.submit') }}...';
+            submitBtn.style.opacity = '0.7';
+            submitBtn.style.cursor = 'not-allowed';
+        });
+
+        // Re-enable button if user goes back
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted) {
+                isSubmitting = false;
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '{{ __('h_department.submit') }}';
+                submitBtn.style.opacity = '1';
+                submitBtn.style.cursor = 'pointer';
+            }
+        });
+    </script>
 @endsection

@@ -270,7 +270,7 @@
 
                 <div class="card mt-3">
                     <div class="card-body">
-                        <button type="submit" id="submitPaymentBtn" class="btn btn-success btn-lg float-right">
+                        <button type="submit" id="submitBtn" class="btn btn-success btn-lg float-right">
                             <i class="fas fa-check-circle"></i> {{ __('h_payments.save_payments') }}
                         </button>
                         <a href="{{ url('admin/salary-payment') }}" class="btn btn-secondary btn-lg">

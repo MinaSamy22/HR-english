@@ -38,7 +38,7 @@
                                 <h3 class="card-title">{{ __('h_vacation.add_vacation_title') }}</h3>
                             </div>
                             <form class="form-horizontal" method="post" action="{{ url('admin/vacations/add') }}"
-                                enctype="multipart/form-data">
+                                enctype="multipart/form-data" id="addForm">
                                 {{ csrf_field() }}
                                 <div class="card-body">
 
@@ -145,7 +145,7 @@
 
                                 <div class="card-footer">
                                     <a href="{{ url('admin/vacations') }}" class="btn btn-default float-{{ app()->getLocale() == 'ar' ? 'right' : 'left' }}">{{ __('h_vacation.back') }}</a>
-                                    <button type="submit" class="btn btn-primary float-{{ app()->getLocale() == 'ar' ? 'left' : 'right' }}">{{ __('h_vacation.submit') }}</button>
+                                    <button type="submit" id="submitBtn" class="btn btn-primary float-{{ app()->getLocale() == 'ar' ? 'left' : 'right' }}">{{ __('h_vacation.submit') }}</button>
                                 </div>
                             </form>
 
@@ -196,4 +196,34 @@
         </style>
     @endif
 
+    <script>
+        // Prevent double submit on add form
+        const addForm = document.getElementById('addForm');
+        const submitBtn = document.getElementById('submitBtn');
+        let isSubmitting = false;
+
+        addForm.addEventListener('submit', function(e) {
+            if (isSubmitting) {
+                e.preventDefault();
+                return;
+            }
+
+            isSubmitting = true;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {{ __('h_vacation.submit') }}...';
+            submitBtn.style.opacity = '0.7';
+            submitBtn.style.cursor = 'not-allowed';
+        });
+
+        // Re-enable button if user goes back
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted) {
+                isSubmitting = false;
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '{{ __('h_vacation.submit') }}';
+                submitBtn.style.opacity = '1';
+                submitBtn.style.cursor = 'pointer';
+            }
+        });
+    </script>
 @endsection

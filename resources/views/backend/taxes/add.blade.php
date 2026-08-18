@@ -28,7 +28,7 @@
                                 <h3 class="card-title">{{ __('h_tax.add_tax') }}</h3>
                             </div>
                             <form class="form-horizontal" method="post" action="{{ url('admin/taxes/add') }}"
-                                enctype="multipart/form-data">
+                                enctype="multipart/form-data" id="addForm">
 
                                 {{ csrf_field() }}
                                 <div class="card-body">
@@ -191,7 +191,7 @@
                                     <a href="{{ url('admin/taxes') }}"
                                         class="btn btn-default float-left">{{ __('h_tax.back') }}</a>
                                     {{-- float for the place of the button --}}
-                                    <button type="submit"
+                                    <button type="submit" id="submitBtn"
                                         class="btn btn-primary float-right">{{ __('h_tax.submit') }}</button>
                                 </div>
                             </form>
@@ -203,4 +203,35 @@
         </section>
     </div>
     <script src="{{ url('dist/js/tax.js') }}?v=1"></script>
+
+    <script>
+        // Prevent double submit on add form
+        const addForm = document.getElementById('addForm');
+        const submitBtn = document.getElementById('submitBtn');
+        let isSubmitting = false;
+
+        addForm.addEventListener('submit', function(e) {
+            if (isSubmitting) {
+                e.preventDefault();
+                return;
+            }
+
+            isSubmitting = true;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {{ __('h_tax.submit') }}...';
+            submitBtn.style.opacity = '0.7';
+            submitBtn.style.cursor = 'not-allowed';
+        });
+
+        // Re-enable button if user goes back
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted) {
+                isSubmitting = false;
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '{{ __('h_tax.submit') }}';
+                submitBtn.style.opacity = '1';
+                submitBtn.style.cursor = 'pointer';
+            }
+        });
+    </script>
 @endsection

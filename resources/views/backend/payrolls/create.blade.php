@@ -46,7 +46,7 @@
             @endif
 
             <form class="form-horizontal" method="post" action="{{ url('admin/payroll/add') }}"
-                enctype="multipart/form-data">
+                enctype="multipart/form-data" id="addForm">
                 {{ csrf_field() }}
 
                     <div class="form-group row align-items-center">
@@ -186,7 +186,7 @@
                     </div>
 
                     <div class="card">
-                        <button type="submit" class="btn btn-white float-right" style="background-color: #ffc852;">{{ __('dashboard.calculate_payroll') }} </button>
+                        <button type="submit" id="submitBtn" class="btn btn-white float-right" style="background-color: #ffc852;">{{ __('dashboard.calculate_payroll') }} </button>
                     </div>
 
                 </form>
@@ -265,4 +265,34 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
-@endsection
+
+    <script>
+        // Prevent double submit on add form
+        const addForm = document.getElementById('addForm');
+        const submitBtn = document.getElementById('submitBtn');
+        let isSubmitting = false;
+
+        addForm.addEventListener('submit', function(e) {
+            if (isSubmitting) {
+                e.preventDefault();
+                return;
+            }
+
+            isSubmitting = true;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {{ __('dashboard.calculate_payroll') }}...';
+            submitBtn.style.opacity = '0.7';
+            submitBtn.style.cursor = 'not-allowed';
+        });
+
+        // Re-enable button if user goes back
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted) {
+                isSubmitting = false;
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '{{ __('dashboard.calculate_payroll') }} ';
+                submitBtn.style.opacity = '1';
+                submitBtn.style.cursor = 'pointer';
+            }
+        });
+    </script>
