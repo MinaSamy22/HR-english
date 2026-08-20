@@ -77,13 +77,13 @@ return [
     'hire_date' => 'تاريخ التعيين',
     'phone' => 'الهاتف',
     'email' => 'البريد الإلكتروني',
-'employee_id' => 'كود الموظف',
-'department' => 'القسم',
-'job_title' => 'المسمى الوظيفي',
-'pay_period' => 'فترة الدفع',
-'hire_date' => 'تاريخ التعيين',
-'phone' => 'الهاتف',
-'email' => 'البريد الإلكتروني',
+    'employee_id' => 'كود الموظف',
+    'department' => 'القسم',
+    'job_title' => 'المسمى الوظيفي',
+    'pay_period' => 'فترة الدفع',
+    'hire_date' => 'تاريخ التعيين',
+    'phone' => 'الهاتف',
+    'email' => 'البريد الإلكتروني',
 
     'earnings' => 'الأرباح',
     'basic_salary' => 'الراتب الأساسي',
@@ -255,14 +255,14 @@ return [
     'assign_employees' => 'تعيين الموظفين',
     'close' => 'إغلاق',
     'save' => 'حفظ',
-    'error' =>'خطأ',
+    'error' => 'خطأ',
     'delete_failed' => 'فشل الحذف',
 
-    'invalid_polygon'   => 'بيانات المضلع غير صالحة',
-    'location_created'  => 'تم إنشاء الموقع بنجاح.',
-    'location_updated'  => 'تم تحديث الموقع بنجاح.',
-    'location_deleted'  => 'تم حذف الموقع بنجاح.',
-    'employees_assigned'=> 'تم إسناد الموظفين بنجاح.',
+    'invalid_polygon' => 'بيانات المضلع غير صالحة',
+    'location_created' => 'تم إنشاء الموقع بنجاح.',
+    'location_updated' => 'تم تحديث الموقع بنجاح.',
+    'location_deleted' => 'تم حذف الموقع بنجاح.',
+    'employees_assigned' => 'تم إسناد الموظفين بنجاح.',
     'success' => 'تم بنجاح',
     'invalid_location' => 'بيانات الموقع غير صالحة.',
     'already_checked_in' => 'لقد قمت بتسجيل الحضور بالفعل.',
@@ -273,7 +273,7 @@ return [
     'already_checked_out' => 'لقد قمت بتسجيل الانصراف بالفعل اليوم.',
     'checked_out' => 'تم تسجيل الانصراف.',
 
-'record_not_found' => 'لا يوجد',
+    'record_not_found' => 'لا يوجد',
     'taxes_and_insurance' => 'الضرائب و التأمينات',
 
 
@@ -313,13 +313,13 @@ return [
     'request_accepted' => 'قبول',
     'request_rejected' => 'رفض',
 
-   // Request type messages
-'vacation_request_processed' => 'تم :status <strong>طلب إجازة :type</strong>',
-'extra_time_request_processed' => 'تم :status <strong>طلب العمل الإضافي لـ :hours ساعات</strong>',
-'early_leave_request_processed' => 'تم :status <strong>إذن خروج مبكر</strong>',
-'extra_time_request_processed' => 'تم :status <strong>طلب العمل الإضافي لـ :hours ساعات</strong>',
-'resignation_request_processed' => 'تم :status <strong>طلب الاستقالة</strong>',
-'late_removal_request_processed' => 'تم :status <strong>طلب إزالة التأخير</strong> بتاريخ :date',
+    // Request type messages
+    'vacation_request_processed' => 'تم :status <strong>طلب إجازة :type</strong>',
+    'extra_time_request_processed' => 'تم :status <strong>طلب العمل الإضافي لـ :hours ساعات</strong>',
+    'early_leave_request_processed' => 'تم :status <strong>إذن خروج مبكر</strong>',
+    'extra_time_request_processed' => 'تم :status <strong>طلب العمل الإضافي لـ :hours ساعات</strong>',
+    'resignation_request_processed' => 'تم :status <strong>طلب الاستقالة</strong>',
+    'late_removal_request_processed' => 'تم :status <strong>طلب إزالة التأخير</strong> بتاريخ :date',
 
 
     // Work Hours and Working Days Assignment
@@ -371,27 +371,27 @@ return [
     'invalid_end_time' => 'تم تعيين وقت نهاية غير صالح لحسابك. يرجى الاتصال بالموارد البشرية.',
     'invalid_start_time' => 'تم تعيين وقت بداية غير صالح لحسابك. يرجى الاتصال بالموارد البشرية.',
 
-    'delete'              => 'حذف',
+    'delete' => 'حذف',
     'delete_confirmation' => 'هل أنت متأكد أنك تريد الحذف ؟',
-    'cancel'              => 'إلغاء',
-    'deleted'             => 'تم الحذف',
-    'delete_success'      => 'تم الحذف بنجاح.',
-    'error'               => 'خطأ',
-    'delete_failed'       => 'فشل في الحذف . يرجى المحاولة مرة أخرى.',
+    'cancel' => 'إلغاء',
+    'deleted' => 'تم الحذف',
+    'delete_success' => 'تم الحذف بنجاح.',
+    'error' => 'خطأ',
+    'delete_failed' => 'فشل في الحذف . يرجى المحاولة مرة أخرى.',
 
 
-'no_selection' => 'لم يتم تحديد أي صفوف',
-'select_items_first' => 'يرجى تحديد صف واحد على الأقل أولاً.',
+    'no_selection' => 'لم يتم تحديد أي صفوف',
+    'select_items_first' => 'يرجى تحديد صف واحد على الأقل أولاً.',
 
-'delete_selected' => 'حذف البيانات المحددة',
-'delete_selected_confirm' => 'هل أنت متأكد أنك تريد حذف البيانات المحددة؟',
-'bulk_delete_success' => 'تم حذف البيانات المحددة بنجاح.',
-'bulk_delete_failed' => 'فشل في حذف البيانات المحددة.',
+    'delete_selected' => 'حذف البيانات المحددة',
+    'delete_selected_confirm' => 'هل أنت متأكد أنك تريد حذف البيانات المحددة؟',
+    'bulk_delete_success' => 'تم حذف البيانات المحددة بنجاح.',
+    'bulk_delete_failed' => 'فشل في حذف البيانات المحددة.',
 
     'timezone' => 'المنطقة الزمنية',
     'select_your_company_timezone' => 'اختر المنطقة الزمنية لشركتك',
 
-        // Vacation Balance Assignment
+    // Vacation Balance Assignment
     'assign_vacation_balance' => 'تعيين رصيد الإجازات',
     'vacation_balance' => 'رصيد الإجازات',
     'enter_vacation_days' => 'أدخل عدد أيام الإجازة',
@@ -419,23 +419,23 @@ return [
     'failed_to_update_bonus_per_hour' => 'فشل في تحديث المكافأة لكل ساعة.',
     'no_employees_selected' => 'لم يتم تحديد أي موظف.',
 
-'late_arrival_threshold' => 'حد التأخير',
-'minutes_after_start_time' => 'دقيقة بعد وقت البداية',
-'minutes_after_scheduled_start_time_to_consider_late' => 'الدقائق بعد وقت البداية المحدد لاعتبار الموظف متأخراً',
+    'late_arrival_threshold' => 'حد التأخير',
+    'minutes_after_start_time' => 'دقيقة بعد وقت البداية',
+    'minutes_after_scheduled_start_time_to_consider_late' => 'الدقائق بعد وقت البداية المحدد لاعتبار الموظف متأخراً',
 
-'half_day_threshold' => 'حد نصف اليوم',
-'minutes_of_absence' => 'دقيقة غياب',
-'minutes_of_absence_to_consider_half_day' => 'دقائق الغياب المطلوبة لاعتبارها نصف يوم',
+    'half_day_threshold' => 'حد نصف اليوم',
+    'minutes_of_absence' => 'دقيقة غياب',
+    'minutes_of_absence_to_consider_half_day' => 'دقائق الغياب المطلوبة لاعتبارها نصف يوم',
 
-'late_arrival_deduction' => 'خصم التأخير',
-'of_daily_wage' => 'من الأجر اليومي',
-'percentage_deducted_from_daily_wage_when_employee_arrives_late' => 'النسبة المئوية المخصومة من الأجر اليومي عند تأخر الموظف',
+    'late_arrival_deduction' => 'خصم التأخير',
+    'of_daily_wage' => 'من الأجر اليومي',
+    'percentage_deducted_from_daily_wage_when_employee_arrives_late' => 'النسبة المئوية المخصومة من الأجر اليومي عند تأخر الموظف',
 
-'half_day_absence_deduction' => 'خصم نصف يوم غياب',
-'percentage_deducted_from_daily_wage_for_half_day_absences' => 'النسبة المئوية المخصومة من الأجر اليومي لغياب نصف يوم',
+    'half_day_absence_deduction' => 'خصم نصف يوم غياب',
+    'percentage_deducted_from_daily_wage_for_half_day_absences' => 'النسبة المئوية المخصومة من الأجر اليومي لغياب نصف يوم',
 
 
- 'attendance_rules_saved_successfully' => 'تم حفظ قواعد الحضور بنجاح.',
+    'attendance_rules_saved_successfully' => 'تم حفظ قواعد الحضور بنجاح.',
     'late_arrival_threshold_updated_successfully' => 'تم تحديث حد التأخير بنجاح.',
     'half_day_threshold_updated_successfully' => 'تم تحديث حد نصف اليوم بنجاح.',
     'late_deduction_percentage_updated_successfully' => 'تم تحديث نسبة خصم التأخير بنجاح.',
@@ -443,40 +443,40 @@ return [
 
     'search_employee' => 'البحث باسم الموظف',
 
-     'attendance_rule_not_found' => 'لم يتم العثور على قاعدة الحضور.',
+    'attendance_rule_not_found' => 'لم يتم العثور على قاعدة الحضور.',
 
     // Holidays
     'holiday_added_successfully' => 'تمت إضافة العطلة بنجاح.',
     'holiday_deleted_successfully' => 'تم حذف العطلة بنجاح.',
     'holidays_updated_successfully' => 'تم تحديث العطلات بنجاح.',
     'failed_to_update_holidays' => 'فشل في تحديث العطلات.',
-        'ok' => 'حسناً',
+    'ok' => 'حسناً',
     'communication' => 'التواصل',
 
     'toast_success_title' => 'تم بنجاح!',
-'toast_error_title' => 'خطأ!',
-'toast_warning_title' => 'تحذير!',
-'toast_info_title' => 'معلومات',
-'invalid_hours' => 'الرجاء إدخال ساعات عمل صالحة (بين 1 و 24)',
-'invalid_vacation_balance' => 'الرجاء إدخال رصيد إجازة صالح (0 أيام أو أكثر)',
-'invalid_bonus_amount' => 'الرجاء إدخال مبلغ مكافأة صالح (0 أو أكثر)',
+    'toast_error_title' => 'خطأ!',
+    'toast_warning_title' => 'تحذير!',
+    'toast_info_title' => 'معلومات',
+    'invalid_hours' => 'الرجاء إدخال ساعات عمل صالحة (بين 1 و 24)',
+    'invalid_vacation_balance' => 'الرجاء إدخال رصيد إجازة صالح (0 أيام أو أكثر)',
+    'invalid_bonus_amount' => 'الرجاء إدخال مبلغ مكافأة صالح (0 أو أكثر)',
 
-'error_updating_late_threshold' => 'خطأ في تحديث حد التأخير',
-'error_updating_half_day_threshold' => 'خطأ في تحديث حد نصف اليوم',
-'error_updating_late_deduction' => 'خطأ في تحديث خصم التأخير',
-'error_updating_half_day_deduction' => 'خطأ في تحديث خصم نصف اليوم',
-'updated_successfully' => 'تم التحديث بنجاح!',
+    'error_updating_late_threshold' => 'خطأ في تحديث حد التأخير',
+    'error_updating_half_day_threshold' => 'خطأ في تحديث حد نصف اليوم',
+    'error_updating_late_deduction' => 'خطأ في تحديث خصم التأخير',
+    'error_updating_half_day_deduction' => 'خطأ في تحديث خصم نصف اليوم',
+    'updated_successfully' => 'تم التحديث بنجاح!',
 
-'all_departments' => 'جميع الأقسام',
-'filter_by_department' => 'تصفية حسب القسم',
-'search_employee' => 'بحث عن موظف',
+    'all_departments' => 'جميع الأقسام',
+    'filter_by_department' => 'تصفية حسب القسم',
+    'search_employee' => 'بحث عن موظف',
 
- 'check_in' => 'تسجيل الدخول',
- 'check_out' => 'تسجيل الخروج',
- 'global_check_in' => 'تسجيل الدخول ',
+    'check_in' => 'تسجيل الدخول',
+    'check_out' => 'تسجيل الخروج',
+    'global_check_in' => 'تسجيل الدخول ',
     'global_check_out' => 'تسجيل الخروج ',
     'apply_time' => 'تطبيق الوقت',
-     'please_select_employee' => 'يرجى اختيار موظف واحد على الأقل.',
+    'please_select_employee' => 'يرجى اختيار موظف واحد على الأقل.',
     'times_applied_success' => 'تم تطبيق الأوقات بنجاح على الموظفين المحددين.',
     'error_saving_attendance' => 'حدث خطأ أثناء حفظ الحضور.',
     'please_select_time' => 'يرجى اختيار وقت واحد على الأقل (دخول أو خروج).',
@@ -484,7 +484,7 @@ return [
     'select_status' => 'اختر الحالة',
     'additional_salary' => 'الراتب الإضافي',
     'enter_additional_salary' => 'أدخل الراتب الإضافي',
-    'early_leave_request'=> 'طلب إذن خروج مبكر',
+    'early_leave_request' => 'طلب إذن خروج مبكر',
 
     'nationality' => 'الجنسية',
     'nationality_local' => 'محلي',
@@ -504,15 +504,15 @@ return [
 
     'vacation' => 'إجازة',
     'working_now' => 'يعمل الآن',
-    'at_work' => 'في العمل',
+    'at_work' => 'العمل',
     'transfer_sponsorship' => 'نقل كفالة',
 
     'absent_threshold' => 'حد الغياب الكامل',
-'minutes_of_absence_to_consider_full_absent' => 'الدقائق اللازمة لاعتبار الموظف غائباً بالكامل',
-'absent_threshold_updated_successfully' => 'تم تحديث حد الغياب بنجاح',
-'error_updating_absent_threshold' => 'خطأ في تحديث حد الغياب',
+    'minutes_of_absence_to_consider_full_absent' => 'الدقائق اللازمة لاعتبار الموظف غائباً بالكامل',
+    'absent_threshold_updated_successfully' => 'تم تحديث حد الغياب بنجاح',
+    'error_updating_absent_threshold' => 'خطأ في تحديث حد الغياب',
 
-   'upload_company_policy_pdf' => 'تحميل سياسة الشركة (PDF)',
+    'upload_company_policy_pdf' => 'تحميل سياسة الشركة (PDF)',
     'choose_pdf_to_upload' => 'اختر ملف PDF للتحميل',
     'max_file_size' => 'الحد الأقصى لحجم الملف: 5 ميغابايت',
     'upload_replace_policy_pdf' => 'تحميل / استبدال ملف السياسة',
@@ -521,7 +521,7 @@ return [
     'restore_employee' => 'إرجاع الموظف للعمل',
     'restore_employee_confirmation' => 'هل أنت متأكد من إرجاع هذا الموظف؟',
 
-     'attendance_policy_visual' => 'رسم توضيحي لسياسة التأخير',
+    'attendance_policy_visual' => 'رسم توضيحي لسياسة التأخير',
 
     'present' => 'حاضر',
     'late' => 'تأخير',
