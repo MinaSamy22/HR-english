@@ -483,7 +483,7 @@ Route::middleware('employee')->group(function () {
 
 
     // this to show each request page from notification
-    Route::get('processed-requests/{type}/{id}', [RequestController::class, 'showProcessedRequest'])->name('processed-requests.show');
+    Route::get('processed-requests/{type}/{id}', [RequestController::class, 'showProcessedRequest'])->name('employee.processed-requests.show');
 
     // Messages routes for employees
     Route::get('employee/messages', [MessageController::class, 'employeeInbox'])->name('employee.messages.inbox');
