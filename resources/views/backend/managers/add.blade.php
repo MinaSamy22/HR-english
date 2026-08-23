@@ -48,10 +48,10 @@
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">{{ __('h_manager.phone_number') }}</label>
+                                        <label class="col-sm-2 col-form-label">{{ __('h_manager.phone_number') }} <span style="color: red;">{{ __('h_manager.required') }}</span></label>
                                         <div class="col-sm-10">
                                             <input type="number" value="{{ old('phone_number') }}" name="phone_number"
-                                                class="form-control" placeholder="{{ __('h_manager.enter_phone_number') }}">
+                                                class="form-control" required placeholder="{{ __('h_manager.enter_phone_number') }}">
                                             <span style="color:red">{{ $errors->first('phone_number') }}</span>
                                         </div>
                                     </div>
