@@ -29,7 +29,7 @@
                             </h3>
                         </div>
 
-                        <form action="{{ route('employee.early.store') }}" method="POST">
+                        <form action="{{ route('employee.early.store') }}" method="POST" id="addForm">
                             @csrf
                             <div class="card-body">
 
@@ -112,7 +112,7 @@
                             </div>
 
                             <div class="card-footer">
-                                <button class="btn btn-primary"><i class="fas fa-paper-plane mr-1"></i>{{ __('E_early.submit_request') }}</button>
+                                <button class="btn btn-primary" id="submitBtn" type="submit"><i class="fas fa-paper-plane mr-1"></i>{{ __('E_early.submit_request') }}</button>
                                 <button type="reset" class="btn btn-secondary ml-2"><i class="fas fa-undo mr-1"></i>{{ __('E_early.reset_form') }}</button>
                             </div>
                         </form>

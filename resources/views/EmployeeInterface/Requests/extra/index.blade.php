@@ -29,7 +29,7 @@
                                     <i class="fas fa-clock mr-2"></i>{{ __('E_extra.submit_new_request') }}
                                 </h3>
                             </div>
-                            <form action="{{ route('employee.extra.store') }}" method="POST">
+                            <form action="{{ route('employee.extra.store') }}" method="POST" id="addForm">
                                 @csrf
                                 <div class="card-body">
                                     @if (session('success'))
@@ -110,7 +110,7 @@
                                 </div>
 
                                 <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary">
+                                    <button type="submit" id="submitBtn" class="btn btn-primary">
                                         <i class="fas fa-paper-plane mr-1"></i>{{ __('E_extra.submit_request') }}
                                     </button>
                                     <button type="reset" class="btn btn-secondary ml-2">

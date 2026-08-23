@@ -230,7 +230,7 @@
                     </div>
 
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-primary" {{ $customCriteria->count() == 0 ? 'disabled' : '' }}>
+                        <button type="submit" id="submitBtn" class="btn btn-primary" {{ $customCriteria->count() == 0 ? 'disabled' : '' }}>
                             <i class="fas fa-save"></i> {{ __('h_performance.create_evaluation') }}
                         </button>
                         <a href="{{ route('performance.index') }}" class="btn btn-secondary">

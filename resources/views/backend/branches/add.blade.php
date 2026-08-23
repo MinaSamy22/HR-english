@@ -31,35 +31,4 @@
         </div>
     </section>
 </div>
-
-<script>
-    // Prevent double submit on add form
-    const addForm = document.getElementById('addForm');
-    const submitBtn = document.getElementById('submitBtn');
-    let isSubmitting = false;
-
-    addForm.addEventListener('submit', function(e) {
-        if (isSubmitting) {
-            e.preventDefault();
-            return;
-        }
-
-        isSubmitting = true;
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {{ __('h_branches.add_branch_button') }}...';
-        submitBtn.style.opacity = '0.7';
-        submitBtn.style.cursor = 'not-allowed';
-    });
-
-    // Re-enable button if user goes back
-    window.addEventListener('pageshow', function(event) {
-        if (event.persisted) {
-            isSubmitting = false;
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = '<i class="fas fa-plus-circle"></i> {{ __('h_branches.add_branch_button') }}';
-            submitBtn.style.opacity = '1';
-            submitBtn.style.cursor = 'pointer';
-        }
-    });
-</script>
 @endsection

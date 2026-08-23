@@ -561,36 +561,4 @@
 
 
     <script src="{{ url('dist/js/employee.js?v=2') }}"></script>
-
-    <script>
-        // Prevent double submit on add form
-        const addForm = document.getElementById('addForm');
-        const submitBtn = document.getElementById('submitBtn');
-        let isSubmitting = false;
-
-        addForm.addEventListener('submit', function(e) {
-            if (isSubmitting) {
-                e.preventDefault();
-                return;
-            }
-
-            isSubmitting = true;
-            submitBtn.disabled = true;
-            const originalText = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {{ __('h_employee.submit') }}...';
-            submitBtn.style.opacity = '0.7';
-            submitBtn.style.cursor = 'not-allowed';
-        });
-
-        // Re-enable button if user goes back
-        window.addEventListener('pageshow', function(event) {
-            if (event.persisted) {
-                isSubmitting = false;
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = '{{ __('h_employee.submit') }}';
-                submitBtn.style.opacity = '1';
-                submitBtn.style.cursor = 'pointer';
-            }
-        });
-    </script>
 @endsection

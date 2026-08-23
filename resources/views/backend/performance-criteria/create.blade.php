@@ -29,7 +29,7 @@
                     <h3 class="card-title">{{ __('h_criteria.create_new_criteria') }}</h3>
                 </div>
 
-                <form action="{{ route('performance-criteria.store') }}" method="POST">
+                <form action="{{ route('performance-criteria.store') }}" method="POST" id="addForm">
                     @csrf
                     <div class="card-body">
                         <div class="row">
@@ -106,7 +106,7 @@
                     </div>
 
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" id="submitBtn" class="btn btn-primary">
                             <i class="fas fa-save"></i> {{ __('h_criteria.add_criteria_btn') }}
                         </button>
                         <a href="{{ route('performance-criteria.index') }}" class="btn btn-secondary">

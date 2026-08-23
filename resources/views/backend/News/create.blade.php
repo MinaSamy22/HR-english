@@ -32,7 +32,7 @@
                         </div>
                         </div>
 
-                        <form action="{{ route('news.store') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('news.store') }}" method="POST" enctype="multipart/form-data" id="addForm">
                             @csrf
                             <div class="card-body">
                                 @if($errors->any())
@@ -116,7 +116,7 @@
                             </div>
 
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-primary float-right" >
+                                <button type="submit" id="submitBtn" class="btn btn-primary float-right" >
                                     <i class="fas fa-save"></i> {{ __('h_news.save_news') }}
                                 </button>
                             </div>
@@ -127,6 +127,26 @@
         </div>
     </section>
 </div>
+
+@push('styles')
+<style>
+    .custom-file-label.selected {
+        color: #495057;
+        font-weight: 500;
+    }
+
+    .custom-file-label::after {
+        content: "Browse";
+    }
+
+    #selectedFileName {
+        padding: 0.5rem;
+        background-color: #e3f2fd;
+        border-left: 3px solid #2196f3;
+        border-radius: 0.25rem;
+    }
+</style>
+@endpush
 
 @push('scripts')
 <script>
@@ -174,25 +194,5 @@
         });
     });
 </script>
-
-@push('styles')
-<style>
-    .custom-file-label.selected {
-        color: #495057;
-        font-weight: 500;
-    }
-
-    .custom-file-label::after {
-        content: "Browse";
-    }
-
-    #selectedFileName {
-        padding: 0.5rem;
-        background-color: #e3f2fd;
-        border-left: 3px solid #2196f3;
-        border-radius: 0.25rem;
-    }
-</style>
-@endpush
 @endpush
 @endsection

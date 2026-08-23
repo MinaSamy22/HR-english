@@ -8,7 +8,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">  {{-- because we take the java script from blade and put it at file and make below call for js --}}
+    <meta name="csrf-token" content="{{ csrf_token() }}"> {{-- because we take the java script from blade and put it at
+    file and make below call for js --}}
 
     <title>HR System</title>
 
@@ -27,8 +28,7 @@
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Tempusdominus Bootstrap 4 -->
-    <link rel="stylesheet"
-        href="{{ url('/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
+    <link rel="stylesheet" href="{{ url('/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
     <!-- iCheck -->
     <link rel="stylesheet" href="{{ url('/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
     <!-- JQVMap -->
@@ -42,11 +42,11 @@
     <!-- summernote -->
     <link rel="stylesheet" href="{{ url('/plugins/summernote/summernote-bs4.min.css') }}">
     @if(in_array(app()->getLocale(), ['ar', 'au']))
-    <!-- Bootstrap 4 RTL -->
-    <link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.2.1/css/bootstrap.min.css">
-    <!-- Custom style for RTL -->
-    <link rel="stylesheet" href="{{url('dist/css/custom.css')}}">
-@endif
+        <!-- Bootstrap 4 RTL -->
+        <link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.2.1/css/bootstrap.min.css">
+        <!-- Custom style for RTL -->
+        <link rel="stylesheet" href="{{url('dist/css/custom.css')}}">
+    @endif
 
     @stack('style')
 
@@ -55,12 +55,14 @@
         body.hold-transition {
             background: #f8fafc !important;
         }
+
         /* Keep content-wrapper above the fixed premium bg */
         .content-wrapper {
             position: relative;
             z-index: 1;
             background: transparent !important;
         }
+
         .wrapper {
             position: relative;
         }
@@ -71,12 +73,12 @@
     @include('premium-bg')
     <div class="wrapper">
 
-@include('backend.layouts._sidebar')
-@yield('content')
-@include('backend.layouts._footer')
+        @include('backend.layouts._sidebar')
+        @yield('content')
+        @include('backend.layouts._footer')
 
-         <!-- Control Sidebar -->
-         <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
             <!-- Control sidebar content goes here -->
         </aside>
         <!-- /.control-sidebar -->
@@ -115,11 +117,16 @@
     <!-- AdminLTE App -->
     <script src="{{ url('/dist/js/adminlte.js') }}"></script>
     <!-- AdminLTE for demo purposes -->
-    {{-- <script src="{{ url('/dist/js/demo.js') }}"></script> --}}
+    {{--
+    <script src="{{ url('/dist/js/demo.js') }}"></script> --}}
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="{{ url('/dist/js/pages/dashboard.js') }}"></script>
+    <!-- Prevent Double Submit on forms -->
+    <script src="{{ url('/dist/js/prevent-double-submit.js') }}"></script>
 
-@yield('script')
+    @yield('script')
+    @stack('scripts')
+    @stack('script')
 </body>
-</html>
 
+</html>

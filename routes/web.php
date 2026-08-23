@@ -78,7 +78,7 @@ Route::get('view/news/image/{filename}', [NewsController::class, 'viewImage'])->
 //middlware 1 (HR interface)
 Route::middleware('admin')->group(function () {
 
-    //Navbar icons
+    //Navbar icons (Common HR dashboard access)
     route::get('admin/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
     route::get('admin/calendar', [CalendarController::class, 'index'])->name('calendar');
     route::get('admin/charts', [ChartsController::class, 'index'])->name('charts');
@@ -88,354 +88,311 @@ Route::middleware('admin')->group(function () {
     Route::delete('admin/do/{id}', [ToDoController::class, 'destroy'])->name('tasks.destroy');
     Route::delete('admin/do', [ToDoController::class, 'bulkDestroy'])->name('tasks.bulkDestroy');
 
-
     //employees
-    route::get('admin/employees', [EmployeeeController::class, 'index'])->name('employees');
-    route::get('admin/employees/add', [EmployeeeController::class, 'add'])->name('employees_add');
-    route::post('admin/employees/add', [EmployeeeController::class, 'add_post'])->name('employees_add_post'); //post for save in database
-    route::get('admin/employees/view/{id}', [EmployeeeController::class, 'view'])->name('employees_view');
-    route::get('admin/employees/edit/{id}', [EmployeeeController::class, 'edit'])->name('employees_edit');
-    route::post('admin/employees/update/{id}', [EmployeeeController::class, 'edit_update'])->name('employees_update');
-    route::get('admin/employees/delete/{id}', [EmployeeeController::class, 'delete'])->name('employees_delete');
-    route::get('admin/employee_info', [EmployeeeController::class, 'info'])->name('employee_info');
-    route::get('admin/employees_export', [EmployeeeController::class, 'employees_export'])->name('employees_export');
-    Route::get('admin/employees/import', [EmployeeeController::class, 'showImportForm'])->name('employees.import.form');
-    Route::post('admin/import-employees', [EmployeeeController::class, 'importEmployees'])->name('admin.employees.import');
-    Route::get('/view-attachment/{filename}', function ($filename) {
-        $path = public_path('../../HR-Uploads/shared_attachments/' . $filename);
-
-        if (!file_exists($path)) {
-            abort(404);
-        }
-
-        return response()->file($path);
-    })->name('view.attachment');
+    Route::middleware('hr_can:employees')->group(function () {
+        route::get('admin/employees', [EmployeeeController::class, 'index'])->name('employees');
+        route::get('admin/employees/add', [EmployeeeController::class, 'add'])->name('employees_add');
+        route::post('admin/employees/add', [EmployeeeController::class, 'add_post'])->name('employees_add_post');
+        route::get('admin/employees/view/{id}', [EmployeeeController::class, 'view'])->name('employees_view');
+        route::get('admin/employees/edit/{id}', [EmployeeeController::class, 'edit'])->name('employees_edit');
+        route::post('admin/employees/update/{id}', [EmployeeeController::class, 'edit_update'])->name('employees_update');
+        route::get('admin/employees/delete/{id}', [EmployeeeController::class, 'delete'])->name('employees_delete');
+        route::get('admin/employee_info', [EmployeeeController::class, 'info'])->name('employee_info');
+        route::get('admin/employees_export', [EmployeeeController::class, 'employees_export'])->name('employees_export');
+        Route::get('admin/employees/import', [EmployeeeController::class, 'showImportForm'])->name('employees.import.form');
+        Route::post('admin/import-employees', [EmployeeeController::class, 'importEmployees'])->name('admin.employees.import');
+        Route::get('/view-attachment/{filename}', function ($filename) {
+            $path = public_path('../../HR-Uploads/shared_attachments/' . $filename);
+            if (!file_exists($path)) {
+                abort(404);
+            }
+            return response()->file($path);
+        })->name('view.attachment');
+    });
 
     //job   admin/jobs
-    route::get('admin/jobs', [JobController::class, 'index'])->name('jobs');
-    route::get('admin/jobs/add', [JobController::class, 'add'])->name('jobs_add');
-    route::post('admin/jobs/add', [JobController::class, 'add_post'])->name('jobs_add_post'); //post for save in database
-    route::get('admin/jobs/view/{id}', [JobController::class, 'view'])->name('jobs_view');
-    route::get('admin/jobs/edit/{id}', [JobController::class, 'edit'])->name('jobs_edit');
-    route::post('admin/jobs/update/{id}', [JobController::class, 'edit_update'])->name('jobs_update');
-    route::get('admin/jobs/delete/{id}', [JobController::class, 'delete'])->name('jobs_delete');
-    route::get('admin/jobs_export', [JobController::class, 'jobs_export'])->name('jobs_export');
-    route::get('admin/job_info', [JobController::class, 'info'])->name('job_info');
-
+    Route::middleware('hr_can:jobs')->group(function () {
+        route::get('admin/jobs', [JobController::class, 'index'])->name('jobs');
+        route::get('admin/jobs/add', [JobController::class, 'add'])->name('jobs_add');
+        route::post('admin/jobs/add', [JobController::class, 'add_post'])->name('jobs_add_post');
+        route::get('admin/jobs/view/{id}', [JobController::class, 'view'])->name('jobs_view');
+        route::get('admin/jobs/edit/{id}', [JobController::class, 'edit'])->name('jobs_edit');
+        route::post('admin/jobs/update/{id}', [JobController::class, 'edit_update'])->name('jobs_update');
+        route::get('admin/jobs/delete/{id}', [JobController::class, 'delete'])->name('jobs_delete');
+        route::get('admin/jobs_export', [JobController::class, 'jobs_export'])->name('jobs_export');
+        route::get('admin/job_info', [JobController::class, 'info'])->name('job_info');
+    });
 
     //job history  admin/job_history
-    route::get('admin/job_history', [JobHistoryController::class, 'index'])->name('job_history');
-    route::get('admin/job_history/add', [JobHistoryController::class, 'add'])->name('history_add');
-    route::post('admin/job_history/add', [JobHistoryController::class, 'add_post'])->name('history_add_post'); //post for save in database
-    route::get('admin/job_history/edit/{id}', [JobHistoryController::class, 'edit'])->name('history_edit');
-    route::post('admin/job_history/update/{id}', [JobHistoryController::class, 'edit_update'])->name('history_update');
-    route::get('admin/job_history/delete/{id}', [JobHistoryController::class, 'delete'])->name('history_delete');
-    route::get('admin/jobhistory_export', [JobHistoryController::class, 'jobs_export'])->name('history_export'); //34an roue bdl url
-    Route::get('admin/history/restore/{id}', [JobHistoryController::class, 'restoreEmployee'])->name('history.restore');
-    route::get('admin/job_history/view/{id}', [JobHistoryController::class, 'view'])->name('history_view');
-
+    Route::middleware('hr_can:job_history')->group(function () {
+        route::get('admin/job_history', [JobHistoryController::class, 'index'])->name('job_history');
+        route::get('admin/job_history/add', [JobHistoryController::class, 'add'])->name('history_add');
+        route::post('admin/job_history/add', [JobHistoryController::class, 'add_post'])->name('history_add_post');
+        route::get('admin/job_history/edit/{id}', [JobHistoryController::class, 'edit'])->name('history_edit');
+        route::post('admin/job_history/update/{id}', [JobHistoryController::class, 'edit_update'])->name('history_update');
+        route::get('admin/job_history/delete/{id}', [JobHistoryController::class, 'delete'])->name('history_delete');
+        route::get('admin/jobhistory_export', [JobHistoryController::class, 'jobs_export'])->name('history_export');
+        Route::get('admin/history/restore/{id}', [JobHistoryController::class, 'restoreEmployee'])->name('history.restore');
+        route::get('admin/job_history/view/{id}', [JobHistoryController::class, 'view'])->name('history_view');
+    });
 
     //managers    admin/manager
-    route::get('admin/manager', [ManagerController::class, 'index'])->name('manager');
-    route::get('admin/manager/add', [ManagerController::class, 'add'])->name('manager_add');
-    route::post('admin/manager/add', [ManagerController::class, 'add_post'])->name('manager_add_post'); //post for save in database
-    route::get('admin/manager/view/{id}', [ManagerController::class, 'view'])->name('manager_view');
-    route::get('admin/manager/edit/{id}', [ManagerController::class, 'edit'])->name('manager_edit');
-    route::post('admin/manager/update/{id}', [ManagerController::class, 'edit_update'])->name('manager_update');
-    route::get('admin/manager/delete/{id}', [ManagerController::class, 'delete'])->name('manager_delete');
-
-    route::get('admin/manager_info', [ManagerController::class, 'info'])->name('manager_info');
+    Route::middleware('hr_can:managers')->group(function () {
+        route::get('admin/manager', [ManagerController::class, 'index'])->name('manager');
+        route::get('admin/manager/add', [ManagerController::class, 'add'])->name('manager_add');
+        route::post('admin/manager/add', [ManagerController::class, 'add_post'])->name('manager_add_post');
+        route::get('admin/manager/view/{id}', [ManagerController::class, 'view'])->name('manager_view');
+        route::get('admin/manager/edit/{id}', [ManagerController::class, 'edit'])->name('manager_edit');
+        route::post('admin/manager/update/{id}', [ManagerController::class, 'edit_update'])->name('manager_update');
+        route::get('admin/manager/delete/{id}', [ManagerController::class, 'delete'])->name('manager_delete');
+        route::get('admin/manager_info', [ManagerController::class, 'info'])->name('manager_info');
+    });
 
     //Administration   admin/administration
-    Route::get('admin/administration', [AdministrationController::class, 'index'])->name('administration');
-    route::get('admin/administration/add', [AdministrationController::class, 'add'])->name('administration_add');
-    route::post('admin/administration/add', [AdministrationController::class, 'add_post'])->name('administration_add_post'); //post for save in database
-    route::get('admin/administration/edit/{id}', [AdministrationController::class, 'edit'])->name('administration_edit');
-    route::post('admin/administration/update/{id}', [AdministrationController::class, 'edit_update'])->name('administration_update');
-    route::get('admin/administration/delete/{id}', [AdministrationController::class, 'delete'])->name('administration_delete');
-
+    Route::middleware('hr_can:administrations')->group(function () {
+        Route::get('admin/administration', [AdministrationController::class, 'index'])->name('administration');
+        route::get('admin/administration/add', [AdministrationController::class, 'add'])->name('administration_add');
+        route::post('admin/administration/add', [AdministrationController::class, 'add_post'])->name('administration_add_post');
+        route::get('admin/administration/edit/{id}', [AdministrationController::class, 'edit'])->name('administration_edit');
+        route::post('admin/administration/update/{id}', [AdministrationController::class, 'edit_update'])->name('administration_update');
+        route::get('admin/administration/delete/{id}', [AdministrationController::class, 'delete'])->name('administration_delete');
+    });
 
     //department   admin/department
-    route::get('admin/department', [DepartmentController::class, 'index'])->name('department');
-    route::get('admin/department/add', [DepartmentController::class, 'add'])->name('department_add');
-    route::post('admin/department/add', [DepartmentController::class, 'add_post'])->name('department_add_post'); //post for save in database
-    route::get('admin/department/view/{id}', [DepartmentController::class, 'view'])->name('department_view');
-    route::get('admin/department/edit/{id}', [DepartmentController::class, 'edit'])->name('department_edit');
-    route::post('admin/department/update/{id}', [DepartmentController::class, 'edit_update'])->name('department_update');
-    route::get('admin/department/delete/{id}', [DepartmentController::class, 'delete'])->name('department_delete');
-    route::get('admin/department_export', [DepartmentController::class, 'department_export'])->name('department_export');
-
-    route::get('admin/department_info', [DepartmentController::class, 'info'])->name('department_info');
+    Route::middleware('hr_can:departments')->group(function () {
+        route::get('admin/department', [DepartmentController::class, 'index'])->name('department');
+        route::get('admin/department/add', [DepartmentController::class, 'add'])->name('department_add');
+        route::post('admin/department/add', [DepartmentController::class, 'add_post'])->name('department_add_post');
+        route::get('admin/department/view/{id}', [DepartmentController::class, 'view'])->name('department_view');
+        route::get('admin/department/edit/{id}', [DepartmentController::class, 'edit'])->name('department_edit');
+        route::post('admin/department/update/{id}', [DepartmentController::class, 'edit_update'])->name('department_update');
+        route::get('admin/department/delete/{id}', [DepartmentController::class, 'delete'])->name('department_delete');
+        route::get('admin/department_export', [DepartmentController::class, 'department_export'])->name('department_export');
+        route::get('admin/department_info', [DepartmentController::class, 'info'])->name('department_info');
+    });
 
     //Employee Requests   admin/Requests
-    Route::get('admin/Requests', [RequestController::class, 'index'])->name('Requests');
-    Route::get('admin/Requests/processed', [RequestController::class, 'processed'])->name('Requests.processed');
-    Route::post('admin/Requests/accept/{type}/{id}', [RequestController::class, 'accept'])->name('Requests.accept');
-    Route::post('admin/Requests/reject/{type}/{id}', [RequestController::class, 'reject'])->name('Requests.reject');
-    Route::get('admin/Requests', [RequestController::class, 'index'])->name('Requests');
-    Route::get('admin/Requests/processed', [RequestController::class, 'processed'])->name('Requests.processed');
-    Route::post('admin/Requests/accept/{type}/{id}', [RequestController::class, 'accept'])->name('Requests.accept');
-    Route::post('admin/Requests/reject/{type}/{id}', [RequestController::class, 'reject'])->name('Requests.reject');
-    // Accept/Reject routes for employee interface
-    Route::post('/admin/requests/{type}/{id}/accept', [RequestController::class, 'accept'])->name('requests.accept');
-    Route::post('/admin/requests/{type}/{id}/reject', [RequestController::class, 'reject'])->name('requests.reject');
-    Route::get('/admin/requests/processed', [RequestController::class, 'processed'])->name('requests.processed');
-    // New routes for processed notifications
-    Route::get('/admin/requests/processed/{type}/{id}', [RequestController::class, 'showProcessedRequest'])->name('processed-requests.show');
-    Route::post('/admin/requests/mark-all-processed-seen', [RequestController::class, 'markAllProcessedAsSeen'])->name('requests.mark-all-processed-seen');
-
+    Route::middleware('hr_can:requests')->group(function () {
+        Route::get('admin/Requests', [RequestController::class, 'index'])->name('Requests');
+        Route::get('admin/Requests/processed', [RequestController::class, 'processed'])->name('Requests.processed');
+        Route::post('admin/Requests/accept/{type}/{id}', [RequestController::class, 'accept'])->name('Requests.accept');
+        Route::post('admin/Requests/reject/{type}/{id}', [RequestController::class, 'reject'])->name('Requests.reject');
+        Route::post('/admin/requests/{type}/{id}/accept', [RequestController::class, 'accept'])->name('requests.accept');
+        Route::post('/admin/requests/{type}/{id}/reject', [RequestController::class, 'reject'])->name('requests.reject');
+        Route::get('/admin/requests/processed', [RequestController::class, 'processed'])->name('requests.processed');
+        Route::get('/admin/requests/processed/{type}/{id}', [RequestController::class, 'showProcessedRequest'])->name('processed-requests.show');
+        Route::post('/admin/requests/mark-all-processed-seen', [RequestController::class, 'markAllProcessedAsSeen'])->name('requests.mark-all-processed-seen');
+    });
 
     //Attendance section
-    Route::get('admin/Requests', [RequestController::class, 'index'])->name('Requests');
-    Route::get('admin/Requests/processed', [RequestController::class, 'processed'])->name('Requests.processed');
-    Route::post('admin/Requests/accept/{type}/{id}', [RequestController::class, 'accept'])->name('Requests.accept');
-    Route::post('admin/Requests/reject/{type}/{id}', [RequestController::class, 'reject'])->name('Requests.reject');
-    //Attendance section
-    Route::get('admin/attendance', [AttendanceController::class, 'AttendanceEmployee'])->name('attendance.index');
-    Route::post('admin/attendance/save', [AttendanceController::class, 'AttendanceEmployeeSubmit'])->name('attendance.submit');
-    //its report
-    Route::get('admin/reports', [AttendanceController::class, 'index'])->name('report');
-    Route::get('admin/reports/export-pdf', [AttendanceController::class, 'exportPdf'])->name('reports.exportPdf');
+    Route::middleware('hr_can:attendance')->group(function () {
+        Route::get('admin/attendance', [AttendanceController::class, 'AttendanceEmployee'])->name('attendance.index');
+        Route::post('admin/attendance/save', [AttendanceController::class, 'AttendanceEmployeeSubmit'])->name('attendance.submit');
+    });
 
+    //Attendance Reports
+    Route::middleware('hr_can:attendance_reports')->group(function () {
+        Route::get('admin/reports', [AttendanceController::class, 'index'])->name('report');
+        Route::get('admin/reports/export-pdf', [AttendanceController::class, 'exportPdf'])->name('reports.exportPdf');
+    });
 
     // Company policy section
-    Route::get('admin/attendance-rule', [AttendanceRulesController::class, 'index'])->name('attendance-rule');
-    Route::get('/attendance-rules', [AttendanceRulesController::class, 'index'])->name('attendance-rules.index');
-    Route::post('admin/attendance-rule/save', [AttendanceRulesController::class, 'saveRules'])->name('attendance-rule.save');
-
-
-    Route::post('/attendance-rules/upload-policy', [AttendanceRulesController::class, 'uploadPolicyPdf'])
-    ->name('attendance-rules.upload-policy');
-
-    Route::get('/company-policy/view/{file}', function($file) {
-    $path = public_path('../../HR-Uploads/pdf_policy/' . $file);
-
-    if (!file_exists($path)) {
-        abort(404);
-    }
-
-    return response()->file($path);
-})->name('company-policy.view');
-
-
-    // holiday management
-    Route::get('/attendance-rules/get-holidays', [AttendanceRulesController::class, 'getHolidays']);
-    Route::post('admin/attendance-rule/add-holiday', [AttendanceRulesController::class, 'addHoliday'])->name('attendance-rule.add-holiday');
-    Route::delete('admin/attendance-rule/delete-holiday', [AttendanceRulesController::class, 'deleteHoliday'])->name('attendance-rule.delete-holiday');
-    Route::post('/attendance-rules/update-holidays', [AttendanceRulesController::class, 'updateHolidays'])->name('attendance.update-holidays');
-
-    // edit late - FIXED
-    Route::post('/attendance-rules/update-late-deduction', [AttendanceRulesController::class, 'updateLateDeduction'])->name('attendance-rules.update-late-deduction');
-    // edit halfday - FIXED
-    Route::post('/attendance-rules/update-half-day', [AttendanceRulesController::class, 'updateHalfDayDeduction'])->name('attendance-rules.update-half-day');
-    Route::post('/attendance-rules/update-half-day', [AttendanceRulesController::class, 'updateHalfDayDeduction'])->name('attendance-rules.update-half-day');
-
-    // work days edit
-    Route::post('/attendance/update-employee-working-days', [AttendanceRulesController::class, 'updateEmployeeWorkingDays'])->name('attendance.update-employee-working-days');
-    // work hours edit
-    Route::post('/attendance-rules/update-work-hours', [AttendanceRulesController::class, 'updateWorkHoursPerDay'])->name('attendance.update-work-hours');
-    Route::post('/attendance/update-employee-work-hours', [AttendanceRulesController::class, 'updateEmployeeWorkHours'])->name('attendance.update-employee-work-hours');
-
-
-    Route::post('/attendance-rules/update-absent-threshold', [AttendanceRulesController::class, 'updateAbsentThreshold'])->name('attendance-rules.update-absent-threshold');
-    //vacation balance assignment to employees
-    Route::post('/attendance/update-employee-vacation-balance', [AttendanceRulesController::class, 'updateEmployeeVacationBalance'])->name('attendance.update-employee-vacation-balance');
-    //bonus per hour assignment to employees
-    Route::post('/attendance/update-employee-bonus-per-hour', [AttendanceRulesController::class, 'updateEmployeeBonusPerHour'])->name('attendance.update-employee-bonus-per-hour');
-
-    // Add these routes to your existing attendance rules routes
-    Route::post('/attendance-rules/update-late-threshold', [AttendanceRulesController::class, 'updateLateThreshold'])->name('attendance-rules.update-late-threshold');
-    Route::post('/attendance-rules/update-half-day-threshold', [AttendanceRulesController::class, 'updateHalfDayThreshold'])->name('attendance-rules.update-half-day-threshold');
-    Route::post('timezone/update',[AttendanceRulesController::class,'updateTimezone'])->name('timezone.update');
-
+    Route::middleware('hr_can:attendance_rule')->group(function () {
+        Route::get('admin/attendance-rule', [AttendanceRulesController::class, 'index'])->name('attendance-rule');
+        Route::get('/attendance-rules', [AttendanceRulesController::class, 'index'])->name('attendance-rules.index');
+        Route::post('admin/attendance-rule/save', [AttendanceRulesController::class, 'saveRules'])->name('attendance-rule.save');
+        Route::post('/attendance-rules/upload-policy', [AttendanceRulesController::class, 'uploadPolicyPdf'])->name('attendance-rules.upload-policy');
+        Route::get('/company-policy/view/{file}', function($file) {
+            $path = public_path('../../HR-Uploads/pdf_policy/' . $file);
+            if (!file_exists($path)) {
+                abort(404);
+            }
+            return response()->file($path);
+        })->name('company-policy.view');
+        Route::get('/attendance-rules/get-holidays', [AttendanceRulesController::class, 'getHolidays']);
+        Route::post('admin/attendance-rule/add-holiday', [AttendanceRulesController::class, 'addHoliday'])->name('attendance-rule.add-holiday');
+        Route::delete('admin/attendance-rule/delete-holiday', [AttendanceRulesController::class, 'deleteHoliday'])->name('attendance-rule.delete-holiday');
+        Route::post('/attendance-rules/update-holidays', [AttendanceRulesController::class, 'updateHolidays'])->name('attendance.update-holidays');
+        Route::post('/attendance-rules/update-late-deduction', [AttendanceRulesController::class, 'updateLateDeduction'])->name('attendance-rules.update-late-deduction');
+        Route::post('/attendance-rules/update-half-day', [AttendanceRulesController::class, 'updateHalfDayDeduction'])->name('attendance-rules.update-half-day');
+        Route::post('/attendance/update-employee-working-days', [AttendanceRulesController::class, 'updateEmployeeWorkingDays'])->name('attendance.update-employee-working-days');
+        Route::post('/attendance-rules/update-work-hours', [AttendanceRulesController::class, 'updateWorkHoursPerDay'])->name('attendance.update-work-hours');
+        Route::post('/attendance/update-employee-work-hours', [AttendanceRulesController::class, 'updateEmployeeWorkHours'])->name('attendance.update-employee-work-hours');
+        Route::post('/attendance-rules/update-absent-threshold', [AttendanceRulesController::class, 'updateAbsentThreshold'])->name('attendance-rules.update-absent-threshold');
+        Route::post('/attendance/update-employee-vacation-balance', [AttendanceRulesController::class, 'updateEmployeeVacationBalance'])->name('attendance.update-employee-vacation-balance');
+        Route::post('/attendance/update-employee-bonus-per-hour', [AttendanceRulesController::class, 'updateEmployeeBonusPerHour'])->name('attendance.update-employee-bonus-per-hour');
+        Route::post('/attendance-rules/update-late-threshold', [AttendanceRulesController::class, 'updateLateThreshold'])->name('attendance-rules.update-late-threshold');
+        Route::post('/attendance-rules/update-half-day-threshold', [AttendanceRulesController::class, 'updateHalfDayThreshold'])->name('attendance-rules.update-half-day-threshold');
+        Route::post('timezone/update',[AttendanceRulesController::class,'updateTimezone'])->name('timezone.update');
+    });
 
     //biometric excel
-    Route::get('admin/biometer-excel', [AttendanceImportController::class, 'showForm'])->name('attendance.import.form');
-    Route::post('/biometer-excel', [AttendanceImportController::class, 'import'])->name('attendance.import');
+    Route::middleware('hr_can:biometer_excel')->group(function () {
+        Route::get('admin/biometer-excel', [AttendanceImportController::class, 'showForm'])->name('attendance.import.form');
+        Route::post('/biometer-excel', [AttendanceImportController::class, 'import'])->name('attendance.import');
+    });
 
     //deductions    admin/deductions
-    route::get('admin/deductions', [DeductionController::class, 'index'])->name('leaves');
-    route::get('admin/deductions/delete/{id}', [DeductionController::class, 'delete'])->name('leaves_delete');
-    route::get('admin/deductions/add', [DeductionController::class, 'add'])->name('leaves_add');
-    route::post('admin/deductions/add', [DeductionController::class, 'add_post'])->name('leaves_add_post'); //post for save in database
-    Route::post('admin/deductions/delete-multiple', [DeductionController::class, 'deleteMultiple']);
+    Route::middleware('hr_can:deductions')->group(function () {
+        route::get('admin/deductions', [DeductionController::class, 'index'])->name('leaves');
+        route::get('admin/deductions/delete/{id}', [DeductionController::class, 'delete'])->name('leaves_delete');
+        route::get('admin/deductions/add', [DeductionController::class, 'add'])->name('leaves_add');
+        route::post('admin/deductions/add', [DeductionController::class, 'add_post'])->name('leaves_add_post');
+        Route::post('admin/deductions/delete-multiple', [DeductionController::class, 'deleteMultiple']);
+    });
 
     //vacations    admin/vacations
-    route::get('admin/vacations', [VacationController::class, 'index'])->name('vacations');
-    route::get('admin/vacations/delete/{id}', [VacationController::class, 'delete'])->name('vacations_delete');
-    route::get('admin/vacations/add', [VacationController::class, 'add'])->name('vacations_add');
-    route::post('admin/vacations/add', [VacationController::class, 'add_post'])->name('vacations_add_post'); //post for save in database
-    Route::post('admin/vacations/delete-multiple', [VacationController::class, 'deleteMultiple']);
-
+    Route::middleware('hr_can:vacations')->group(function () {
+        route::get('admin/vacations', [VacationController::class, 'index'])->name('vacations');
+        route::get('admin/vacations/delete/{id}', [VacationController::class, 'delete'])->name('vacations_delete');
+        route::get('admin/vacations/add', [VacationController::class, 'add'])->name('vacations_add');
+        route::post('admin/vacations/add', [VacationController::class, 'add_post'])->name('vacations_add_post');
+        Route::post('admin/vacations/delete-multiple', [VacationController::class, 'deleteMultiple']);
+    });
 
     //OverTime      admin/bounas
-    route::get('admin/bounas', [OverTimeController::class, 'index'])->name('bounas');
-    route::get('admin/bounas/delete/{id}', [OverTimeController::class, 'delete'])->name('bounas_delete');
-    route::get('admin/bounas/add', [OverTimeController::class, 'add'])->name('bounas_add');
-    route::post('admin/bounas/add', [OverTimeController::class, 'add_post'])->name('bounas_add_post'); //post for save in database
-    Route::post('admin/bounas/delete-multiple', [OverTimeController::class, 'deleteMultiple']);
-
+    Route::middleware('hr_can:bounas')->group(function () {
+        route::get('admin/bounas', [OverTimeController::class, 'index'])->name('bounas');
+        route::get('admin/bounas/delete/{id}', [OverTimeController::class, 'delete'])->name('bounas_delete');
+        route::get('admin/bounas/add', [OverTimeController::class, 'add'])->name('bounas_add');
+        route::post('admin/bounas/add', [OverTimeController::class, 'add_post'])->name('bounas_add_post');
+        Route::post('admin/bounas/delete-multiple', [OverTimeController::class, 'deleteMultiple']);
+    });
 
     // payrolls    admin/payroll
-    route::get('admin/payroll', [PayrollController::class, 'index'])->name('payroll');
-    route::get('admin/payroll/add', [PayrollController::class, 'add'])->name('payroll_add');
-    route::post('admin/payroll/add', [PayrollController::class, 'add_post'])->name('payroll_add_post'); //post for save in database
-    route::get('admin/payroll/edit/{id}', [PayrollController::class, 'edit'])->name('payroll_edit');
-    route::post('admin/payroll/update/{id}', [PayrollController::class, 'edit_update'])->name('payroll_update');
-    route::get('admin/payroll/delete/{id}', [PayrollController::class, 'delete'])->name('payroll_delete');
-    route::get('admin/payroll_export', [PayrollController::class, 'payrolls_export'])->name('payroll_export'); //34an route bdl url
-    Route::get('admin/payrolls/export-pdf', [PayrollController::class, 'exportPdf'])->name('payrolls.exportPdf');
-    Route::post('admin/payrolls/delete-multiple', [PayrollController::class, 'deleteMultiple']);
+    Route::middleware('hr_can:payroll')->group(function () {
+        route::get('admin/payroll', [PayrollController::class, 'index'])->name('payroll');
+        route::get('admin/payroll/add', [PayrollController::class, 'add'])->name('payroll_add');
+        route::post('admin/payroll/add', [PayrollController::class, 'add_post'])->name('payroll_add_post');
+        route::get('admin/payroll/edit/{id}', [PayrollController::class, 'edit'])->name('payroll_edit');
+        route::post('admin/payroll/update/{id}', [PayrollController::class, 'edit_update'])->name('payroll_update');
+        route::get('admin/payroll/delete/{id}', [PayrollController::class, 'delete'])->name('payroll_delete');
+        route::get('admin/payroll_export', [PayrollController::class, 'payrolls_export'])->name('payroll_export');
+        Route::get('admin/payrolls/export-pdf', [PayrollController::class, 'exportPdf'])->name('payrolls.exportPdf');
+        Route::post('admin/payrolls/delete-multiple', [PayrollController::class, 'deleteMultiple']);
+    });
+
     // payslip
-    Route::get('admin/payslip', [PayrollController::class, 'payslip'])->name('payslip');
-    // PDF download payslip
-    Route::post('admin/payslip/download-pdf', [PayrollController::class, 'downloadSinglePayslip'])->name('payslip.download.single');
-    Route::post('admin/payslip/download-all-pdf', [PayrollController::class, 'downloadAllPayslips'])->name('payslip.download.all');
-    // Salary Payment
-    // Route::get('admin/salary-payment', [PayrollController::class, 'salary_payment'])->name('salary_payment');
-    // Route::get('admin/salary-payment/add', [PayrollController::class, 'salary_payment_add'])->name('salary_payment_add');
-
-
+    Route::middleware('hr_can:payslip')->group(function () {
+        Route::get('admin/payslip', [PayrollController::class, 'payslip'])->name('payslip');
+        Route::post('admin/payslip/download-pdf', [PayrollController::class, 'downloadSinglePayslip'])->name('payslip.download.single');
+        Route::post('admin/payslip/download-all-pdf', [PayrollController::class, 'downloadAllPayslips'])->name('payslip.download.all');
+    });
 
     // Payment Routes
-    Route::get('admin/salary-payment', [PaymentController::class, 'index'])->name('payments.index');
-    Route::get('admin/payments/create', [PaymentController::class, 'create'])->name('payments.create');
-    Route::get('admin/payments/get-payrolls', [PaymentController::class, 'getPayrolls'])->name('payments.getPayrolls');
-    Route::post('admin/payments/store', [PaymentController::class, 'store'])->name('payments.store');
-    Route::get('admin/payments/delete/{id}', [PaymentController::class, 'delete'])->name('payments.delete');
-    Route::post('admin/payments/delete-multiple', [PaymentController::class, 'deleteMultiple'])->name('payments.deleteMultiple');
-
+    Route::middleware('hr_can:salary_payment,payroll')->group(function () {
+        Route::get('admin/salary-payment', [PaymentController::class, 'index'])->name('payments.index');
+        Route::get('admin/payments/create', [PaymentController::class, 'create'])->name('payments.create');
+        Route::get('admin/payments/get-payrolls', [PaymentController::class, 'getPayrolls'])->name('payments.getPayrolls');
+        Route::post('admin/payments/store', [PaymentController::class, 'store'])->name('payments.store');
+        Route::get('admin/payments/delete/{id}', [PaymentController::class, 'delete'])->name('payments.delete');
+        Route::post('admin/payments/delete-multiple', [PaymentController::class, 'deleteMultiple'])->name('payments.deleteMultiple');
+    });
 
     // Taxes
-    Route::get('admin/taxes', [TaxController::class, 'index'])->name('taxes');
-    Route::get('admin/taxes/add', [TaxController::class, 'add'])->name('taxes_add');
-    Route::post('admin/taxes/add', [TaxController::class, 'add_post'])->name('taxes_add_post');
-    Route::get('admin/taxes/edit/{id}', [TaxController::class, 'edit'])->name('taxes_edit');
-    Route::post('admin/taxes/update/{id}', [TaxController::class, 'edit_update'])->name('taxes_update');
-    Route::get('admin/taxes/delete/{id}', [TaxController::class, 'delete'])->name('taxes_delete');
-    Route::post('admin/taxes/delete-multiple', [TaxController::class, 'deleteMultiple']);
-    Route::post('/admin/taxes/toggle-company-tax', [TaxController::class, 'toggleCompanyTax'])->name('taxes.toggleCompanyTax');
-
+    Route::middleware('hr_can:taxes')->group(function () {
+        Route::get('admin/taxes', [TaxController::class, 'index'])->name('taxes');
+        Route::get('admin/taxes/add', [TaxController::class, 'add'])->name('taxes_add');
+        Route::post('admin/taxes/add', [TaxController::class, 'add_post'])->name('taxes_add_post');
+        Route::get('admin/taxes/edit/{id}', [TaxController::class, 'edit'])->name('taxes_edit');
+        Route::post('admin/taxes/update/{id}', [TaxController::class, 'edit_update'])->name('taxes_update');
+        Route::get('admin/taxes/delete/{id}', [TaxController::class, 'delete'])->name('taxes_delete');
+        Route::post('admin/taxes/delete-multiple', [TaxController::class, 'deleteMultiple']);
+        Route::post('/admin/taxes/toggle-company-tax', [TaxController::class, 'toggleCompanyTax'])->name('taxes.toggleCompanyTax');
+    });
 
     // Insurance
-    Route::get('admin/insurance', [InsuranceController::class, 'index'])->name('insurance');
-    Route::get('admin/insurance/add', [InsuranceController::class, 'add'])->name('insurance_add');
-    Route::post('admin/insurance/add', [InsuranceController::class, 'add_post'])->name('insurance_add_post');
-    Route::get('admin/insurance/edit/{id}', [InsuranceController::class, 'edit'])->name('insurance_edit');
-    Route::post('admin/insurance/update/{id}', [InsuranceController::class, 'edit_update'])->name('insurance_update');
-    Route::get('admin/insurance/delete/{id}', [InsuranceController::class, 'delete'])->name('insurance_delete');
-    Route::post('admin/insurance/delete-multiple', [InsuranceController::class, 'deleteMultiple']);
-    Route::post('/admin/insurance/toggle-company-insurance', [InsuranceController::class, 'toggleCompanyInsurance'])->name('insurances.toggleCompanyInsurance');
+    Route::middleware('hr_can:insurance')->group(function () {
+        Route::get('admin/insurance', [InsuranceController::class, 'index'])->name('insurance');
+        Route::get('admin/insurance/add', [InsuranceController::class, 'add'])->name('insurance_add');
+        Route::post('admin/insurance/add', [InsuranceController::class, 'add_post'])->name('insurance_add_post');
+        Route::get('admin/insurance/edit/{id}', [InsuranceController::class, 'edit'])->name('insurance_edit');
+        Route::post('admin/insurance/update/{id}', [InsuranceController::class, 'edit_update'])->name('insurance_update');
+        Route::get('admin/insurance/delete/{id}', [InsuranceController::class, 'delete'])->name('insurance_delete');
+        Route::post('admin/insurance/delete-multiple', [InsuranceController::class, 'deleteMultiple']);
+        Route::post('/admin/insurance/toggle-company-insurance', [InsuranceController::class, 'toggleCompanyInsurance'])->name('insurances.toggleCompanyInsurance');
+    });
 
     //Branches   admin/branches
-    Route::get('admin/branches', [BranchController::class, 'index'])->name('branches.index');
-    Route::get('admin/branches/add', [BranchController::class, 'add'])->name('branches.add');
-    Route::post('admin/branches/add', [BranchController::class, 'add_post'])->name('branches.add_post');
-    Route::get('admin/branches/edit/{id}', [BranchController::class, 'edit'])->name('branches.edit');
-    Route::post('admin/branches/edit/{id}', [BranchController::class, 'edit_update'])->name('branches.edit_update');
-    Route::get('admin/branches/delete/{id}', [BranchController::class, 'delete'])->name('branches.delete');
-    Route::get('/admin/branches/transfer', [BranchController::class, 'showTransferForm'])->name('branches.transfer.form');
-    Route::post('/admin/branches/transfer', [BranchController::class, 'assignEmployee'])->name('branches.transfer');
+    Route::middleware('hr_can:branches')->group(function () {
+        Route::get('admin/branches', [BranchController::class, 'index'])->name('branches.index');
+        Route::get('admin/branches/add', [BranchController::class, 'add'])->name('branches.add');
+        Route::post('admin/branches/add', [BranchController::class, 'add_post'])->name('branches.add_post');
+        Route::get('admin/branches/edit/{id}', [BranchController::class, 'edit'])->name('branches.edit');
+        Route::post('admin/branches/edit/{id}', [BranchController::class, 'edit_update'])->name('branches.edit_update');
+        Route::get('admin/branches/delete/{id}', [BranchController::class, 'delete'])->name('branches.delete');
+        Route::get('/admin/branches/transfer', [BranchController::class, 'showTransferForm'])->name('branches.transfer.form');
+        Route::post('/admin/branches/transfer', [BranchController::class, 'assignEmployee'])->name('branches.transfer');
+    });
 
     //Company News  admin/news
-    Route::get('admin/news', [NewsController::class, 'index'])->name('news.index');
-
-    Route::get('admin/news/create', [NewsController::class, 'create'])->name('news.create');
-    Route::post('admin/news', [NewsController::class, 'store'])->name('news.store');
-    Route::get('admin/news/{news}', [NewsController::class, 'show'])->name('news.show');
-    Route::get('admin/news/{news}/edit', [NewsController::class, 'edit'])->name('news.edit');
-    Route::put('admin/news/{news}', [NewsController::class, 'update'])->name('news.update');
-    Route::delete('admin/news/{news}', [NewsController::class, 'destroy'])->name('news.destroy');
-    Route::get('admin/news/filter', [NewsController::class, 'filterNews'])->name('news.filter');
-    Route::post('admin/news/{news}/toggle-status', [NewsController::class, 'toggleStatus'])->name('news.toggle-status');
-    Route::post('admin/news/bulk-delete', [NewsController::class, 'bulkDelete'])->name('news.bulk-delete');
+    Route::middleware('hr_can:news')->group(function () {
+        Route::get('admin/news', [NewsController::class, 'index'])->name('news.index');
+        Route::get('admin/news/create', [NewsController::class, 'create'])->name('news.create');
+        Route::post('admin/news', [NewsController::class, 'store'])->name('news.store');
+        Route::get('admin/news/{news}', [NewsController::class, 'show'])->name('news.show');
+        Route::get('admin/news/{news}/edit', [NewsController::class, 'edit'])->name('news.edit');
+        Route::put('admin/news/{news}', [NewsController::class, 'update'])->name('news.update');
+        Route::delete('admin/news/{news}', [NewsController::class, 'destroy'])->name('news.destroy');
+        Route::get('admin/news/filter', [NewsController::class, 'filterNews'])->name('news.filter');
+        Route::post('admin/news/{news}/toggle-status', [NewsController::class, 'toggleStatus'])->name('news.toggle-status');
+        Route::post('admin/news/bulk-delete', [NewsController::class, 'bulkDelete'])->name('news.bulk-delete');
+    });
 
     //my account   admin/my_account
-    route::get('admin/my_account', [MyAccountController::class, 'my_account'])->name('my_account');
-    route::post('admin/my_account/update', [MyAccountController::class, 'edit_update'])->name('my_account_update');
-    //my account   admin/my_account
-    route::get('admin/my_account', [MyAccountController::class, 'my_account'])->name('my_account');
-    route::post('admin/my_account/update', [MyAccountController::class, 'edit_update'])->name('my_account_update');
+    Route::middleware('hr_can:my_account')->group(function () {
+        route::get('admin/my_account', [MyAccountController::class, 'my_account'])->name('my_account');
+        route::post('admin/my_account/update', [MyAccountController::class, 'edit_update'])->name('my_account_update');
+    });
 
     //Company information  admin/company-info..
-    route::get('admin/company-info', [CompanyInfoController::class, 'index'])->name('company-info');
-    route::post('admin/company-info/update', [CompanyInfoController::class, 'edit_update'])->name('company_info_update');
-    Route::get('/view-logo/{filename}', function ($filename) {
-        $path = public_path('../../HR-Uploads/company_logos/' . $filename);
-        //Company information  admin/company-info..
+    Route::middleware('hr_can:company_info')->group(function () {
         route::get('admin/company-info', [CompanyInfoController::class, 'index'])->name('company-info');
         route::post('admin/company-info/update', [CompanyInfoController::class, 'edit_update'])->name('company_info_update');
         Route::get('/view-logo/{filename}', function ($filename) {
             $path = public_path('../../HR-Uploads/company_logos/' . $filename);
-
             if (!file_exists($path)) {
                 abort(404);
             }
-            if (!file_exists($path)) {
-                abort(404);
-            }
-
             return response()->file($path);
         })->name('view.logo');
-        return response()->file($path);
-    })->name('view.logo');
+    });
 
-    // Performance Management (your existing routes)
-    Route::get('admin/performance', [PerformanceController::class, 'index'])->name('performance.index');
-    Route::get('admin/performance/create', [PerformanceController::class, 'create'])->name('performance.create');
-    Route::post('admin/performance', [PerformanceController::class, 'store'])->name('performance.store');
-    Route::get('admin/performance/{id}', [PerformanceController::class, 'show'])->name('performance.show');
-    Route::get('admin/performance/{id}/edit', [PerformanceController::class, 'edit'])->name('performance.edit');
-    Route::put('admin/performance/{id}', [PerformanceController::class, 'update'])->name('performance.update');
-    Route::delete('admin/performance/{id}', [PerformanceController::class, 'destroy'])->name('performance.destroy');
-    // Performance Management (your existing routes)
-    Route::get('admin/performance', [PerformanceController::class, 'index'])->name('performance.index');
-    Route::get('admin/performance/create', [PerformanceController::class, 'create'])->name('performance.create');
-    Route::post('admin/performance', [PerformanceController::class, 'store'])->name('performance.store');
-    Route::get('admin/performance/{id}', [PerformanceController::class, 'show'])->name('performance.show');
-    Route::get('admin/performance/{id}/edit', [PerformanceController::class, 'edit'])->name('performance.edit');
-    Route::put('admin/performance/{id}', [PerformanceController::class, 'update'])->name('performance.update');
-    Route::delete('admin/performance/{id}', [PerformanceController::class, 'destroy'])->name('performance.destroy');
+    // Performance Management & Criteria
+    Route::middleware('hr_can:performance,performance_criteria')->group(function () {
+        Route::get('admin/performance', [PerformanceController::class, 'index'])->name('performance.index');
+        Route::get('admin/performance/create', [PerformanceController::class, 'create'])->name('performance.create');
+        Route::post('admin/performance', [PerformanceController::class, 'store'])->name('performance.store');
+        Route::get('admin/performance/{id}', [PerformanceController::class, 'show'])->name('performance.show');
+        Route::get('admin/performance/{id}/edit', [PerformanceController::class, 'edit'])->name('performance.edit');
+        Route::put('admin/performance/{id}', [PerformanceController::class, 'update'])->name('performance.update');
+        Route::delete('admin/performance/{id}', [PerformanceController::class, 'destroy'])->name('performance.destroy');
+        Route::get('admin/performance/employee/{employeeId}/report', [PerformanceController::class, 'employeeReport'])->name('performance.employee-report');
+        Route::get('admin/performance-criteria', [PerformanceCriteriaController::class, 'index'])->name('performance-criteria.index');
+        Route::get('admin/performance-criteria/create', [PerformanceCriteriaController::class, 'create'])->name('performance-criteria.create');
+        Route::post('admin/performance-criteria', [PerformanceCriteriaController::class, 'store'])->name('performance-criteria.store');
+        Route::get('admin/performance-criteria/{id}/edit', [PerformanceCriteriaController::class, 'edit'])->name('performance-criteria.edit');
+        Route::put('admin/performance-criteria/{id}', [PerformanceCriteriaController::class, 'update'])->name('performance-criteria.update');
+        Route::delete('admin/performance-criteria/{id}', [PerformanceCriteriaController::class, 'destroy'])->name('performance-criteria.destroy');
+        Route::post('admin/performance-criteria/update-order', [PerformanceCriteriaController::class, 'updateOrder'])->name('performance-criteria.update-order');
+    });
 
-    // Employee Performance Report (your existing route)
-    Route::get('admin/performance/employee/{employeeId}/report', [PerformanceController::class, 'employeeReport'])->name('performance.employee-report');
-    // Employee Performance Report (your existing route)
-    Route::get('admin/performance/employee/{employeeId}/report', [PerformanceController::class, 'employeeReport'])->name('performance.employee-report');
-
-    // NEW: Performance Criteria Management Routes
-    Route::get('admin/performance-criteria', [PerformanceCriteriaController::class, 'index'])->name('performance-criteria.index');
-    Route::get('admin/performance-criteria/create', [PerformanceCriteriaController::class, 'create'])->name('performance-criteria.create');
-    Route::post('admin/performance-criteria', [PerformanceCriteriaController::class, 'store'])->name('performance-criteria.store');
-    Route::get('admin/performance-criteria/{id}/edit', [PerformanceCriteriaController::class, 'edit'])->name('performance-criteria.edit');
-    Route::put('admin/performance-criteria/{id}', [PerformanceCriteriaController::class, 'update'])->name('performance-criteria.update');
-    Route::delete('admin/performance-criteria/{id}', [PerformanceCriteriaController::class, 'destroy'])->name('performance-criteria.destroy');
-    Route::post('admin/performance-criteria/update-order', [PerformanceCriteriaController::class, 'updateOrder'])->name('performance-criteria.update-order');
-    Route::resources(['admin/locations' => LocationController::class]);
-    Route::post(('admin/locations/assign-employees'), [LocationController::class, 'assignEmployees'])->name('locations.assignEmployees');
-    Route::get('admin/locations/{location}/employees', [LocationController::class, 'getAssignedEmployees'])->name('locations.getAssignedEmployees');
-
-
-    // Make sure to import the controller at the top of your routes file:
-    // NEW: Performance Criteria Management Routes
-    Route::get('admin/performance-criteria', [PerformanceCriteriaController::class, 'index'])->name('performance-criteria.index');
-    Route::get('admin/performance-criteria/create', [PerformanceCriteriaController::class, 'create'])->name('performance-criteria.create');
-    Route::post('admin/performance-criteria', [PerformanceCriteriaController::class, 'store'])->name('performance-criteria.store');
-    Route::get('admin/performance-criteria/{id}/edit', [PerformanceCriteriaController::class, 'edit'])->name('performance-criteria.edit');
-    Route::put('admin/performance-criteria/{id}', [PerformanceCriteriaController::class, 'update'])->name('performance-criteria.update');
-    Route::delete('admin/performance-criteria/{id}', [PerformanceCriteriaController::class, 'destroy'])->name('performance-criteria.destroy');
-    Route::post('admin/performance-criteria/update-order', [PerformanceCriteriaController::class, 'updateOrder'])->name('performance-criteria.update-order');
-    Route::resources(['admin/locations' => LocationController::class]);
-    Route::post(('admin/locations/assign-employees'), [LocationController::class, 'assignEmployees'])->name('locations.assignEmployees');
-    Route::get('admin/locations/{location}/employees', [LocationController::class, 'getAssignedEmployees'])->name('locations.getAssignedEmployees');
-
+    // Locations
+    Route::middleware('hr_can:locations')->group(function () {
+        Route::resources(['admin/locations' => LocationController::class]);
+        Route::post(('admin/locations/assign-employees'), [LocationController::class, 'assignEmployees'])->name('locations.assignEmployees');
+        Route::get('admin/locations/{location}/employees', [LocationController::class, 'getAssignedEmployees'])->name('locations.getAssignedEmployees');
+    });
 
     // Messages routes
-    Route::get('admin/messages', [MessageController::class, 'inbox'])->name('messages.inbox');
-    Route::get('admin/messages/create', [MessageController::class, 'create'])->name('messages.create');
-    Route::post('admin/messages/store', [MessageController::class, 'store'])->name('messages.store');
-    Route::get('admin/messages/sent', [MessageController::class, 'sent'])->name('messages.sent');
-    Route::get('admin/messages/{message}', [MessageController::class, 'show'])->name('messages.show');
-    Route::delete('admin/messages/{message}', [MessageController::class, 'destroy'])->name('messages.destroy');
+    Route::middleware('hr_can:messages')->group(function () {
+        Route::get('admin/messages', [MessageController::class, 'inbox'])->name('messages.inbox');
+        Route::get('admin/messages/create', [MessageController::class, 'create'])->name('messages.create');
+        Route::post('admin/messages/store', [MessageController::class, 'store'])->name('messages.store');
+        Route::get('admin/messages/sent', [MessageController::class, 'sent'])->name('messages.sent');
+        Route::get('admin/messages/{message}', [MessageController::class, 'show'])->name('messages.show');
+        Route::delete('admin/messages/{message}', [MessageController::class, 'destroy'])->name('messages.destroy');
+    });
 
     // Financial Analysis Routes
     Route::get('admin/financial-analysis', [FinancialAnalysisController::class, 'index']) ->name('financial.analysis');

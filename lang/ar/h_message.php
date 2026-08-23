@@ -8,6 +8,7 @@ return [
     'compose_message' => 'إنشاء رسالة',
     'view_message' => 'عرض الرسالة',
     'inbox' => 'صندوق الوارد',
+    'my_inbox' => 'بريدي الوارد',
     'messages' => 'الرسائل',
     'compose_new' => 'إنشاء جديد',
     'compose_new_message' => 'إنشاء رسالة جديدة',

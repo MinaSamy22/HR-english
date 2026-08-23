@@ -8,6 +8,7 @@ return [
     'compose_message' => 'Compose Message',
     'view_message' => 'View Message',
     'inbox' => 'Inbox',
+    'my_inbox' => 'My Inbox',
     'messages' => 'Messages',
     'compose_new' => 'Compose New',
     'compose_new_message' => 'Compose New Message',

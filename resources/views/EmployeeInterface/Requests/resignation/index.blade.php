@@ -9,7 +9,7 @@
                     <div class="col-md-6 col-12">
                         <h3 class="mb-3">{{ __('E_resignation.submit_resignation') }}</h3>
 
-                        <form method="POST" action="{{ route('employee.resignation.store') }}">
+                        <form method="POST" action="{{ route('employee.resignation.store') }}" id="addForm">
                             @csrf
 
                             <div class="form-group">
@@ -43,7 +43,7 @@
                                     placeholder="{{ __('E_resignation.reason_placeholder') }}"></textarea>
                             </div>
 
-                            <button type="submit" class="btn btn-danger">
+                            <button type="submit" id="submitBtn" class="btn btn-danger">
                     <i class="fas fa-paper-plane"></i> {{ __('E_resignation.submit_resignation_btn') }}
                 </button>
                         </form>

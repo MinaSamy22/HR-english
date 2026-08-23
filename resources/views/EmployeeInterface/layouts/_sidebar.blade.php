@@ -562,27 +562,27 @@
                     </a>
                 </li>
 
-                <!-- Company Policy -->
-                <li class="nav-item">
-                    <a href="{{ url('employee/policys') }}"
-                        class="nav-link @if (Request::segment(2) == 'policys') active @endif">
-                        <i class="fa fa-cogs nav-icon"></i>
-                        <p>{{ __('dashboard.company_policy') }}</p>
-                    </a>
-                </li>
-
                 <!-- messages -->
                 <li class="nav-item">
                     <a href="{{ url('employee/messages') }}"
                         class="nav-link @if (Request::segment(2) == 'messages') active @endif">
                         <i class="nav-icon fas fa-envelope"></i>
                         <p>
-                            {{ __('h_message.messages') }}
+                            {{ __('h_message.my_inbox') }}
                             @php $messageCount = getUnreadMessagesCount(); @endphp
                             @if ($messageCount > 0)
                                 <span class="badge badge-danger right">{{ $messageCount }}</span>
                             @endif
                         </p>
+                    </a>
+                </li>
+
+                <!-- Company Policy -->
+                <li class="nav-item">
+                    <a href="{{ url('employee/policys') }}"
+                        class="nav-link @if (Request::segment(2) == 'policys') active @endif">
+                        <i class="fa fa-cogs nav-icon"></i>
+                        <p>{{ __('dashboard.company_policy') }}</p>
                     </a>
                 </li>
 

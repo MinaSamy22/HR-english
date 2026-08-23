@@ -26,7 +26,7 @@
                                 <h3 class="card-title">{{ __('h_adminstration.add_administration') }}</h3>
                             </div>
                             <form class="form-horizontal" method="post" action="{{ url('admin/administration/add') }}"
-                                enctype="multipart/form-data">
+                                enctype="multipart/form-data" id="addForm">
                                 {{ csrf_field() }}
                                 <div class="card-body">
 
@@ -67,7 +67,7 @@ value = old for not rebeating the input  --}}
                                 <div class="card-footer">
                                     <a href="{{ url('admin/administration') }}" class="btn btn-default float-left">{{ __('h_adminstration.back') }}</a>
                                     {{-- float for the place of the button --}}
-                                    <button type="submit" class="btn btn-primary float-right">{{ __('h_adminstration.submit') }}</button>
+                                    <button type="submit" id="submitBtn" class="btn btn-primary float-right">{{ __('h_adminstration.submit') }}</button>
                                 </div>
                             </form>
 

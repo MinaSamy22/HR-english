@@ -29,7 +29,7 @@
                                     <i class="fas fa-plus mr-2"></i>{{ __('E_vacations.submit_new_request') }}
                                 </h3>
                             </div>
-                            <form action="{{ route('employee.vacation.store') }}" method="POST">
+                            <form action="{{ route('employee.vacation.store') }}" method="POST" id="addForm">
                                 @csrf
                                 <div class="card-body">
                                     @if (session('success'))
@@ -125,7 +125,19 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group" id="half_day_options" style="display: none;">
+                                    <!-- Single Day Options (shown when start_date == end_date) -->
+                                    <div class="form-group" id="half_day_group" style="display: none;">
+                                        <div class="custom-control custom-checkbox mb-2">
+                                            <input type="checkbox" class="custom-control-input" id="is_half_day"
+                                                name="is_half_day" value="1"
+                                                {{ old('is_half_day') ? 'checked' : '' }}>
+                                            <label class="custom-control-label" for="is_half_day">
+                                                <i class="fas fa-adjust mr-1"></i>{{ __('E_vacations.is_half_day') }}
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" id="half_day_period_group" style="display: none;">
                                         <label for="half_day_period">
                                             <i class="fas fa-clock mr-1"></i>{{ __('E_vacations.half_day_period') }}
                                         </label>
@@ -187,7 +199,7 @@
                                 </div>
 
                                 <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary">
+                                    <button type="submit" id="submitBtn" class="btn btn-primary">
                                         <i class="fas fa-paper-plane mr-1"></i>{{ __('E_vacations.submit_request') }}
                                     </button>
                                     <button type="reset" class="btn btn-secondary ml-2">

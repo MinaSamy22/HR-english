@@ -390,7 +390,9 @@
 
 
 
-                <li class="nav-header">{{ __('dashboard.main_info') }}</li>
+                @if (hr_can('employees') || hr_can('managers') || hr_can('departments') || hr_can('jobs') || hr_can('administrations') || (hr_can('branches') && (session('branch_id') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1)))
+                    <li class="nav-header">{{ __('dashboard.main_info') }}</li>
+                @endif
 
 
                 <!-- Employees -->
@@ -464,7 +466,9 @@
                 
 
 
-                <li class="nav-header">{{ __('dashboard.communication') }}</li>
+                @if (hr_can('news') || hr_can('requests') || hr_can('messages') || hr_can('performance') || hr_can('performance_criteria'))
+                    <li class="nav-header">{{ __('dashboard.communication') }}</li>
+                @endif
                 <!-- News -->
                 @if (hr_can('news'))
                     <li class="nav-item">
@@ -551,7 +555,9 @@
 
 
 
-                <li class="nav-header">{{ __('dashboard.attendance_payroll') }}</li>
+                @if (hr_can('attendance') || hr_can('attendance_reports') || hr_can('biometer_excel') || hr_can('taxes') || hr_can('insurance') || hr_can('deductions') || hr_can('vacations') || hr_can('bounas') || hr_can('payroll') || hr_can('payslip') || hr_can('salary_payment'))
+                    <li class="nav-header">{{ __('dashboard.attendance_payroll') }}</li>
+                @endif
 
 
 
@@ -741,7 +747,9 @@
                     </a>
                 </li> --}}
 
-                <li class="nav-header">{{ __('dashboard.settings') }}</li>
+                @if ((hr_can('attendance_rule') && (session('branch_id') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1)) || (hr_can('company_info') && (session('branch_id') === null || \App\Models\Branch::find(session('branch_id'))?->is_main == 1)) || hr_can('locations') || hr_can('job_history') || hr_can('my_account'))
+                    <li class="nav-header">{{ __('dashboard.settings') }}</li>
+                @endif
 
                 <!-- payroll report -->
                 {{-- <li class="nav-item">

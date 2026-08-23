@@ -8,6 +8,7 @@ return [
     'compose_message' => 'پیغام تحریر کریں',
     'view_message' => 'پیغام دیکھیں',
     'inbox' => 'ان باکس',
+    'my_inbox' => 'میرا ان باکس',
     'messages' => 'پیغامات',
     'compose_new' => 'نیا لکھیں',
     'compose_new_message' => 'نیا پیغام لکھیں',

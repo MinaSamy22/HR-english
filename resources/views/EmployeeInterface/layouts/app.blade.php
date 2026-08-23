@@ -118,8 +118,10 @@
     {{-- <script src="{{ url('/dist/js/demo.js') }}"></script> --}}
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="{{ url('/dist/js/pages/dashboard.js') }}"></script>
+    <script src="{{ url('/dist/js/prevent-double-submit.js') }}"></script>
 
 @yield('script')
+@stack('scripts')
 </body>
 </html>
 
