@@ -156,27 +156,42 @@ public function getEmployeeStatus()
         $company_id = session('company_id');
         $branch_id = session('branch_id');
 
-        $query = self::select('users.*');
+        $query = self::select('users.*', 'branches.name as branch_name', 'branches.is_main')
+            ->leftJoin('branches', 'branches.id', '=', 'users.branch_id');
 
         // 🔍 Filter by branch_id if available, otherwise fallback to company_id
-        if ($branch_id) {
-            $query->where('branch_id', $branch_id);
-        } elseif ($company_id) {
-            $query->where('company_id', $company_id);
+        if (!empty($branch_id)) {
+            $currentBranch = \DB::table('branches')
+                ->where('id', $branch_id)
+                ->select('is_main')
+                ->first();
+
+            if ($currentBranch && $currentBranch->is_main == 1) {
+                $query->where('users.company_id', $company_id);
+            } else {
+                $query->where('users.branch_id', $branch_id);
+            }
+        } else {
+            $query->where('users.company_id', $company_id);
         }
 
         // Apply search filters if any
         if (!empty($request['id'])) {
-            $query->where('id', '=', $request['id']);
+            $query->where('users.id', '=', $request['id']);
         }
         if (!empty($request['name'])) {
-            $query->where('name', 'like', '%' . $request['name'] . '%');
+            $query->where('users.name', 'like', '%' . $request['name'] . '%');
         }
         if (!empty($request['email'])) {
-            $query->where('email', 'like', '%' . $request['email'] . '%');
+            $query->where('users.email', 'like', '%' . $request['email'] . '%');
+        }
+        if (!empty($request['filter_branch_id'])) {
+            $query->where('users.branch_id', '=', $request['filter_branch_id']);
         }
 
-        return $query->orderBy('id', 'desc')->get();
+        return $query->with(['get_job_single', 'get_manager_single', 'get_department_single'])
+            ->orderBy('users.id', 'desc')
+            ->get();
     }
 
 

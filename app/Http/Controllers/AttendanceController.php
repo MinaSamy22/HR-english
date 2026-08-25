@@ -225,8 +225,8 @@ class AttendanceController extends Controller
 
     public function exportPdf(Request $request)
     {
-        // Use the getRecord method from the Attendance model instead
-        $getRecord = Attendance::getRecord();
+        // Use the getAllRecordsForExport method from the Attendance model instead
+        $getRecord = Attendance::getAllRecordsForExport();
 
         // Render the PDF-specific view and pass the filtered records
         $pdf = Pdf::loadView('backend.attendance.pdf', compact('getRecord'), ['format' => 'A4', 'display_mode' => 'fullpage'], ['tempDir' => storage_path('temp/mpdf'),]);

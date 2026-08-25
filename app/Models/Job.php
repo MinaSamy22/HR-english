@@ -60,15 +60,61 @@ public static function getRecord($request)
     }
 
     // Apply search filters
-if (!empty(Request::get('job_title'))) {
-    $query->where('jobs.job_title', 'like', '%' . Request::get('job_title') . '%');
+    if (!empty(Request::get('job_title'))) {
+        $query->where('jobs.job_title', 'like', '%' . Request::get('job_title') . '%');
+    }
+
+    if (!empty(Request::get('filter_branch_id'))) {
+        $query->where('jobs.branch_id', Request::get('filter_branch_id'));
+    }
+
+    // Handle per_page parameter
+    $perPage = Request::get('per_page', 5); // Default to 5
+
+    if ($perPage === 'all') {
+        return $query->get();
+    } else {
+        $paginatedResults = $query->paginate((int)$perPage);
+        // 🔧 FIX: Append all request parameters to pagination links
+        $paginatedResults->appends(Request::all());
+        return $paginatedResults;
+    }
 }
 
-if (!empty(Request::get('filter_branch_id'))) {
-    $query->where('jobs.branch_id', Request::get('filter_branch_id'));
-}
+public static function getAllRecordsForExport($request)
+{
+    $company_id = session('company_id');
+    $branch_id = session('branch_id');
 
-    return $query->paginate(5);
+    $query = self::select('jobs.*', 'departments.department_name', 'branches.name as branch_name')
+                 ->leftJoin('departments', 'jobs.department_id', '=', 'departments.id')
+                 ->leftJoin('branches', 'jobs.branch_id', '=', 'branches.id')
+                 ->orderBy('jobs.id', 'desc');
+
+    if (!empty($branch_id)) {
+        $currentBranch = \DB::table('branches')
+            ->where('id', $branch_id)
+            ->select('is_main')
+            ->first();
+
+        if ($currentBranch && $currentBranch->is_main == 1) {
+            $query->where('jobs.company_id', $company_id);
+        } else {
+            $query->where('jobs.branch_id', $branch_id);
+        }
+    } else {
+        $query->where('jobs.company_id', $company_id);
+    }
+
+    if (!empty(Request::get('job_title'))) {
+        $query->where('jobs.job_title', 'like', '%' . Request::get('job_title') . '%');
+    }
+
+    if (!empty(Request::get('filter_branch_id'))) {
+        $query->where('jobs.branch_id', Request::get('filter_branch_id'));
+    }
+
+    return $query->get();
 }
 
     public function get_department_single()

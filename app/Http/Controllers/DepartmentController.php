@@ -77,7 +77,6 @@ public function add_post(Request $request){         //for validation logic /////
 'department_name'                 => 'required',
 'manager_id'                      => 'required',
 'administration_id'               => 'required',
-'location'                        => 'required',
 
 ]);
 

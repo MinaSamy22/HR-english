@@ -423,7 +423,7 @@
 
 
                                         <!-- Work Hours Per Day -->
-                                        <div class="form-group row">
+                                        <!-- <div class="form-group row">
                                             <label class="col-sm-2 col-form-label font-weight-bold">
                                                 {{ __('h_employee.work_hours_per_day') }}
                                             </label>
@@ -434,7 +434,7 @@
                                                     <span class="text-muted">{{ __('h_employee.not_set') }}</span>
                                                 @endif
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </div>
 
                                     {{-- ATTENDANCE & BIOMETRIC --}}

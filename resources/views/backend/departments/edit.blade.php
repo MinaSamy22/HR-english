@@ -65,10 +65,10 @@ value = old for not rebeating the input  --}}
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">{{ __('h_department.location') }} <span style="color: red;">*</span></label>
+                                        <label class="col-sm-2 col-form-label">{{ __('h_department.location') }}</label>
                                         <div class="col-sm-10">
                                             <input type="text" value="{{ $getRecord->location }}" name="location"
-                                                class="form-control" required placeholder="{{ __('h_department.enter_location') }}">
+                                                class="form-control" placeholder="{{ __('h_department.enter_location') }}">
                                         </div>
                                     </div>
 

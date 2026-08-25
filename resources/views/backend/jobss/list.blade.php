@@ -18,6 +18,7 @@
     <!-- Include other search parameters as hidden fields -->
     <input type="hidden" name="start_date" value="{{ Request()->start_date }}">
     <input type="hidden" name="end_date" value="{{ Request()->end_date }}">
+    <input type="hidden" name="per_page" value="{{ Request()->per_page }}">
 
     <button type="submit" class="btn btn-success">
         <i class="fas fa-file-excel"></i> {{ __('h_jobs.export') }}
@@ -87,8 +88,35 @@
                         @include('_message')
 
                         <div class="card" style="background-color: rgba(255, 255, 255, 0.9); border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-                            <div class="card-header">
-                                <h3 class="card-title">{{ __('h_jobs.jobs_list') }}</h3>
+                            <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
+                                <div class="d-flex align-items-center">
+                                    <h3 class="card-title mb-2 mb-md-0 me-3">{{ __('h_jobs.jobs_list') }}</h3>
+                                    <form method="get" action="" class="mb-0"
+                                        style="margin-left: 15px; margin-right: 15px;">
+                                        <!-- 🔧 FIX: Preserve ALL existing search parameters -->
+                                        <input type="hidden" name="job_title" value="{{ Request()->job_title }}">
+                                        <input type="hidden" name="filter_branch_id"
+                                            value="{{ Request()->filter_branch_id }}">
+                                        <input type="hidden" name="start_date" value="{{ Request()->start_date }}">
+                                        <input type="hidden" name="end_date" value="{{ Request()->end_date }}">
+
+                                        <select name="per_page" class="form-select" onchange="this.form.submit()"
+                                            style="min-width: 60px; width: 60px;">
+                                            <option value="5" {{ Request()->per_page == 5 ? 'selected' : '' }}>5
+                                            </option>
+                                            <option value="10" {{ Request()->per_page == 10 ? 'selected' : '' }}>10
+                                            </option>
+                                            <option value="25" {{ Request()->per_page == 25 ? 'selected' : '' }}>25
+                                            </option>
+                                            <option value="50" {{ Request()->per_page == 50 ? 'selected' : '' }}>50
+                                            </option>
+                                            <option value="100" {{ Request()->per_page == 100 ? 'selected' : '' }}>100
+                                            </option>
+                                            <option value="all" {{ Request()->per_page == 'all' ? 'selected' : '' }}>
+                                                {{ __('h_employee.all') }}</option>
+                                        </select>
+                                    </form>
+                                </div>
                             </div>
 
                             <div class="card-body p-0">
@@ -140,9 +168,7 @@
                                     </table>
                                 </div>
 
-                                <div style="padding: 10px; float:right;">   {{-- for pagination --}}
-                                    {!! $getRecord->appends(Illuminate\Support\Facades\Request::except('page'))->links() !!}
-                                </div>
+                                {{-- Pagination removed as requested --}}
                             </div>
                         </div>
                     </section>

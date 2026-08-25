@@ -4,7 +4,7 @@
     <div class="content-wrapper" style="background-image: url('{{ asset('/dist/img/generall.png') }}'); background-size: cover; background-position: center;">
         <!-- Content Header (Page header) -->
         <div class="content-header">
-            <div class="container-fluid">
+            <div class="container-fluid"> 
                 <div class="d-flex justify-content-between align-items-center flex-wrap">
                         <h1 class="m-0 mt-3 mb-3">{{ __('h_jobs.jobs') }}</h1>
 

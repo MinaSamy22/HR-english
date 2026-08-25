@@ -336,34 +336,38 @@
                                     <div id="foreign_fields" style="display:none;">
 
                                         <div class="form-group row">
-                                            <label
-                                                class="col-sm-2 col-form-label">{{ __('dashboard.country_code') }}</label>
+                                            <label class="col-sm-2 col-form-label">
+                                                {{ __('dashboard.country_code') }} <span style="color:red">*</span>
+                                            </label>
                                             <div class="col-sm-10">
-                                                <input type="text" name="country_code" class="form-control">
+                                                <input type="text" name="country_code" class="form-control foreign-required">
                                             </div>
                                         </div>
 
                                         <div class="form-group row">
-                                            <label
-                                                class="col-sm-2 col-form-label">{{ __('dashboard.residency_expiry') }}</label>
+                                            <label class="col-sm-2 col-form-label">
+                                                {{ __('dashboard.residency_expiry') }} <span style="color:red">*</span>
+                                            </label>
                                             <div class="col-sm-10">
-                                                <input type="date" name="residency_expiry" class="form-control">
+                                                <input type="date" name="residency_expiry" class="form-control foreign-required">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row"> 
+                                            <label class="col-sm-2 col-form-label">
+                                                {{ __('dashboard.passport_number') }} <span style="color:red">*</span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" name="passport_number" class="form-control foreign-required">
                                             </div>
                                         </div>
 
                                         <div class="form-group row">
-                                            <label
-                                                class="col-sm-2 col-form-label">{{ __('dashboard.passport_number') }}</label>
+                                            <label class="col-sm-2 col-form-label">
+                                                {{ __('dashboard.passport_expiry') }} <span style="color:red">*</span>
+                                            </label>
                                             <div class="col-sm-10">
-                                                <input type="text" name="passport_number" class="form-control">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label
-                                                class="col-sm-2 col-form-label">{{ __('dashboard.passport_expiry') }}</label>
-                                            <div class="col-sm-10">
-                                                <input type="date" name="passport_expiry" class="form-control">
+                                                <input type="date" name="passport_expiry" class="form-control foreign-required">
                                             </div>
                                         </div>
 
@@ -372,8 +376,7 @@
                                                 {{ __('dashboard.residency_number') }} <span style="color:red">*</span>
                                             </label>
                                             <div class="col-sm-10">
-                                                <input type="text" name="residency_number" class="form-control"
-                                                    required>
+                                                <input type="text" name="residency_number" class="form-control foreign-required">
                                             </div>
                                         </div>
 
@@ -398,12 +401,12 @@
                                         document.addEventListener('DOMContentLoaded', function() {
                                             const nationality = document.getElementById('nationality');
                                             const foreignFields = document.getElementById('foreign_fields');
-                                            const requiredInputs = foreignFields.querySelectorAll('[required]');
+                                            const requiredInputs = foreignFields.querySelectorAll('.foreign-required');
 
                                             function toggleForeign() {
                                                 if (nationality.value === 'foreign') {
                                                     foreignFields.style.display = 'block';
-                                                    requiredInputs.forEach(input => input.setAttribute('required', true));
+                                                    requiredInputs.forEach(input => input.setAttribute('required', 'required'));
                                                 } else {
                                                     foreignFields.style.display = 'none';
                                                     requiredInputs.forEach(input => input.removeAttribute('required'));
