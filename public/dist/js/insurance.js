@@ -1,5 +1,42 @@
 document.addEventListener('DOMContentLoaded', function () {
 
+    /* ===============================
+       EMPLOYEE SELECT ALL
+    ================================ */
+    const selectAllCheckbox = document.getElementById('select-all');
+    const employeeCheckboxes = document.querySelectorAll('.employee-checkbox');
+
+    if (selectAllCheckbox && employeeCheckboxes.length > 0) {
+        function updateSelectAllState() {
+            const total = employeeCheckboxes.length;
+            const checked = document.querySelectorAll('.employee-checkbox:checked').length;
+
+            if (checked === total && total > 0) {
+                selectAllCheckbox.checked = true;
+                selectAllCheckbox.indeterminate = false;
+            } else if (checked > 0) {
+                selectAllCheckbox.checked = false;
+                selectAllCheckbox.indeterminate = true;
+            } else {
+                selectAllCheckbox.checked = false;
+                selectAllCheckbox.indeterminate = false;
+            }
+        }
+
+        selectAllCheckbox.addEventListener('change', function () {
+            employeeCheckboxes.forEach(checkbox => {
+                checkbox.checked = selectAllCheckbox.checked;
+            });
+        });
+
+        employeeCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updateSelectAllState);
+        });
+
+        // Initialize state on page load (e.g. if old inputs exist)
+        updateSelectAllState();
+    }
+
     const insuranceSources = document.querySelectorAll('.insurance-source');
     const insuranceInputs  = document.querySelectorAll('.insurance-input');
     const totalInput       = document.querySelector('input[name="i_percent"]');

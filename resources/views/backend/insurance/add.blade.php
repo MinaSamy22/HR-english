@@ -64,7 +64,8 @@
                                                     <div class="form-check mb-2 employee-item">
                                                         <input type="checkbox" name="employee_ids[]"
                                                             value="{{ $employee->id }}" id="employee-{{ $employee->id }}"
-                                                            class="form-check-input employee-checkbox">
+                                                            class="form-check-input employee-checkbox"
+                                                            {{ is_array(old('employee_ids')) && in_array($employee->id, old('employee_ids')) ? 'checked' : '' }}>
                                                         <label for="employee-{{ $employee->id }}" class="form-check-label">
                                                             {{ $employee->name }}
                                                         </label>
@@ -261,5 +262,5 @@
             </div>
         </section>
     </div>
-    <script src="{{ url('dist/js/insurance.js') }}?v=1"></script>
+    <script src="{{ url('dist/js/insurance.js') }}?v={{ time() }}"></script>
 @endsection

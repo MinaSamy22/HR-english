@@ -33,6 +33,12 @@
                                 {{ csrf_field() }}
                                 <div class="card-body">
 
+                                    @if ($errors->has('employee_ids'))
+                                        <div class="alert alert-danger">
+                                            {{ $errors->first('employee_ids') }}
+                                        </div>
+                                    @endif
+
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-label">{{ __('h_tax.employee_name') }} <span
                                                 style="color: red;">{{ __('h_tax.required') }}</span></label>
@@ -53,7 +59,8 @@
                                                     <div class="form-check mb-2 employee-item">
                                                         <input type="checkbox" name="employee_ids[]"
                                                             value="{{ $employee->id }}" id="employee-{{ $employee->id }}"
-                                                            class="form-check-input employee-checkbox">
+                                                            class="form-check-input employee-checkbox"
+                                                            {{ is_array(old('employee_ids')) && in_array($employee->id, old('employee_ids')) ? 'checked' : '' }}>
                                                         <label for="employee-{{ $employee->id }}" class="form-check-label">
                                                             {{ $employee->name }}
                                                         </label>
@@ -202,5 +209,5 @@
             </div>
         </section>
     </div>
-    <script src="{{ url('dist/js/tax.js') }}?v=1"></script>
+    <script src="{{ url('dist/js/tax.js') }}?v={{ time() }}"></script>
 @endsection

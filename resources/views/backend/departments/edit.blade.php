@@ -57,6 +57,8 @@ value = old for not rebeating the input  --}}
                                         <label class="col-sm-2 col-form-label">{{ __('h_department.administration_name') }} <span style="color: red;">*</span></label>
                                         <div class="col-sm-10">
                                             <select class="form-control" name="administration_id" required>
+                                                <option value="">{{ __('h_department.select_administration_name') }}</option>
+                                                <option {{ ($getRecord->administration_id == 0 || is_null($getRecord->administration_id)) ? 'selected' : '' }} value="0">{{ __('h_department.null_option') }}</option>
                                                 @foreach($getAdministration as $value_administration)
                                                 <option {{ ($value_administration->id == $getRecord->administration_id) ? 'selected' : '' }} value="{{ $value_administration->id }}">{{ $value_administration->name }}</option>  {{-- elnos al awlany fe el code da ms2ol 3n ezhar data al 2dema --}}
                                                 @endforeach

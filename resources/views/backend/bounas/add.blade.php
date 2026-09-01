@@ -1,17 +1,18 @@
 @extends('backend.layouts.app')
 @section('content')
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper" style="background-image: url('{{ asset('dist/img/overtime.jpg') }}'); background-size: cover; background-position: center;">
+    <div class="content-wrapper"
+        style="background-image: url('{{ asset('dist/img/overtime.jpg') }}'); background-size: cover; background-position: center;">
         <!-- Content Header (Page header) -->
         <div class="content-header">
             <div class="container-fluid">
-        <div class="d-flex justify-content-between align-items-center flex-wrap">
-                        <h1 class="m-0 mt-3 mb-3">{{ __('h_bounas.page_title') }}</h1>
+                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                    <h1 class="m-0 mt-3 mb-3">{{ __('h_bounas.page_title') }}</h1>
 
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">{{ __('h_bounas.breadcrumb_add') }}</a></li>
-                            <li class="breadcrumb-item active">{{ __('h_bounas.breadcrumb_overtime') }}</li>
-                        </ol>
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">{{ __('h_bounas.breadcrumb_add') }}</a></li>
+                        <li class="breadcrumb-item active">{{ __('h_bounas.breadcrumb_overtime') }}</li>
+                    </ol>
                 </div><!-- /.row -->
             </div><!-- /.container-fluid -->
         </div>
@@ -31,23 +32,28 @@
                                 <div class="card-body">
 
                                     {{-- the first spam for the red message
-the secound spam that not closed any thing you write in the place of close whill appear in red mess
-value = old for not rebeating the input  --}}
+                                    the secound spam that not closed any thing you write in the place of close whill appear
+                                    in red mess
+                                    value = old for not rebeating the input --}}
 
                                     <div class="form-group row"> {{-- for make selection --}}
-                                        <label class="col-sm-2 col-form-label">{{ __('h_bounas.employee_name') }} <span style="color: red;">{{ __('h_bounas.required_field') }}</span></label>
+                                        <label class="col-sm-2 col-form-label">{{ __('h_bounas.employee_name') }} <span
+                                                style="color: red;">{{ __('h_bounas.required_field') }}</span></label>
                                         <div class="col-sm-10">
-                                            <select class="form-control" name="employee_id" required> {{-- b7ot el esm el f database bta3t hna --}}
+                                            <select class="form-control" name="employee_id" required> {{-- b7ot el esm el f
+                                                database bta3t hna --}}
                                                 <option value="">{{ __('h_bounas.select_employee') }}</option>
                                                 @foreach($getUsers as $value_users)
-                                                <option value="{{ $value_users->id }}">{{ $value_users->name }}</option> {{-- name of users table --}}
+                                                    <option value="{{ $value_users->id }}">{{ $value_users->name }}</option>
+                                                    {{-- name of users table --}}
                                                 @endforeach
                                             </select>
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">{{ __('h_bounas.hours') }}</label>
+                                        <label class="col-sm-2 col-form-label">{{ __('h_bounas.hours') }}<span
+                                                style="color: red;">{{ __('h_bounas.required_field') }}</span></label>
                                         <div class="col-sm-10">
                                             <input type="number" value="{{ old('hours') }}" name="hours"
                                                 class="form-control">
@@ -55,7 +61,8 @@ value = old for not rebeating the input  --}}
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">{{ __('h_bounas.date') }}</label>
+                                        <label class="col-sm-2 col-form-label">{{ __('h_bounas.date') }}<span
+                                                style="color: red;">{{ __('h_bounas.required_field') }}</span></label>
                                         <div class="col-sm-10">
                                             <input type="date" value="{{ old('created_at') }}" name="created_at"
                                                 class="form-control">
@@ -65,9 +72,11 @@ value = old for not rebeating the input  --}}
                                 </div>
 
                                 <div class="card-footer">
-                                    <a href="{{ url('admin/bounas') }}" class="btn btn-default float-left">{{ __('h_bounas.back_btn') }}</a>
+                                    <a href="{{ url('admin/bounas') }}"
+                                        class="btn btn-default float-left">{{ __('h_bounas.back_btn') }}</a>
                                     {{-- float for the place of the button --}}
-                                    <button type="submit" id="submitBtn" class="btn btn-white float-right" style="background-color: #acacac;">{{ __('h_bounas.submit_btn') }}</button>
+                                    <button type="submit" id="submitBtn" class="btn btn-white float-right"
+                                        style="background-color: #acacac;">{{ __('h_bounas.submit_btn') }}</button>
                                 </div>
                             </form>
 
