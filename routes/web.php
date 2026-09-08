@@ -34,6 +34,7 @@ use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\MyAccountController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\HrEarlyLeaveController;
 use App\Http\Controllers\OverTimeController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PayrollController;
@@ -102,11 +103,16 @@ Route::middleware('admin')->group(function () {
         Route::get('admin/employees/import', [EmployeeeController::class, 'showImportForm'])->name('employees.import.form');
         Route::post('admin/import-employees', [EmployeeeController::class, 'importEmployees'])->name('admin.employees.import');
         Route::get('/view-attachment/{filename}', function ($filename) {
+            if (strpos($filename, '..') !== false || strpos($filename, '/') !== false || strpos($filename, '\\') !== false) {
+                abort(404);
+            }
             $path = public_path('../../HR-Uploads/shared_attachments/' . $filename);
             if (!file_exists($path)) {
                 abort(404);
             }
-            return response()->file($path);
+            return response()->file($path, [
+                'Cache-Control' => 'public, max-age=604800, must-revalidate', // 7 days TTL
+            ]);
         })->name('view.attachment');
     });
 
@@ -203,11 +209,17 @@ Route::middleware('admin')->group(function () {
         Route::post('admin/attendance-rule/save', [AttendanceRulesController::class, 'saveRules'])->name('attendance-rule.save');
         Route::post('/attendance-rules/upload-policy', [AttendanceRulesController::class, 'uploadPolicyPdf'])->name('attendance-rules.upload-policy');
         Route::get('/company-policy/view/{file}', function($file) {
+            if (strpos($file, '..') !== false || strpos($file, '/') !== false || strpos($file, '\\') !== false) {
+                abort(404);
+            }
             $path = public_path('../../HR-Uploads/pdf_policy/' . $file);
             if (!file_exists($path)) {
                 abort(404);
             }
-            return response()->file($path);
+            return response()->file($path, [
+                'Content-Type'  => 'application/pdf',
+                'Cache-Control' => 'public, max-age=604800, must-revalidate', // 7 days TTL
+            ]);
         })->name('company-policy.view');
         Route::get('/attendance-rules/get-holidays', [AttendanceRulesController::class, 'getHolidays']);
         Route::post('admin/attendance-rule/add-holiday', [AttendanceRulesController::class, 'addHoliday'])->name('attendance-rule.add-holiday');
@@ -257,6 +269,17 @@ Route::middleware('admin')->group(function () {
         route::get('admin/bounas/add', [OverTimeController::class, 'add'])->name('bounas_add');
         route::post('admin/bounas/add', [OverTimeController::class, 'add_post'])->name('bounas_add_post');
         Route::post('admin/bounas/delete-multiple', [OverTimeController::class, 'deleteMultiple']);
+    });
+
+    //Early Leave   admin/early-leave
+    Route::middleware('hr_can:early_leave')->group(function () {
+        Route::get('admin/early-leave', [HrEarlyLeaveController::class, 'index'])->name('early_leave');
+        Route::get('admin/early-leave/add', [HrEarlyLeaveController::class, 'add'])->name('early_leave_add');
+        Route::post('admin/early-leave/add', [HrEarlyLeaveController::class, 'add_post'])->name('early_leave_add_post');
+        Route::get('admin/early-leave/edit/{id}', [HrEarlyLeaveController::class, 'edit'])->name('early_leave_edit');
+        Route::post('admin/early-leave/edit/{id}', [HrEarlyLeaveController::class, 'edit_update'])->name('early_leave_edit_update');
+        Route::get('admin/early-leave/delete/{id}', [HrEarlyLeaveController::class, 'delete'])->name('early_leave_delete');
+        Route::post('admin/early-leave/delete-multiple', [HrEarlyLeaveController::class, 'deleteMultiple']);
     });
 
     // payrolls    admin/payroll
@@ -350,11 +373,16 @@ Route::middleware('admin')->group(function () {
         route::get('admin/company-info', [CompanyInfoController::class, 'index'])->name('company-info');
         route::post('admin/company-info/update', [CompanyInfoController::class, 'edit_update'])->name('company_info_update');
         Route::get('/view-logo/{filename}', function ($filename) {
+            if (strpos($filename, '..') !== false || strpos($filename, '/') !== false || strpos($filename, '\\') !== false) {
+                abort(404);
+            }
             $path = public_path('../../HR-Uploads/company_logos/' . $filename);
             if (!file_exists($path)) {
                 abort(404);
             }
-            return response()->file($path);
+            return response()->file($path, [
+                'Cache-Control' => 'public, max-age=604800, must-revalidate', // 7 days TTL
+            ]);
         })->name('view.logo');
     });
 

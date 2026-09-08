@@ -555,7 +555,7 @@
 
 
 
-                @if (hr_can('attendance') || hr_can('attendance_reports') || hr_can('biometer_excel') || hr_can('taxes') || hr_can('insurance') || hr_can('deductions') || hr_can('vacations') || hr_can('bounas') || hr_can('payroll') || hr_can('payslip') || hr_can('salary_payment'))
+                @if (hr_can('attendance') || hr_can('attendance_reports') || hr_can('biometer_excel') || hr_can('taxes') || hr_can('insurance') || hr_can('deductions') || hr_can('vacations') || hr_can('bounas') || hr_can('early_leave') || hr_can('payroll') || hr_can('payslip') || hr_can('salary_payment'))
                     <li class="nav-header">{{ __('dashboard.attendance_payroll') }}</li>
                 @endif
 
@@ -678,6 +678,17 @@
                             class="nav-link @if (Request::segment(2) == 'bounas') active @endif">
                             <i class="nav-icon fa fa-dollar-sign"></i>
                             <p> {{ __('dashboard.overtime') }} </p>
+                        </a>
+                    </li>
+                @endif
+
+                @if (hr_can('early_leave'))
+                    <!-- Early Leave -->
+                    <li class="nav-item">
+                        <a href="{{ url('admin/early-leave') }}"
+                            class="nav-link @if (Request::segment(2) == 'early-leave') active @endif">
+                            <i class="nav-icon fa fa-sign-out-alt"></i>
+                            <p> {{ __('h_early_leave.page_title') }} </p>
                         </a>
                     </li>
                 @endif

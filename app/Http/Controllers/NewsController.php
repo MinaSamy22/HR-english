@@ -93,16 +93,101 @@ return redirect()->route('news.index')->with('success', __('h_news.deleted_succe
     // Private function to handle image upload
     private function uploadImage($file)
     {
-        $filename = time() . '_' . $file->getClientOriginalName();
+        $extension = strtolower($file->getClientOriginalExtension());
+        $filename = time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '', $file->getClientOriginalName());
         $destinationPath = $this->getImagePath();
 
         // Create directory if it doesn't exist
         $this->ensureDirectoryExists($destinationPath);
 
-        // Move the file to the destination
-        $file->move($destinationPath, $filename);
+        // If it's a standard image (jpg, jpeg, png, webp), optimize it using GD
+        if (in_array($extension, ['jpg', 'jpeg', 'png', 'webp'])) {
+            $this->optimizeAndSaveImage($file->getRealPath(), $destinationPath . $filename, $extension);
+        } else {
+            $file->move($destinationPath, $filename);
+        }
 
         return $filename;
+    }
+
+    // Optimize and compress image using GD
+    private function optimizeAndSaveImage($sourcePath, $destinationPath, $extension)
+    {
+        list($origWidth, $origHeight, $imageType) = @getimagesize($sourcePath);
+
+        if (!$origWidth || !$origHeight) {
+            copy($sourcePath, $destinationPath);
+            return;
+        }
+
+        // Max dimension for display (1600px is more than enough for crisp full-HD view)
+        $maxDimension = 1600;
+        $width = $origWidth;
+        $height = $origHeight;
+
+        if ($origWidth > $maxDimension || $origHeight > $maxDimension) {
+            $ratio = $origWidth / $origHeight;
+            if ($ratio > 1) {
+                $width = $maxDimension;
+                $height = (int) round($maxDimension / $ratio);
+            } else {
+                $height = $maxDimension;
+                $width = (int) round($maxDimension * $ratio);
+            }
+        }
+
+        $newImage = imagecreatetruecolor($width, $height);
+
+        // Preserve transparency for PNG and WebP
+        if ($imageType == IMAGETYPE_PNG || $imageType == IMAGETYPE_WEBP) {
+            imagealphablending($newImage, false);
+            imagesavealpha($newImage, true);
+            $transparent = imagecolorallocatealpha($newImage, 255, 255, 255, 127);
+            imagefilledrectangle($newImage, 0, 0, $width, $height, $transparent);
+        }
+
+        switch ($imageType) {
+            case IMAGETYPE_JPEG:
+                $sourceImage = @imagecreatefromjpeg($sourcePath);
+                break;
+            case IMAGETYPE_PNG:
+                $sourceImage = @imagecreatefrompng($sourcePath);
+                break;
+            case IMAGETYPE_WEBP:
+                $sourceImage = function_exists('imagecreatefromwebp') ? @imagecreatefromwebp($sourcePath) : null;
+                break;
+            default:
+                $sourceImage = null;
+        }
+
+        if (!$sourceImage) {
+            copy($sourcePath, $destinationPath);
+            return;
+        }
+
+        imagecopyresampled($newImage, $sourceImage, 0, 0, 0, 0, $width, $height, $origWidth, $origHeight);
+
+        switch ($imageType) {
+            case IMAGETYPE_JPEG:
+                imagejpeg($newImage, $destinationPath, 82);
+                break;
+            case IMAGETYPE_PNG:
+                imagepng($newImage, $destinationPath, 6);
+                break;
+            case IMAGETYPE_WEBP:
+                if (function_exists('imagewebp')) {
+                    imagewebp($newImage, $destinationPath, 82);
+                } else {
+                    imagejpeg($newImage, $destinationPath, 82);
+                }
+                break;
+            default:
+                copy($sourcePath, $destinationPath);
+                break;
+        }
+
+        imagedestroy($newImage);
+        imagedestroy($sourceImage);
     }
 
     // Private function to delete image
@@ -127,19 +212,31 @@ return redirect()->route('news.index')->with('success', __('h_news.deleted_succe
         }
     }
 
-    // Function to serve images (similar to your logo route)
+    // Function to serve images with caching and TTL
     public function viewImage($filename)
     {
-        $filePath = $this->getImagePath() . $filename;
-
-        if (!File::exists($filePath)) {
+        if (strpos($filename, '..') !== false || strpos($filename, '/') !== false || strpos($filename, '\\') !== false) {
             abort(404);
         }
 
-        $file = File::get($filePath);
+        $filePath = $this->getImagePath() . $filename;
+
+        if (!File::exists($filePath)) {
+            $defaultImagePath = public_path('dist/img/default-news.png');
+            if (File::exists($defaultImagePath)) {
+                return response()->file($defaultImagePath, [
+                    'Cache-Control' => 'public, max-age=86400',
+                ]);
+            }
+            abort(404);
+        }
+
         $type = File::mimeType($filePath);
 
-        return response($file, 200)->header("Content-Type", $type);
+        return response()->file($filePath, [
+            'Content-Type'  => $type,
+            'Cache-Control' => 'public, max-age=604800, must-revalidate', // 7 days TTL
+        ]);
     }
 
     // Static function to get recent news for dashboard or other uses

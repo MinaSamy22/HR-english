@@ -302,6 +302,8 @@
                                                     <img src="{{ $newsItem->imageUrl }}"
                                                          alt="{{ $newsItem->title }}"
                                                          class="img-fluid"
+                                                         loading="lazy"
+                                                         decoding="async"
                                                          style="max-height: 100%; object-fit: contain;">
                                                 </div>
                                             </div>

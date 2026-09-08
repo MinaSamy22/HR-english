@@ -13,84 +13,50 @@ class EmployeeHomeController extends Controller
     public function index()
     {
         $user = Auth::guard('employee')->user();
-        $currentMonth = Carbon::now()->month;
-        $currentYear = Carbon::now()->year;
+        $user->loadMissing('department');
 
-        // Debug: Check user details
-        \Log::info('Employee User ID: ' . $user->id);
-        \Log::info('Employee Company ID: ' . $user->company_id);
+        $now = Carbon::now();
+        $startDate = $now->copy()->startOfMonth()->toDateString();
+        $endDate   = $now->copy()->endOfMonth()->toDateString();
 
-        // Get recent news for the employee's company
+        // 1. Get recent news for the employee's company (only required fields)
         $recentNews = News::where('company_id', $user->company_id)
+            ->select(['id', 'title', 'description', 'image', 'news_date', 'created_at'])
             ->orderBy('news_date', 'desc')
             ->orderBy('created_at', 'desc')
             ->limit(4)
             ->get();
 
-        // Debug: Check news items and their images
-        \Log::info('News count: ' . $recentNews->count());
-        foreach ($recentNews as $index => $newsItem) {
-            \Log::info("News Item #{$index}:");
-            \Log::info("- ID: {$newsItem->id}");
-            \Log::info("- Title: {$newsItem->title}");
-            \Log::info("- Image field: " . ($newsItem->image ?? 'NULL'));
-            \Log::info("- Has Image: " . ($newsItem->hasImage() ? 'Yes' : 'No'));
-
-            if ($newsItem->image) {
-                $imagePath = $newsItem->imagePath;
-                \Log::info("- Image path: {$imagePath}");
-                \Log::info("- File exists: " . (file_exists($imagePath) ? 'Yes' : 'No'));
-                \Log::info("- Image URL: " . $newsItem->imageUrl);
-            }
-        }
-
-        // Get attendance data for current month
-        $presentDays = DB::table('attendances')
+        // 2. Attendance stats for current month - combined into 1 single indexed query
+        $attendanceStats = DB::table('attendances')
             ->where('employee_id', $user->id)
-            ->where('attendance_type', 1)
-            ->whereMonth('attendance_date', $currentMonth)
-            ->whereYear('attendance_date', $currentYear)
-            ->count();
+            ->whereBetween('attendance_date', [$startDate, $endDate])
+            ->selectRaw('
+                COALESCE(SUM(CASE WHEN attendance_type = 1 THEN 1 ELSE 0 END), 0) as present,
+                COALESCE(SUM(CASE WHEN attendance_type = 2 THEN 1 ELSE 0 END), 0) as late,
+                COALESCE(SUM(CASE WHEN attendance_type = 3 THEN 1 ELSE 0 END), 0) as absent,
+                COALESCE(SUM(CASE WHEN attendance_type = 4 THEN 1 ELSE 0 END), 0) as halfday
+            ')
+            ->first();
 
-        $lateDays = DB::table('attendances')
+        $presentDays = (int) ($attendanceStats->present ?? 0);
+        $lateDays    = (int) ($attendanceStats->late ?? 0);
+        $absentDays  = (int) ($attendanceStats->absent ?? 0);
+        $halfDays    = (int) ($attendanceStats->halfday ?? 0);
+
+        // 3. Vacation balance calculation
+        $usedDays = (float) (DB::table('vacations')
             ->where('employee_id', $user->id)
-            ->where('attendance_type', 2)
-            ->whereMonth('attendance_date', $currentMonth)
-            ->whereYear('attendance_date', $currentYear)
-            ->count();
+            ->sum('total') ?? 0);
 
-        $absentDays = DB::table('attendances')
-            ->where('employee_id', $user->id)
-            ->where('attendance_type', 3)
-            ->whereMonth('attendance_date', $currentMonth)
-            ->whereYear('attendance_date', $currentYear)
-            ->count();
+        $vacationBalance = $user->vacation_balance !== null
+            ? max(0, $user->vacation_balance - $usedDays)
+            : 0;
 
-        $halfDays = DB::table('attendances')
-            ->where('employee_id', $user->id)
-            ->where('attendance_type', 4)
-            ->whereMonth('attendance_date', $currentMonth)
-            ->whereYear('attendance_date', $currentYear)
-            ->count();
-
-        // Get total vacation balance directly from users table (using the authenticated user object)
-    $totalVacationAllowed = $user->vacation_balance ?? 0;
-
-    // Calculate used days (approved vacations from vacations table)
-    $usedDays = DB::table('vacations')
-        ->where('employee_id', $user->id)
-        ->sum('total') ?? 0;
-
-    // Calculate remaining vacation balance (same formula as your first blade example)
-    $vacationBalance = $user->vacation_balance !== null
-        ? $user->vacation_balance - $usedDays
-        : 0;
-
-        // Get recent activities from request tables - INLINE LOGIC
+        // 4. Recent activities from request tables
         $activities = collect();
         $limit = 5;
 
-        // Define table configurations
         $tables = [
             'extra_time_requests' => [
                 'type' => 'Extra Time',
@@ -124,15 +90,8 @@ class EmployeeHomeController extends Controller
             ]
         ];
 
-        // Query each table and collect activities
         foreach ($tables as $table => $config) {
             try {
-                // Check if table exists
-                if (!DB::getSchemaBuilder()->hasTable($table)) {
-                    \Log::warning("Table {$table} does not exist");
-                    continue;
-                }
-
                 $results = DB::table($table)
                     ->select([
                         'id',
@@ -152,13 +111,11 @@ class EmployeeHomeController extends Controller
                     ->get();
 
                 $activities = $activities->merge($results);
-
-            } catch (\Exception $e) {
-                \Log::error("Error querying {$table}: " . $e->getMessage());
+            } catch (\Throwable $e) {
+                // Ignore missing table/columns gracefully
             }
         }
 
-        // Sort all activities by updated_at DESC and limit results
         $recentActivities = $activities->sortByDesc('updated_at')->take($limit)->values();
 
         return view('EmployeeInterface.dashboard.list', compact(
@@ -189,7 +146,9 @@ class EmployeeHomeController extends Controller
             // Return default image or 404
             $defaultImagePath = public_path('dist/img/default-news.png');
             if (file_exists($defaultImagePath)) {
-                return response()->file($defaultImagePath);
+                return response()->file($defaultImagePath, [
+                    'Cache-Control' => 'public, max-age=86400',
+                ]);
             }
             abort(404);
         }
@@ -274,6 +233,10 @@ class EmployeeHomeController extends Controller
 
     public function show(News $news)
     {
+        $user = Auth::guard('employee')->user();
+        if ($user && $news->company_id !== $user->company_id) {
+            abort(403);
+        }
         return view('EmployeeInterface.dashboard.show-news', compact('news'));
     }
 

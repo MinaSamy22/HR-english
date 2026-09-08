@@ -168,11 +168,13 @@ style="border-radius: 10px; border: none; border-inline-start: 4px solid #28a745
                     @if($newsItem->hasImage())
                         <div class="col-4">
                             <div class="news-image-container"
-                                style="height: 80px; overflow: hidden; border-radius: 0.375rem; background: #f8f9fa; display: flex; align-items: center; justify-content: center;">
+                                style="height: 80px; width: 100%; overflow: hidden; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center;">
                                 <img src="{{ $newsItem->imageUrl }}"
                                      alt="{{ $newsItem->title }}"
                                      class="img-fluid"
-                                     style="max-height: 100%; max-width: 100%; object-fit: contain;">
+                                     loading="lazy"
+                                     decoding="async"
+                                     style="max-height: 100%; object-fit: contain;">
                             </div>
                         </div>
                         <div class="col-8 pl-3">
@@ -180,7 +182,7 @@ style="border-radius: 10px; border: none; border-inline-start: 4px solid #28a745
                         <div class="col-12">
                     @endif
                         <h6 class="news-title mb-2" style="color: #333; font-weight: 600; line-height: 1.4; word-wrap: break-word;">
-                            <a href="{{ route('news.show', $newsItem) }}"
+                            <a href="{{ route('Employeenews.show', $newsItem) }}"
                                class="text-decoration-none"
                                style="color: inherit;">
                                 {{ Str::limit($newsItem->title, 50) }}

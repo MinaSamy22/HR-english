@@ -202,6 +202,7 @@
                                                             'deductions' => __('dashboard.deductions'),
                                                             'vacations' => __('dashboard.vacations'),
                                                             'bounas' => __('dashboard.overtime'),
+                                                            'early_leave' => __('h_early_leave.page_title'),
                                                             'payroll' => __('dashboard.payroll'),
                                                             'attendance_rule' => __('dashboard.company_policy'),
                                                             'payslip' => __('dashboard.payslip_report'),

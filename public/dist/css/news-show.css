@@ -1,0 +1,189 @@
+/* ── News Hero ─────────────────────────────────────────── */
+.news-hero {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    padding: 1.5rem 2.25rem 0;
+    background: transparent;
+}
+
+.news-hero a {
+    display: block;
+    max-width: 420px;
+    width: 100%;
+    text-decoration: none;
+}
+
+.news-hero img {
+    max-width: 420px;
+    width: 100%;
+    max-height: 260px;
+    object-fit: cover;
+    display: block;
+    border-radius: 12px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, .14);
+    cursor: pointer;
+    transition: opacity .2s ease;
+}
+
+.news-hero a:hover img {
+    opacity: 0.92;
+}
+
+/* ── Article Card ────────────────────────────────────────── */
+.news-article-card {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 6px 36px rgba(0, 0, 0, .10);
+    overflow: hidden;
+}
+
+.news-article-body {
+    padding: 2rem 2.25rem;
+}
+
+/* ── Meta badges ─────────────────────────────────────────── */
+.news-meta {
+    display: flex;
+    align-items: center;
+    gap: .7rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.2rem;
+}
+
+.meta-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    padding: .32rem .85rem;
+    border-radius: 999px;
+    font-size: .78rem;
+    font-weight: 600;
+    letter-spacing: .3px;
+}
+
+.meta-badge.date {
+    background: #eef2ff;
+    color: #4338ca;
+}
+
+.meta-badge.company {
+    background: #f0fdf4;
+    color: #15803d;
+}
+
+.meta-badge.recent {
+    background: #fef9c3;
+    color: #854d0e;
+}
+
+/* ── Title ───────────────────────────────────────────────── */
+.news-article-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #111827;
+    line-height: 1.3;
+    margin-bottom: 0;
+    border-left: 5px solid #007bffff;
+    padding-left: 1rem;
+}
+
+/* ── Description ─────────────────────────────────────────── */
+.news-description-label {
+    font-size: .68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: #6b7280;
+    margin-bottom: .55rem;
+}
+
+.news-description-body {
+    font-size: 1rem;
+    line-height: 1.9;
+    color: #374151;
+    white-space: pre-wrap;
+}
+
+/* ── No-image placeholder ────────────────────────────────── */
+.no-image-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+    color: #9ca3af;
+    gap: .7rem;
+}
+
+/* ── Buttons ─────────────────────────────────────────────── */
+.btn-edit-news {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: .52rem 1.35rem;
+    font-weight: 600;
+    font-size: .88rem;
+    transition: all .2s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: .42rem;
+    box-shadow: 0 4px 14px rgba(245, 158, 11, .32);
+}
+
+.btn-edit-news:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(245, 158, 11, .44);
+    color: #fff;
+    text-decoration: none;
+}
+
+.btn-back-news {
+    background: #fff;
+    color: #374151;
+    border: 1.5px solid #d1d5db;
+    border-radius: 10px;
+    padding: .52rem 1.35rem;
+    font-weight: 600;
+    font-size: .88rem;
+    transition: all .2s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: .42rem;
+}
+
+.btn-back-news:hover {
+    border-color: #4f46e5;
+    color: #4f46e5;
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+/* ── Divider ─────────────────────────────────────────────── */
+.section-divider {
+    height: 2px;
+    background: linear-gradient(90deg, #4f46e5, transparent);
+    border-radius: 2px;
+    margin: 1.4rem 0;
+}
+
+/* ── Animations ──────────────────────────────────────────── */
+.fade-in-up {
+    animation: fadeInUp .4s ease both;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
