@@ -39,7 +39,7 @@ if (!function_exists('getPendingRequestsCount')) {
         }
 
         // Create a closure for the user filtering logic
-        $userFilterClosure = function($query) use ($showAllCompanyRequests, $companyId, $filterBranchId) {
+        $userFilterClosure = function ($query) use ($showAllCompanyRequests, $companyId, $filterBranchId) {
             if ($showAllCompanyRequests) {
                 $query->where('company_id', $companyId);
             } else {
@@ -108,7 +108,7 @@ if (!function_exists('getProcessedRequestsCount')) {
         }
 
         // Create a closure for the user filtering logic
-        $userFilterClosure = function($query) use ($showAllCompanyRequests, $companyId, $filterBranchId) {
+        $userFilterClosure = function ($query) use ($showAllCompanyRequests, $companyId, $filterBranchId) {
             if ($showAllCompanyRequests) {
                 $query->where('company_id', $companyId);
             } else {
@@ -181,7 +181,7 @@ if (!function_exists('getPendingNotifications')) {
         }
 
         // Create a closure for the user filtering logic
-        $userFilterClosure = function($query) use ($showAllCompanyRequests, $companyId, $filterBranchId) {
+        $userFilterClosure = function ($query) use ($showAllCompanyRequests, $companyId, $filterBranchId) {
             if ($showAllCompanyRequests) {
                 $query->where('company_id', $companyId);
             } else {
@@ -310,7 +310,7 @@ if (!function_exists('getPendingNotifications')) {
         }
 
         // Sort all notifications by date (newest first) and limit
-        usort($notifications, function($a, $b) {
+        usort($notifications, function ($a, $b) {
             return $b['date']->timestamp - $a['date']->timestamp;
         });
 
@@ -349,7 +349,7 @@ if (!function_exists('getProcessedNotifications')) {
         }
 
         // Create a closure for the user filtering logic
-        $userFilterClosure = function($query) use ($showAllCompanyRequests, $companyId, $filterBranchId) {
+        $userFilterClosure = function ($query) use ($showAllCompanyRequests, $companyId, $filterBranchId) {
             if ($showAllCompanyRequests) {
                 $query->where('company_id', $companyId);
             } else {
@@ -486,7 +486,7 @@ if (!function_exists('getProcessedNotifications')) {
             ];
         }
 
-// Get processed early leave requests (unseen)
+        // Get processed early leave requests (unseen)
         $earlyLeaveRequests = EarlyLeaveRequest::whereIn('status', ['accepted', 'rejected'])
             ->where('is_seen', 0)
             ->with('user')
@@ -519,7 +519,7 @@ if (!function_exists('getProcessedNotifications')) {
 
 
         // Sort all notifications by date (newest first) and limit
-        usort($notifications, function($a, $b) {
+        usort($notifications, function ($a, $b) {
             return $b['date']->timestamp - $a['date']->timestamp;
         });
 

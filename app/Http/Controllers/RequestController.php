@@ -42,7 +42,7 @@ class RequestController extends Controller
         }
 
         // Create a closure for the user filtering logic
-        $userFilterClosure = function($query) use ($showAllCompanyRequests, $companyId, $filterBranchId) {
+        $userFilterClosure = function ($query) use ($showAllCompanyRequests, $companyId, $filterBranchId) {
             if ($showAllCompanyRequests) {
                 $query->where('company_id', $companyId);
             } else {
@@ -87,233 +87,242 @@ class RequestController extends Controller
     }
 
 
-public function processed(Request $request)
-{
-    // Get current company ID from session
-    $companyId = session('company_id');
+    public function processed(Request $request)
+    {
+        // Get current company ID from session
+        $companyId = session('company_id');
 
-    // Get filter parameters
-    $selectedMonth = $request->get('month');
-    $searchName = $request->get('search_name');
+        // Get filter parameters
+        $selectedMonth = $request->get('month');
+        $searchName = $request->get('search_name');
 
-    // Build processed requests queries with filters and company restriction
-    $processedVacationsQuery = VacationRequest::whereIn('status', ['accepted', 'rejected'])
-        ->whereHas('user', function($query) use ($companyId) {
-            $query->where('company_id', $companyId);
-        })
-        ->with('user')
-        ->orderBy('updated_at', 'desc');
+        // Build processed requests queries with filters and company restriction
+        $processedVacationsQuery = VacationRequest::whereIn('status', ['accepted', 'rejected'])
+            ->whereHas('user', function ($query) use ($companyId) {
+                $query->where('company_id', $companyId);
+            })
+            ->with('user')
+            ->orderBy('updated_at', 'desc');
 
-    $processedExtraTimesQuery = ExtraTimeRequest::whereIn('status', ['accepted', 'rejected'])
-        ->whereHas('user', function($query) use ($companyId) {
-            $query->where('company_id', $companyId);
-        })
-        ->with('user')
-        ->orderBy('updated_at', 'desc');
+        $processedExtraTimesQuery = ExtraTimeRequest::whereIn('status', ['accepted', 'rejected'])
+            ->whereHas('user', function ($query) use ($companyId) {
+                $query->where('company_id', $companyId);
+            })
+            ->with('user')
+            ->orderBy('updated_at', 'desc');
 
-    $processedResignationsQuery = Resignation::whereIn('status', ['accepted', 'rejected'])
-        ->whereHas('user', function($query) use ($companyId) {
-            $query->where('company_id', $companyId);
-        })
-        ->with('user')
-        ->orderBy('updated_at', 'desc');
+        $processedResignationsQuery = Resignation::whereIn('status', ['accepted', 'rejected'])
+            ->whereHas('user', function ($query) use ($companyId) {
+                $query->where('company_id', $companyId);
+            })
+            ->with('user')
+            ->orderBy('updated_at', 'desc');
 
-    $processedLateRemovalsQuery = LateRemovalRequest::whereIn('status', ['accepted', 'rejected'])
-        ->whereHas('user', function($query) use ($companyId) {
-            $query->where('company_id', $companyId);
-        })
-        ->with('user')
-        ->orderBy('updated_at', 'desc');
+        $processedLateRemovalsQuery = LateRemovalRequest::whereIn('status', ['accepted', 'rejected'])
+            ->whereHas('user', function ($query) use ($companyId) {
+                $query->where('company_id', $companyId);
+            })
+            ->with('user')
+            ->orderBy('updated_at', 'desc');
 
-    // Add Early Leave Requests query
-    $processedEarlyLeavesQuery = EarlyLeaveRequest::whereIn('status', ['accepted', 'rejected'])
-        ->whereHas('user', function($query) use ($companyId) {
-            $query->where('company_id', $companyId);
-        })
-        ->with('user')
-        ->orderBy('updated_at', 'desc');
+        // Add Early Leave Requests query
+        $processedEarlyLeavesQuery = EarlyLeaveRequest::whereIn('status', ['accepted', 'rejected'])
+            ->whereHas('user', function ($query) use ($companyId) {
+                $query->where('company_id', $companyId);
+            })
+            ->with('user')
+            ->orderBy('updated_at', 'desc');
 
-    // Apply month filter if selected
-    if ($selectedMonth) {
-        $year = date('Y');
-        $month = $selectedMonth;
+        // Apply month filter if selected
+        if ($selectedMonth) {
+            $year = date('Y');
+            $month = $selectedMonth;
 
-        $processedVacationsQuery->whereYear('updated_at', $year)
-            ->whereMonth('updated_at', $month);
+            $processedVacationsQuery->whereYear('updated_at', $year)
+                ->whereMonth('updated_at', $month);
 
-        $processedExtraTimesQuery->whereYear('updated_at', $year)
-            ->whereMonth('updated_at', $month);
+            $processedExtraTimesQuery->whereYear('updated_at', $year)
+                ->whereMonth('updated_at', $month);
 
-        $processedResignationsQuery->whereYear('updated_at', $year)
-            ->whereMonth('updated_at', $month);
+            $processedResignationsQuery->whereYear('updated_at', $year)
+                ->whereMonth('updated_at', $month);
 
-        $processedLateRemovalsQuery->whereYear('updated_at', $year)
-            ->whereMonth('updated_at', $month);
+            $processedLateRemovalsQuery->whereYear('updated_at', $year)
+                ->whereMonth('updated_at', $month);
 
-        $processedEarlyLeavesQuery->whereYear('updated_at', $year)
-            ->whereMonth('updated_at', $month);
-    }
+            $processedEarlyLeavesQuery->whereYear('updated_at', $year)
+                ->whereMonth('updated_at', $month);
+        }
 
-    // Apply name search filter if provided
-    if ($searchName) {
-        $processedVacationsQuery->whereHas('user', function($query) use ($searchName, $companyId) {
-            $query->where('name', 'LIKE', '%' . $searchName . '%')
+        // Apply name search filter if provided
+        if ($searchName) {
+            $processedVacationsQuery->whereHas('user', function ($query) use ($searchName, $companyId) {
+                $query->where('name', 'LIKE', '%' . $searchName . '%')
                     ->where('company_id', $companyId);
-        });
+            });
 
-        $processedExtraTimesQuery->whereHas('user', function($query) use ($searchName, $companyId) {
-            $query->where('name', 'LIKE', '%' . $searchName . '%')
+            $processedExtraTimesQuery->whereHas('user', function ($query) use ($searchName, $companyId) {
+                $query->where('name', 'LIKE', '%' . $searchName . '%')
                     ->where('company_id', $companyId);
-        });
+            });
 
-        $processedResignationsQuery->whereHas('user', function($query) use ($searchName, $companyId) {
-            $query->where('name', 'LIKE', '%' . $searchName . '%')
+            $processedResignationsQuery->whereHas('user', function ($query) use ($searchName, $companyId) {
+                $query->where('name', 'LIKE', '%' . $searchName . '%')
                     ->where('company_id', $companyId);
-        });
+            });
 
-        $processedLateRemovalsQuery->whereHas('user', function($query) use ($searchName, $companyId) {
-            $query->where('name', 'LIKE', '%' . $searchName . '%')
+            $processedLateRemovalsQuery->whereHas('user', function ($query) use ($searchName, $companyId) {
+                $query->where('name', 'LIKE', '%' . $searchName . '%')
                     ->where('company_id', $companyId);
-        });
+            });
 
-        $processedEarlyLeavesQuery->whereHas('user', function($query) use ($searchName, $companyId) {
-            $query->where('name', 'LIKE', '%' . $searchName . '%')
+            $processedEarlyLeavesQuery->whereHas('user', function ($query) use ($searchName, $companyId) {
+                $query->where('name', 'LIKE', '%' . $searchName . '%')
                     ->where('company_id', $companyId);
-        });
+            });
+        }
+
+        // Execute queries
+        $processedVacations = $processedVacationsQuery->get();
+        $processedExtraTimes = $processedExtraTimesQuery->get();
+        $processedResignations = $processedResignationsQuery->get();
+        $processedLateRemovals = $processedLateRemovalsQuery->get();
+        $processedEarlyLeaves = $processedEarlyLeavesQuery->get();
+
+        // Generate months list for filter dropdown
+        $months = [
+            1 => 'January',
+            2 => 'February',
+            3 => 'March',
+            4 => 'April',
+            5 => 'May',
+            6 => 'June',
+            7 => 'July',
+            8 => 'August',
+            9 => 'September',
+            10 => 'October',
+            11 => 'November',
+            12 => 'December'
+        ];
+
+        return view('backend.requests.processed', compact(
+            'processedVacations',
+            'processedExtraTimes',
+            'processedResignations',
+            'processedLateRemovals',
+            'processedEarlyLeaves',
+            'months',
+            'selectedMonth',
+            'searchName'
+        ));
     }
 
-    // Execute queries
-    $processedVacations = $processedVacationsQuery->get();
-    $processedExtraTimes = $processedExtraTimesQuery->get();
-    $processedResignations = $processedResignationsQuery->get();
-    $processedLateRemovals = $processedLateRemovalsQuery->get();
-    $processedEarlyLeaves = $processedEarlyLeavesQuery->get();
+    private function moveUserToHistory($resignation)
+    {
+        $user = User::find($resignation->employee_id);
 
-    // Generate months list for filter dropdown
-    $months = [
-        1 => 'January', 2 => 'February', 3 => 'March', 4 => 'April',
-        5 => 'May', 6 => 'June', 7 => 'July', 8 => 'August',
-        9 => 'September', 10 => 'October', 11 => 'November', 12 => 'December'
-    ];
+        if (!$user) {
+            return; // لو مفيش موظف متسجل
+        }
 
-    return view('backend.requests.processed', compact(
-        'processedVacations',
-        'processedExtraTimes',
-        'processedResignations',
-        'processedLateRemovals',
-        'processedEarlyLeaves',
-        'months',
-        'selectedMonth',
-        'searchName'
-    ));
-}
+        // نقل البيانات لجداول histories
+        History::create([
+            'employee_name' => $user->name,
+            'employee_id' => $user->id,
+            'email' => $user->email,
+            'password' => $user->password,
+            'phone_number' => $user->phone_number,
+            'hire_date' => $user->hire_date,
+            'birth_date' => $user->birth_date,
+            'nationality' => $user->nationality,
+            'country_code' => $user->country_code,
+            'residency_expiry' => $user->residency_expiry,
+            'passport_number' => $user->passport_number,
+            'passport_expiry' => $user->passport_expiry,
+            'residency_number' => $user->residency_number,
+            'iban' => $user->iban,
+            'residency_job' => $user->residency_job,
+            'salary_type' => $user->salary_type,
+            'salary' => $user->salary,
+            'work_start_time' => $user->work_start_time,
+            'work_end_time' => $user->work_end_time,
+            'shift_count' => $user->shift_count,
+            'second_work_start_time' => $user->second_work_start_time,
+            'second_work_end_time' => $user->second_work_end_time,
+            'macaddress' => $user->macaddress,
+            'is_biometric' => $user->is_biometric,
 
-private function moveUserToHistory($resignation)
-{
-    $user = User::find($resignation->employee_id);
+            'attachment' => $user->attachment,
+            'work_hours_per_day' => $user->work_hours_per_day,
+            'working_days' => $user->working_days,
+            'vacation_balance' => $user->vacation_balance,
+            'bonus_per_hour' => $user->bonus_per_hour,
+            'is_role' => $user->is_role,
+            'start_date' => $user->start_date,
+            'end_date' => $user->end_date,
+            'job_id' => $user->job_id,
+            'department_id' => $user->department_id,
+            'manager_id' => $user->manager_id,
+            'company_id' => $user->company_id,
+            'branch_id' => $user->branch_id,
+            'housing_allowance' => $user->housing_allowance,
+            'transportation_allowance' => $user->transportation_allowance,
+            'other_allowances' => $user->other_allowances,
+            'checkin_early_minutes' => $user->checkin_early_minutes,
 
-    if (!$user) {
-        return; // لو مفيش موظف متسجل
+            // بيانات الاستقالة
+            'resignation_date' => now(),
+            'resignation_reason' => $resignation->reason,
+
+            // timestamps
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        // حذف الموظف من جدول users
+        $user->delete();
     }
 
-    // نقل البيانات لجداول histories
-    History::create([
-        'employee_name'        => $user->name,
-        'employee_id'          => $user->id,
-        'email'                => $user->email,
-        'password'             => $user->password,
-        'phone_number'         => $user->phone_number,
-        'hire_date'            => $user->hire_date,
-        'birth_date'           => $user->birth_date,
-        'nationality'          => $user->nationality,
-        'country_code'         => $user->country_code,
-        'residency_expiry'     => $user->residency_expiry,
-        'passport_number'      => $user->passport_number,
-        'passport_expiry'      => $user->passport_expiry,
-        'residency_number'     => $user->residency_number,
-        'iban'                 => $user->iban,
-        'residency_job'        => $user->residency_job,
-        'salary_type'          => $user->salary_type,
-        'salary'               => $user->salary,
-        'work_start_time'      => $user->work_start_time,
-        'work_end_time'        => $user->work_end_time,
-        'shift_count'          => $user->shift_count,
-        'second_work_start_time' => $user->second_work_start_time,
-        'second_work_end_time'   => $user->second_work_end_time,
-        'macaddress'           => $user->macaddress,
-        'is_biometric'         => $user->is_biometric,
-        
-        'attachment'           => $user->attachment,
-        'work_hours_per_day'   => $user->work_hours_per_day,
-        'working_days'         => $user->working_days,
-        'vacation_balance'     => $user->vacation_balance, 
-        'bonus_per_hour'       => $user->bonus_per_hour,
-        'is_role'              => $user->is_role,
-        'start_date'           => $user->start_date,
-        'end_date'             => $user->end_date,
-        'job_id'               => $user->job_id,
-        'department_id'        => $user->department_id,
-        'manager_id'           => $user->manager_id,
-        'company_id'           => $user->company_id,
-        'branch_id'            => $user->branch_id,
-        'housing_allowance'    => $user->housing_allowance,
-        'transportation_allowance'=> $user->transportation_allowance,
-        'other_allowances'     => $user->other_allowances,
-        'checkin_early_minutes'=> $user->checkin_early_minutes,
+    public function accept($type, $id)
+    {
+        $model = $this->getModelInstance($type, $id);
 
-        // بيانات الاستقالة
-        'resignation_date'     => now(),
-        'resignation_reason'   => $resignation->reason,
+        // Verify the request belongs to the current company before processing
+        if (!$this->belongsToCurrentCompany($model)) {
+            abort(403, 'Unauthorized access to this request.');
+        }
 
-        // timestamps
-        'created_at'           => now(),
-        'updated_at'           => now(),
-    ]);
+        $model->status = 'accepted';
+        $model->is_seen = 0; // Mark as unseen for notifications
+        $model->save();
 
-    // حذف الموظف من جدول users
-    $user->delete();
-}
+        // If it's a vacation request, save to vacations table
+        if ($type === 'vacation') {
+            $this->saveVacationToVacationsTable($model);
+        }
 
-public function accept($type, $id)
-{
-    $model = $this->getModelInstance($type, $id);
+        // If it's an extra time request, save to times table
+        if ($type === 'extra_time') {
+            $this->saveExtraTimeToTimesTable($model);
+        }
 
-    // Verify the request belongs to the current company before processing
-    if (!$this->belongsToCurrentCompany($model)) {
-        abort(403, 'Unauthorized access to this request.');
+        // If it's a late removal request, update attendance
+        if ($type === 'late_removal') {
+            $this->updateAttendanceForLateRemoval($model);
+        }
+
+        // If it's an early leave request, handle it
+        if ($type === 'early_leave') {
+            $this->handleEarlyLeaveRequest($model);
+        }
+
+        // Resignation → نقل الموظف إلى الأرشيف
+        if ($type === 'resignation') {
+            $this->moveUserToHistory($model);
+        }
+
+        return back()->with('success', __('h_requests.accept message'));
     }
-
-    $model->status = 'accepted';
-    $model->is_seen = 0; // Mark as unseen for notifications
-    $model->save();
-
-    // If it's a vacation request, save to vacations table
-    if ($type === 'vacation') {
-        $this->saveVacationToVacationsTable($model);
-    }
-
-    // If it's an extra time request, save to times table
-    if ($type === 'extra_time') {
-        $this->saveExtraTimeToTimesTable($model);
-    }
-
-    // If it's a late removal request, update attendance
-    if ($type === 'late_removal') {
-        $this->updateAttendanceForLateRemoval($model);
-    }
-
-    // If it's an early leave request, handle it
-    if ($type === 'early_leave') {
-        $this->handleEarlyLeaveRequest($model);
-    }
-
-    // Resignation → نقل الموظف إلى الأرشيف
-    if ($type === 'resignation') {
-        $this->moveUserToHistory($model);
-    }
-
-    return back()->with('success', __('h_requests.accept message'));
-}
 
 
     public function reject($type, $id)
@@ -338,39 +347,39 @@ public function accept($type, $id)
     /**
      * Show a processed request and mark it as seen
      */
-   /**
- * Show a processed request and mark it as seen in employee interface
- */
-public function showProcessedRequest($type, $id)
-{
-    $model = $this->getModelInstance($type, $id);
+    /**
+     * Show a processed request and mark it as seen in employee interface
+     */
+    public function showProcessedRequest($type, $id)
+    {
+        $model = $this->getModelInstance($type, $id);
 
-    // Verify the request belongs to the current company
-    if (!$this->belongsToCurrentCompany($model)) {
-        abort(403, 'Unauthorized access to this request.');
+        // Verify the request belongs to the current company
+        if (!$this->belongsToCurrentCompany($model)) {
+            abort(403, 'Unauthorized access to this request.');
+        }
+
+        // Mark as seen
+        $model->is_seen = 1;
+        $model->save();
+
+        // Redirect to appropriate route based on request type
+        switch ($type) {
+            case 'vacation':
+                return redirect()->route('vacation.index');
+            case 'extra_time':
+                return redirect()->route('employee.extra.index');
+            case 'resignation':
+                return redirect()->route('employee.resignation.index');
+            case 'late_removal':
+                return redirect()->route('employee.late.index');
+            case 'early_leave':
+                return redirect()->route('employee.early_leave.index');
+            default:
+                // Fallback to the original view if type doesn't match
+                return view('backend.requests.show', compact('model', 'type'));
+        }
     }
-
-    // Mark as seen
-    $model->is_seen = 1;
-    $model->save();
-
-    // Redirect to appropriate route based on request type
-    switch ($type) {
-        case 'vacation':
-            return redirect()->route('vacation.index');
-        case 'extra_time':
-            return redirect()->route('employee.extra.index');
-        case 'resignation':
-            return redirect()->route('employee.resignation.index');
-        case 'late_removal':
-            return redirect()->route('employee.late.index');
-        case 'early_leave':
-            return redirect()->route('employee.early_leave.index');
-        default:
-            // Fallback to the original view if type doesn't match
-            return view('backend.requests.show', compact('model', 'type'));
-    }
-}
 
 
     /**
@@ -478,19 +487,19 @@ public function showProcessedRequest($type, $id)
         if (!$existingVacation) {
             // Calculate total days if not available in request
             $totalDays = $vacationRequest->total ??
-                        $vacationRequest->total_days ??
-                        $vacationRequest->days ??
-                        $this->calculateVacationDays($vacationRequest->start_date, $vacationRequest->end_date);
+                $vacationRequest->total_days ??
+                $vacationRequest->days ??
+                $this->calculateVacationDays($vacationRequest->start_date, $vacationRequest->end_date);
 
             // Get company_id from user relationship if not in request
             $companyId = $vacationRequest->company_id ??
-                        $vacationRequest->user->company_id ??
-                        null;
+                $vacationRequest->user->company_id ??
+                null;
 
             // Get branch_id from user relationship if not in request
             $branchId = $vacationRequest->branch_id ??
-                       $vacationRequest->user->branch_id ??
-                       null;
+                $vacationRequest->user->branch_id ??
+                null;
 
             $vacationLimit = $vacationRequest->user->vacation_balance;
             $usedDays = Vacation::where('employee_id', $vacationRequest->user_id)->sum('total');
@@ -528,23 +537,23 @@ public function showProcessedRequest($type, $id)
     {
         // Try different possible field names for employee ID
         $employeeId = $extraTimeRequest->user_id ??
-                     $extraTimeRequest->employee_id ??
-                     $extraTimeRequest->emp_id ??
-                     null;
+            $extraTimeRequest->employee_id ??
+            $extraTimeRequest->emp_id ??
+            null;
 
         // Try different possible field names for hours
         $hours = $extraTimeRequest->hours ??
-                $extraTimeRequest->extra_hours ??
-                $extraTimeRequest->bonus_hours ??
-                $extraTimeRequest->overtime_hours ??
-                null;
+            $extraTimeRequest->extra_hours ??
+            $extraTimeRequest->bonus_hours ??
+            $extraTimeRequest->overtime_hours ??
+            null;
 
         // Get the date from extra time request
         $requestDate = $extraTimeRequest->date ??
-                      $extraTimeRequest->request_date ??
-                      $extraTimeRequest->work_date ??
-                      $extraTimeRequest->created_at ??
-                      now();
+            $extraTimeRequest->request_date ??
+            $extraTimeRequest->work_date ??
+            $extraTimeRequest->created_at ??
+            now();
 
         \Log::info('ExtraTimeRequest data:', [
             'all_data' => $extraTimeRequest->toArray(),
@@ -572,13 +581,13 @@ public function showProcessedRequest($type, $id)
         if (!$existingTime) {
             // Get company_id from user relationship if not in request
             $companyId = $extraTimeRequest->company_id ??
-                        $extraTimeRequest->user->company_id ??
-                        null;
+                $extraTimeRequest->user->company_id ??
+                null;
 
             // Get branch_id from user relationship if not in request
             $branchId = $extraTimeRequest->branch_id ??
-                       $extraTimeRequest->user->branch_id ??
-                       null;
+                $extraTimeRequest->user->branch_id ??
+                null;
 
             $timeEntry = new Time([
                 'employee_id' => $employeeId,

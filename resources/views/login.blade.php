@@ -201,7 +201,8 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary btn-block" id="submitBtn">{{ __('auth.sign_in') }}</button>
+                        <button type="submit" class="btn btn-primary btn-block"
+                            id="submitBtn">{{ __('auth.sign_in') }}</button>
                     </form>
 
                     <div class="login-footer">
@@ -265,7 +266,7 @@
         const submitBtn = document.getElementById('submitBtn');
         let isSubmitting = false;
 
-        loginForm.addEventListener('submit', function(e) {
+        loginForm.addEventListener('submit', function (e) {
             if (isSubmitting) {
                 e.preventDefault();
                 return;
@@ -279,7 +280,7 @@
         });
 
         // Re-enable button if user goes back
-        window.addEventListener('pageshow', function(event) {
+        window.addEventListener('pageshow', function (event) {
             if (event.persisted) {
                 isSubmitting = false;
                 submitBtn.disabled = false;

@@ -54,72 +54,74 @@
                 </div>
             </div>
 
-          {{-- Pending Vacation Requests --}}
-@if ($pendingVacations->count() > 0)
-    <div class="card mt-3">
-        <div class="card-header bg-info text-white">
-            <i class="fas fa-calendar-alt"></i> {{ __('h_requests.vacation_requests') }}
-            <span class="badge badge-light ml-2">{{ $pendingVacations->count() }}</span>
-        </div>
-
-        <div class="card-body">
-            @foreach ($pendingVacations as $request)
-
-                @php
-                    $vacationLimit = $request->user->vacation_balance; // can be null
-                    $usedDays = \App\Models\Vacation::where('employee_id', $request->user->id)->sum('total');
-                    $remaining = $vacationLimit !== null ? $vacationLimit - $usedDays : null;
-                @endphp
-
-                <div class="border-bottom py-3">
-
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <strong>{{ $request->user->name ?? __('h_requests.unknown') }}</strong><br>
-                            <small class="text-muted">{{ __('h_requests.type') }}:</small> {{ $request->vacation_type }}<br>
-                            <small class="text-muted">{{ __('h_requests.from') }}:</small> {{ $request->start_date }}
-                            <small class="text-muted">{{ __('h_requests.to') }}</small> {{ $request->end_date }}<br>
-                            <small class="text-muted">{{ __('h_requests.days') }}:</small> {{ $request->total_days }}<br>
-                            <strong>{{ __('h_requests.reason') }}:</strong> {{ $request->reason }}
-                        </div>
-
-                        <div class="text-right">
-                            <form method="POST"
-                                action="{{ route('Requests.accept', ['type' => 'vacation', 'id' => $request->id]) }}"
-                                style="display: inline;">
-                                @csrf
-                                <button type="submit" class="btn btn-success btn-sm"
-                                    onclick="return confirm('{{ __('h_requests.confirm_accept_vacation') }}')">
-                                    <i class="fas fa-check"></i> {{ __('h_requests.accept') }}
-                                </button>
-                            </form>
-
-                            <form method="POST"
-                                action="{{ route('Requests.reject', ['type' => 'vacation', 'id' => $request->id]) }}"
-                                style="display: inline;">
-                                @csrf
-                                <button type="submit" class="btn btn-danger btn-sm ml-1"
-                                    onclick="return confirm('{{ __('h_requests.confirm_reject_vacation') }}')">
-                                    <i class="fas fa-times"></i> {{ __('h_requests.reject') }}
-                                </button>
-                            </form>
-                        </div>
+            {{-- Pending Vacation Requests --}}
+            @if ($pendingVacations->count() > 0)
+                <div class="card mt-3">
+                    <div class="card-header bg-info text-white">
+                        <i class="fas fa-calendar-alt"></i> {{ __('h_requests.vacation_requests') }}
+                        <span class="badge badge-light ml-2">{{ $pendingVacations->count() }}</span>
                     </div>
 
-                    {{-- Warning line at bottom of the item --}}
-                    @if ($remaining === null || $remaining <= 0)
-                        <div class="alert alert-warning mt-3 mb-0 p-2">
-                            <i class="fas fa-exclamation-triangle"></i>
-                            {{ __('h_requests.no_vacation_balance_warning') }}
-                        </div>
-                    @endif
+                    <div class="card-body">
+                        @foreach ($pendingVacations as $request)
 
+                            @php
+                                $vacationLimit = $request->user->vacation_balance; // can be null
+                                $usedDays = \App\Models\Vacation::where('employee_id', $request->user->id)->sum('total');
+                                $remaining = $vacationLimit !== null ? $vacationLimit - $usedDays : null;
+                            @endphp
+
+                            <div class="border-bottom py-3">
+
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>{{ $request->user->name ?? __('h_requests.unknown') }}</strong><br>
+                                        <small class="text-muted">{{ __('h_requests.type') }}:</small>
+                                        {{ $request->vacation_type }}<br>
+                                        <small class="text-muted">{{ __('h_requests.from') }}:</small> {{ $request->start_date }}
+                                        <small class="text-muted">{{ __('h_requests.to') }}</small> {{ $request->end_date }}<br>
+                                        <small class="text-muted">{{ __('h_requests.days') }}:</small>
+                                        {{ $request->total_days }}<br>
+                                        <strong>{{ __('h_requests.reason') }}:</strong> {{ $request->reason }}
+                                    </div>
+
+                                    <div class="text-right">
+                                        <form method="POST"
+                                            action="{{ route('Requests.accept', ['type' => 'vacation', 'id' => $request->id]) }}"
+                                            style="display: inline;">
+                                            @csrf
+                                            <button type="submit" class="btn btn-success btn-sm"
+                                                onclick="return confirm('{{ __('h_requests.confirm_accept_vacation') }}')">
+                                                <i class="fas fa-check"></i> {{ __('h_requests.accept') }}
+                                            </button>
+                                        </form>
+
+                                        <form method="POST"
+                                            action="{{ route('Requests.reject', ['type' => 'vacation', 'id' => $request->id]) }}"
+                                            style="display: inline;">
+                                            @csrf
+                                            <button type="submit" class="btn btn-danger btn-sm ml-1"
+                                                onclick="return confirm('{{ __('h_requests.confirm_reject_vacation') }}')">
+                                                <i class="fas fa-times"></i> {{ __('h_requests.reject') }}
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                {{-- Warning line at bottom of the item --}}
+                                @if ($remaining === null || $remaining <= 0)
+                                    <div class="alert alert-warning mt-3 mb-0 p-2">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                        {{ __('h_requests.no_vacation_balance_warning') }}
+                                    </div>
+                                @endif
+
+                            </div>
+
+                        @endforeach
+                    </div>
                 </div>
-
-            @endforeach
-        </div>
-    </div>
-@endif
+            @endif
 
 
             {{-- Pending Extra Time Requests --}}
@@ -179,7 +181,7 @@
                                 <div>
                                     <strong>{{ $request->user->name ?? __('h_requests.unknown') }}</strong><br>
                                     <small class="text-muted">{{ __('h_requests.date') }}:</small>
-                                    {{ $request->created_at->format('Y-m-d') }}<br>
+                                    {{ !empty($request->day) ? \Carbon\Carbon::parse($request->day)->format('Y-m-d') : $request->created_at->format('Y-m-d') }}<br>
                                     <strong>{{ __('h_requests.reason') }}:</strong> {{ $request->reason }}
                                 </div>
                                 <div class="text-right">
@@ -303,11 +305,12 @@
 
             {{-- No Pending Requests Message --}}
             @if (
-                $pendingVacations->count() == 0 &&
+                    $pendingVacations->count() == 0 &&
                     $pendingExtraTimes->count() == 0 &&
                     $pendingLateRemovals->count() == 0 &&
                     $pendingEarlyLeaves->count() == 0 &&
-                    $pendingResignations->count() == 0)
+                    $pendingResignations->count() == 0
+                )
                 <div class="card mt-3">
                     <div class="card-body">
                         <div class="text-center py-5">
@@ -323,7 +326,7 @@
 
     @push('scripts')
         <script>
-            $(document).ready(function() {
+            $(document).ready(function () {
                 // Initialize tooltips if using Bootstrap tooltips
                 $('[data-toggle="tooltip"]').tooltip();
             });
