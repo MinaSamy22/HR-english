@@ -14,17 +14,39 @@ class User extends Authenticatable implements JWTSubject
 
 
     protected $fillable = [
-    'name', 'email', 'phone_number', 'hire_date', 'birth_date',
-    'job_id', 'salary_type', 'salary', 'work_start_time', 'work_end_time',
-    'company_id', 'manager_id', 'department_id', 'is_role', 'password' ,'branch_id','macaddress','work_hours_per_day', 'working_days', 'shifts','second_start_time','second_end_time','main_salary'
+        'name',
+        'email',
+        'phone_number',
+        'hire_date',
+        'birth_date',
+        'job_id',
+        'salary_type',
+        'salary',
+        'work_start_time',
+        'work_end_time',
+        'company_id',
+        'manager_id',
+        'department_id',
+        'is_role',
+        'password',
+        'branch_id',
+        'macaddress',
+        'work_hours_per_day',
+        'working_days',
+        'shifts',
+        'second_start_time',
+        'second_end_time',
+        'main_salary'
 
-];
+    ];
 
-    public function getJWTIdentifier() {
+    public function getJWTIdentifier()
+    {
         return $this->getKey();
     }
 
-    public function getJWTCustomClaims() {
+    public function getJWTCustomClaims()
+    {
         return [];
     }
 
@@ -39,114 +61,215 @@ class User extends Authenticatable implements JWTSubject
 
     ];
 
-public static function getRecord($request)
-{
-    $company_id = session('company_id');
-    $branch_id = session('branch_id');
+    public static function getRecord($request)
+    {
+        $company_id = session('company_id');
+        $branch_id = session('branch_id');
 
-    $query = self::select('users.*', 'branches.name as branch_name', 'branches.is_main')
+        $query = self::select('users.*', 'branches.name as branch_name', 'branches.is_main')
             ->leftJoin('branches', 'branches.id', '=', 'users.branch_id');
 
-    // 🔍 filtering logic for branch and main branch handling
-    if (!empty($branch_id)) {
-        // Get the current branch info to check if it's main
-        $currentBranch = \DB::table('branches')
-            ->where('id', $branch_id)
-            ->select('is_main')
+        // 🔍 filtering logic for branch and main branch handling
+        if (!empty($branch_id)) {
+            // Get the current branch info to check if it's main
+            $currentBranch = \DB::table('branches')
+                ->where('id', $branch_id)
+                ->select('is_main')
+                ->first();
+
+            if ($currentBranch && $currentBranch->is_main == 1) {
+                // If current branch is main branch, show all employees in the company
+                $query->where('users.company_id', $company_id);
+            } else {
+                // If current branch is not main, show only employees of this specific branch
+                $query->where('users.branch_id', $branch_id);
+            }
+        } else {
+            // If no branch_id in session, show all employees in the company
+            $query->where('users.company_id', $company_id);
+        }
+
+        // Apply search filters if any
+        if (!empty(Request::get('id'))) {
+            $query->where('users.id', '=', Request::get('id'));
+        }
+        if (!empty(Request::get('name'))) {
+            $query->where('users.name', 'like', '%' . Request::get('name') . '%');
+        }
+        if (!empty(Request::get('email'))) {
+            $query->where('users.email', 'like', '%' . Request::get('email') . '%');
+        }
+
+        // 🆕 NEW: Branch filter by ID (from dropdown)
+        if (!empty(Request::get('filter_branch_id'))) {
+            $query->where('users.branch_id', '=', Request::get('filter_branch_id'));
+        }
+
+        // Handle per_page parameter
+        $perPage = Request::get('per_page', 5); // Default to 5
+
+        $query->orderBy('users.id', 'desc');
+
+        if ($perPage === 'all') {
+            $results = $query->get();
+            self::batchLoadEmployeeStatuses($results, $company_id);
+            return $results;
+        } else {
+            $paginatedResults = $query->paginate((int) $perPage);
+            // 🔧 FIX: Append all request parameters to pagination links
+            $paginatedResults->appends(Request::all());
+            self::batchLoadEmployeeStatuses($paginatedResults->items(), $company_id);
+            return $paginatedResults;
+        }
+    }
+
+    /**
+     * Batch-load employee statuses in memory to eliminate N+1 database queries.
+     * Reduces 2N individual queries to exactly 2 batch queries.
+     */
+    public static function batchLoadEmployeeStatuses($employees, $companyId = null)
+    {
+        if (empty($employees) || count($employees) === 0) {
+            return $employees;
+        }
+
+        $companyId = $companyId ?? session('company_id');
+        $today = date('Y-m-d');
+
+        // Extract employee IDs
+        $employeeIds = [];
+        foreach ($employees as $emp) {
+            if (!empty($emp->id)) {
+                $employeeIds[] = $emp->id;
+            }
+        }
+
+        if (empty($employeeIds)) {
+            return $employees;
+        }
+
+        // 1) Batch query: active vacations today for all employees (1 query)
+        $activeVacationEmpIds = \DB::table('vacations')
+            ->where('company_id', $companyId)
+            ->whereIn('employee_id', $employeeIds)
+            ->whereDate('start_date', '<=', $today)
+            ->whereDate('end_date', '>=', $today)
+            ->pluck('employee_id')
+            ->flip()
+            ->toArray();
+
+        // 2) Batch query: today's attendances for all employees (1 query)
+        $attendances = \DB::table('attendances')
+            ->where('company_id', $companyId)
+            ->whereIn('employee_id', $employeeIds)
+            ->whereDate('attendance_date', $today)
+            ->orderBy('id', 'desc')
+            ->get();
+
+        // Keep only the latest attendance record per employee
+        $latestAttendanceByEmp = [];
+        foreach ($attendances as $att) {
+            if (!isset($latestAttendanceByEmp[$att->employee_id])) {
+                $latestAttendanceByEmp[$att->employee_id] = $att;
+            }
+        }
+
+        // 3) Compute and attach status to each employee in memory (0 queries)
+        foreach ($employees as $employee) {
+            $empId = $employee->id;
+
+            // Priority 1: Active vacation today
+            if (isset($activeVacationEmpIds[$empId])) {
+                $employee->preloaded_status = ['text' => __('dashboard.vacation'), 'color' => '#0192c3ff'];
+                continue;
+            }
+
+            // Priority 2: Check today's attendance record
+            if (isset($latestAttendanceByEmp[$empId])) {
+                $attendance = $latestAttendanceByEmp[$empId];
+
+                // "Working Now": has checked in, hasn't checked out yet
+                // Applies to: on-time (1), late (2), half-day (4), and null (mid-shift manual entry)
+                if (
+                    !empty($attendance->check_in) &&
+                    is_null($attendance->check_out) &&
+                    in_array($attendance->attendance_type, [1, 2, 4, null])
+                ) {
+                    $employee->preloaded_status = ['text' => __('dashboard.working_now'), 'color' => '#28a745'];
+                } else {
+                    // Checked out, or absent/half-day without active check-in
+                    $employee->preloaded_status = ['text' => __('dashboard.at_work'), 'color' => '#6c757d'];
+                }
+                continue;
+            }
+
+            // Priority 3: Transfer status
+            if (!empty($employee->transfer_status) && $employee->transfer_status == 1) {
+                $employee->preloaded_status = ['text' => __('dashboard.transfer_sponsorship'), 'color' => '#ffc107'];
+                continue;
+            }
+
+            // Priority 4: Default — no record today
+            $employee->preloaded_status = ['text' => __('dashboard.at_work'), 'color' => '#6c757d'];
+        }
+
+        return $employees;
+    }
+
+    public function getEmployeeStatus()
+    {
+        // If status was batch-preloaded, return instantly without any DB query
+        if (isset($this->preloaded_status)) {
+            return $this->preloaded_status;
+        }
+
+        $today = date('Y-m-d');
+        $companyId = session('company_id');
+
+        // 1) Vacation today?
+        $vacation = \DB::table('vacations')
+            ->where('employee_id', $this->id)
+            ->where('company_id', $companyId)
+            ->whereDate('start_date', '<=', $today)
+            ->whereDate('end_date', '>=', $today)
             ->first();
 
-        if ($currentBranch && $currentBranch->is_main == 1) {
-            // If current branch is main branch, show all employees in the company
-            $query->where('users.company_id', $company_id);
-        } else {
-            // If current branch is not main, show only employees of this specific branch
-            $query->where('users.branch_id', $branch_id);
-        }
-    } else {
-        // If no branch_id in session, show all employees in the company
-        $query->where('users.company_id', $company_id);
-    }
-
-    // Apply search filters if any
-    if (!empty(Request::get('id'))) {
-        $query->where('users.id', '=', Request::get('id'));
-    }
-    if (!empty(Request::get('name'))) {
-        $query->where('users.name', 'like', '%' . Request::get('name') . '%');
-    }
-    if (!empty(Request::get('email'))) {
-        $query->where('users.email', 'like', '%' . Request::get('email') . '%');
-    }
-
-    // 🆕 NEW: Branch filter by ID (from dropdown)
-    if (!empty(Request::get('filter_branch_id'))) {
-        $query->where('users.branch_id', '=', Request::get('filter_branch_id'));
-    }
-
-    // Handle per_page parameter
-    $perPage = Request::get('per_page', 5); // Default to 5
-
-    $query->orderBy('users.id', 'desc');
-
-    if ($perPage === 'all') {
-        return $query->get();
-    } else {
-        $paginatedResults = $query->paginate((int)$perPage);
-        // 🔧 FIX: Append all request parameters to pagination links
-        $paginatedResults->appends(Request::all());
-        return $paginatedResults;
-    }
-}
-
-public function getEmployeeStatus()
-{
-    $today = date('Y-m-d');
-    $now = date('H:i:s'); // الساعة الحالية
-    $companyId = session('company_id');
-
-    // 1) Vacation
-    $vacation = \DB::table('vacations')
-        ->where('employee_id', $this->id)
-        ->where('company_id', $companyId)
-        ->whereDate('start_date', '<=', $today)
-        ->whereDate('end_date', '>=', $today)
-        ->first();
-
-    if ($vacation) {
-        return ['text' => __('dashboard.vacation'), 'color' => '#0192c3ff'];
-    }
-
- // 2) Attendance
-    $attendance = \DB::table('attendances')
-        ->where('employee_id', $this->id)
-        ->where('company_id', $companyId)
-        ->whereDate('attendance_date', $today)
-        ->orderByDesc('id')
-        ->first();
-
-    if ($attendance) {
-
-        // ✅ Working Now condition (UPDATED)
-        if (
-            !empty($attendance->check_in) &&
-            is_null($attendance->check_out) &&
-            $attendance->attendance_type == 1
-        ) {
-            return ['text' => __('dashboard.working_now'), 'color' => '#28a745'];
+        if ($vacation) {
+            return ['text' => __('dashboard.vacation'), 'color' => '#0192c3ff'];
         }
 
-        // Otherwise: at work (checked out or different type)
+        // 2) Latest attendance record today?
+        $attendance = \DB::table('attendances')
+            ->where('employee_id', $this->id)
+            ->where('company_id', $companyId)
+            ->whereDate('attendance_date', $today)
+            ->orderByDesc('id')
+            ->first();
+
+        if ($attendance) {
+            // ✅ "Working Now": checked in, not yet checked out.
+            // Covers on-time (1), late (2), half-day (4), and null (mid-shift manual entry) —
+            // all are physically at the workplace right now.
+            if (
+                !empty($attendance->check_in) &&
+                is_null($attendance->check_out) &&
+                in_array($attendance->attendance_type, [1, 2, 4, null])
+            ) {
+                return ['text' => __('dashboard.working_now'), 'color' => '#28a745'];
+            }
+
+            // Checked out already, or absent/half-day record
+            return ['text' => __('dashboard.at_work'), 'color' => '#6c757d'];
+        }
+
+        // 3) Transfer sponsorship?
+        if (!empty($this->transfer_status) && $this->transfer_status == 1) {
+            return ['text' => __('dashboard.transfer_sponsorship'), 'color' => '#ffc107'];
+        }
+
+        // 4) Default — no record today
         return ['text' => __('dashboard.at_work'), 'color' => '#6c757d'];
     }
-
-    // 3) Transfer
-    if (!empty($this->transfer_status) && $this->transfer_status == 1) {
-        return ['text' => __('dashboard.transfer_sponsorship'), 'color' => '#ffc107'];
-    }
-
-    // 4) Default
-    return ['text' => __('dashboard.at_work'), 'color' => '#6c757d'];
-}
 
 
 
@@ -200,30 +323,33 @@ public function getEmployeeStatus()
         return $this->belongsTo(Job::class);
     }
 
-    public function get_job_single(){
+    public function get_job_single()
+    {
         return $this->belongsTo(Job::class, "job_id");
     }
 
-    public function get_manager_single(){
+    public function get_manager_single()
+    {
         return $this->belongsTo(Manager::class, "manager_id");
     }
 
-    public function get_department_single(){
+    public function get_department_single()
+    {
         return $this->belongsTo(Department::class, "department_id");
     }
 
 
 
 
-    public function getAttendance($employee_id,$attendance_date)
+    public function getAttendance($employee_id, $attendance_date)
     {
-        return Attendance::ChechAlreadyAttendance($employee_id,$attendance_date);
+        return Attendance::ChechAlreadyAttendance($employee_id, $attendance_date);
     }
 
 
     public function payrolls()
     {
-        return $this->hasMany(Payroll::class,'employee_id');
+        return $this->hasMany(Payroll::class, 'employee_id');
     }
 
     public function times()
@@ -263,8 +389,9 @@ public function getEmployeeStatus()
     {
         return $this->hasMany(Tax::class, 'employee_id');
     }
-   
-    public function insurances(){
+
+    public function insurances()
+    {
         return $this->hasMany(Insurance::class, 'employee_id');
     }
 

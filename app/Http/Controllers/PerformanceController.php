@@ -12,116 +12,117 @@ use Illuminate\Support\Facades\Auth;
 
 class PerformanceController extends Controller
 {
-public function index(Request $request)
-{
-    // Get current HR user's company and branch
-    $companyId = Auth::user()->company_id;
-    $branchId = session('branch_id');
+    public function index(Request $request)
+    {
+        // Get current HR user's company and branch
+        $companyId = Auth::user()->company_id;
+        $branchId = session('branch_id');
 
-    // Determine filtering logic based on branch_id and is_main
-    $showAllCompanyData = false;
-    $filterBranchId = null;
+        // Determine filtering logic based on branch_id and is_main
+        $showAllCompanyData = false;
+        $filterBranchId = null;
 
-    if ($branchId) {
-        $currentBranch = Branch::find($branchId);
-        if ($currentBranch && $currentBranch->is_main == 1) {
-            // Main branch - show all company evaluations
-            $showAllCompanyData = true;
-        } else {
-            // Regular branch - show only this branch's evaluations
-            $filterBranchId = $branchId;
-        }
-    } else {
-        // No branch_id in session - show all company evaluations
-        $showAllCompanyData = true;
-    }
-
-    // Create a closure for the employee filtering logic
-    $employeeFilterClosure = function($query) use ($showAllCompanyData, $companyId, $filterBranchId, $request) {
-        if ($showAllCompanyData) {
-            $query->where('company_id', $companyId);
-
-            // If filter_branch_id is provided by main branch user, apply it
-            if ($request->filled('filter_branch_id')) {
-                $query->where('branch_id', $request->filter_branch_id);
+        if ($branchId) {
+            $currentBranch = Branch::find($branchId);
+            if ($currentBranch && $currentBranch->is_main == 1) {
+                // Main branch - show all company evaluations
+                $showAllCompanyData = true;
+            } else {
+                // Regular branch - show only this branch's evaluations
+                $filterBranchId = $branchId;
             }
         } else {
-            $query->where('branch_id', $filterBranchId);
+            // No branch_id in session - show all company evaluations
+            $showAllCompanyData = true;
         }
-    };
 
-    $query = PerformanceEvaluation::with(['employee', 'evaluator'])
-        ->forCompany($companyId)
-        ->whereHas('employee', $employeeFilterClosure);
-
-    // Search by employee name
-    if ($request->filled('employee_name')) {
-        $query->whereHas('employee', function($q) use ($request, $showAllCompanyData, $companyId, $filterBranchId) {
-            $q->where('name', 'LIKE', '%' . $request->employee_name . '%');
-
-            // Apply branch filtering to the name search as well
+        // Create a closure for the employee filtering logic
+        $employeeFilterClosure = function ($query) use ($showAllCompanyData, $companyId, $filterBranchId, $request) {
             if ($showAllCompanyData) {
-                $q->where('company_id', $companyId);
+                $query->where('company_id', $companyId);
 
-                // Apply branch filter if provided
+                // If filter_branch_id is provided by main branch user, apply it
                 if ($request->filled('filter_branch_id')) {
-                    $q->where('branch_id', $request->filter_branch_id);
+                    $query->where('branch_id', $request->filter_branch_id);
                 }
             } else {
-                $q->where('branch_id', $filterBranchId);
+                $query->where('branch_id', $filterBranchId);
             }
-        });
-    }
+        };
 
-    // Filter by evaluation period (month)
-    if ($request->filled('month')) {
-        $query->where('evaluation_period', 'LIKE', '%' . $request->month . '%');
-    }
+        $query = PerformanceEvaluation::with(['employee', 'evaluator'])
+            ->forCompany($companyId)
+            ->whereHas('employee', $employeeFilterClosure);
 
-    // Filter by year
-    if ($request->filled('year')) {
-        $query->where('evaluation_year', $request->year);
-    }
+        // Search by employee name
+        if ($request->filled('employee_name')) {
+            $query->whereHas('employee', function ($q) use ($request, $showAllCompanyData, $companyId, $filterBranchId) {
+                $q->where('name', 'LIKE', '%' . $request->employee_name . '%');
 
-    // Filter by status
-    if ($request->filled('status')) {
-        $query->where('status', $request->status);
-    }
+                // Apply branch filtering to the name search as well
+                if ($showAllCompanyData) {
+                    $q->where('company_id', $companyId);
 
-    // Filter by overall score range
-    if ($request->filled('min_score')) {
-        $query->where('overall_score', '>=', $request->min_score);
-    }
-    if ($request->filled('max_score')) {
-        $query->where('overall_score', '<=', $request->max_score);
-    }
+                    // Apply branch filter if provided
+                    if ($request->filled('filter_branch_id')) {
+                        $q->where('branch_id', $request->filter_branch_id);
+                    }
+                } else {
+                    $q->where('branch_id', $filterBranchId);
+                }
+            });
+        }
 
-    $evaluations = $query->orderBy('created_at', 'desc')->paginate(15);
+        // Filter by evaluation period (month)
+        if ($request->filled('month')) {
+            $query->where('evaluation_period', 'LIKE', '%' . $request->month . '%');
+        }
 
-    // Keep search parameters in pagination
-    $evaluations->appends($request->query());
+        // Filter by year
+        if ($request->filled('year')) {
+            $query->where('evaluation_year', $request->year);
+        }
 
-    // Get employees for dropdown with branch filtering
-    $employees = User::when($showAllCompanyData,
-        fn($q) => $q->where('company_id', $companyId),
-        fn($q) => $q->where('branch_id', $filterBranchId)
-    )
-    ->where('is_role', 0)
-    ->select('id', 'name')
-    ->orderBy('name')
-    ->get();
+        // Filter by status
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
 
-    // Get branches for filter dropdown (only for main branch users)
-    $branches = collect();
-    if ($showAllCompanyData) {
-        $branches = Branch::where('company_id', $companyId)
-            ->select('id', 'name', 'is_main')
+        // Filter by overall score range
+        if ($request->filled('min_score')) {
+            $query->where('overall_score', '>=', $request->min_score);
+        }
+        if ($request->filled('max_score')) {
+            $query->where('overall_score', '<=', $request->max_score);
+        }
+
+        $evaluations = $query->orderBy('created_at', 'desc')->paginate(15);
+
+        // Keep search parameters in pagination
+        $evaluations->appends($request->query());
+
+        // Get employees for dropdown with branch filtering
+        $employees = User::when(
+            $showAllCompanyData,
+            fn($q) => $q->where('company_id', $companyId),
+            fn($q) => $q->where('branch_id', $filterBranchId)
+        )
+            ->where('is_role', 0)
+            ->select('id', 'name')
             ->orderBy('name')
             ->get();
-    }
 
-    return view('backend.performances.index', compact('evaluations', 'employees', 'branches', 'showAllCompanyData'));
-}
+        // Get branches for filter dropdown (only for main branch users)
+        $branches = collect();
+        if ($showAllCompanyData) {
+            $branches = Branch::where('company_id', $companyId)
+                ->select('id', 'name', 'is_main')
+                ->orderBy('name')
+                ->get();
+        }
+
+        return view('backend.performances.index', compact('evaluations', 'employees', 'branches', 'showAllCompanyData'));
+    }
     public function create()
     {
         // Get employees from the same company
@@ -192,7 +193,7 @@ public function index(Request $request)
 
         if ($existingEvaluation) {
             return back()->withErrors([
-             'employee_id' => __('h_performance.employee_evaluation_exists')
+                'employee_id' => __('h_performance.employee_evaluation_exists')
             ])->withInput();
         }
 
@@ -253,8 +254,8 @@ public function index(Request $request)
 
         $evaluation = PerformanceEvaluation::create($evaluationData);
 
-return redirect()->route('performance.index')
-    ->with('success', __('h_performance.evaluation_created_success'));
+        return redirect()->route('performance.index')
+            ->with('success', __('h_performance.evaluation_created_success'));
     }
 
     public function show($id)
@@ -383,8 +384,8 @@ return redirect()->route('performance.index')
             ]);
         }
 
-return redirect()->route('performance.index')
-    ->with('success', __('h_performance.evaluation_updated_success'));
+        return redirect()->route('performance.index')
+            ->with('success', __('h_performance.evaluation_updated_success'));
     }
 
     public function destroy($id)
@@ -394,8 +395,8 @@ return redirect()->route('performance.index')
 
         $evaluation->delete();
 
-return redirect()->route('performance.index')
-    ->with('success', __('h_performance.evaluation_deleted_success'));
+        return redirect()->route('performance.index')
+            ->with('success', __('h_performance.evaluation_deleted_success'));
     }
 
     public function employeeReport($employeeId)
