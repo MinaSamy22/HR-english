@@ -33,8 +33,8 @@
     <meta name="msg-bonus-updated" content="{{ __('dashboard.bonus_updated') }}">
     <meta name="msg-days" content="{{ __('dashboard.days') }}">
     <meta name="msg-select-working-days" content="{{ __('dashboard.select_working_days') }}">
-    <meta name="msg-invalid-vacation" content="{{ __('dashboard.invalid_vacation') }}">
-    <meta name="msg-invalid-bonus" content="{{ __('dashboard.invalid_bonus') }}">
+    <meta name="msg-invalid-vacation" content="{{ __('dashboard.invalid_vacation_balance') }}">
+    <meta name="msg-invalid-bonus" content="{{ __('dashboard.invalid_bonus_amount') }}">
     <meta name="msg-assign-vacation" content="{{ __('dashboard.assign_vacation') }}">
     <meta name="msg-assign-bonus" content="{{ __('dashboard.assign_bonus') }}">
     <!-- Day abbreviations -->
@@ -280,7 +280,7 @@
                                                 <div class="card-body">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.vacation_balance') }}</label>
-                                                        <input type="number" min="0" class="form-control"
+                                                        <input type="number" min="0" max="1000" class="form-control"
                                                             id="assign_vacation_balance"
                                                             placeholder="{{ __('dashboard.enter_vacation_days') }}">
                                                     </div>
@@ -304,7 +304,7 @@
                                                 <div class="card-body">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.bonus_per_hour') }}</label>
-                                                        <input type="number" step="0.01" min="0"
+                                                        <input type="number" step="0.01" min="0" max="100000"
                                                             class="form-control" id="assign_bonus_per_hour"
                                                             placeholder="{{ __('dashboard.enter_bonus_amount') }}">
                                                     </div>
@@ -699,7 +699,7 @@ document.getElementById('redText').textContent = `${absentThreshold}+ ${minText}
         </section>
     </div>
 
-    <script src="{{ url('dist/js/attendance settings/hours-days-vacation-bounas.js?v=6') }}"></script>
+    <script src="{{ url('dist/js/attendance settings/hours-days-vacation-bounas.js?v=7') }}"></script>
     <script src="{{ url('dist\js\attendance settings\holidays.js?v=1') }}"></script>
     <script src="{{ url('dist\js\attendance settings\late-halfDeduction.js?v=4') }}"></script>
     <script>

@@ -45,8 +45,8 @@ public function index(Request $request)
             'working_days'                       => 'required|array',
             'holiday_dates'                      => 'array',
             'holiday_titles'                     => 'array',
-            'vacation_balance'                   => 'required|integer|min:0',
-            'bonus_per_hour'                     => 'required|numeric|min:0',
+            'vacation_balance'                   => 'required|integer|min:0|max:1000',
+            'bonus_per_hour'                     => 'required|numeric|min:0|max:100000',
         ]);
 
         $company_id = session('company_id');
@@ -498,7 +498,7 @@ public function updateHolidays(Request $request)
             $request->validate([
                 'employee_ids' => 'required|array',
                 'employee_ids.*' => 'required|exists:users,id',
-                'vacation_balance' => 'required|numeric|min:0',
+                'vacation_balance' => 'required|numeric|min:0|max:1000',
             ]);
 
             $updatedCount = 0;
@@ -523,7 +523,7 @@ public function updateHolidays(Request $request)
             // Single employee update
             $request->validate([
                 'employee_id' => 'required|exists:users,id',
-                'vacation_balance' => 'required|numeric|min:0',
+                'vacation_balance' => 'required|numeric|min:0|max:1000',
             ]);
 
             // Verify employee belongs to the same company
@@ -569,7 +569,7 @@ public function updateEmployeeBonusPerHour(Request $request)
             $request->validate([
                 'employee_ids' => 'required|array',
                 'employee_ids.*' => 'required|exists:users,id',
-                'bonus_per_hour' => 'required|numeric|min:0',
+                'bonus_per_hour' => 'required|numeric|min:0|max:100000',
             ]);
 
             $updatedCount = 0;
@@ -594,7 +594,7 @@ public function updateEmployeeBonusPerHour(Request $request)
             // Single employee update
             $request->validate([
                 'employee_id' => 'required|exists:users,id',
-                'bonus_per_hour' => 'required|numeric|min:0',
+                'bonus_per_hour' => 'required|numeric|min:0|max:100000',
             ]);
 
             // Verify employee belongs to the same company

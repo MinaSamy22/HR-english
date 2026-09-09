@@ -476,8 +476,8 @@ return [
     'toast_warning_title' => 'Warning!',
     'toast_info_title' => 'Info',
     'invalid_hours' => 'Please enter valid work hours (between 1 and 24)',
-    'invalid_vacation_balance' => 'Please enter a valid vacation balance (0 or more days)',
-    'invalid_bonus_amount' => 'Please enter a valid bonus amount (0 or more)',
+    'invalid_vacation_balance' => 'Please enter a valid vacation balance (0 to 1000 days)',
+    'invalid_bonus_amount' => 'Please enter a valid bonus amount (0 to 100000)',
 
     'error_updating_late_threshold' => 'Error updating late threshold',
     'error_updating_half_day_threshold' => 'Error updating half day threshold',

@@ -470,8 +470,8 @@ return [
 'toast_warning_title' => 'انتباہ!',
 'toast_info_title' => 'معلومات',
 'invalid_hours' => 'براہ کرم درست کام کے اوقات درج کریں (1 سے 24 کے درمیان)',
-'invalid_vacation_balance' => 'براہ کرم درست چھٹیوں کا بیلنس درج کریں (0 یا زیادہ دن)',
-'invalid_bonus_amount' => 'براہ کرم درست بونس کی رقم درج کریں (0 یا زیادہ)',
+'invalid_vacation_balance' => 'براہ کرم درست چھٹیوں کا بیلنس درج کریں (0 سے 1000 دن)',
+'invalid_bonus_amount' => 'براہ کرم درست بونس کی رقم درج کریں (0 سے 100000)',
 
 'error_updating_late_threshold' => 'تاخیر کی حد کو اپ ڈیٹ کرنے میں خرابی',
 'error_updating_half_day_threshold' => 'آدھے دن کی حد کو اپ ڈیٹ کرنے میں خرابی',

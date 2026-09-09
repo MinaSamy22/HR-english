@@ -223,7 +223,7 @@ function closeToast(toastId) {
     if (assignHoursBtn) {
         assignHoursBtn.addEventListener('click', function() {
             const selected = document.querySelectorAll('.employee_check:checked');
-            const hours = assignHoursInput ? assignHoursInput.value : null;
+            const hours = assignHoursInput ? parseFloat(assignHoursInput.value) : NaN;
 
             // Validation
             if (selected.length === 0) {
@@ -231,7 +231,7 @@ function closeToast(toastId) {
                 return;
             }
 
-            if (!hours || isNaN(hours) || hours < 1 || hours > 24) {
+            if (isNaN(hours) || hours < 1 || hours > 24) {
                 showAlert('danger', messages.invalidHours);
                 return;
             }
@@ -452,7 +452,7 @@ function closeToast(toastId) {
         assignVacationBtn.addEventListener('click', function() {
             const selected = document.querySelectorAll('.employee_check:checked');
             const selectedEmployees = Array.from(selected).map(checkbox => checkbox.value);
-            const vacationBalance = assignVacationInput ? assignVacationInput.value : null;
+            const vacationBalance = assignVacationInput ? parseFloat(assignVacationInput.value) : NaN;
 
             // Validation
             if (selectedEmployees.length === 0) {
@@ -460,7 +460,7 @@ function closeToast(toastId) {
                 return;
             }
 
-            if (!vacationBalance || isNaN(vacationBalance) || vacationBalance < 0) {
+            if (isNaN(vacationBalance) || vacationBalance < 0 || vacationBalance > 1000) {
                 showAlert('danger', messages.invalidVacation);
                 return;
             }
@@ -560,7 +560,7 @@ function closeToast(toastId) {
         assignBonusBtn.addEventListener('click', function() {
             const selected = document.querySelectorAll('.employee_check:checked');
             const selectedEmployees = Array.from(selected).map(checkbox => checkbox.value);
-            const bonusPerHour = assignBonusInput ? assignBonusInput.value : null;
+            const bonusPerHour = assignBonusInput ? parseFloat(assignBonusInput.value) : NaN;
 
             // Validation
             if (selectedEmployees.length === 0) {
@@ -568,7 +568,7 @@ function closeToast(toastId) {
                 return;
             }
 
-            if (!bonusPerHour || isNaN(bonusPerHour) || bonusPerHour < 0) {
+            if (isNaN(bonusPerHour) || bonusPerHour < 0 || bonusPerHour > 100000) {
                 showAlert('danger', messages.invalidBonus);
                 return;
             }

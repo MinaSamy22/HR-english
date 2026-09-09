@@ -458,8 +458,8 @@ return [
     'toast_warning_title' => 'تحذير!',
     'toast_info_title' => 'معلومات',
     'invalid_hours' => 'الرجاء إدخال ساعات عمل صالحة (بين 1 و 24)',
-    'invalid_vacation_balance' => 'الرجاء إدخال رصيد إجازة صالح (0 أيام أو أكثر)',
-    'invalid_bonus_amount' => 'الرجاء إدخال مبلغ مكافأة صالح (0 أو أكثر)',
+    'invalid_vacation_balance' => 'الرجاء إدخال رصيد إجازة صالح (من 0 إلى 1000 يوم)',
+    'invalid_bonus_amount' => 'الرجاء إدخال مبلغ مكافأة صالح (من 0 إلى 100000)',
 
     'error_updating_late_threshold' => 'خطأ في تحديث حد التأخير',
     'error_updating_half_day_threshold' => 'خطأ في تحديث حد نصف اليوم',
